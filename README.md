@@ -101,7 +101,7 @@
 ## 任务分工
 > 大家每次向github提交代码的时候，欢迎修改此项以描述自己所做的工作
 
-- 陈卓凡：组长，后端，负责[map](#map)包，[Bomb](#Bomb)类爆炸方法
+- 陈卓凡：组长，后端，负责[map](#map)包，[Bomb](#Bomb-1)类爆炸方法
 - 郑俊悦：后端，负责[items](#items)包
 - 陶然：前端，负责[game](#game)包
 - 杨韫加：后端，负责[bomb](#bomb)包
@@ -115,7 +115,7 @@
 - 所有代码（除UI界面）使用英文，主要指注释部分。
 - 每个类请务必加上说明注释，简单描述该类实现的功能。若可以的话，欢迎为每个方法也加上说明注释。具体使用方法可参考[此页面](https://www.runoob.com/java/java-documentation.html)。
 - 变量命名请使用驼峰命名法，即每个单词首字母大写，其余均小写。包名首字母小写，类名首字母大写。
-- github相关的使用教程，请参考慕课4.9节教程。Eclipse等IDE可以利用内置的git插件，可参考[此页面](https://blog.csdn.net/bendanany/article/details/78891804)
+- github相关的使用教程，请参考慕课4.9节教程。Eclipse等IDE可以利用内置的git插件，可参考[此页面](https://blog.csdn.net/bendanany/article/details/78891804)。
 - 类的成员变量均为private，类的成员方法均为public。每个成员变量均需要设置set()和get()方法，即便不一定使用。
 - 地图坐标，左上角为(0,0)，x轴向右，y轴向下。
 - 上传github时，请不要上传配置文件如.classpath或.project，可以通过配置.gitignore来解决

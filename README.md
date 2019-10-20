@@ -1,36 +1,40 @@
 # Q版泡泡堂
-A Java implementation of the game Bomberman
 
-> Standard Readme Style
+> 本文档暂用于任务分工、类的解释、代码规范...非最终README文档
 
-Your README file is normally the first entry point to your code. It should tell people why they should use your module, how they can install it, and how they can use it. Standardizing how you write your README makes creating and maintaining your READMEs easier. Great documentation takes work!
+十分欢迎大家在push新代码的时候，能够同时修改此README文档，方便任务交接。
 
-This repository contains:
+## 目录
 
-1. [The specification](spec.md) for how a standard README should look.
-2. A link to a linter you can use to keep your README maintained ([work in progress](https://github.com/RichardLitt/standard-readme/issues/5)).
-3. A link to [a generator](https://github.com/RichardLitt/generator-standard-readme) you can use to create standard READMEs.
-4. [A badge](#badge) to point to this spec.
-5. [Examples of standard READMEs](example-readmes/) - such as this file you are reading.
-
-Standard Readme is designed for open source libraries. Although it’s [historically](#background) made for Node and npm projects, it also applies to libraries in other languages and package managers.
+- [项目架构](#项目架构)
+- [任务分工](#任务分工)
+- [代码规范](#代码规范)
 
 
-## Table of Contents
+## 项目架构
 
-- [Background](#background)
-- [Install](#install)
-- [Usage](#usage)
-	- [Generator](#generator)
-- [Badge](#badge)
-- [Example Readmes](#example-readmes)
-- [Related Efforts](#related-efforts)
-- [Maintainers](#maintainers)
-- [Contributing](#contributing)
-- [License](#license)
+- [game](#game)
+	- [Display](#Display)
+	- [MainMenu](src/game/MainMenu.java)
+- [map](src/map)
+	- [Map](src/map/Map.java)
+	- [Cell](src/map/Cell.java)
+- [player](src/player)
+	- [Player](src/player/Player.java)
+- [monster](src/monster)
+	- [Monster](src/monster/Monster.java)
+- [bomb](src/bomb)
+	- [Bomb](src/bomb/Bomb.java)
+- [items](src/items)
+	- [Item](src/items/Item.java)
+	- [VelocityUp](src/items/VelocityUp.java)
 
-## Background
+---
+### game
+负责前端界面的包，
 
+#### Display
+[Display](src/game/Display.java)
 Standard Readme started with the issue originally posed by [@maxogden](https://github.com/maxogden) over at [feross/standard](https://github.com/feross/standard) in [this issue](https://github.com/feross/standard/issues/141), about whether or not a tool to standardize readmes would be useful. A lot of that discussion ended up in [zcei's standard-readme](https://github.com/zcei/standard-readme/issues/1) repository. While working on maintaining the [IPFS](https://github.com/ipfs) repositories, I needed a way to standardize Readmes across that organization. This specification started as a result of that.
 
 > Your documentation is complete when someone can use your module without ever

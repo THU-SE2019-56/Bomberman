@@ -1,4 +1,4 @@
-# Bomberman
+# Q版泡泡堂
 A Java implementation of the game Bomberman
 
 > Standard Readme Style

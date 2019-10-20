@@ -17,14 +17,14 @@
 	- [Display](#Display)
 	- [MainMenu](#MainMenu)
 - [map](#map)
-	- [Map](#Map)
+	- [Map](#Map-1)
 	- [Cell](#Cell)
 - [player](#player)
-	- [Player](#Player)
+	- [Player](#Player-1)
 - [monster](#monster)
-	- [Monster](#Monster)
+	- [Monster](#Monster-1)
 - [bomb](#bomb)
-	- [Bomb](#Bomb)
+	- [Bomb](#Bomb-1)
 - [items](#items)
 	- [Item](#Item)
 	- [VelocityUp](#VelocityUp)
@@ -97,6 +97,7 @@
 负责增加移速道具的[类](src/items/VelocityUp.java)。  
 一个示例，即被拾取了以后调用Player对象的setVelocity()方法来改变速度，消除自身，通过继承父类方法实现。
 
+---
 ## 任务分工
 > 大家每次向github提交代码的时候，欢迎修改此项以描述自己所做的工作
 

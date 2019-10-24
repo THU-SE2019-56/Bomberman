@@ -71,15 +71,9 @@ public class Player implements AWTEventListener, GameConstants {
 	}
 
 	/**
-	 * Use this method to reset the direction of the player.
-	 * 
-	 * @param d Direction of the player.
-	 */
-
-	/**
 	 * Get the direction of the players.
 	 * 
-	 * @return Return a double value.
+	 * @return Return an integer value.
 	 */
 	public int getDirection() {
 		return this.direction;
@@ -88,7 +82,7 @@ public class Player implements AWTEventListener, GameConstants {
 	/**
 	 * Get the image direction of the players.
 	 * 
-	 * @return Return a double value.
+	 * @return Return an integer value.
 	 */
 	public int getImageDirection() {
 		return this.imageDirection;
@@ -143,9 +137,7 @@ public class Player implements AWTEventListener, GameConstants {
 
 	/**
 	 * <p>
-	 * Judge the direction of the player and change the images and the coordinates.
-	 * <p>
-	 * This method aims to eliminate the key delay of the computer itself.
+	 * Judge the direction of the player and change the coordinates.
 	 */
 	public void playerMove() {
 		switch (this.getDirection()) {
@@ -167,12 +159,7 @@ public class Player implements AWTEventListener, GameConstants {
 	}
 
 	/**
-	 * <p>
 	 * Respond to the keyboard events.
-	 * <p>
-	 * I believe this methods is more convenient and effective than "KeyListener",
-	 * since it is easier to find the focus.
-	 * 
 	 */
 	@Override
 	public void eventDispatched(AWTEvent event) {

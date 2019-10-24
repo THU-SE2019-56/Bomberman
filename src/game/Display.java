@@ -21,7 +21,7 @@ import monster.Monster;
  * classes.
  * <p>
  * v0.2 <br>
- * Draw the player and achieve simple visual motion effects.
+ * Draw the player and achieve simple visual animation effects.
  * 
  * @author Chengsong Xiong, Wang
  * @version 0.2

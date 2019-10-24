@@ -4,8 +4,14 @@ import java.awt.AWTEvent;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import player.Player;
+import map.Map;
+import monster.Monster;
 
 /**
  * v0.1 <br>
@@ -23,12 +29,11 @@ import player.Player;
 public class Display extends JPanel implements ActionListener, GameConstants {
 	private Timer timer;
 	private final int REFRESH = 30; // Refresh(repaint) every 30 milliseconds
+	private Map map;
 	private Player player;
+	private Monster[] monsters = new Monster[MONSTER_NUMBER];
 
-	private ImageIcon characterDownImage;
-	private ImageIcon characterUpImage;
-	private ImageIcon characterRightImage;
-	private ImageIcon characterLeftImage;
+	BufferedImage characterImage[] = new BufferedImage[4];
 
 	/**
 	 * 
@@ -43,13 +48,22 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 	 * Initialize the Display class.
 	 */
 	public Display() {
+		try {
+			loadImage();
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+
 		timer = new Timer(REFRESH, this);
 		timer.start();
 
-		initializeMap();
-		loadImage();
+		// initializeMap(); May delete.
 
+		map = new Map();
 		player = new Player();
+		for (int i = 0; i < MONSTER_NUMBER; i++) {
+			monsters[i] = new Monster(1, 1);
+		}
 
 		this.setFocusable(true);
 		this.getToolkit().addAWTEventListener(player, AWTEvent.KEY_EVENT_MASK);// Initialize the AWTEventListener.
@@ -61,7 +75,7 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 	public static void createPanel() {
 		JFrame f = new JFrame();
 		Display jp = new Display();
-		f.setTitle("POP Tag");
+		f.setTitle("Bomberman");
 		f.setBounds(0, 0, 1000, 1000);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
@@ -74,7 +88,6 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		player.playerMove();// Change the location of the player
 		paintPlayer(g);
 	}
 
@@ -82,20 +95,15 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 	 * Paint the image of the player.
 	 */
 	public void paintPlayer(Graphics g) {
-		switch (player.getImageDirection()) {
-		case DIRECTION_UP:
-			g.drawImage(characterUpImage.getImage(), player.getX(), player.getY(), 100, 100, this);
-			break;
-		case DIRECTION_DOWN:
-			g.drawImage(characterDownImage.getImage(), player.getX(), player.getY(), 100, 100, this);
-			break;
-		case DIRECTION_RIGHT:
-			g.drawImage(characterRightImage.getImage(), player.getX(), player.getY(), 100, 100, this);
-			break;
-		case DIRECTION_LEFT:
-			g.drawImage(characterLeftImage.getImage(), player.getX(), player.getY(), 100, 100, this);
-			break;
-		}
+		g.drawImage(characterImage[player.getImageDirection()], player.getX(), player.getY(), 100, 100, this);
+	}
+
+	public void paintMap(Graphics g) {
+
+	}
+
+	public void paintMonsters(Graphics g) {
+
 	}
 
 	@Override
@@ -111,6 +119,7 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		 * alive. If new bombs are planted? Have bombs exploded? Eliminate those walls
 		 * and monsters that have been boomed.
 		 */
+		player.playerMove();// Change the location of the player
 		repaint();
 	}
 
@@ -120,17 +129,20 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 	 * Perhaps using paintComponent(Graphics g) will be a more appropriate method？
 	 * ---Comment from Chengsong Xiong <br>
 	 * What I mean is, for example, setting the player's initial place or velocity
-	 * here, not painting. ---Comment from Wang
+	 * here, not painting. ---Comment from Wang <br>
+	 * Another thought, we should do all these in the construction methods. Maybe
+	 * this method should be deleted. ---Comment from Wang
 	 */
 	public void initializeMap() {
 		// TODO
 	}
 
-	public void loadImage() {
+	public void loadImage() throws Exception {
 		// TODO Load all the images here
-		characterDownImage = new ImageIcon("image/characterFront.png");
-		characterUpImage = new ImageIcon("image/characterBack.png");
-		characterRightImage = new ImageIcon("image/characterRight.png");
-		characterLeftImage = new ImageIcon("image/characterLeft.png");
+
+		characterImage[DIRECTION_UP] = ImageIO.read(new File("image/character/characterBack.png"));
+		characterImage[DIRECTION_RIGHT] = ImageIO.read(new File("image/character/characterRight.png"));
+		characterImage[DIRECTION_DOWN] = ImageIO.read(new File("image/character/characterFront.png"));
+		characterImage[DIRECTION_LEFT] = ImageIO.read(new File("image/character/characterLeft.png"));
 	}
 }

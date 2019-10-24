@@ -70,6 +70,11 @@ public class Player implements AWTEventListener, GameConstants {
 		}
 	}
 
+	/**
+	 * Use this method to reset the direction of the player.
+	 * 
+	 * @param d Direction of the player.
+	 */
 
 	/**
 	 * Get the direction of the players.

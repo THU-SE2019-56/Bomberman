@@ -14,9 +14,9 @@ public class Monster implements GameConstants{
 	public Monster() {
 		
 	}
-	public Monster(int X,int Y) {
-		this.x=X;
-		this.y=Y;
+	public Monster(int X, int Y) {
+		this.x = X;
+		this.y = Y;
 	}
 	// TODO Complete all the set, get methods
 	public void setVelocity(int v) {

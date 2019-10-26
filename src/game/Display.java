@@ -86,9 +86,11 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 	/**
 	 * All painting methods are invoked in "paintComponent(Graphics g)".
 	 */
+	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		paintPlayer(g);
+		paintMonsters(g);
 	}
 
 	/**
@@ -103,14 +105,18 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 	}
 
 	public void paintMonsters(Graphics g) {
-
+		for (Monster m: monsters) {
+			m.refresh();
+			g.drawImage(characterImage[m.getDirection()],
+					m.getX(), m.getY(), 100, 100, this);
+		}
 	}
 
-	@Override
 	/**
 	 * Repaint the whole component. All the logical methods necessary should have
 	 * been implemented in other classes.
 	 */
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		/*
 		 * TODO Every 30 milliseconds, do (at least) the following things: Move the

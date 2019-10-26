@@ -10,14 +10,67 @@ public class Monster implements GameConstants{
 	private int direction;
 	private int x;
 	private int y;
+	private int cnt;        // update direction only if cnt==0
 
 	public Monster() {
 		
 	}
+
 	public Monster(int X, int Y) {
 		this.x = X;
 		this.y = Y;
+		this.cnt = 50;
+		this.velocity = 20;
 	}
+
+    /**
+     * Get direction of the monster.
+     *
+     * @return Return an integer value.
+     */
+    public int getDirection() {
+//        return this.direction;
+        return 0;
+    }
+
+
+    /**
+     * Update monster's properties
+     */
+    public void refresh() {
+        // update parameters
+        switch (this.direction) {
+            case DIRECTION_UP:
+                this.y -= this.velocity;
+                if (this.y < 0) this.y = 0;
+                break;
+            case DIRECTION_DOWN:
+                this.y += this.velocity;
+//                if (this.y > 0) this.y = 0;
+                break;
+            case DIRECTION_LEFT:
+                this.x -= this.velocity;
+                if (this.x < 0) this.x = 0;
+                break;
+            case DIRECTION_RIGHT:
+                this.x += this.velocity;
+//                if (this.y < 0) this.y = 0;
+                break;
+        }
+
+        if (cnt==0) {
+            this.direction = (int)(4*Math.random());
+        }
+        else {
+            this.cnt -= 1;
+        }
+//        System.out.println(x);
+//        System.out.println(y);
+//        System.out.println(direction);
+//        System.out.println(cnt);
+}
+
+
 	// TODO Complete all the set, get methods
 	public void setVelocity(int v) {
 		this.velocity = v;

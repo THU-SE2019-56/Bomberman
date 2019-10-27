@@ -110,7 +110,7 @@
 - 陶然：前端，负责[game](#game)包
 - 杨韫加：后端，负责[bomb](#bomb)包
 - 詹昊哲：后端，负责[items](#items)包
-- 熊诚淞：后端，负责[player](#player)包
+- 熊诚凇：后端，负责[player](#player)包
 - 陈航：后端，负责[monster](#monster)包
 - 李柏瑶：前端，负责[game](#game)包
 - 王汤军：后端，负责接口交接

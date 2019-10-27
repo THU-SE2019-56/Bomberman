@@ -15,5 +15,7 @@ abstract public class Item{
 		
 	}
 
-	abstract public void getItem(Player player);
+	public void getItem(Player player) {
+		player.setVelocity(20);
+	};
 }

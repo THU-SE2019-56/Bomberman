@@ -17,6 +17,6 @@ public class VelocityUp extends Item {
 	public void getItem(Player player) {
 		// Eliminate itself(may all be written in the Item superclass)
 		int v = player.getVelocity();
-		player.setVelocity(v + 1);
+		player.setVelocity(v + 20);
 	}
 }

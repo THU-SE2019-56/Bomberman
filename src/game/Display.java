@@ -2,6 +2,7 @@ package game;
 
 import java.awt.AWTEvent;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -9,6 +10,9 @@ import java.io.File;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import items.Item;
+
 import player.Player;
 import map.Map;
 import monster.Monster;
@@ -32,12 +36,14 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 	private Map map;
 	private Player player;
 	private Monster[] monsters = new Monster[MONSTER_NUMBER];
+	private Item item;
 
 	BufferedImage characterImage[] = new BufferedImage[4];
+	BufferedImage itemImage[] = new BufferedImage[3];
 
 	/**
 	 * 
-	 * The method “public static void main(String args[])” is achieved here to test
+	 * The method “public static void main(String args[]) 1�7 is achieved here to test
 	 * the effects of the Player class. Remove it when you don't need it.
 	 */
 	public static void main(String args[]) {
@@ -61,12 +67,36 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 
 		map = new Map();
 		player = new Player();
+		item = new Item();
 		for (int i = 0; i < MONSTER_NUMBER; i++) {
 			monsters[i] = new Monster(1, 1);
 		}
 
 		this.setFocusable(true);
 		this.getToolkit().addAWTEventListener(player, AWTEvent.KEY_EVENT_MASK);// Initialize the AWTEventListener.
+	}
+	/**
+	 * to detect if the player and items are collided
+	 * @return
+	 */
+	public boolean itemCollisionDetection() {
+		int playerX = player.getX();
+		int playerY = player.getY();
+		int itemX = item.getX();
+		int itemY = item.getY();
+		int itemSize = 60;
+		
+		Rectangle playerRectangle = new Rectangle(playerX, playerY, 100, 100);
+		Rectangle itemRectangle = new Rectangle(itemX, itemY, 60, 60);
+		
+		if(playerRectangle.intersects(itemRectangle)) {
+			item.setIsAcquired(true);
+			item.getItem(player);
+			return item.getIsAcquired();
+		}
+		else return item.getIsAcquired();
+		
+
 	}
 
 	/**
@@ -91,6 +121,10 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		super.paintComponent(g);
 		paintPlayer(g);
 		paintMonsters(g);
+		if(!itemCollisionDetection()) {
+			paintItem(g);
+		}
+
 	}
 
 	/**
@@ -98,6 +132,10 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 	 */
 	public void paintPlayer(Graphics g) {
 		g.drawImage(characterImage[player.getImageDirection()], player.getX(), player.getY(), 100, 100, this);
+	}
+	
+	public void paintItem(Graphics g) {
+		g.drawImage(itemImage[item.getItemID()], item.getX(), item.getY(), 60, 60, this);
 	}
 
 	public void paintMap(Graphics g) {
@@ -132,7 +170,7 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 	/**
 	 * This method should be invoked in the constructor to initialize. <br>
 	 * Consider all components including player, walls, monsters, etc. <br>
-	 * Perhaps using paintComponent(Graphics g) will be a more appropriate method？
+	 * Perhaps using paintComponent(Graphics g) will be a more appropriate method＄1�7
 	 * ---Comment from Chengsong Xiong <br>
 	 * What I mean is, for example, setting the player's initial place or velocity
 	 * here, not painting. ---Comment from Wang <br>
@@ -150,5 +188,7 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		characterImage[DIRECTION_RIGHT] = ImageIO.read(new File("image/character/characterRight.png"));
 		characterImage[DIRECTION_DOWN] = ImageIO.read(new File("image/character/characterFront.png"));
 		characterImage[DIRECTION_LEFT] = ImageIO.read(new File("image/character/characterLeft.png"));
+		itemImage[VELOCITY_UP] = ImageIO.read(new File("image/Item/velocity.png"));
+
 	}
 }

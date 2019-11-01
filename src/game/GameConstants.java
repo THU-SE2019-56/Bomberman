@@ -9,4 +9,8 @@ public interface GameConstants {
 	int DIRECTION_LEFT = 3;
 
 	int MONSTER_NUMBER = 5;
+	
+	int BOMB_UP = 0;
+	int VELOCITY_UP = 1;
+	int POWER_UP = 2;
 }

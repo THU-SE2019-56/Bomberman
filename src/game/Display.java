@@ -1,8 +1,6 @@
 package game;
 
-import java.awt.AWTEvent;
-import java.awt.Graphics;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -43,7 +41,7 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 
 	/**
 	 * 
-	 * The method “public static void main(String args[]) 1�7 is achieved here to test
+	 * The method “public static void main(String args[]) 1�7 is achieved here to test
 	 * the effects of the Player class. Remove it when you don't need it.
 	 */
 	public static void main(String args[]) {
@@ -65,7 +63,7 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 
 		// initializeMap(); May delete.
 
-		map = new Map();
+//		map = new Map();
 		player = new Player();
 		item = new Item();
 		for (int i = 0; i < MONSTER_NUMBER; i++) {
@@ -124,7 +122,7 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		if(!itemCollisionDetection()) {
 			paintItem(g);
 		}
-
+		Toolkit.getDefaultToolkit().sync();
 	}
 
 	/**
@@ -170,7 +168,7 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 	/**
 	 * This method should be invoked in the constructor to initialize. <br>
 	 * Consider all components including player, walls, monsters, etc. <br>
-	 * Perhaps using paintComponent(Graphics g) will be a more appropriate method＄1�7
+	 * Perhaps using paintComponent(Graphics g) will be a more appropriate method＄1�7
 	 * ---Comment from Chengsong Xiong <br>
 	 * What I mean is, for example, setting the player's initial place or velocity
 	 * here, not painting. ---Comment from Wang <br>

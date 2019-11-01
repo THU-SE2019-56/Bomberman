@@ -38,6 +38,7 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 
 	BufferedImage characterImage[] = new BufferedImage[4];
 	BufferedImage itemImage[] = new BufferedImage[3];
+	BufferedImage monsterImage[] = new BufferedImage[4];
 
 	/**
 	 * 
@@ -67,12 +68,13 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		player = new Player();
 		item = new Item();
 		for (int i = 0; i < MONSTER_NUMBER; i++) {
-			monsters[i] = new Monster(1, 1);
+			monsters[i] = new Monster(1000, 1000);
 		}
 
 		this.setFocusable(true);
 		this.getToolkit().addAWTEventListener(player, AWTEvent.KEY_EVENT_MASK);// Initialize the AWTEventListener.
 	}
+
 	/**
 	 * to detect if the player and items are collided
 	 * @return
@@ -93,7 +95,7 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 			return item.getIsAcquired();
 		}
 		else return item.getIsAcquired();
-		
+
 
 	}
 
@@ -104,7 +106,7 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		JFrame f = new JFrame();
 		Display jp = new Display();
 		f.setTitle("Bomberman");
-		f.setBounds(0, 0, 1000, 1000);
+		f.setBounds(0, 0, 900, 900);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
 		jp.setVisible(true);
@@ -142,9 +144,10 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 
 	public void paintMonsters(Graphics g) {
 		for (Monster m: monsters) {
-			m.refresh();
-			g.drawImage(characterImage[m.getDirection()],
-					m.getX(), m.getY(), 100, 100, this);
+			if (m.isAlive()) {
+				g.drawImage(monsterImage[m.getDirection()],
+						m.getX(), m.getY(),  m.getSizeX(), m.getSizeY(), this);
+			}
 		}
 	}
 
@@ -162,6 +165,12 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		 * and monsters that have been boomed.
 		 */
 		player.playerMove();// Change the location of the player
+		for (Monster m: monsters) {	// Change the location of monsters
+			if (m.isAlive()) {
+				m.monsterMove(player, map);
+				m.refresh();
+			}
+		}
 		repaint();
 	}
 
@@ -187,6 +196,9 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		characterImage[DIRECTION_DOWN] = ImageIO.read(new File("image/character/characterFront.png"));
 		characterImage[DIRECTION_LEFT] = ImageIO.read(new File("image/character/characterLeft.png"));
 		itemImage[VELOCITY_UP] = ImageIO.read(new File("image/Item/velocity.png"));
-
+		monsterImage[DIRECTION_UP] = ImageIO.read(new File("image/monster/up.png"));
+		monsterImage[DIRECTION_DOWN] = ImageIO.read(new File("image/monster/down.png"));
+		monsterImage[DIRECTION_RIGHT] = ImageIO.read(new File("image/monster/right.png"));
+		monsterImage[DIRECTION_LEFT] = ImageIO.read(new File("image/monster/left.png"));
 	}
 }

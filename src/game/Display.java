@@ -38,6 +38,7 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 	private Player player;
 	private Monster[] monsters = new Monster[MONSTER_NUMBER];
 	private Item item;
+	
 
 	BufferedImage characterImage[] = new BufferedImage[4];
 	BufferedImage itemImage[] = new BufferedImage[3];
@@ -124,10 +125,15 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 
 		paintMap(g);
 		paintPlayer(g);
-		//paintMonsters(g);
-//		if(!itemCollisionDetection()) {
-//			paintItem(g);
-//		}
+		
+//Temporarily commented out for testing.   
+		
+//		  paintMonsters(g); 
+//		  if(!itemCollisionDetection()) 
+//		  { 
+//			  paintItem(g); 
+//		  }
+		 
 
 	}
 

@@ -21,7 +21,7 @@ import map.Cell;
  */
 
 public class Player implements AWTEventListener, GameConstants {
-	private int velocity;
+	private int velocity; //The velocity should be divisible by 60
 	private int bombNumber;
 	private int bombPower;
 	private boolean isImmune;
@@ -30,18 +30,20 @@ public class Player implements AWTEventListener, GameConstants {
 	private int imageDirection;// This variable is for deciding the image of DIRECTION_STOP 
 	private int x;
 	private int y;
+
 	
 	private Map playerMap; //Relate the player with the map
 	private byte mapX;
 	private byte mapY;
-	private byte mapVelocity=1;
+
+	
 
 	public Player(Map newmap) {
 		this.direction=DIRECTION_STOP;
 		this.imageDirection=DIRECTION_DOWN;
 		this.x=0;
 		this.y=0;
-		this.velocity=20;
+		this.velocity= 5;
 		this.playerMap = newmap;
 	}
 
@@ -52,6 +54,7 @@ public class Player implements AWTEventListener, GameConstants {
 	 */
 	public void setVelocity(int v) {
 		this.velocity = v;
+	
 	}
 
 	/**
@@ -125,7 +128,6 @@ public class Player implements AWTEventListener, GameConstants {
 	}
 	
 	
-	
 	public void setMapX(byte mapx) {
 		this.mapX = mapx;
 	}
@@ -171,37 +173,80 @@ public class Player implements AWTEventListener, GameConstants {
 	/**
 	 * <p>
 	 * Judge the direction of the player and change the coordinates.
-	 * The mapX and mapY are used to show the cell of the map that player are in.
+	 * 
 	 */
 	public void playerMove() {
+	
+		double mapx = (double)(this.x)/(double)(60);
+		double mapy = (double)(this.y)/(double)(60);
+		Cell playerNextCell;//The next cell which the player is going to step on
+		
+		if (playerInMap()) //Move the player only when it's in the range of the map
+		{
+			
 		switch (this.getDirection()) {
 		case DIRECTION_UP:
-			//this.setY(this.getY() - this.getVelocity());
-			if (playerInMap()) {
-				this.setNewLocation(this, this.playerMap, this.mapX, (byte)(this.mapY-this.mapVelocity));
-			}
+			
+				playerNextCell = this.playerMap.map((byte)(Math.ceil(mapy)-1),(byte)(Math.ceil(mapx)));
+				//Use math.ceil to round up
+				if (playerNextCell.isAvailable()) //If the cell which the player is going to step on is available
+				{	
+					this.setY(this.getY() - this.getVelocity());	
+					if (this.getX()%60==0&&this.getY()%60==0) //Stop only when the x and y of the player are  multiples of 60.
+					{
+						this.setDirection(DIRECTION_STOP);
+						this.setLocationOnMap(this, this.playerMap, (byte)(this.x/60), (byte)(this.y/60));//Update mapX and mapY
+					}
+				}
 			break;
 		case DIRECTION_DOWN:
-			//this.setY(this.getY() + this.getVelocity());
-			if (playerInMap()) {
-			this.setNewLocation(this, this.playerMap, this.mapX, (byte) (this.mapY+this.mapVelocity));
-			}
+			
+				playerNextCell = this.playerMap.map((byte)(Math.floor(mapy)+1),(byte)(Math.floor(mapx)));
+				if (playerNextCell.isAvailable()) {
+					this.setY(this.getY() + this.getVelocity());
+			
+					if (this.getX()%60==0&&this.getY()%60==0)
+					{
+						this.setDirection(DIRECTION_STOP);
+						this.setLocationOnMap(this, this.playerMap, (byte)(this.x/60), (byte) (this.y/60));
+					}
+				}
 			break;
+			
 		case DIRECTION_LEFT:
-			//this.setX(this.getX() - this.getVelocity());
-			if (playerInMap()) {
-			this.setNewLocation(this, this.playerMap, (byte)(this.mapX-this.mapVelocity), this.mapY);
-			}
+		
+				playerNextCell = this.playerMap.map((byte)(Math.ceil(mapy)),(byte)(Math.ceil(mapx)-1));
+				
+				if (playerNextCell.isAvailable()) {
+					this.setX(this.getX() - this.getVelocity());
+	
+					if (this.getX()%60==0&&this.getY()%60==0)
+					{
+						this.setDirection(DIRECTION_STOP);
+						this.setLocationOnMap(this, this.playerMap, (byte)(this.x/60), (byte) (this.y/60));
+					}
+				}
+
 			break;
 		case DIRECTION_RIGHT:
-			//this.setX(this.getX() + this.getVelocity());
-			if (playerInMap()) {
-			this.setNewLocation(this, this.playerMap, (byte)(this.mapX+this.mapVelocity), this.mapY);
-			}
+		
+				playerNextCell = this.playerMap.map((byte) (Math.floor(mapy)),(byte)(Math.floor(mapx)+1));
+				if (playerNextCell.isAvailable()) {
+					this.setX(this.getX() + this.getVelocity());
+	
+					if (this.getX()%60==0&&this.getY()%60==0)
+					{
+						this.setDirection(DIRECTION_STOP);
+						this.setLocationOnMap(this, this.playerMap, (byte)(this.x/60), (byte) (this.y/60));
+					}
+				}
 			break;
 		case DIRECTION_STOP:
 			break;
 		}
+
+	}
+		
 	}
 
 	/**
@@ -209,11 +254,20 @@ public class Player implements AWTEventListener, GameConstants {
 	 */
 	@Override
 	public void eventDispatched(AWTEvent event) {
+		
+		
+		/*
+		 * Enable to set the direction of the player only when the x and y of the player are multiples of 60. As
+		 * a result, the player will keep moving when the x and y of the player are not multiples of 60.
+		 */
+		if (this.getX()%60==0&&this.getY()%60==0) {
+		
 		/*
 		 * When the keys are pressed, set the direction of the player.
 		 */
 		if (event.getID() == KeyEvent.KEY_PRESSED) {
 			KeyEvent e = (KeyEvent) event;
+		
 			if (e.getKeyCode() == KeyEvent.VK_UP) {
 				this.setDirection(DIRECTION_UP);
 
@@ -228,35 +282,35 @@ public class Player implements AWTEventListener, GameConstants {
 			if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 				this.setDirection(DIRECTION_RIGHT);
 			}
-		}
+			}
 		/*
 		 * When the keys are released, set the direction of the player to DIRECTION_STOP.
 		 */
 		if (event.getID() == KeyEvent.KEY_RELEASED) {
 			this.setDirection(DIRECTION_STOP);
 		}
+		
+		}
 	}
 	/**
-	 * Use mapinfo to decide the player's location after moving. Can not receive any
+	 * Use map to decide the player's location after moving. Can not receive any
 	 * command before it moves completely into a new integral cell.
+	 * @throws InterruptedException 
 	 */
-	public void setNewLocation(Player player, Map mi, byte mapX,byte mapY) {
-		 //TODO Move the player, consider walls, bombs. Use setLocation()		
-		int playerRealX = (int)(mapX*60);
-		int playerRealY = (int)(mapY*60);
-		
+	public void setLocationOnMap(Player player, Map mi, byte mapX,byte mapY)  {
+		 //TODO Move the player, consider walls, bombs. Use setLocation()				
 		
 		Cell playerCell = mi.map(mapY, mapX);
-		
+
 			if (playerCell.isAvailable()==true) {
 				
-				player.setLocation(playerRealX, playerRealY);
 				player.setMapX(mapX);
 				player.setMapY(mapY);
 			}
 	
 	}
-
+	
+	
 //	/**
 //	 * Update mapinfo BOMB_INFO
 //	 */

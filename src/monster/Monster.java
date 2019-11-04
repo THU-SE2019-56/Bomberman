@@ -19,11 +19,11 @@ public class Monster implements GameConstants {
 	private int x;
 	private int y;
 	private int cnt;        // update direction only if cnt >= CNT_MAX
-	private int sizeX;
-	private int sizeY;
+//	private int sizeX;
+//	private int sizeY;
 	private static final int CNT_MAX = 10;
-	private static final int WIDTH = 1000;
-	private static final int HEIGHT = 1000;
+//	private static final int WIDTH = 1000;
+//	private static final int HEIGHT = 1000;
 
 
 	public Monster() {
@@ -33,8 +33,8 @@ public class Monster implements GameConstants {
 	public Monster(int X, int Y) {
 		this.x = X;
 		this.y = Y;
-		this.sizeX = 100;
-		this.sizeY = 100;
+//		this.sizeX = 100;
+//		this.sizeY = 100;
 		this.cnt = 0;
 		this.isAlive = true;
 		this.velocity = 10 + (int)(10*Math.random());
@@ -50,9 +50,9 @@ public class Monster implements GameConstants {
 			if (this.cnt > CNT_MAX) {
 				this.direction = (int)(4*Math.random());
 				if (this.x==0) this.direction = DIRECTION_RIGHT;
-				if (this.x==WIDTH - this.sizeX) this.direction = DIRECTION_LEFT;
+				if (this.x==SCREEN_WIDTH - MONSTER_WIDTH) this.direction = DIRECTION_LEFT;
 				if (this.y==0) this.direction = DIRECTION_DOWN;
-				if (this.y==HEIGHT - this.sizeY) this.direction = DIRECTION_UP;
+				if (this.y==SCREEN_HEIGHT - MONSTER_HEIGHT) this.direction = DIRECTION_UP;
 				this.cnt = 0;
 			}
 			else {
@@ -63,14 +63,6 @@ public class Monster implements GameConstants {
 
 	public boolean isAlive() {
     	return this.isAlive;
-	}
-
-	public int getSizeX() {
-		return this.sizeX;
-	}
-
-	public int getSizeY() {
-		return this.sizeY;
 	}
 
 	public int getDirection() {
@@ -113,13 +105,13 @@ public class Monster implements GameConstants {
 				this.y = Math.max(this.y - this.velocity, 0);
 				break;
 			case DIRECTION_DOWN:
-				this.y = Math.min(this.y + this.velocity, HEIGHT - this.sizeY);
+				this.y = Math.min(this.y + this.velocity, SCREEN_HEIGHT - MONSTER_HEIGHT);
 				break;
 			case DIRECTION_LEFT:
 				this.x = Math.max(this.x - this.velocity, 0);
 				break;
 			case DIRECTION_RIGHT:
-				this.x = Math.min(this.x + this.velocity, WIDTH - this.sizeX);
+				this.x = Math.min(this.x + this.velocity, SCREEN_WIDTH - MONSTER_WIDTH);
 				break;
 		}
 		if (isCollided(player)) eliminate();
@@ -130,14 +122,14 @@ public class Monster implements GameConstants {
 	 */
 	private boolean isCollided(Player player) {
 		int x1 = Math.max(player.getX(), this.x);
-		int x2 = Math.min(player.getX() + 100, this.x + this.sizeX);
+		int x2 = Math.min(player.getX() + 100, this.x + MONSTER_WIDTH);
 		int y1 = Math.max(player.getY(), this.y);
-		int y2 = Math.min(player.getY() + 100, this.y + this.sizeY);
+		int y2 = Math.min(player.getY() + 100, this.y + MONSTER_HEIGHT);
 		return (x2 > x1) && (y2 > y1);
 	}
 
 	/**
-	 * Remove itself from the map when killed.
+	 * Remove itself from the map after killed.
 	 */
 	public void eliminate() {
 		this.isAlive = false;

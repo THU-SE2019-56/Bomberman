@@ -146,7 +146,7 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		for (Monster m: monsters) {
 			if (m.isAlive()) {
 				g.drawImage(monsterImage[m.getDirection()],
-						m.getX(), m.getY(),  m.getSizeX(), m.getSizeY(), this);
+						m.getX(), m.getY(), MONSTER_WIDTH, MONSTER_HEIGHT, this);
 			}
 		}
 	}

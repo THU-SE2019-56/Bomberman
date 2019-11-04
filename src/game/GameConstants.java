@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package game;
 
 public interface GameConstants {	
@@ -8,6 +7,10 @@ public interface GameConstants {
 	int DIRECTION_RIGHT = 1;
 	int DIRECTION_DOWN = 2;
 	int DIRECTION_LEFT = 3;
+
+	// Player constants
+	int PLAYER_WIDTH = 60;
+	int PLAYER_HEIGHT = 60;
 
 	// Monster constants
 	int MONSTER_NUMBER = 5;
@@ -26,25 +29,8 @@ public interface GameConstants {
 	int CELL_NUM_Y = 16;
 	int SCREEN_WIDTH = CELL_WIDTH * CELL_NUM_X;
 	int SCREEN_HEIGHT = CELL_HEIGHT * CELL_NUM_Y;
-}
-=======
-package game;
 
-public interface GameConstants {	
-	// DirectionConstants
-	int DIRECTION_STOP = -1;
-	int DIRECTION_UP = 0;
-	int DIRECTION_RIGHT = 1;
-	int DIRECTION_DOWN = 2;
-	int DIRECTION_LEFT = 3;
-
-	int MONSTER_NUMBER = 5;
-	
-	int BOMB_UP = 0;
-	int VELOCITY_UP = 1;
-	int POWER_UP = 2;
-	
+	// for map
 	int GROUND = 0;
 	int WALL= 1;
 }
->>>>>>> 21e322865eadfd5ca6f1ad369ab2474bffe5add4

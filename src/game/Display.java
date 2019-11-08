@@ -36,16 +36,17 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 	private Player player;
 	private Monster[] monsters = new Monster[MONSTER_NUMBER];
 	private Item item;
-
+	private boolean gameOver = false;
 
     BufferedImage characterImage[] = new BufferedImage[4];
     BufferedImage itemImage[] = new BufferedImage[3];
     BufferedImage monsterImage[] = new BufferedImage[4];
 	BufferedImage mapImage[] = new BufferedImage[2];
+	BufferedImage gameImage[] = new BufferedImage[3];
 
     /**
      *
-     * The method “public static void main(String args[]) 1�7 is achieved here to test
+     * The method “public static void main(String args[]) 17 is achieved here to test
      * the effects of the Player class. Remove it when you don't need it.
      */
     public static void main(String args[]) {
@@ -93,8 +94,10 @@ public class Display extends JPanel implements ActionListener, GameConstants {
         Rectangle itemRectangle = new Rectangle(itemX, itemY, 60, 60);
 
         if(playerRectangle.intersects(itemRectangle)) {
-            item.setIsAcquired(true);
+      
             item.getItem(player);
+            
+            item.setIsAcquired(true);
             return item.getIsAcquired();
         }
         else return item.getIsAcquired();
@@ -113,12 +116,18 @@ public class Display extends JPanel implements ActionListener, GameConstants {
         f.pack();
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setResizable(false);
-        f.setLocationRelativeTo(null);  // set location to screen center
+        //f.setLocationRelativeTo(null);  // set location to screen center  
+        //--this method will lead to the failure of the game, and I don't know why..... Perhaps owning to the macOS system
 		f.setVisible(true);
 		jp.setVisible(true);
 		f.add(jp);
 	}
 
+	public void endGame(Graphics g) {
+		g.drawImage(gameImage[GAMEOVER], 230, 230, 500, 300, this);
+		this.gameOver = true;
+	}
+	
     /**
      * All painting methods are invoked in "paintComponent(Graphics g)".
      */
@@ -131,6 +140,10 @@ public class Display extends JPanel implements ActionListener, GameConstants {
         if(!itemCollisionDetection()) {
             paintItem(g);
         }
+        if (player.getHP()==0) {
+        	endGame(g);
+        
+        }
         Toolkit.getDefaultToolkit().sync();
     }
 
@@ -139,6 +152,10 @@ public class Display extends JPanel implements ActionListener, GameConstants {
      */
     public void paintPlayer(Graphics g) {
         g.drawImage(characterImage[player.getImageDirection()], player.getX(), player.getY(), PLAYER_WIDTH, PLAYER_HEIGHT, this);
+        g.setColor(Color.BLUE);
+        g.drawRect(player.getX(), player.getY()-15, 60, 10);
+        g.setColor(Color.RED);
+        g.fillRect(player.getX(), player.getY()-15, player.getHP(), 10);
     }
 
     public void paintItem(Graphics g) {
@@ -194,7 +211,10 @@ public class Display extends JPanel implements ActionListener, GameConstants {
                 m.refresh();
             }
         }
-        repaint();
+        
+        if(this.gameOver == false) {
+            repaint();
+        }
     }
 
     /**
@@ -225,5 +245,6 @@ public class Display extends JPanel implements ActionListener, GameConstants {
         monsterImage[DIRECTION_LEFT] = ImageIO.read(new File("image/monster/left.png"));
 		mapImage[GROUND] =ImageIO.read(new File("image/maps/ground.png"));
 		mapImage[WALL] = ImageIO.read(new File("image/maps/wall.png"));
+		gameImage[GAMEOVER] = ImageIO.read(new File("image/game/gameover.jpg"));
     }
 }

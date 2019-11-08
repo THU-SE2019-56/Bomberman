@@ -35,6 +35,7 @@ public class Player implements AWTEventListener, GameConstants {
 	private Map playerMap; //Relate the player with the map
 	private byte mapX;
 	private byte mapY;
+	private int playerHP = 60;
 
 	
 
@@ -47,7 +48,19 @@ public class Player implements AWTEventListener, GameConstants {
 		this.playerMap = newmap;
 	}
 
-    // TODO Complete all the set, get methods
+	/**
+	 * Set the HP of the player
+	 */
+	public void setHP(int hp) {
+		this.playerHP = hp;
+	}
+	
+	/**
+	 * Get the HP of the player
+	 */
+	public int getHP() {
+		return this.playerHP;
+	}
 
     /**
      * Use setVelocity() to set the velocity of the player.

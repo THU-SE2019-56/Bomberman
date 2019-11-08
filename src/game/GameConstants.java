@@ -33,4 +33,6 @@ public interface GameConstants {
 	// for map
 	int GROUND = 0;
 	int WALL= 1;
+	//for game
+	int GAMEOVER = 0;
 }

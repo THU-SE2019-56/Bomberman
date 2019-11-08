@@ -71,7 +71,7 @@ public class Display extends JPanel implements ActionListener, GameConstants {
         player = new Player(map);
         item = new Item();
         for (int i = 0; i < MONSTER_NUMBER; i++) {
-            monsters[i] = new Monster(1000, 1000);
+            monsters[i] = new Monster(map);
         }
 
         this.setFocusable(true);
@@ -109,8 +109,11 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		JFrame f = new JFrame();
 		Display jp = new Display();
 		f.setTitle("Bomberman");
-		f.setBounds(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        f.getContentPane().setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+        f.pack();
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setResizable(false);
+        f.setLocationRelativeTo(null);  // set location to screen center
 		f.setVisible(true);
 		jp.setVisible(true);
 		f.add(jp);
@@ -165,7 +168,7 @@ public class Display extends JPanel implements ActionListener, GameConstants {
     public void paintMonsters(Graphics g) {
         for (Monster m: monsters) {
             if (m.isAlive()) {
-                g.drawImage(monsterImage[m.getDirection()],
+                g.drawImage(monsterImage[m.getImageDirection()],
                         m.getX(), m.getY(), MONSTER_WIDTH, MONSTER_HEIGHT, this);
             }
         }

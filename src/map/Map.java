@@ -1,5 +1,7 @@
 package map;
 
+import game.GameConstants;
+
 /**
  * <p>
  * Store the necessary information. Should be updated by package bomb, items,
@@ -8,13 +10,13 @@ package map;
  * @author Zhuofan Chen, Wang
  * @version 0.1
  */
-public class Map {
+public class Map implements GameConstants {
     // Define map matrix and its size
     // In matrix _map, the first index refers to the y axis position and the second
     // index refers to the x axis position
     private Cell[][] _map;
-    private byte ySize = 16;
-    private byte xSize = 16;
+    private byte ySize = CELL_NUM_Y;
+    private byte xSize = CELL_NUM_Y;
 
 	/**
 	 * Default construction method
@@ -62,6 +64,11 @@ public class Map {
 
 
 		return _map[yPos][xPos];
+	}
+
+	public boolean isAvailable(int yPos, int xPos) {
+		return yPos>=0 && yPos<ySize && xPos>=0 && xPos<xSize &&
+				_map[yPos][xPos].isAvailable();
 	}
 
 	/**

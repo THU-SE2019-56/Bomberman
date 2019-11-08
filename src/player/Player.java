@@ -205,11 +205,11 @@ public class Player implements AWTEventListener, GameConstants {
 			
 		switch (this.getDirection()) {
 		case DIRECTION_UP:
-			
+
 				playerNextCell = this.playerMap.map((byte)(Math.ceil(mapy)-1),(byte)(Math.ceil(mapx)));
 				//Use math.ceil to round up
 				if (playerNextCell.isAvailable()) //If the cell which the player is going to step on is available
-				{	
+				{
 					this.setY(this.getY() - this.getVelocity());	
 					if (this.getX()%60==0&&this.getY()%60==0) //Stop only when the x and y of the player are  multiples of 60.
 					{

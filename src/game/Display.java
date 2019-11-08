@@ -26,7 +26,7 @@ import monster.Monster;
  * v0.2 <br>
  * Draw the player and achieve simple visual animation effects.
  *
- * @author Chengsong Xiong, Wang
+ * @author Chengsong, Wang
  * @version 0.2
  */
 public class Display extends JPanel implements ActionListener, GameConstants {

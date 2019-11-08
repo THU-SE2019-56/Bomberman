@@ -248,7 +248,7 @@ public class Monster implements GameConstants {
 		}
 		if (isCollided(p.getX(), p.getY(), PLAYER_WIDTH, PLAYER_HEIGHT)) {
 			eliminate();
-			p.setHP(p.getHP()-15);//The players' HP will reduce by 15 when they encounter monsters.
+			p.setHP(p.getHP()-15);//The player's HP will reduce by 15 when it encounter monsters.
 		}
 		
 		setDirection(nextDirection(p, m));

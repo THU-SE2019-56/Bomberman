@@ -106,6 +106,13 @@ public class Cell {
 		withWall = false;
 		wallIsDestructible = true;
 	}
+	
+	/**
+	 * @return if a wall is on this cell
+	 */
+	public boolean isWithWall() {
+		return withWall;
+	}
 
 	/**
 	 * @return if a destructible wall is on this cell

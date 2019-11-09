@@ -19,6 +19,7 @@
 - [map](#map)
 	- [Map](#Map-1)
 	- [Cell](#Cell)
+	- [MapMatrix](#MapMatrix)
 - [player](#player)
 	- [Player](#Player-1)
 - [monster](#monster)
@@ -59,6 +60,10 @@
 #### Cell
 负责地图每个格点的[类](src/map/Cell.java)。  
 每个Cell中可以有可破坏障碍物，不可破坏障碍物，炸弹，道具，是否处于爆炸范围等等信息。其它类的方法均应调用这个类的信息来进行逻辑上的判断。
+
+#### MapMatrix
+负责辅助地图生成的[类](src/map/MapMatrix.java)。  
+MapMatrix中包含可以随机生成含障碍物的地图或载入已有矩阵的方法。地图创建初始化后使用MapMatrix布置障碍物，或直接使用MapMatrix初始化。目前尚未实现具体功能。
 
 ---
 ### player

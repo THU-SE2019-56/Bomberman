@@ -18,7 +18,7 @@ import game.GameConstants;
 	private int itemID = VELOCITY_UP; //saved in GameConstants to judge which item is created and used
 	private boolean isAcquired = false;
 	
-	public Item() {
+	public Item(int xPos, int yPos) {
 		
 		
 	}

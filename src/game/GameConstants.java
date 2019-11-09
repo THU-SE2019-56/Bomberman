@@ -21,6 +21,7 @@ public interface GameConstants {
 	int BOMB_UP = 0;
 	int VELOCITY_UP = 1;
 	int POWER_UP = 2;
+	float ITEM_CHANCE = 0.5f;
 
 	// Display constants
 	int CELL_WIDTH = 60;

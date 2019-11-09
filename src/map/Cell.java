@@ -1,22 +1,29 @@
 package map;
 
+import bomb.Bomb;
+import items.Item;
+
 /**
  * Basic unit of map, with information of current status of certain position on
  * the map, including Barrier information, Bomb information and explosion effect
  * information
  * 
  * @author Zhuofan Chen
- * @version 0.1
+ * @version 1.0
  */
 
 public class Cell {
-	// Define this cell with wall/bomb or not
+	// Define this cell with wall/bomb/item or not
 	private boolean withBomb = false;
 	private boolean withWall = false;
+	private boolean withItem = false;
 	// If a wall on this cell is destructible, true when no wall is on this cell
 	private boolean wallIsDestructible = true;
 	// Define explosion effects exerted on current this
 	private int explosionEffect = 0;
+	// Item/bomb on current cell
+	Item item = null;
+	Bomb bomb = null;
 
 	/**
 	 * Call all member methods needing refreshing
@@ -38,10 +45,11 @@ public class Cell {
 	 * 
 	 * @return if the bomb is successfully set
 	 */
-	public boolean setBomb() {
-		if (!isAvailable())
+	public boolean setBomb(Bomb b) {
+		if (b == null || !isAvailable())
 			return false;
 		withBomb = true;
+		bomb = b;
 		return true;
 	}
 
@@ -54,6 +62,7 @@ public class Cell {
 		if (!withBomb)
 			return false;
 		withBomb = false;
+		bomb = null;
 		return true;
 	}
 
@@ -106,7 +115,7 @@ public class Cell {
 		withWall = false;
 		wallIsDestructible = true;
 	}
-	
+
 	/**
 	 * @return if a wall is on this cell
 	 */
@@ -128,4 +137,33 @@ public class Cell {
 		return (withWall && !wallIsDestructible);
 	}
 
+	/**
+	 * @return if an item is on this cell
+	 */
+	public boolean isWithItem() {
+		return withItem;
+	}
+
+	/**
+	 * @return if the item is successfully created
+	 */
+	public boolean setItem(Item i) {
+		if (i == null || !isAvailable())
+			return false;
+		withItem = true;
+		item = i;
+		return true;
+	}
+
+	/**
+	 * @return if an item is successfully removed from this cell
+	 */
+	public boolean removeItem() {
+		if (!withItem) {
+			return false;
+		}
+		item = null;
+		withItem = false;
+		return true;
+	}
 }

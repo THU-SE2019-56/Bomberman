@@ -15,8 +15,8 @@ public class Map implements GameConstants {
     // In matrix _map, the first index refers to the y axis position and the second
     // index refers to the x axis position
     private Cell[][] _map;
-    private byte ySize = CELL_NUM_Y;
-    private byte xSize = CELL_NUM_Y;
+    private int ySize = CELL_NUM_Y;
+    private int xSize = CELL_NUM_Y;
 
 	/**
 	 * Default construction method
@@ -25,8 +25,8 @@ public class Map implements GameConstants {
 
 		_map = new Cell[ySize][xSize];
 		//initialize _map
-		for (byte i=0;i<ySize; i++) {
-			for (byte j=0;j<xSize; j++) {
+		for (int i=0;i<ySize; i++) {
+			for (int j=0;j<xSize; j++) {
 				_map[i][j]=new Cell();
 			}
 		}
@@ -35,14 +35,14 @@ public class Map implements GameConstants {
 	/**
 	 * Construction method for given y size and x size
 	 */
-	public Map(byte ySize, byte xSize) {
+	public Map(int ySize, int xSize) {
 		this.ySize = ySize;
 		this.xSize = xSize;
 		_map = new Cell[ySize][xSize];
 
 		//initialize _map;
-		for (byte i=0;i<ySize; i++) {
-			for (byte j=0;j<xSize; j++) {
+		for (int i=0;i<ySize; i++) {
+			for (int j=0;j<xSize; j++) {
 				_map[i][j]=new Cell();
 			}
 		}
@@ -60,7 +60,7 @@ public class Map implements GameConstants {
 	/**
 	 * @return the cell at given position for any operation on certain cell
 	 */
-	public Cell map(byte yPos, byte xPos) {
+	public Cell map(int yPos, int xPos) {
 
 
 		return _map[yPos][xPos];
@@ -74,14 +74,14 @@ public class Map implements GameConstants {
 	/**
 	 * Get the xSize of the map
 	 */
-	public byte getSizeX() {
+	public int getSizeX() {
 		return this.xSize;
 	}
 
 	/**
 	 * Get the ySize of the map
 	 */
-	public byte getSizeY() {
+	public int getSizeY() {
 		return this.ySize;
 	}
 

@@ -16,7 +16,7 @@ public class Cell {
 	// If a wall on this cell is destructible, true when no wall is on this cell
 	private boolean wallIsDestructible = true;
 	// Define explosion effects exerted on current this
-	private byte explosionEffect = 0;
+	private int explosionEffect = 0;
 
 	/**
 	 * Call all member methods needing refreshing

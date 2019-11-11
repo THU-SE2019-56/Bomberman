@@ -33,25 +33,8 @@ import game.GameConstants;
 		case VELOCITY_UP:
 			
 			//Correctly set the location of the player to avoid bugs
-			switch(player.getDirection()) {
-			case DIRECTION_UP:
-				player.setX(60*(player.getX()/60));
-				player.setY(60*(player.getY()/60+1));
+			player.addVelocityByItems();
 			
-			case DIRECTION_DOWN:
-				player.setX(60*(player.getX()/60-1));
-				player.setY(60*(player.getY()/60));
-			
-			case DIRECTION_LEFT:
-				player.setX(60*(player.getX()/60+1));
-				player.setY(60*(player.getY()/60));
-			
-			case DIRECTION_RIGHT:
-				player.setX(60*(player.getX()/60));
-				player.setY(60*(player.getY()/60));
-			}
-			
-			player.setVelocity(10);
 			break;
 			
 	/*	case BOMB_UP:

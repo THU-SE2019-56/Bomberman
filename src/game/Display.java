@@ -43,6 +43,7 @@ public class Display extends JPanel implements ActionListener, GameConstants {
     BufferedImage monsterImage[] = new BufferedImage[4];
 	BufferedImage mapImage[] = new BufferedImage[2];
 	BufferedImage gameImage[] = new BufferedImage[3];
+	BufferedImage bombImage[] = new BufferedImage[2];
 
     /**
      *
@@ -70,7 +71,7 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 
 		map = new Map();
         player = new Player(map);
-        item = new Item();
+        item = new Item(2,2);
         for (int i = 0; i < MONSTER_NUMBER; i++) {
             monsters[i] = new Monster(map);
         }
@@ -81,7 +82,6 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 
     /**
      * to detect if the player and items are collided
-     * @return
      */
     public boolean itemCollisionDetection() {
         int playerX = player.getX();
@@ -101,7 +101,6 @@ public class Display extends JPanel implements ActionListener, GameConstants {
             return item.getIsAcquired();
         }
         else return item.getIsAcquired();
-
 
     }
 
@@ -123,9 +122,25 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		f.add(jp);
 	}
 
+	/**
+	 * End the game and show "game over"
+	 */
 	public void endGame(Graphics g) {
 		g.drawImage(gameImage[GAMEOVER], 230, 230, 500, 300, this);
 		this.gameOver = true;
+	}
+	
+	/**
+	 * PLEASE NOTE: This is only a temporary method for testing the method "plantBomb()"  of the player, without using the bomb class.
+	 */
+	public void updateBomb(Graphics g) {
+		for (int i=0;i<map.getSizeX();i++)
+		{
+			for (int j=0;j<map.getSizeY();j++) {
+				if (map.getCell(i, j).isWithBomb())
+					g.drawImage(bombImage[BOMB], (int)(i*60), (int)(j*60), 40,40,this);
+			}
+		}
 	}
 	
     /**
@@ -137,12 +152,14 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		paintMap(g);
         paintPlayer(g);
         paintMonsters(g);
+        
+        updateBomb(g);//PLEASE NOTE: This is only a temporary method for testing the method "plantBomb()" of the player,without using the bomb class.
+        
         if(!itemCollisionDetection()) {
             paintItem(g);
         }
-        if (player.getHP()==0) {
-        	endGame(g);
-        
+        if (player.getHP()<=0) {
+        	//endGame(g);
         }
         Toolkit.getDefaultToolkit().sync();
     }
@@ -171,8 +188,8 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		{
 			for (byte j=0;j<map.getSizeY();j++) {
 				if((j==4||j==9||j==11)&&(i==3||i==6||i==9||i==10||i==11)) {
-					Cell mapCell = map.map(j, i);
-					mapCell.setWall(true);
+					Cell mapCell = map.getCell(i, j);
+					mapCell.setWall(true);//write in display()
 					g.drawImage(mapImage[WALL], (int)(i*60), (int)(j*60), 60,60,this);
 				}
 				else {
@@ -215,6 +232,8 @@ public class Display extends JPanel implements ActionListener, GameConstants {
         if(this.gameOver == false) {
             repaint();
         }
+        
+        repaint();
     }
 
     /**
@@ -246,5 +265,6 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		mapImage[GROUND] =ImageIO.read(new File("image/maps/ground.png"));
 		mapImage[WALL] = ImageIO.read(new File("image/maps/wall.png"));
 		gameImage[GAMEOVER] = ImageIO.read(new File("image/game/gameover.jpg"));
+		bombImage[BOMB] = ImageIO.read(new File("image/bomb/bomb.png"));
     }
 }

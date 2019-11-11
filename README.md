@@ -34,7 +34,7 @@
 ---
 ## 游戏效果图
 
-![Game Image](https://github.com/THU-SE2019-56/Bomberman/edit/master/gameimage.png)
+![image](https://github.com/THU-SE2019-56/Bomberman/edit/master/gameimage.png)
 
 ---
 ### game

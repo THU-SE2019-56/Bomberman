@@ -1,10 +1,9 @@
 package monster;
 
+import java.util.*;
 import map.Map;
 import player.Player;
 import game.GameConstants;
-
-import java.util.*;
 
 
 class Point {
@@ -15,6 +14,14 @@ class Point {
 	}
 }
 
+
+/**
+ * This class is used to represent a path.
+ * The path consists of each turning point, i.e. each two adjacent points has same x or y.
+ *
+ * @author  Hang Chen
+ * @version 0.1
+ */
 class Path implements GameConstants {
 	private ArrayList<Point> data;
 
@@ -48,11 +55,18 @@ class Path implements GameConstants {
 }
 
 
+/**
+ * This class is used to encapsulate some path finding algorithm.
+ * Now only BFS is supported.
+ *
+ * @author  Hang Chen
+ * @version 0.1
+ */
 class Brain implements GameConstants {
-	final static int[] dxs = {-1, 1, 0, 0};
-	final static int[] dys = {0, 0, -1, 1};
-	boolean viz[][];
-	int fa[][];
+	private final static int[] dxs = {-1, 1, 0, 0};
+	private final static int[] dys = {0, 0, -1, 1};
+	private boolean[][] viz;
+	private int[][] fa;
 
 	Brain() {
 		viz = new boolean[CELL_NUM_X][CELL_NUM_X];
@@ -79,7 +93,7 @@ class Brain implements GameConstants {
 			for (int k=0; k<4; ++k) {
 				int ii = p.x + dxs[k];
 				int jj = p.y + dys[k];
-				if (m.isAvailable(jj, ii) && !viz[ii][jj]) {
+				if (m.isAvailable(ii, jj) && !viz[ii][jj]) {
 					q.addLast(new Point(ii, jj));
 					fa[ii][jj] = k;
 					viz[ii][jj] = true;
@@ -109,7 +123,7 @@ class Brain implements GameConstants {
 
 /**
  * The Monster class.
- * Monster will walk around on the map, until killed by a bomb (currently using the player instead).
+ * Monster will follow the player, until killed by a bomb or collide with the player (player's HP will reduce 15).
  *
  * @author  Hang Chen
  * @version 0.1
@@ -131,7 +145,7 @@ public class Monster implements GameConstants {
 		while (true) {
 			int i = (int)(CELL_NUM_X*Math.random());
 			int j = (int)(CELL_NUM_Y*Math.random());
-			if (m.isAvailable(j, i)) {
+			if (m.isAvailable(i, j)) {
 				this.x = i * CELL_WIDTH;
 				this.y = j * CELL_HEIGHT;
 				init();
@@ -155,10 +169,6 @@ public class Monster implements GameConstants {
 		path = new Path();
 	}
 
-    /**
-     * Update monster's properties
-     */
-    public void refresh() {}
 
 	private int nextDirection(Player p, Map m) {
 		if (path.size() > 0) {
@@ -230,20 +240,23 @@ public class Monster implements GameConstants {
 		// move a step
 		switch (this.direction) {
 			case DIRECTION_UP:
-				move(m, 0, -this.velocity);
+				this.y -= this.velocity;
 				break;
 			case DIRECTION_DOWN:
-				move(m, 0, this.velocity);
+				this.y += this.velocity;
 				break;
 			case DIRECTION_LEFT:
-				move(m, -this.velocity, 0);
+				this.x -= this.velocity;
 				break;
 			case DIRECTION_RIGHT:
-				move(m, this.velocity, 0);
+				this.x += this.velocity;
 				break;
 			case DIRECTION_STOP:
-				brain.findPath(m, path, Math.round((float) x/CELL_WIDTH), Math.round((float) y/CELL_HEIGHT),
-						Math.round((float) p.getX()/CELL_WIDTH), Math.round((float) p.getY()/CELL_HEIGHT));
+				int mi = Math.round((float) x/CELL_WIDTH);
+				int mj = Math.round((float) y/CELL_HEIGHT);
+				int pi = Math.round((float) p.getX()/CELL_WIDTH);
+				int pj = Math.round((float) p.getY()/CELL_HEIGHT);
+				brain.findPath(m, path, mi, mj, pi, pj);
 				break;
 		}
 		if (isCollided(p.getX(), p.getY(), PLAYER_WIDTH, PLAYER_HEIGHT)) {
@@ -263,14 +276,6 @@ public class Monster implements GameConstants {
 		int y1 = Math.max(y, this.y);
 		int y2 = Math.min(y + h, this.y + MONSTER_HEIGHT);
 		return (x2 > x1) && (y2 > y1);
-	}
-
-	/**
-	 * Move the monster by the given shift
-	 */
-	private void move(Map m, int dx, int dy) {
-		this.x += dx;
-		this.y += dy;
 	}
 
 	/**

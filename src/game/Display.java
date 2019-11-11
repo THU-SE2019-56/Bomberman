@@ -172,7 +172,7 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 			for (byte j=0;j<map.getSizeY();j++) {
 				if((j==4||j==9||j==11)&&(i==3||i==6||i==9||i==10||i==11)) {
 					Cell mapCell = map.map(j, i);
-					mapCell.setWall(true);
+					mapCel.setWall(true);
 					g.drawImage(mapImage[WALL], (int)(i*60), (int)(j*60), 60,60,this);
 				}
 				else {
@@ -208,7 +208,6 @@ public class Display extends JPanel implements ActionListener, GameConstants {
         for (Monster m: monsters) {	// Change the location of monsters
             if (m.isAlive()) {
                 m.monsterMove(player, map);
-                m.refresh();
             }
         }
         

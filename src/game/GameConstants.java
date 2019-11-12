@@ -21,6 +21,8 @@ public interface GameConstants {
 	int BOMB_UP = 0;
 	int VELOCITY_UP = 1;
 	int POWER_UP = 2;
+	
+	// Chance for item to be created
 	float ITEM_CHANCE = 0.5f;
 
 	// Display constants
@@ -32,8 +34,10 @@ public interface GameConstants {
 	int SCREEN_HEIGHT = CELL_HEIGHT * CELL_NUM_Y;
 
 	// for map
-	int GROUND = 0;
-	int WALL= 1;
+	int GROUND_1 = 0;
+	int GROUND_2 = 1;
+	int DESTRUCTIBLE_WALL= 2;
+	int INDESTRUCTIBLE_WALL = 3;
 	
 	//for game
 	int GAMEOVER = 0;

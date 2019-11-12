@@ -41,7 +41,7 @@ public class Display extends JPanel implements ActionListener, GameConstants {
     BufferedImage characterImage[] = new BufferedImage[4];
     BufferedImage itemImage[] = new BufferedImage[3];
     BufferedImage monsterImage[] = new BufferedImage[4];
-	BufferedImage mapImage[] = new BufferedImage[2];
+	BufferedImage mapImage[] = new BufferedImage[4];
 	BufferedImage gameImage[] = new BufferedImage[3];
 	BufferedImage bombImage[] = new BufferedImage[2];
 
@@ -149,7 +149,7 @@ public class Display extends JPanel implements ActionListener, GameConstants {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-		paintMap(g);
+		paintMapTest(g);
         paintPlayer(g);
         paintMonsters(g);
         
@@ -183,20 +183,38 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 	/**
 	 * Paint a simple map for testing.
 	 */
-	public void paintMap(Graphics g) {
+	public void paintMapTest(Graphics g) {
+		
 		for (byte i=0;i<map.getSizeX();i++)
 		{
 			for (byte j=0;j<map.getSizeY();j++) {
+				g.drawImage(mapImage[GROUND_1], (int)(i*60), (int)(j*60), 60,60,this);
 				if((j==4||j==9||j==11)&&(i==3||i==6||i==9||i==10||i==11)) {
 					Cell mapCell = map.getCell(i, j);
 					mapCell.setWall(true);//write in display()
-					g.drawImage(mapImage[WALL], (int)(i*60), (int)(j*60), 60,60,this);
+					g.drawImage(mapImage[DESTRUCTIBLE_WALL], (int)(i*60), (int)(j*60), 60,60,this);
 				}
 				else {
-					g.drawImage(mapImage[GROUND], (int)(i*60), (int)(j*60), 60,60,this);
 				}
 			}
 		}
+	}
+	
+	public void paintMap(Graphics g) {
+		int xSize = map.getSizeX();
+		int ySize = map.getSizeY();
+		for (int i = 0; i < xSize; i++)
+			for (int j = 0; j < ySize; j++) {
+				if((i+j)%2==0)
+					g.drawImage(mapImage[GROUND_1], (int)(i*60), (int)(j*60), 60,60,this);
+				else
+					g.drawImage(mapImage[GROUND_2], (int)(i*60), (int)(j*60), 60,60,this);
+				if(map.isWithDestructibleWall(i, j))
+					g.drawImage(mapImage[DESTRUCTIBLE_WALL], (int)(i*60), (int)(j*60), 60,60,this);
+				if(map.isWithIndestructibleWall(i, j))
+					g.drawImage(mapImage[INDESTRUCTIBLE_WALL], (int)(i*60), (int)(j*60), 60,60,this);
+				// TODO waiting for adding bomb and item
+			}
 	}
 
     public void paintMonsters(Graphics g) {
@@ -262,8 +280,10 @@ public class Display extends JPanel implements ActionListener, GameConstants {
         monsterImage[DIRECTION_DOWN] = ImageIO.read(new File("image/monster/down.png"));
         monsterImage[DIRECTION_RIGHT] = ImageIO.read(new File("image/monster/right.png"));
         monsterImage[DIRECTION_LEFT] = ImageIO.read(new File("image/monster/left.png"));
-		mapImage[GROUND] =ImageIO.read(new File("image/maps/ground.png"));
-		mapImage[WALL] = ImageIO.read(new File("image/maps/wall.png"));
+		mapImage[GROUND_1] =ImageIO.read(new File("image/maps/ground1.png"));
+		mapImage[GROUND_2] = ImageIO.read(new File("image/maps/ground2.png"));
+		mapImage[DESTRUCTIBLE_WALL]=ImageIO.read(new File("image/maps/wall_destructible.png"));
+		mapImage[INDESTRUCTIBLE_WALL]=ImageIO.read(new File("image/maps/wall_indestructibel.png"));
 		gameImage[GAMEOVER] = ImageIO.read(new File("image/game/gameover.jpg"));
 		bombImage[BOMB] = ImageIO.read(new File("image/bomb/bomb.png"));
     }

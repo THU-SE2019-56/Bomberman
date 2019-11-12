@@ -154,11 +154,11 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		super.paintComponent(g);
 		// paintMapTest(g);
 		paintMap(g);
+		updateBomb(g);// PLEASE NOTE: This is only a temporary method for testing the method
+		// "plantBomb()" of the player,without using the bomb class.
+
 		paintPlayer(g);
 		paintMonsters(g);
-
-		updateBomb(g);// PLEASE NOTE: This is only a temporary method for testing the method
-						// "plantBomb()" of the player,without using the bomb class.
 
 		if (!itemCollisionDetection()) {
 			paintItem(g);
@@ -256,7 +256,6 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		for (Monster m : monsters) { // Change the location of monsters
 			if (m.isAlive()) {
 				m.monsterMove(player, map);
-				m.refresh();
 			}
 		}
 

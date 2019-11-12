@@ -21,17 +21,19 @@ import map.Cell;
  */
 
 public class Player implements AWTEventListener, GameConstants {
+	
+	private int playerID;//ID of the player
 	private int velocity; //The velocity should be divisible by 60
 	private int bombNumber;
 	private int bombPower;
 	private boolean isImmune;
 	private boolean isAlive;
 	private int direction;
-	private int lastDirection;
 	private int imageDirection;// This variable is for deciding the image of DIRECTION_STOP 
 	private int x;
 	private int y;
 	private int stopflag =0;
+	
 
 	
 	private Map playerMap; //Relate the player with the map
@@ -41,15 +43,25 @@ public class Player implements AWTEventListener, GameConstants {
 
 	
 
-	public Player(Map newmap) {
+	public Player(Map newmap,int id) {
 		this.direction=DIRECTION_STOP;
 		this.imageDirection=DIRECTION_DOWN;
 		this.x=0;
 		this.y=0;
 		this.velocity= 5;
 		this.playerMap = newmap;
+		this.playerID = id;
 	}
 
+	
+	public void setPlayerID(int id){
+		this.playerID = id;
+	}
+	
+	public int getPlayerID() {
+		return this.playerID;
+	}
+	
 	/**
 	 * Set the HP of the player
 	 */
@@ -104,7 +116,6 @@ public class Player implements AWTEventListener, GameConstants {
      * Use setDirection() to set the direction of the player.
      */
     public void setDirection(int d) {
-        this.lastDirection = this.getDirection();
         
     	if(d!=DIRECTION_STOP) {       
         	this.direction = d;
@@ -160,8 +171,6 @@ public class Player implements AWTEventListener, GameConstants {
 
     /**
      * Get the y of the player.
-     *
-     * @return Return an integer value.
      */
     public int getY() {
         return this.y;
@@ -169,9 +178,6 @@ public class Player implements AWTEventListener, GameConstants {
 
     /**
      * Set the location of the player.
-     *
-     * @param X
-     * @param Y
      */
     public void setLocation(int X, int Y) {
         this.x = X;
@@ -236,7 +242,6 @@ public class Player implements AWTEventListener, GameConstants {
 	}
 	/**
 	 * Judge the direction of the player and change the coordinates.
-	 * 
 	 */
 	public void playerMove() {
 	
@@ -296,50 +301,99 @@ public class Player implements AWTEventListener, GameConstants {
 
 	/**
 	 * Respond to the keyboard events.
+	 * Use up, down, right, left, enter to control p1 and A, S, W, D, space to control p2
 	 */
 	@Override
 	public void eventDispatched(AWTEvent event) {
 		
-		/*
-		 * Enable to set the direction of the player only when the x and y of the player are multiples of 60. As
-		 * a result, the player will keep moving when the x and y of the player are not multiples of 60.
-		 */
-		if (event.getID() == KeyEvent.KEY_PRESSED) {
-			KeyEvent e = (KeyEvent) event;
-				switch(e.getKeyCode()) {
-				
-				case KeyEvent.VK_UP:
-					if (this.getX()%CELL_WIDTH==0&&this.getY()%CELL_HEIGHT==0) this.setDirection(DIRECTION_UP);
-					break;
-				case KeyEvent.VK_DOWN:
-					if (this.getX()%CELL_WIDTH==0&&this.getY()%CELL_HEIGHT==0) this.setDirection(DIRECTION_DOWN);
-					break;
-				case KeyEvent.VK_LEFT:
-					if (this.getX()%CELL_WIDTH==0&&this.getY()%CELL_HEIGHT==0) this.setDirection(DIRECTION_LEFT);
-					break;
-				case KeyEvent.VK_RIGHT:
-					if (this.getX()%CELL_WIDTH==0&&this.getY()%CELL_HEIGHT==0) this.setDirection(DIRECTION_RIGHT);
-					break;
-				case KeyEvent.VK_SPACE:
-					this.plantBomb(this.playerMap,this.mapX,this.mapY);//Use the space key to plant bomb
-					break;
-				default:
-					this.setDirection(this.getDirection());		
-				}
-
-			}
-		/*
-		 * When the keys are released, set the direction of the player to DIRECTION_STOP.
-		 */
-		if (event.getID() == KeyEvent.KEY_RELEASED) {
-			KeyEvent e = (KeyEvent) event;
 		
-			if (e.getKeyCode()== KeyEvent.VK_UP||e.getKeyCode()== KeyEvent.VK_DOWN||e.getKeyCode()== KeyEvent.VK_LEFT||e.getKeyCode()== KeyEvent.VK_RIGHT)
-			{
-				this.stopflag = 1;
-				if (this.getX()%CELL_WIDTH==0&&this.getY()%CELL_HEIGHT==0)  {
-					this.setDirection(DIRECTION_STOP);
+		if (this.playerID==PLAYER_ID_P1) {
+			/*
+			 * Enable to set the direction of the player only when the x and y of the player are multiples of 60. As
+			 * a result, the player will keep moving when the x and y of the player are not multiples of 60.
+			 */
+			if (event.getID() == KeyEvent.KEY_PRESSED) {
+				KeyEvent e = (KeyEvent) event;
+					switch(e.getKeyCode()) {
 					
+					case KeyEvent.VK_UP:
+						if (this.getX()%CELL_WIDTH==0&&this.getY()%CELL_HEIGHT==0) this.setDirection(DIRECTION_UP);
+						break;
+					case KeyEvent.VK_DOWN:
+						if (this.getX()%CELL_WIDTH==0&&this.getY()%CELL_HEIGHT==0) this.setDirection(DIRECTION_DOWN);
+						break;
+					case KeyEvent.VK_LEFT:
+						if (this.getX()%CELL_WIDTH==0&&this.getY()%CELL_HEIGHT==0) this.setDirection(DIRECTION_LEFT);
+						break;
+					case KeyEvent.VK_RIGHT:
+						if (this.getX()%CELL_WIDTH==0&&this.getY()%CELL_HEIGHT==0) this.setDirection(DIRECTION_RIGHT);
+						break;
+					case KeyEvent.VK_ENTER:
+						this.plantBomb(this.playerMap,this.mapX,this.mapY);//Use the space key to plant bomb
+						break;
+					default:
+						this.setDirection(this.getDirection());		
+					}
+				}
+			/*
+			 * When the keys are released, set the direction of the player to DIRECTION_STOP.
+			 */
+			if (event.getID() == KeyEvent.KEY_RELEASED) {
+				KeyEvent e = (KeyEvent) event;
+			
+				if (e.getKeyCode()== KeyEvent.VK_UP||e.getKeyCode()== KeyEvent.VK_DOWN||e.getKeyCode()== KeyEvent.VK_LEFT||e.getKeyCode()== KeyEvent.VK_RIGHT)
+				{
+					this.stopflag = 1;
+					if (this.getX()%CELL_WIDTH==0&&this.getY()%CELL_HEIGHT==0)  {
+						this.setDirection(DIRECTION_STOP);
+						
+					}
+				}
+			}
+		}
+		
+		
+		if (this.playerID==PLAYER_ID_P2) {
+			/*
+			 * Enable to set the direction of the player only when the x and y of the player are multiples of 60. As
+			 * a result, the player will keep moving when the x and y of the player are not multiples of 60.
+			 */
+			if (event.getID() == KeyEvent.KEY_PRESSED) {
+				KeyEvent e = (KeyEvent) event;
+					switch(e.getKeyCode()) {
+					
+					case KeyEvent.VK_W:
+						if (this.getX()%CELL_WIDTH==0&&this.getY()%CELL_HEIGHT==0) this.setDirection(DIRECTION_UP);
+						break;
+					case KeyEvent.VK_S:
+						if (this.getX()%CELL_WIDTH==0&&this.getY()%CELL_HEIGHT==0) this.setDirection(DIRECTION_DOWN);
+						break;
+					case KeyEvent.VK_A:
+						if (this.getX()%CELL_WIDTH==0&&this.getY()%CELL_HEIGHT==0) this.setDirection(DIRECTION_LEFT);
+						break;
+					case KeyEvent.VK_D:
+						if (this.getX()%CELL_WIDTH==0&&this.getY()%CELL_HEIGHT==0) this.setDirection(DIRECTION_RIGHT);
+						break;
+					case KeyEvent.VK_SPACE:
+						this.plantBomb(this.playerMap,this.mapX,this.mapY);//Use the space key to plant bomb
+						break;
+					default:
+						this.setDirection(this.getDirection());		
+					}
+				}
+			/*
+			 * When the keys are released, set the direction of the player to DIRECTION_STOP.
+			 */
+			if (event.getID() == KeyEvent.KEY_RELEASED) {
+				KeyEvent e = (KeyEvent) event;
+			
+				if (e.getKeyCode()== KeyEvent.VK_W||e.getKeyCode()== KeyEvent.VK_S||e.getKeyCode()== KeyEvent.VK_A||e.getKeyCode()== KeyEvent.VK_D)
+				{
+					this.stopflag = 1;
+					if (this.getX()%CELL_WIDTH==0&&this.getY()%CELL_HEIGHT==0)  {
+						this.setDirection(DIRECTION_STOP);
+						
+					}
 				}
 			}
 		}

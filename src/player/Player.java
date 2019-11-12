@@ -37,7 +37,7 @@ public class Player implements AWTEventListener, GameConstants {
 	private Map playerMap; //Relate the player with the map
 	private int mapX;
 	private int mapY;
-	private int playerHP = 60;
+	private int playerHP = CELL_WIDTH;
 
 	
 
@@ -81,23 +81,23 @@ public class Player implements AWTEventListener, GameConstants {
     public void addVelocityByItems() {
 		switch(this.getDirection()) {
 		case DIRECTION_UP:
-			this.setX(60*(this.getX()/60));
-			this.setY(60*(this.getY()/60+1));
+			this.setX(CELL_WIDTH*(this.getX()/CELL_WIDTH));
+			this.setY(CELL_HEIGHT*(this.getY()/CELL_HEIGHT+1));
 		
 		case DIRECTION_DOWN:
-			this.setX(60*(this.getX()/60-1));
-			this.setY(60*(this.getY()/60));
+			this.setX(CELL_WIDTH*(this.getX()/CELL_WIDTH-1));
+			this.setY(CELL_HEIGHT*(this.getY()/CELL_HEIGHT));
 		
 		case DIRECTION_LEFT:
-			this.setX(60*(this.getX()/60+1));
-			this.setY(60*(this.getY()/60));
+			this.setX(CELL_WIDTH*(this.getX()/CELL_WIDTH+1));
+			this.setY(CELL_HEIGHT*(this.getY()/CELL_HEIGHT));
 		
 		case DIRECTION_RIGHT:
-			this.setX(60*(this.getX()/60));
-			this.setY(60*(this.getY()/60));
+			this.setX(CELL_WIDTH*(this.getX()/CELL_WIDTH));
+			this.setY(CELL_HEIGHT*(this.getY()/CELL_HEIGHT));
 		}
 		
-		this.setVelocity(10);
+		this.setVelocity(9);
     }
 
     /**
@@ -198,13 +198,13 @@ public class Player implements AWTEventListener, GameConstants {
 	 * Stop the player and clear the flag
 	 */
 	public void playerStop() {
-		if (this.getX()%60==0&&this.getY()%60==0) //Stop only when the x and y of the player are  multiples of 60.
+		if (this.getX()%CELL_WIDTH==0&&this.getY()%CELL_HEIGHT==0) //Stop only when the x and y of the player are  multiples of 60.
 		{
 			if (this.stopflag==1) {
 				this.setDirection(DIRECTION_STOP);
 				this.stopflag=0;
 			}
-			this.setLocationOnMap(this, this.playerMap, this.x/60, this.y/60);//Update mapX and mapY
+			this.setLocationOnMap(this, this.playerMap, this.x/CELL_WIDTH, this.y/CELL_HEIGHT);//Update mapX and mapY
 		}
 	}
 	
@@ -240,8 +240,8 @@ public class Player implements AWTEventListener, GameConstants {
 	 */
 	public void playerMove() {
 	
-		double mapx = (double)(this.x)/(double)(60);
-		double mapy = (double)(this.y)/(double)(60);
+		double mapx = (double)(this.x)/(double)(CELL_WIDTH);
+		double mapy = (double)(this.y)/(double)(CELL_HEIGHT);
 		Cell playerNextCell;//The next cell which the player is going to step on
 
 		
@@ -309,16 +309,16 @@ public class Player implements AWTEventListener, GameConstants {
 				switch(e.getKeyCode()) {
 				
 				case KeyEvent.VK_UP:
-					if (this.getX()%60==0&&this.getY()%60==0) this.setDirection(DIRECTION_UP);
+					if (this.getX()%CELL_WIDTH==0&&this.getY()%CELL_HEIGHT==0) this.setDirection(DIRECTION_UP);
 					break;
 				case KeyEvent.VK_DOWN:
-					if (this.getX()%60==0&&this.getY()%60==0) this.setDirection(DIRECTION_DOWN);
+					if (this.getX()%CELL_WIDTH==0&&this.getY()%CELL_HEIGHT==0) this.setDirection(DIRECTION_DOWN);
 					break;
 				case KeyEvent.VK_LEFT:
-					if (this.getX()%60==0&&this.getY()%60==0) this.setDirection(DIRECTION_LEFT);
+					if (this.getX()%CELL_WIDTH==0&&this.getY()%CELL_HEIGHT==0) this.setDirection(DIRECTION_LEFT);
 					break;
 				case KeyEvent.VK_RIGHT:
-					if (this.getX()%60==0&&this.getY()%60==0) this.setDirection(DIRECTION_RIGHT);
+					if (this.getX()%CELL_WIDTH==0&&this.getY()%CELL_HEIGHT==0) this.setDirection(DIRECTION_RIGHT);
 					break;
 				case KeyEvent.VK_SPACE:
 					this.plantBomb(this.playerMap,this.mapX,this.mapY);//Use the space key to plant bomb
@@ -337,7 +337,7 @@ public class Player implements AWTEventListener, GameConstants {
 			if (e.getKeyCode()== KeyEvent.VK_UP||e.getKeyCode()== KeyEvent.VK_DOWN||e.getKeyCode()== KeyEvent.VK_LEFT||e.getKeyCode()== KeyEvent.VK_RIGHT)
 			{
 				this.stopflag = 1;
-				if (this.getX()%60==0&&this.getY()%60==0)  {
+				if (this.getX()%CELL_WIDTH==0&&this.getY()%CELL_HEIGHT==0)  {
 					this.setDirection(DIRECTION_STOP);
 					
 				}
@@ -365,7 +365,7 @@ public class Player implements AWTEventListener, GameConstants {
 	
 	
 	/**
-	 * Update mapinfo BOMB_INFO
+	 * Update map BOMB_INFO
 	 */
 	public void plantBomb(Map mi, int mapx,int mapy ) {
 		

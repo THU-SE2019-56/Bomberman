@@ -13,8 +13,8 @@ import game.GameConstants;
  */
  public class Item implements GameConstants {
 	
-	private int x = 180;
-	private int y = 120;
+	private int x = 135;
+	private int y = 90;
 	private int itemID = VELOCITY_UP; //saved in GameConstants to judge which item is created and used
 	private boolean isAcquired = false;
 	

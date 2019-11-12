@@ -91,10 +91,9 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		int playerY = player.getY();
 		int itemX = item.getX();
 		int itemY = item.getY();
-		int itemSize = 60;
 
 		Rectangle playerRectangle = new Rectangle(playerX, playerY, PLAYER_WIDTH, PLAYER_HEIGHT);
-		Rectangle itemRectangle = new Rectangle(itemX, itemY, 60, 60);
+		Rectangle itemRectangle = new Rectangle(itemX, itemY, ITEM_WIDTH, ITEM_HEIGHT);
 
 		if (playerRectangle.intersects(itemRectangle)) {
 
@@ -142,7 +141,7 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		for (int i = 0; i < map.getSizeX(); i++) {
 			for (int j = 0; j < map.getSizeY(); j++) {
 				if (map.getCell(i, j).isWithBomb())
-					g.drawImage(bombImage[BOMB], (int) (i * 60), (int) (j * 60), 40, 40, this);
+					g.drawImage(bombImage[BOMB], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), BOMB_WIDTH, BOMB_HEIGHT, this);
 			}
 		}
 	}
@@ -177,13 +176,17 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		g.drawImage(characterImage[player.getImageDirection()], player.getX(), player.getY(), PLAYER_WIDTH,
 				PLAYER_HEIGHT, this);
 		g.setColor(Color.BLUE);
-		g.drawRect(player.getX(), player.getY() - 15, 60, 10);
+		
+		/*
+		 * Draw HP bar of the player
+		 */
+		g.drawRect(player.getX(), player.getY() - 15, CELL_WIDTH, 10);
 		g.setColor(Color.RED);
 		g.fillRect(player.getX(), player.getY() - 15, player.getHP(), 10);
 	}
 
 	public void paintItem(Graphics g) {
-		g.drawImage(itemImage[item.getItemID()], item.getX(), item.getY(), 60, 60, this);
+		g.drawImage(itemImage[item.getItemID()], item.getX(), item.getY(), ITEM_WIDTH, ITEM_HEIGHT, this);
 	}
 
 	/**
@@ -216,13 +219,13 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		for (int i = 0; i < xSize; i++)
 			for (int j = 0; j < ySize; j++) {
 				if ((i + j) % 2 == 0)
-					g.drawImage(mapImage[GROUND_1], (int) (i * 60), (int) (j * 60), 60, 60, this);
+					g.drawImage(mapImage[GROUND_1], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), CELL_WIDTH, CELL_HEIGHT, this);
 				else
-					g.drawImage(mapImage[GROUND_2], (int) (i * 60), (int) (j * 60), 60, 60, this);
+					g.drawImage(mapImage[GROUND_2], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), CELL_WIDTH, CELL_HEIGHT, this);
 				if (map.isWithDestructibleWall(i, j))
-					g.drawImage(mapImage[DESTRUCTIBLE_WALL], (int) (i * 60), (int) (j * 60), 60, 60, this);
+					g.drawImage(mapImage[DESTRUCTIBLE_WALL], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), CELL_WIDTH, CELL_HEIGHT, this);
 				if (map.isWithIndestructibleWall(i, j))
-					g.drawImage(mapImage[INDESTRUCTIBLE_WALL], (int) (i * 60), (int) (j * 60), 60, 60, this);
+					g.drawImage(mapImage[INDESTRUCTIBLE_WALL], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), CELL_WIDTH, CELL_HEIGHT, this);
 				// TODO waiting for adding bomb and item
 			}
 	}

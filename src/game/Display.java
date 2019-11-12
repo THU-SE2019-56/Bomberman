@@ -179,25 +179,19 @@ public class Display extends JPanel implements ActionListener, GameConstants {
         g.drawImage(itemImage[item.getItemID()], item.getX(), item.getY(), 60, 60, this);
     }
 
-
 	/**
 	 * Paint a simple map for testing.
 	 */
 	public void paintMapTest(Graphics g) {
-		
-		for (byte i=0;i<map.getSizeX();i++)
-		{
-			for (byte j=0;j<map.getSizeY();j++) {
-				g.drawImage(mapImage[GROUND_1], (int)(i*60), (int)(j*60), 60,60,this);
-				if((j==4||j==9||j==11)&&(i==3||i==6||i==9||i==10||i==11)) {
+		for (byte i = 0; i < map.getSizeX(); i++)
+			for (byte j = 0; j < map.getSizeY(); j++) {
+				g.drawImage(mapImage[GROUND_1], (int) (i * 60), (int) (j * 60), 60, 60, this);
+				if ((j == 4 || j == 9 || j == 11) && (i == 3 || i == 6 || i == 9 || i == 10 || i == 11)) {
 					Cell mapCell = map.getCell(i, j);
-					mapCell.setWall(true);//write in display()
-					g.drawImage(mapImage[DESTRUCTIBLE_WALL], (int)(i*60), (int)(j*60), 60,60,this);
-				}
-				else {
+					mapCell.setWall(true);// write in display()
+					g.drawImage(mapImage[DESTRUCTIBLE_WALL], (int) (i * 60), (int) (j * 60), 60, 60, this);
 				}
 			}
-		}
 	}
 	
 	public void paintMap(Graphics g) {
@@ -205,14 +199,14 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		int ySize = map.getSizeY();
 		for (int i = 0; i < xSize; i++)
 			for (int j = 0; j < ySize; j++) {
-				if((i+j)%2==0)
-					g.drawImage(mapImage[GROUND_1], (int)(i*60), (int)(j*60), 60,60,this);
+				if ((i + j) % 2 == 0)
+					g.drawImage(mapImage[GROUND_1], (int) (i * 60), (int) (j * 60), 60, 60, this);
 				else
-					g.drawImage(mapImage[GROUND_2], (int)(i*60), (int)(j*60), 60,60,this);
-				if(map.isWithDestructibleWall(i, j))
-					g.drawImage(mapImage[DESTRUCTIBLE_WALL], (int)(i*60), (int)(j*60), 60,60,this);
-				if(map.isWithIndestructibleWall(i, j))
-					g.drawImage(mapImage[INDESTRUCTIBLE_WALL], (int)(i*60), (int)(j*60), 60,60,this);
+					g.drawImage(mapImage[GROUND_2], (int) (i * 60), (int) (j * 60), 60, 60, this);
+				if (map.isWithDestructibleWall(i, j))
+					g.drawImage(mapImage[DESTRUCTIBLE_WALL], (int) (i * 60), (int) (j * 60), 60, 60, this);
+				if (map.isWithIndestructibleWall(i, j))
+					g.drawImage(mapImage[INDESTRUCTIBLE_WALL], (int) (i * 60), (int) (j * 60), 60, 60, this);
 				// TODO waiting for adding bomb and item
 			}
 	}

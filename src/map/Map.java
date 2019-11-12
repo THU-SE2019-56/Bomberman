@@ -26,9 +26,7 @@ public class Map implements GameConstants {
 	 * Default construction method
 	 */
 	public Map() {
-
-		_map = new Cell[ySize][xSize];
-		// initialize _map
+		_map = new Cell[ySize][xSize]; // initialize _map
 		for (int i = 0; i < ySize; i++) {
 			for (int j = 0; j < xSize; j++) {
 				_map[i][j] = new Cell();
@@ -42,12 +40,28 @@ public class Map implements GameConstants {
 	public Map(int ySize, int xSize) {
 		this.ySize = ySize;
 		this.xSize = xSize;
-		_map = new Cell[ySize][xSize];
-
-		// initialize _map;
+		_map = new Cell[ySize][xSize]; // initialize _map;
 		for (int i = 0; i < ySize; i++) {
 			for (int j = 0; j < xSize; j++) {
 				_map[i][j] = new Cell();
+			}
+		}
+	}
+
+	/**
+	 * Construction method for given MapMatrix
+	 */
+	public Map(MapMatrix mmat) {
+		xSize = mmat.getXSize();
+		ySize = mmat.getYSize();
+		_map = new Cell[ySize][xSize];
+		for (int i = 0; i < ySize; i++) {
+			for (int j = 0; j < xSize; j++) {
+				_map[i][j] = new Cell();
+				if(mmat.isWithDestructibleWall(i, j))
+					_map[i][j].setWall(true);
+				if(mmat.isWithIndestructibleWall(i, j))
+					_map[i][j].setWall(false);
 			}
 		}
 	}
@@ -63,6 +77,7 @@ public class Map implements GameConstants {
 
 	/**
 	 * @return the cell at given position for any operation on certain cell
+	 * !!this method is NOT RECOMMENDED!!
 	 */
 	public Cell getCell(int xPos, int yPos) {
 		return _map[yPos][xPos];
@@ -194,21 +209,21 @@ public class Map implements GameConstants {
 		if (isInMap(xPos, yPos))
 			_map[yPos][xPos].removeWall();
 	}
-	
+
 	/**
 	 * @return if a wall is on given position
 	 */
 	public boolean isWithWall(int xPos, int yPos) {
 		return (isInMap(xPos, yPos) && _map[yPos][xPos].isWithWall());
 	}
-	
+
 	/**
 	 * @return if a destructible wall is on given position
 	 */
 	public boolean isWithDestructibleWall(int xPos, int yPos) {
 		return (isInMap(xPos, yPos) && _map[yPos][xPos].isWithDestructibleWall());
 	}
-	
+
 	/**
 	 * @return if an indestructible wall is on given position
 	 */
@@ -216,5 +231,4 @@ public class Map implements GameConstants {
 		return (isInMap(xPos, yPos) && _map[yPos][xPos].isWithIndestructibleWall());
 	}
 
-	
 }

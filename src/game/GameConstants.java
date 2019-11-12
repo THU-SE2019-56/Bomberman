@@ -16,6 +16,8 @@ public interface GameConstants {
 	int MONSTER_NUMBER = 5;
 	int MONSTER_WIDTH = 45;
 	int MONSTER_HEIGHT = 45;
+	int HP_LOSS_BY_MONSTER = 15;
+	int ALERT_DISTANCE = 6;
 
 	// Item constants
 	int BOMB_UP = 0;
@@ -24,8 +26,7 @@ public interface GameConstants {
 	int ITEM_WIDTH = 45;
 	int ITEM_HEIGHT = 45;
 	
-	
-	
+
 	// Chance for item to be created
 	float ITEM_CHANCE = 0.5f;
 

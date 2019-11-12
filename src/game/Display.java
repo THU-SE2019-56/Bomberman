@@ -70,9 +70,9 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 
 		// initializeMap(); May delete.
 
-		map = new Map();
-		generateTestMap();
-		// map = new Map(new MapMatrix(CELL_NUM_X,CELL_NUM_Y));
+		//map = new Map();
+		//generateTestMap();
+		map = new Map(new MapMatrix(CELL_NUM_X,CELL_NUM_Y));
 		player = new Player(map);
 		item = new Item(2, 2);
 		for (int i = 0; i < MONSTER_NUMBER; i++) {

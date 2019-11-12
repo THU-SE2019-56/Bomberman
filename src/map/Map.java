@@ -48,6 +48,9 @@ public class Map implements GameConstants {
 		}
 	}
 
+	/**
+	 * Construction method for given MapMatrix
+	 */
 	public Map(MapMatrix mmat) {
 		xSize = mmat.getXSize();
 		ySize = mmat.getYSize();
@@ -74,6 +77,7 @@ public class Map implements GameConstants {
 
 	/**
 	 * @return the cell at given position for any operation on certain cell
+	 * !!this method is NOT RECOMMENDED!!
 	 */
 	public Cell getCell(int xPos, int yPos) {
 		return _map[yPos][xPos];

@@ -26,12 +26,11 @@ public interface GameConstants {
 	float ITEM_CHANCE = 0.5f;
 
 	// Display constants
-	int CELL_WIDTH = 60;
-	int CELL_HEIGHT = 60;
+	int CELL_SIZE = 60;
 	int CELL_NUM_X = 16;
 	int CELL_NUM_Y = 16;
-	int SCREEN_WIDTH = CELL_WIDTH * CELL_NUM_X;
-	int SCREEN_HEIGHT = CELL_HEIGHT * CELL_NUM_Y;
+	int SCREEN_WIDTH = CELL_SIZE * CELL_NUM_X;
+	int SCREEN_HEIGHT = CELL_SIZE * CELL_NUM_Y;
 
 	// For map image
 	int GROUND_1 = 0;

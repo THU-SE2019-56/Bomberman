@@ -57,10 +57,10 @@ class Path implements GameConstants {
 
 /**
  * This class is used to encapsulate some path finding algorithm.
- * Now only BFS is supported.
+ * Now BFS and Random Path is supported.
  *
  * @author  Hang Chen
- * @version 0.1
+ * @version 0.2
  */
 class Brain implements GameConstants {
 	private final static int[] dxs = {-1, 1, 0, 0};
@@ -82,13 +82,14 @@ class Brain implements GameConstants {
 			}
 	}
 
-	private void bfs(Map m, int si, int sj, int ti, int tj) {
+
+	private boolean bfs(Map m, int si, int sj, int ti, int tj) {
 		Deque<Point> q = new ArrayDeque<>();
 		q.add(new Point(si, sj));
 
 		while (q.size()>0) {
 			Point p = q.pop();
-			if (p.x==ti && p.y==tj) return;
+			if (p.x==ti && p.y==tj) return true;
 
 			for (int k=0; k<4; ++k) {
 				int ii = p.x + dxs[k];
@@ -100,7 +101,33 @@ class Brain implements GameConstants {
 				}
 			}
 		}
+		return false;
 	}
+
+	/**
+	 * Random select a visible position in the map. Must be called after bfs.
+	 *
+	 * @return A random visible position
+	 */
+	private Point randomSelectVizPos() {
+		int cnt = 0, p = 0;
+
+		// count all visible position
+		for (int i=0; i<CELL_NUM_X; ++i)
+			for (int j=0; j<CELL_NUM_Y; ++j)
+				if (viz[i][j]) cnt++;
+
+		// random select a position
+		int stp = (int)(cnt*Math.random());
+		for (int i=0; i<CELL_NUM_X; ++i) {
+			for (int j=0; j<CELL_NUM_Y; ++j) {
+				if (viz[i][j]) p++;
+				if (p==stp) return new Point(i, j);
+			}
+		}
+		return null;
+	}
+
 
 	private void genPath(Path p, int i, int j, int si, int sj) {
 		int d = fa[i][j];
@@ -112,24 +139,41 @@ class Brain implements GameConstants {
 		}
 	}
 
+
+	private void genRandomPath(Path p, int si, int sj) {
+		Point rp = randomSelectVizPos();
+		if (rp!=null) genPath(p, rp.x, rp.y, si, sj);
+	}
+
 	void findPath(Map m, Path p, int si, int sj, int ti, int tj) {
 		p.clear();
 		reset();
-		bfs(m, si, sj, ti, tj);
-		genPath(p, ti, tj, si, sj);
+		if (bfs(m, si, sj, ti, tj)) genPath(p, ti, tj, si, sj);
+		else genRandomPath(p, si, sj);		// if cannot find a path, take a random one instead
+	}
+
+	void randomPath(Map m, Path p, int si, int sj) {
+		if (p.size()==0) {		// generate new path only if the current one used up
+			reset();
+			bfs(m, si, sj, -1, -1);
+			genRandomPath(p, si, sj);
+		}
 	}
 }
 
 
 /**
  * The Monster class.
- * Monster will follow the player, until killed by a bomb or collide with the player (player's HP will reduce 15).
+ * Monster will random walk on the whole map, until distance between the player smaller than ALERT_DISTANCE.
+ * Then the monster will follow the player, until get killed or be rid of, or collide with the player (
+ * in this case the player's HP will reduce by HP_LOSS_BY_MONSTER).
  *
  * @author  Hang Chen
- * @version 0.1
+ * @version 0.2
  */
 public class Monster implements GameConstants {
-	private boolean isAlive;
+	private boolean alive;
+	private boolean alert;		// whether the monster is in alert state
 	private int velocity;
 	private int oldDirection;
 	private int direction;
@@ -154,6 +198,9 @@ public class Monster implements GameConstants {
 		}
 	}
 
+	/**
+	 * Create a monster at the given position (pixel coordinates)
+	 */
 	public Monster(int X, int Y) {
 		this.x = X;
 		this.y = Y;
@@ -161,14 +208,14 @@ public class Monster implements GameConstants {
 	}
 
 	private void init() {
-		this.isAlive = true;
+		this.alive = true;
+		this.alert = false;
 		this.velocity = 3 + (int)(3*Math.random());
 		this.direction = -1;
 		this.oldDirection = 0;
 		brain = new Brain();
 		path = new Path();
 	}
-
 
 	private int nextDirection(Player p, Map m) {
 		if (path.size() > 0) {
@@ -192,8 +239,13 @@ public class Monster implements GameConstants {
 		return DIRECTION_STOP;
 	}
 
-	public boolean isAlive() {
-    	return this.isAlive;
+	void updateAlert(Player p) {
+		int mi = Math.round((float) x/CELL_WIDTH);
+		int mj = Math.round((float) y/CELL_HEIGHT);
+		int pi = Math.round((float) p.getX()/CELL_WIDTH);
+		int pj = Math.round((float) p.getY()/CELL_HEIGHT);
+		int dis = Math.abs(mi-pi) + Math.abs(mj-pj);
+		this.alert = (dis <= ALERT_DISTANCE);
 	}
 
 	public void setDirection(int d) {
@@ -254,17 +306,21 @@ public class Monster implements GameConstants {
 			case DIRECTION_STOP:
 				int mi = Math.round((float) x/CELL_WIDTH);
 				int mj = Math.round((float) y/CELL_HEIGHT);
-				int pi = Math.round((float) p.getX()/CELL_WIDTH);
-				int pj = Math.round((float) p.getY()/CELL_HEIGHT);
-				brain.findPath(m, path, mi, mj, pi, pj);
+				if (this.alert) {
+					int pi = Math.round((float) p.getX()/CELL_WIDTH);
+					int pj = Math.round((float) p.getY()/CELL_HEIGHT);
+					brain.findPath(m, path, mi, mj, pi, pj);
+				}
+				else brain.randomPath(m, path, mi, mj);
 				break;
 		}
 		if (isCollided(p.getX(), p.getY(), PLAYER_WIDTH, PLAYER_HEIGHT)) {
 			eliminate();
-			p.setHP(p.getHP()-15);//The player's HP will reduce by 15 when it encounter monsters.
+			p.setHP(p.getHP()-HP_LOSS_BY_MONSTER);
 		}
-		
+
 		setDirection(nextDirection(p, m));
+		updateAlert(p);
 	}
 
 	/**
@@ -278,10 +334,15 @@ public class Monster implements GameConstants {
 		return (x2 > x1) && (y2 > y1);
 	}
 
+
+	public boolean isAlive() {
+		return this.alive;
+	}
+
 	/**
 	 * Remove itself from the map after killed.
 	 */
 	public void eliminate() {
-		this.isAlive = false;
+		this.alive = false;
 	}
 }

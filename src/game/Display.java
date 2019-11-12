@@ -34,15 +34,12 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 	private Timer timer;
 	private final int REFRESH = 30; // Refresh(repaint) every 30 milliseconds
 	private Map map;
-	private int playerNum = 2;//Number of the players
+	private Player player;
 	private Monster[] monsters = new Monster[MONSTER_NUMBER];
 	private Item item;
 	private boolean gameOver = false;
 
-	Player player[] = new Player[2];
-	BufferedImage player1Image[] = new BufferedImage[4];
-	BufferedImage player2Image[] = new BufferedImage[4];
-	
+	BufferedImage characterImage[] = new BufferedImage[4];
 	BufferedImage itemImage[] = new BufferedImage[3];
 	BufferedImage monsterImage[] = new BufferedImage[4];
 	BufferedImage mapImage[] = new BufferedImage[4];
@@ -76,50 +73,37 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		//map = new Map();
 		//generateTestMap();
 		map = new Map(new MapMatrix(CELL_NUM_X,CELL_NUM_Y));
-		
-		for (int i=0;i<playerNum;i++) {
-			player[i] = new Player(map,i);
-		}
+		player = new Player(map);
 		item = new Item(2, 2);
 		for (int i = 0; i < MONSTER_NUMBER; i++) {
 			monsters[i] = new Monster(map);
 		}
 
 		this.setFocusable(true);
-		for (int i=0;i<playerNum;i++) {
-			this.getToolkit().addAWTEventListener(player[i], AWTEvent.KEY_EVENT_MASK);// Initialize the AWTEventListener.
-		}
+		this.getToolkit().addAWTEventListener(player, AWTEvent.KEY_EVENT_MASK);// Initialize the AWTEventListener.
 	}
 
 	/**
 	 * to detect if the player and items are collided
 	 */
 	public boolean itemCollisionDetection() {
+		int playerX = player.getX();
+		int playerY = player.getY();
+		int itemX = item.getX();
+		int itemY = item.getY();
 
-		boolean isGet = false;
-		
-		for (int i=0;i<playerNum;i++) {
-			int playerX = player[i].getX();
-			int playerY = player[i].getY();
-			int itemX = item.getX();
-			int itemY = item.getY();
+		Rectangle playerRectangle = new Rectangle(playerX, playerY, PLAYER_WIDTH, PLAYER_HEIGHT);
+		Rectangle itemRectangle = new Rectangle(itemX, itemY, ITEM_WIDTH, ITEM_HEIGHT);
 
-			Rectangle playerRectangle = new Rectangle(playerX, playerY, PLAYER_WIDTH, PLAYER_HEIGHT);
-			Rectangle itemRectangle = new Rectangle(itemX, itemY, ITEM_WIDTH, ITEM_HEIGHT);
+		if (playerRectangle.intersects(itemRectangle)) {
 
-			if (playerRectangle.intersects(itemRectangle)) {
+			item.getItem(player);
 
-				item.getItem(player[i]);
-				item.setIsAcquired(true);
-				isGet = true;
-			} 
-			else {
-				isGet = false;
-			}
-		}
-		
-	return item.getIsAcquired();
-		
+			item.setIsAcquired(true);
+			return item.getIsAcquired();
+		} else
+			return item.getIsAcquired();
+
 	}
 
 	/**
@@ -179,9 +163,9 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		if (!itemCollisionDetection()) {
 			paintItem(g);
 		}
-		//if (player.getHP() <= 0) {
+		if (player.getHP() <= 0) {
 			// endGame(g);
-		//}
+		}
 		Toolkit.getDefaultToolkit().sync();
 	}
 
@@ -189,27 +173,16 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 	 * Paint the image of the player.
 	 */
 	public void paintPlayer(Graphics g) {
+		g.drawImage(characterImage[player.getImageDirection()], player.getX(), player.getY(), PLAYER_WIDTH,
+				PLAYER_HEIGHT, this);
+		g.setColor(Color.BLUE);
 		
-		for (int i=0;i<playerNum;i++) {
-			if (player[i].getPlayerID()==PLAYER_ID_P1) {
-			g.drawImage(player1Image[player[i].getImageDirection()], player[i].getX(), player[i].getY(), PLAYER_WIDTH,
-					PLAYER_HEIGHT, this);
-			}
-			if (player[i].getPlayerID()==PLAYER_ID_P2) {
-			g.drawImage(player2Image[player[i].getImageDirection()], player[i].getX(), player[i].getY(), PLAYER_WIDTH,
-					PLAYER_HEIGHT, this);
-			}
-			
-			g.setColor(Color.BLUE);
-			
-			
-			/*
-			 * Draw HP bar of the player
-			 */
-			g.drawRect(player[i].getX(), player[i].getY() - 15, CELL_WIDTH, 10);
-			g.setColor(Color.RED);
-			g.fillRect(player[i].getX(), player[i].getY() - 15, player[i].getHP(), 10);
-		}
+		/*
+		 * Draw HP bar of the player
+		 */
+		g.drawRect(player.getX(), player.getY() - 15, CELL_WIDTH, 10);
+		g.setColor(Color.RED);
+		g.fillRect(player.getX(), player.getY() - 15, player.getHP(), 10);
 	}
 
 	public void paintItem(Graphics g) {
@@ -279,12 +252,10 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		 * alive. If new bombs are planted? Have bombs exploded? Eliminate those walls
 		 * and monsters that have been boomed.
 		 */
-		for (int i=0;i<playerNum;i++) {
-			player[i].playerMove();// Change the location of the player
-			for (Monster m : monsters) { // Change the location of monsters
-				if (m.isAlive()) {
-					m.monsterMove(player[i], map);
-				}
+		player.playerMove();// Change the location of the player
+		for (Monster m : monsters) { // Change the location of monsters
+			if (m.isAlive()) {
+				m.monsterMove(player, map);
 			}
 		}
 
@@ -299,7 +270,7 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 	 * This method should be invoked in the constructor to initialize. <br>
 	 * Consider all components including player, walls, monsters, etc. <br>
 	 * Perhaps using paintComponent(Graphics g) will be a more appropriate
-	 * method? ---Comment from Chengsong Xiong <br>
+	 * method＄1�7 ---Comment from Chengsong Xiong <br>
 	 * What I mean is, for example, setting the player's initial place or velocity
 	 * here, not painting. ---Comment from Wang <br>
 	 * Another thought, we should do all these in the construction methods. Maybe
@@ -312,16 +283,10 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 	public void loadImage() throws Exception {
 		// TODO Load all the images here
 
-		player1Image[DIRECTION_UP] = ImageIO.read(new File("image/player/p1UP.png"));
-		player1Image[DIRECTION_RIGHT] = ImageIO.read(new File("image/player/p1RIGHT.png"));
-		player1Image[DIRECTION_DOWN] = ImageIO.read(new File("image/player/p1DOWN.png"));
-		player1Image[DIRECTION_LEFT] = ImageIO.read(new File("image/player/p1LEFT.png"));
-		
-		player2Image[DIRECTION_UP] = ImageIO.read(new File("image/player/p2UP.png"));
-		player2Image[DIRECTION_RIGHT] = ImageIO.read(new File("image/player/p2RIGHT.png"));
-		player2Image[DIRECTION_DOWN] = ImageIO.read(new File("image/player/p2DOWN.png"));
-		player2Image[DIRECTION_LEFT] = ImageIO.read(new File("image/player/p2LEFT.png"));	
-		
+		characterImage[DIRECTION_UP] = ImageIO.read(new File("image/character/characterBack.png"));
+		characterImage[DIRECTION_RIGHT] = ImageIO.read(new File("image/character/characterRight.png"));
+		characterImage[DIRECTION_DOWN] = ImageIO.read(new File("image/character/characterFront.png"));
+		characterImage[DIRECTION_LEFT] = ImageIO.read(new File("image/character/characterLeft.png"));
 		itemImage[VELOCITY_UP] = ImageIO.read(new File("image/Item/velocity.png"));
 		monsterImage[DIRECTION_UP] = ImageIO.read(new File("image/monster/up.png"));
 		monsterImage[DIRECTION_DOWN] = ImageIO.read(new File("image/monster/down.png"));

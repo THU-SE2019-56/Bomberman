@@ -33,15 +33,20 @@ public interface GameConstants {
 	int SCREEN_WIDTH = CELL_WIDTH * CELL_NUM_X;
 	int SCREEN_HEIGHT = CELL_HEIGHT * CELL_NUM_Y;
 
-	// for map
+	// For map image
 	int GROUND_1 = 0;
 	int GROUND_2 = 1;
 	int DESTRUCTIBLE_WALL= 2;
 	int INDESTRUCTIBLE_WALL = 3;
+
+	// For bomb image
+	int BOMB = 0;
 	
-	//for game
+	// For game
 	int GAMEOVER = 0;
 	
-	//for bomb
-	int BOMB = 0;
+	// For MatMatrix
+	int NONE = 0;
+	int DESTRUCTIBLE = -1;
+	int INDESTRUCTIBLE = 1;
 }

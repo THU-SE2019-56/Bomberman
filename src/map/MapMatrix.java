@@ -19,7 +19,7 @@ public class MapMatrix implements GameConstants {
 	// Chance for wall to be generated
 	private float destructibleWallDensity = 0.5f;
 	private float indestructibleWallDensity = 0.3f;
-	// Number of current indestructive wall
+	// Number of current indestructible wall
 	private int indestructibleWallNum = 0;
 	private boolean[][] visited;
 	private UFSet set;
@@ -94,7 +94,7 @@ public class MapMatrix implements GameConstants {
 	}
 
 	/**
-	 * Randomly fill the map with wall TODO Guarantee connectivity!
+	 * Randomly fill the map with wall, guaranteeing connectivity
 	 */
 	public void randomFill() {
 		for (int i = 0; i < ySize; i++)
@@ -106,34 +106,36 @@ public class MapMatrix implements GameConstants {
 				}
 			}
 		checkConnectivity();
+		//testOutWall();
 		clearBlock();
-		// testOut();
+		//testOutWall();
+		// Reset and random fill again when failed
+		if(!set.finishConnection()) {
+			wall = new byte[ySize][xSize];
+			set = new UFSet();
+			visited = new boolean[ySize][xSize];
+			randomFill();
+		}
 	}
 
 	/**
 	 * remove walls that block the connectivity
 	 */
 	public void clearBlock() {
-		while (!set.finishConnection()) {
-			// for (int k = 0; k < 10; k++) {
-			// testOutWall();
-			if (set.finishConnection())
-				break;
-			for (int i = 0; i < ySize; i++)
-				for (int j = 0; j < xSize; j++) {
-					if (wall[i][j] == INDESTRUCTIBLE && blockConnectivity(i, j)) {
-						wall[i][j] = NONE;
-						set.addSet();
-						connect(i, j);
-					}
+		for (int i = 0; i < ySize; i++)
+			for (int j = 0; j < xSize; j++) {
+				if (wall[i][j] == INDESTRUCTIBLE && isBlockConnectivity(i, j)) {
+					wall[i][j] = NONE;
+					set.addSet();
+					connect(i, j);
 				}
-		}
+			}
 	}
 
 	/**
 	 * @return if the wall on certain position block the connectivity
 	 */
-	public boolean blockConnectivity(int yPos, int xPos) {
+	public boolean isBlockConnectivity(int yPos, int xPos) {
 		if (wall[yPos][xPos] == NONE)
 			return false;
 		int root[] = { -1, -1, -1, -1 };
@@ -152,7 +154,7 @@ public class MapMatrix implements GameConstants {
 		int positiveRoot = -1;
 		for (int i = 0; i < 4; i++) {
 			if (root[i] >= 0) {
-				if (positiveRoot > 0 && root[i] != positiveRoot)
+				if (positiveRoot >= 0 && root[i] != positiveRoot)
 					return true;
 				positiveRoot = root[i];
 			}
@@ -218,7 +220,7 @@ public class MapMatrix implements GameConstants {
 	public void testOutWall() {
 		for (int i = 0; i < ySize; i++) {
 			for (int j = 0; j < xSize; j++) {
-				if (blockConnectivity(i, j))
+				if (isBlockConnectivity(i, j))
 					System.out.print("{}");
 				else if (wall[i][j] == NONE)
 					System.out.print("  ");

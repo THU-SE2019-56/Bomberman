@@ -38,7 +38,7 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 	private Monster[] monsters = new Monster[MONSTER_NUMBER];
 	private Item item;
 	private boolean gameOver = false;
-	private int playerNum = 1;//Number of the players
+	private int playerNum = 2;//Number of the players
 	
 	Player player[] = new Player[2];
 	BufferedImage player1Image[] = new BufferedImage[4];
@@ -255,10 +255,11 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		 */
 		for (int i=0;i<playerNum;i++) {
 			player[i].playerMove();// Change the location of the player
-			for (Monster m : monsters) { // Change the location of monsters
-				if (m.isAlive()) {
-					m.monsterMove(player[i], map);
-				}
+		}
+		for (Monster m : monsters) { // Change the location of monsters
+			if (m.isAlive()) {
+				int p = (int)(playerNum*Math.random());	// select a bad luck player randomly
+				m.monsterMove(player[p], map);
 			}
 		}
 

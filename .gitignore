@@ -2,8 +2,10 @@
 /bin/
 .project
 .classpath
-.DS_Store
 */.DS_Store
+
+# for vscode
+.vscode/
 
 # for IDEA
 /out

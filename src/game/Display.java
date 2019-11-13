@@ -38,7 +38,7 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 	private Monster[] monsters = new Monster[MONSTER_NUMBER];
 	private Item item;
 	private boolean gameOver = false;
-	private int playerNum = 2;//Number of the players
+	private int playerNum = 1;//Number of the players
 	
 	Player player[] = new Player[2];
 	BufferedImage player1Image[] = new BufferedImage[4];

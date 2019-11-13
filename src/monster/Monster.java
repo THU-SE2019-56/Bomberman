@@ -12,15 +12,18 @@ class Point {
 		this.x = x;
 		this.y = y;
 	}
+	public String toString() {		// for debug
+		return String.format("(%d, %d)", x, y);
+	}
 }
 
 
 /**
  * This class is used to represent a path.
- * The path consists of each turning point, i.e. each two adjacent points has same x or y.
+ * The path consists of each points in the path.
  *
  * @author  Hang Chen
- * @version 0.1
+ * @version 0.2
  */
 class Path implements GameConstants {
 	private ArrayList<Point> data;
@@ -29,12 +32,20 @@ class Path implements GameConstants {
 		data = new ArrayList<>();
 	}
 
-	int getNextX() {
-		return data.get(0).x * CELL_WIDTH;
+	int getNextI() {	// grid coordinates
+		return data.get(0).x;
+	}
+
+	int getNextJ() {
+		return data.get(0).y;
+	}
+
+	int getNextX() {	// pixel coordinates
+		return getNextI() * CELL_WIDTH;
 	}
 
 	int getNextY() {
-		return data.get(0).y * CELL_HEIGHT;
+		return getNextJ() * CELL_HEIGHT;
 	}
 
 	void addPoint(int i, int j) {
@@ -51,6 +62,14 @@ class Path implements GameConstants {
 
 	int size() {
 		return data.size();
+	}
+
+	public String toString() {		// for debug
+		String s = "";
+		for (int k=0; k<size()-1; ++k)
+			s += data.get(k) + " -> ";
+		s += data.get(size()-1);
+		return s;
 	}
 }
 
@@ -193,6 +212,8 @@ public class Monster implements GameConstants {
 				this.x = i * CELL_WIDTH;
 				this.y = j * CELL_HEIGHT;
 				init();
+				// brain.findPath(m, path, i, j, 0, 0);
+				// System.out.println(path);
 				break;
 			}
 		}
@@ -229,6 +250,9 @@ public class Monster implements GameConstants {
 				this.x = path.getNextX();
 				this.y = path.getNextY();
 				path.removeFirst();
+				// replanning if the next position in the path is invalid
+				if (path.size()>0 && !m.isAvailable(path.getNextI(), path.getNextJ()))
+					path.clear();
 				return DIRECTION_STOP;
 			}
 			if (dx > 0 && dy == 0) return DIRECTION_RIGHT;
@@ -318,7 +342,6 @@ public class Monster implements GameConstants {
 			eliminate();
 			p.setHP(p.getHP()-HP_LOSS_BY_MONSTER);
 		}
-
 		setDirection(nextDirection(p, m));
 		updateAlert(p);
 	}

@@ -17,7 +17,7 @@ public class MapMatrix implements GameConstants {
 	// Define wall matrix
 	private byte[][] wall;
 	// Chance for wall to be generated
-	private float destructibleWallDensity = 0.5f;
+	private float destructibleWallDensity = 0.4f;
 	private float indestructibleWallDensity = 0.3f;
 	// Number of current indestructible wall
 	private int indestructibleWallNum = 0;
@@ -90,13 +90,14 @@ public class MapMatrix implements GameConstants {
 		wall = new byte[ySize][xSize];
 		set = new UFSet();
 		visited = new boolean[ySize][xSize];
-		randomFill();
+		randomFillIndestructible();
+		randomFillDestrcutible();
 	}
 
 	/**
-	 * Randomly fill the map with wall, guaranteeing connectivity
+	 * Randomly fill the map with indestructible wall, guaranteeing connectivity
 	 */
-	public void randomFill() {
+	public void randomFillIndestructible() {
 		for (int i = 0; i < ySize; i++)
 			for (int j = 0; j < xSize; j++) {
 				if ((float) Math.random() < indestructibleWallDensity) {
@@ -106,16 +107,28 @@ public class MapMatrix implements GameConstants {
 				}
 			}
 		checkConnectivity();
-		//testOutWall();
+		// testOutWall();
 		clearBlock();
-		//testOutWall();
+		// testOutWall();
 		// Reset and random fill again when failed
-		if(!set.finishConnection()) {
+		if (!set.finishConnection()) {
 			wall = new byte[ySize][xSize];
 			set = new UFSet();
 			visited = new boolean[ySize][xSize];
-			randomFill();
+			randomFillIndestructible();
 		}
+	}
+
+	/**
+	 * Randomly fill the rest of map with destructible wall after randomFillIndestructible
+	 */
+	public void randomFillDestrcutible() {
+		for (int i = 0; i < ySize; i++)
+			for (int j = 0; j < xSize; j++) {
+				if (wall[i][j] == NONE && (float) Math.random() < destructibleWallDensity)
+					wall[i][j] = DESTRUCTIBLE;
+			}
+
 	}
 
 	/**

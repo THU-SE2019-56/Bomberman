@@ -152,14 +152,14 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 	 * PLEASE NOTE: This is only a temporary method for testing the method
 	 * "plantBomb()" of the player, without using the bomb class.
 	 */
-	public void updateBomb(Graphics g) {
-		for (int i = 0; i < map.getSizeX(); i++) {
-			for (int j = 0; j < map.getSizeY(); j++) {
-				if (map.getCell(i, j).isWithBomb())
-					g.drawImage(bombImage[BOMB], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), BOMB_WIDTH, BOMB_HEIGHT, this);
-			}
-		}
-	}
+//	public void updateBomb(Graphics g) {
+//		for (int i = 0; i < map.getSizeX(); i++) {
+//			for (int j = 0; j < map.getSizeY(); j++) {
+//				if (map.getCell(i, j).isWithBomb())
+//					g.drawImage(bombImage[BOMB], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), BOMB_WIDTH, BOMB_HEIGHT, this);
+//			}
+//		}
+//	}
 
 	/**
 	 * All painting methods are invoked in "paintComponent(Graphics g)".
@@ -169,7 +169,7 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		super.paintComponent(g);
 		// paintMapTest(g);
 		paintMap(g);
-		updateBomb(g);// PLEASE NOTE: This is only a temporary method for testing the method
+		//updateBomb(g);// PLEASE NOTE: This is only a temporary method for testing the method
 		// "plantBomb()" of the player,without using the bomb class.
 
 		paintPlayer(g);
@@ -251,6 +251,8 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 					g.drawImage(mapImage[DESTRUCTIBLE_WALL], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), CELL_WIDTH, CELL_HEIGHT, this);
 				if (map.isWithIndestructibleWall(i, j))
 					g.drawImage(mapImage[INDESTRUCTIBLE_WALL], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), CELL_WIDTH, CELL_HEIGHT, this);
+				if (map.isWithBomb(i, j))
+					g.drawImage(bombImage[BOMB], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), BOMB_WIDTH, BOMB_HEIGHT, this);
 				// TODO waiting for adding bomb and item
 			}
 	}

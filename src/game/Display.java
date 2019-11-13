@@ -133,8 +133,7 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setResizable(false);
 		// f.setLocationRelativeTo(null); // set location to screen center
-		// --this method will lead to the failure of the game, and I don't know why.....
-		// Perhaps owning to the macOS system
+		// --this method will lead to the failure of the game, and I don't know why..... Perhaps owning to the macOS system
 		f.setVisible(true);
 		jp.setVisible(true);
 		f.add(jp);
@@ -148,18 +147,6 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		this.gameOver = true;
 	}
 
-	/**
-	 * PLEASE NOTE: This is only a temporary method for testing the method
-	 * "plantBomb()" of the player, without using the bomb class.
-	 */
-//	public void updateBomb(Graphics g) {
-//		for (int i = 0; i < map.getSizeX(); i++) {
-//			for (int j = 0; j < map.getSizeY(); j++) {
-//				if (map.getCell(i, j).isWithBomb())
-//					g.drawImage(bombImage[BOMB], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), BOMB_WIDTH, BOMB_HEIGHT, this);
-//			}
-//		}
-//	}
 
 	/**
 	 * All painting methods are invoked in "paintComponent(Graphics g)".
@@ -167,16 +154,16 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		// paintMapTest(g);
+		
 		paintMap(g);
-		//updateBomb(g);// PLEASE NOTE: This is only a temporary method for testing the method
-		// "plantBomb()" of the player,without using the bomb class.
-
 		paintPlayer(g);
 		paintMonsters(g);
 
-		if (!itemCollisionDetection()) {
-			paintItem(g);
+		
+		for (int i=0;i<playerNum;i++) {
+			if (player[i].acquireItem(item)==false) {
+				paintItem(g);
+			}
 		}
 		//if (player.getHP() <= 0) {
 			// endGame(g);
@@ -214,19 +201,6 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		g.drawImage(itemImage[item.getItemID()], item.getX(), item.getY(), ITEM_WIDTH, ITEM_HEIGHT, this);
 	}
 
-	/**
-	 * Paint a simple map for testing.
-	 */
-//	public void paintMapTest(Graphics g) {
-//		for (byte i = 0; i < map.getSizeX(); i++)
-//			for (byte j = 0; j < map.getSizeY(); j++) {
-//				if ((j == 4 || j == 9 || j == 11) && (i == 3 || i == 6 || i == 9 || i == 10 || i == 11)) {
-//					Cell mapCell = map.getCell(i, j);
-//					mapCell.setWall(true);// write in display()
-//				}
-//			}
-//		paintMap(g);
-//	}
 
 	public void generateTestMap() {
 		for (byte i = 0; i < map.getSizeX(); i++)
@@ -292,7 +266,6 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 			repaint();
 		}
 
-		repaint();
 	}
 
 	/**

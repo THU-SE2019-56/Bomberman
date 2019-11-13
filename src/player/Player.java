@@ -1,6 +1,7 @@
 package player;
 
 import java.awt.AWTEvent;
+import java.awt.Rectangle;
 import java.awt.event.AWTEventListener;
 import java.awt.event.KeyEvent;
 
@@ -8,6 +9,7 @@ import map.Map;
 
 import game.GameConstants;
 import map.Cell;
+import items.Item;
 //import map.Map;
 //import monster.Monster;
 
@@ -76,16 +78,12 @@ public class Player implements AWTEventListener, GameConstants {
 		return this.playerHP;
 	}
 
-    /**
-     * Use setVelocity() to set the velocity of the player.
-     */
+
     public void setVelocity(int v) {
         this.velocity = v;
     }
 
-    /**
-     * Get the velocity of the player.
-     */
+
     public int getVelocity() {
         return this.velocity;
     }
@@ -135,43 +133,28 @@ public class Player implements AWTEventListener, GameConstants {
 
     /**
      * Get the image direction of the players.
-     *
-     * @return Return an integer value.
      */
     public int getImageDirection() {
         return this.imageDirection;
     }
 
-    /**
-     * Set the x of the player.
-     *
-     * @param X
-     */
+ 
     public void setX(int X) {
         this.x = X;
     }
 
-    /**
-     * Set the y of the player.
-     *
-     * @param Y
-     */
+
     public void setY(int Y) {
         this.y = Y;
     }
 
-    /**
-     * Get the x of the player.
-     *
-     * @return Return an integer value.
-     */
+  
+
     public int getX() {
         return this.x;
     }
 
-    /**
-     * Get the y of the player.
-     */
+
     public int getY() {
         return this.y;
     }
@@ -354,10 +337,7 @@ public class Player implements AWTEventListener, GameConstants {
 		
 		
 		if (this.playerID==PLAYER_ID_P2) {
-			/*
-			 * Enable to set the direction of the player only when the x and y of the player are multiples of 60. As
-			 * a result, the player will keep moving when the x and y of the player are not multiples of 60.
-			 */
+	
 			if (event.getID() == KeyEvent.KEY_PRESSED) {
 				KeyEvent e = (KeyEvent) event;
 					switch(e.getKeyCode()) {
@@ -381,9 +361,8 @@ public class Player implements AWTEventListener, GameConstants {
 						this.setDirection(this.getDirection());		
 					}
 				}
-			/*
-			 * When the keys are released, set the direction of the player to DIRECTION_STOP.
-			 */
+		
+			
 			if (event.getID() == KeyEvent.KEY_RELEASED) {
 				KeyEvent e = (KeyEvent) event;
 			
@@ -426,13 +405,33 @@ public class Player implements AWTEventListener, GameConstants {
 		mi.setBomb(mapx,mapy,30);
 		
 	}
-//
-//	/**
-//	 * Use mapinfo and monsters to decide whether the player is alive, whether the
-//	 * player acquire any item, etc.
-//	 */
-//	public void decideState(Player player, Map mi) {
-//
-//	}
+	
+	
+	public boolean acquireItem(Item item) {
+		
+		int playerX = this.getX();
+		int playerY = this.getY();
+		int itemX = item.getX();
+		int itemY = item.getY();
+
+		Rectangle playerRectangle = new Rectangle(playerX, playerY, PLAYER_WIDTH, PLAYER_HEIGHT);
+		Rectangle itemRectangle = new Rectangle(itemX, itemY, ITEM_WIDTH, ITEM_HEIGHT);
+
+		if (playerRectangle.intersects(itemRectangle)) {
+
+			item.getItem(this);
+			item.setIsAcquired(true);
+		} 
+	
+		return item.getIsAcquired();
+	}
+
+	/**
+	 * Use map and monsters to decide whether the player is alive, whether the
+	 * player acquire any item, etc.
+	 */
+	public void decideState(Player player, Map mi) {
+
+	}
 
 }

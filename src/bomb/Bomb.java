@@ -20,13 +20,12 @@ public class Bomb implements GameConstants {
     private final static int[] dxs = {-1, 1, 0, 0};
     private final static int[] dys = {0, 0, -1, 1};
 
-	/**
-	 *
-	 * @param x the x position of bomb
-	 * @param y the y position of bomb
-	 * @param bombPow the distance the bomb can spread
-	 * @param map where bomb on
-	 */
+    /**
+     * @param x       the x position of bomb
+     * @param y       the y position of bomb
+     * @param bombPow the distance the bomb can spread
+     * @param map     where bomb on
+     */
     public Bomb(int x, int y, int bombPow, Map map) {
         this.x = x;
         this.y = y;
@@ -45,27 +44,29 @@ public class Bomb implements GameConstants {
         }
     }
 
-	/**
-	 * Used to set the remaining time of the bomb, when other bomb involve it
-	 * @param time remaining time to be set
-	 */
+    /**
+     * Used to set the remaining time of the bomb, when other bomb involve it
+     *
+     * @param time remaining time to be set
+     */
 
-	public void setBombTime(int time) {
+    public void setBombTime(int time) {
         timeRemain = time <= 0 ? 0 : time;
     }
 
 
-	/**
-	 *  mark the involved area as active
-	 */
+    /**
+     * mark the involved area as active
+     */
 
-	private void explode() {
+    private void explode() {
         int currX, currY;
         Cell currCell;
+        currMap.getCell(x, y).explosionActivate();
         for (int i = 0; i < 4; i++) {
-			currX = x;
-			currY = y;
-        	for (int j = 1; j <= bombPow; j++) {
+            currX = x;
+            currY = y;
+            for (int j = 1; j <= bombPow; j++) {
                 currX += dxs[i];
                 currY += dys[i];
                 if (!currMap.isInMap(currX, currY)) {

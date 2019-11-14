@@ -351,12 +351,14 @@ public class Monster implements GameConstants {
 		}
 	}
 
-
+	/**
+	 * Check whether the monster is collided with a blown region
+	 */
 	private boolean isBlownOff(Map m) {
 		int mi = Math.round((float) x/CELL_WIDTH);
 		int mj = Math.round((float) y/CELL_HEIGHT);
-		for (int i=mi; i<Math.min(mi+1, CELL_NUM_X); ++i)
-			for (int j=mj; j<Math.min(mj+1, CELL_NUM_Y); ++j)
+		for (int i=mi; i<Math.min(mi+2, CELL_NUM_X); ++i)
+			for (int j=mj; j<Math.min(mj+2, CELL_NUM_Y); ++j)
 				if (m.isAtExplosion(i, j) &&
 					isCollided(i*CELL_WIDTH, j*CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT))
 					return true;

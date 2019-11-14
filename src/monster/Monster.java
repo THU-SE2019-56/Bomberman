@@ -338,12 +338,29 @@ public class Monster implements GameConstants {
 				else brain.randomPath(m, path, mi, mj);
 				break;
 		}
-		if (isCollided(p.getX(), p.getY(), PLAYER_WIDTH, PLAYER_HEIGHT)) {
+		if (isCollided(p.getX(), p.getY(), PLAYER_WIDTH, PLAYER_HEIGHT)) { // collide with player
 			eliminate();
 			p.setHP(p.getHP()-HP_LOSS_BY_MONSTER);
 		}
-		setDirection(nextDirection(p, m));
-		updateAlert(p);
+		else if (isBlownOff(m)) {	// killed by bomb
+			eliminate();
+		}
+		else {	// still alive
+			setDirection(nextDirection(p, m));
+			updateAlert(p);
+		}
+	}
+
+
+	private boolean isBlownOff(Map m) {
+		int mi = Math.round((float) x/CELL_WIDTH);
+		int mj = Math.round((float) y/CELL_HEIGHT);
+		for (int i=mi; i<Math.min(mi+1, CELL_NUM_X); ++i)
+			for (int j=mj; j<Math.min(mj+1, CELL_NUM_Y); ++j)
+				if (m.isAtExplosion(i, j) &&
+					isCollided(i*CELL_WIDTH, j*CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT))
+					return true;
+		return false;
 	}
 
 	/**

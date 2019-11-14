@@ -117,7 +117,7 @@ public class Map implements GameConstants {
 	 * @return if the bomb is successfully set
 	 */
 	public boolean setBomb(int xPos, int yPos, int bombPower) {
-		if (isInMap(xPos, yPos) && _map[yPos][xPos].setBomb(new Bomb(xPos, yPos, bombPower))) {
+		if (isInMap(xPos, yPos) && _map[yPos][xPos].setBomb(new Bomb(xPos, yPos, bombPower, this))) {
 			return true;
 		}
 		return false;

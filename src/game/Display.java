@@ -227,6 +227,8 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 					g.drawImage(mapImage[INDESTRUCTIBLE_WALL], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), CELL_WIDTH, CELL_HEIGHT, this);
 				if (map.isWithBomb(i, j))
 					g.drawImage(bombImage[BOMB], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), BOMB_WIDTH, BOMB_HEIGHT, this);
+				if (map.isAtExplosion(i,j))
+					g.drawImage(bombImage[EXPLODE], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), BOMB_WIDTH, BOMB_HEIGHT, this);
 				// TODO waiting for adding bomb and item
 			}
 	}
@@ -262,6 +264,8 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 				m.monsterMove(player[p], map);
 			}
 		}
+
+		map.refresh(); // Refresh the map, for bomb
 
 		if (this.gameOver == false) {
 			repaint();
@@ -308,5 +312,7 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		mapImage[INDESTRUCTIBLE_WALL] = ImageIO.read(new File("image/maps/wall_indestructibel.png"));
 		gameImage[GAMEOVER] = ImageIO.read(new File("image/game/gameover.jpg"));
 		bombImage[BOMB] = ImageIO.read(new File("image/bomb/bomb.png"));
+		bombImage[EXPLODE] = ImageIO.read(new File("image/bomb/explode.jpeg"));
+
 	}
 }

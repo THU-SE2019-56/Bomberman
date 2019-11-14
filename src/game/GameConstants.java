@@ -27,6 +27,9 @@ public interface GameConstants {
 	int POWER_UP = 2;
 	int ITEM_WIDTH = 45;
 	int ITEM_HEIGHT = 45;
+
+	// Bomb constants
+	int BOMB_TIME = 100; // time between plant and explode
 	
 
 	// Chance for item to be created
@@ -49,7 +52,8 @@ public interface GameConstants {
 	int INDESTRUCTIBLE_WALL = 3;
 
 	// For bomb image
-	int BOMB = 0;
+	int EXPLODE = 0;
+	int BOMB = 1;
 	int BOMB_WIDTH = 45;
 	int BOMB_HEIGHT = 45;
 	

@@ -402,7 +402,7 @@ public class Player implements AWTEventListener, GameConstants {
 	 */
 	public void plantBomb(Map mi, int mapx,int mapy ) {
 		
-		mi.setBomb(mapx,mapy,30);
+		mi.setBomb(mapx,mapy,4);
 		
 	}
 	

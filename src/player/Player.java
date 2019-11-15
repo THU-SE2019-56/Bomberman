@@ -47,7 +47,7 @@ public class Player implements AWTEventListener, GameConstants {
 	private Map playerMap; //Relate the player with the map
 	private int mapX;
 	private int mapY;
-	private int playerHP = CELL_WIDTH;
+	private int playerHP = 100;
 
 	
 

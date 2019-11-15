@@ -62,6 +62,7 @@ public class Bomb implements GameConstants {
 	private void explode() {
         int currX, currY;
         Cell currCell;
+        currMap.getCell(x, y).explosionActivate();  // explosin at bomb position
         for (int i = 0; i < 4; i++) {
 			currX = x;
 			currY = y;

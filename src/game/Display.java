@@ -31,6 +31,8 @@ import monster.Monster;
  * @version 0.2
  */
 public class Display extends JPanel implements ActionListener, GameConstants {
+	
+	private static final long serialVersionUID = 1L;
 	private Timer timer;
 	private final int REFRESH = 30; // Refresh(repaint) every 30 milliseconds
 	private Map map;
@@ -51,13 +53,16 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 	BufferedImage gameImage[] = new BufferedImage[3];
 	BufferedImage bombImage[] = new BufferedImage[2];
 
+	JTextField playerLifeText[] = new JTextField[2];
+
 	/**
 	 *
 	 * The method “public static void main(String args[]) 17 is achieved here to
 	 * test the effects of the Player class. Remove it when you don't need it.
 	 */
 	public static void main(String args[]) {
-		createPanel();
+		Display dp = new Display();
+		dp.createPanel();
 	}
 
 	/**
@@ -72,6 +77,8 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 
 		timer = new Timer(REFRESH, this);
 		timer.start();
+		
+	
 
 		// initializeMap(); May delete.
 
@@ -93,40 +100,17 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		}
 	}
 
-	/**
-	 * to detect if the player and items are collided
-	 */
-	public boolean itemCollisionDetection() {
-		for (int i=0;i<playerNum;i++) {
-			int playerX = player[i].getX();
-			int playerY = player[i].getY();
-			int itemX = item.getX();
-			int itemY = item.getY();
-
-			Rectangle playerRectangle = new Rectangle(playerX, playerY, PLAYER_WIDTH, PLAYER_HEIGHT);
-			Rectangle itemRectangle = new Rectangle(itemX, itemY, ITEM_WIDTH, ITEM_HEIGHT);
-
-			if (playerRectangle.intersects(itemRectangle)) {
-
-				item.getItem(player[i]);
-				item.setIsAcquired(true);
-				
-			} 
-			else {
-				
-			}
-		}
-		
-	return item.getIsAcquired();
-
-	}
 
 	/**
 	 * Create JFrame and JPanel. Temp method.
 	 */
-	public static void createPanel() {
+	public void createPanel() {
 		JFrame f = new JFrame();
 		Display jp = new Display();
+
+		jp.setLayout(null);
+		jp.addStatusPanel();
+		
 		f.setTitle("Bomberman");
 		f.getContentPane().setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 		f.pack();
@@ -136,7 +120,47 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		// --this method will lead to the failure of the game, and I don't know why..... Perhaps owning to the macOS system
 		f.setVisible(true);
 		jp.setVisible(true);
+	
 		f.add(jp);
+		
+	}
+	
+	/**
+	 * Add a status panel on the right side of the main panel.
+	 */
+	private void addStatusPanel() {
+	
+		for (int i = 0;i<this.playerNum;i++) {	
+			if (i==PLAYER_ID_P1) {
+				
+				this.playerLifeText[i] = new JTextField("Player 1 HP:");
+				this.playerLifeText[i].setBounds(CELL_SIZE * CELL_NUM_X+1*CELL_SIZE, 2*CELL_SIZE, 4*CELL_SIZE, 1*CELL_SIZE);
+			}
+			
+			if (i==PLAYER_ID_P2) {
+				this.playerLifeText[i] = new JTextField("Player 2 HP:");
+				this.playerLifeText[i].setBounds(CELL_SIZE * CELL_NUM_X+1*CELL_SIZE, 5*CELL_SIZE, 4*CELL_SIZE, 1*CELL_SIZE);
+			}
+			this.playerLifeText[i].setEditable(false);
+			this.playerLifeText[i].setForeground(Color.BLUE);
+			this.playerLifeText[i].setBorder(null);
+			Font textFont = new Font("Times New Roman Italic", Font.BOLD, 18);
+			this.playerLifeText[i].setFont(textFont);
+			this.playerLifeText[i].setVisible(true);
+	
+			this.add(this.playerLifeText[i]);
+		}
+	}
+	
+	/**
+	 * Refresh the status panel.
+	 */
+	public void refreshStatusPanel() {
+		for (int i = 0;i < this.playerNum;i++) {
+			int playerHP = this.player[i].getHP();
+			if (i==PLAYER_ID_P1) this.playerLifeText[i].setText("Player 1 HP:"+String.valueOf(playerHP));
+			if (i==PLAYER_ID_P2) this.playerLifeText[i].setText("Player 2 HP:"+String.valueOf(playerHP));
+		}
 	}
 
 	/**
@@ -159,6 +183,7 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		paintPlayer(g);
 		paintMonsters(g);
 
+		this.refreshStatusPanel();
 		
 		for (int i=0;i<playerNum;i++) {
 			if (player[i].acquireItem(item)==false) {
@@ -184,9 +209,7 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 			g.drawImage(player2Image[player[i].getImageDirection()], player[i].getX(), player[i].getY(), PLAYER_WIDTH,
 					PLAYER_HEIGHT, this);
 			}
-			
 			g.setColor(Color.BLUE);
-			
 			
 			/*
 			 * Draw HP bar of the player
@@ -256,8 +279,9 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		 * and monsters that have been boomed.
 		 */
 		for (int i=0;i<playerNum;i++) {
-			player[i].playerMove();// Change the location of the player
+			player[i].refresh(map);//refresh player
 		}
+		
 		for (Monster m : monsters) { // Change the location of monsters
 			if (m.isAlive()) {
 				int p = (int)(playerNum*Math.random());	// select a bad luck player randomly
@@ -277,7 +301,7 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 	 * This method should be invoked in the constructor to initialize. <br>
 	 * Consider all components including player, walls, monsters, etc. <br>
 	 * Perhaps using paintComponent(Graphics g) will be a more appropriate
-	 * method＄1�7 ---Comment from Chengsong Xiong <br>
+	 * method ---Comment from Chengsong Xiong <br>
 	 * What I mean is, for example, setting the player's initial place or velocity
 	 * here, not painting. ---Comment from Wang <br>
 	 * Another thought, we should do all these in the construction methods. Maybe

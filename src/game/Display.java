@@ -120,9 +120,9 @@ public class Display extends JPanel implements ActionListener, GameConstants, Mo
 		f.setResizable(false);
 
 		// set location to screen center
-//		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-//		f.setLocation((ge.getMaximumWindowBounds().width-SCREEN_WIDTH)/2,
-//				(ge.getMaximumWindowBounds().height-SCREEN_HEIGHT)/2);
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		f.setLocation((ge.getMaximumWindowBounds().width-SCREEN_WIDTH)/2,
+				(ge.getMaximumWindowBounds().height-SCREEN_HEIGHT)/2);
 
 		f.setVisible(true);
 		jp.setVisible(true);

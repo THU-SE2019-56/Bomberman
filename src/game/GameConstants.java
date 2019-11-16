@@ -42,8 +42,15 @@ public interface GameConstants {
 	
 	int CELL_NUM_X = 16;
 	int CELL_NUM_Y = 16;
-	int SCREEN_WIDTH = CELL_SIZE * CELL_NUM_X;
+
+	
+	int STATUS_PANEL_WIDTH = CELL_SIZE*7;
+	int STATUS_PANEL_HEIGHT = CELL_SIZE*16;
+	
+	int SCREEN_WIDTH = CELL_SIZE * CELL_NUM_X+STATUS_PANEL_WIDTH;
 	int SCREEN_HEIGHT = CELL_SIZE * CELL_NUM_Y;
+	
+
 
 	// For map image
 	int GROUND_1 = 0;

@@ -92,6 +92,7 @@ public class MapMatrix implements GameConstants {
 		visited = new boolean[ySize][xSize];
 		randomFillIndestructible();
 		randomFillDestrcutible();
+		wall[0][0] = wall[0][1] = wall[1][0] = NONE;	// clean up born place
 	}
 
 	/**

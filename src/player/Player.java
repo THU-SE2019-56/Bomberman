@@ -26,7 +26,10 @@ public class Player implements AWTEventListener, GameConstants {
 	
 	private int playerID;//ID of the player
 	private int velocity; //The velocity should be divisible by 60
-	private int bombNumber;
+	
+	private int bombMaxNumber = 2;
+	private int bombPlantedNumber = 0;
+	
 	private int bombPower;
 	private boolean isImmune;
 	private boolean isAlive;
@@ -35,13 +38,16 @@ public class Player implements AWTEventListener, GameConstants {
 	private int x;
 	private int y;
 	private int stopflag =0;
+	private int playerHurtDelayCount = 0;
+	private int playerCanBeHurt = 1;
+	
 	
 
 	
 	private Map playerMap; //Relate the player with the map
 	private int mapX;
 	private int mapY;
-	private int playerHP = CELL_WIDTH;
+	private int playerHP = 100;
 
 	
 
@@ -53,8 +59,25 @@ public class Player implements AWTEventListener, GameConstants {
 		this.velocity= 5;
 		this.playerMap = newmap;
 		this.playerID = id;
+		this.playerHurtDelayCount = 0;
+		this.playerCanBeHurt = 1;
 	}
 
+	public void setBombPlantedNumber(int bombPlantedNum) {
+		this.bombPlantedNumber = bombPlantedNum;
+	}
+	
+	public int getBombPlantedNumber() {
+		return this.bombPlantedNumber;
+	}
+	
+	public void setBombMaxNumber(int bombMaxNum) {
+		this.bombMaxNumber = bombMaxNum;
+	}
+	
+	public int getBombMaxNumber() {
+		return this.bombMaxNumber;
+	}
 	
 	public void setPlayerID(int id){
 		this.playerID = id;
@@ -402,7 +425,12 @@ public class Player implements AWTEventListener, GameConstants {
 	 */
 	public void plantBomb(Map mi, int mapx,int mapy ) {
 		
-		mi.setBomb(mapx,mapy,4);
+		if (this.bombPlantedNumber <= this.bombMaxNumber) {
+			
+			mi.setBomb(mapx,mapy,4);
+			//this.bombPlantedNumber++;
+			
+		}
 		
 	}
 	
@@ -432,6 +460,34 @@ public class Player implements AWTEventListener, GameConstants {
 	 */
 	public void decideState(Player player, Map mi) {
 
+	}
+	
+	/**
+	 * Refresh the state of player. 
+	 * Player will be hurt when collided with bombs. The playerHurtDelayCount and playerCanBeHurt is used to 
+	 * avoid multiple hurts on player at the same time.
+	 */
+	public void refresh(Map mi) {
+		this.playerMove();// Change the location of the player
+	
+		
+		if (mi.isAtExplosion(this.getMapX(),this.getMapY())) {
+		
+			if (this.playerCanBeHurt == 1) {
+				this.setHP(this.getHP()-5);
+				this.playerCanBeHurt=0;
+			}
+		}
+		
+		if (this.playerCanBeHurt==0) {
+			this.playerHurtDelayCount++;
+			
+			if (this.playerHurtDelayCount==30) {
+				this.playerHurtDelayCount=0;
+				this.playerCanBeHurt=1;
+			}
+		}
+		
 	}
 
 }

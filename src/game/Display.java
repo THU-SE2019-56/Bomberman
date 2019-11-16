@@ -3,6 +3,8 @@ package game;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
@@ -30,7 +32,9 @@ import monster.Monster;
  * @author Chengsong, Wang
  * @version 0.2
  */
-public class Display extends JPanel implements ActionListener, GameConstants {
+public class Display extends JPanel implements ActionListener, GameConstants, MouseListener {
+	
+	private static final long serialVersionUID = 1L;
 	private Timer timer;
 	private final int REFRESH = 30; // Refresh(repaint) every 30 milliseconds
 	private Map map;
@@ -39,6 +43,7 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 	private Item item;
 	private boolean gameOver = false;
 	private int playerNum = 2;//Number of the players
+	private int pauseFlag = 0;
 	
 	Player player[] = new Player[2];
 	BufferedImage player1Image[] = new BufferedImage[4];
@@ -51,13 +56,17 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 	BufferedImage gameImage[] = new BufferedImage[3];
 	BufferedImage bombImage[] = new BufferedImage[2];
 
+	JTextField playerLifeText[] = new JTextField[2];
+	JButton pauseButton = new JButton("Pause");
+
 	/**
 	 *
 	 * The method “public static void main(String args[]) 17 is achieved here to
 	 * test the effects of the Player class. Remove it when you don't need it.
 	 */
 	public static void main(String args[]) {
-		createPanel();
+		Display dp = new Display();
+		dp.createPanel();
 	}
 
 	/**
@@ -72,6 +81,8 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 
 		timer = new Timer(REFRESH, this);
 		timer.start();
+	
+	
 
 		// initializeMap(); May delete.
 
@@ -93,40 +104,17 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		}
 	}
 
-	/**
-	 * to detect if the player and items are collided
-	 */
-	public boolean itemCollisionDetection() {
-		for (int i=0;i<playerNum;i++) {
-			int playerX = player[i].getX();
-			int playerY = player[i].getY();
-			int itemX = item.getX();
-			int itemY = item.getY();
-
-			Rectangle playerRectangle = new Rectangle(playerX, playerY, PLAYER_WIDTH, PLAYER_HEIGHT);
-			Rectangle itemRectangle = new Rectangle(itemX, itemY, ITEM_WIDTH, ITEM_HEIGHT);
-
-			if (playerRectangle.intersects(itemRectangle)) {
-
-				item.getItem(player[i]);
-				item.setIsAcquired(true);
-				
-			} 
-			else {
-				
-			}
-		}
-		
-	return item.getIsAcquired();
-
-	}
 
 	/**
 	 * Create JFrame and JPanel. Temp method.
 	 */
-	public static void createPanel() {
+	public void createPanel() {
 		JFrame f = new JFrame();
 		Display jp = new Display();
+
+		jp.setLayout(null);
+		jp.addStatusPanel();
+		
 		f.setTitle("Bomberman");
 		f.getContentPane().setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 		f.pack();
@@ -136,7 +124,74 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		// --this method will lead to the failure of the game, and I don't know why..... Perhaps owning to the macOS system
 		f.setVisible(true);
 		jp.setVisible(true);
+	
 		f.add(jp);
+		
+	}
+	
+	/**
+	 * Add a status panel on the right side of the main panel.
+	 */
+	private void addStatusPanel() {
+	
+		for (int i = 0;i<this.playerNum;i++) {	
+			if (i==PLAYER_ID_P1) {
+				this.playerLifeText[i] = new JTextField("");
+				this.playerLifeText[i].setBounds(CELL_SIZE * CELL_NUM_X+4*CELL_SIZE, 3*CELL_SIZE, 4*CELL_SIZE, CELL_SIZE/2);
+			}
+			if (i==PLAYER_ID_P2) {
+				this.playerLifeText[i] = new JTextField("");
+				this.playerLifeText[i].setBounds(CELL_SIZE * CELL_NUM_X+4*CELL_SIZE, 6*CELL_SIZE, 4*CELL_SIZE, CELL_SIZE/2);
+			}
+			this.playerLifeText[i].setEditable(false);
+			this.playerLifeText[i].setForeground(Color.BLUE);
+			this.playerLifeText[i].setBorder(null);
+			Font textFont = new Font("Times New Roman Italic", Font.BOLD, 14);
+			this.playerLifeText[i].setFont(textFont);
+			this.playerLifeText[i].setVisible(true);
+			this.playerLifeText[i].setBackground(null);
+
+			this.add(this.playerLifeText[i]);
+		}
+		
+		Font buttonFont = new Font("Times New Roman Italic", Font.BOLD, 16);
+		this.pauseButton.setBounds(CELL_SIZE * CELL_NUM_X+1*CELL_SIZE,8*CELL_SIZE,2*CELL_SIZE,CELL_SIZE);
+		this.pauseButton.setVisible(true);
+		this.pauseButton.setFont(buttonFont);
+		this.pauseButton.addMouseListener(this);
+		this.add(pauseButton);
+		
+	}
+	
+	/**
+	 * Refresh the status panel.
+	 */
+	public void refreshStatusPanel(Graphics g) {
+		for (int i = 0;i < this.playerNum;i++) {
+			int playerHP = this.player[i].getHP();
+			if (i==PLAYER_ID_P1) {
+				this.playerLifeText[i].setText(String.valueOf(playerHP));
+				g.setColor(Color.BLUE);
+				g.drawRect(CELL_SIZE * CELL_NUM_X+1*CELL_SIZE,3*CELL_SIZE, 100, CELL_SIZE/2);
+				g.setColor(Color.ORANGE);
+				g.fillRect(CELL_SIZE * CELL_NUM_X+1*CELL_SIZE,3*CELL_SIZE, player[i].getHP(), CELL_SIZE/2);
+				
+				g.drawImage(player1Image[DIRECTION_DOWN],CELL_SIZE * CELL_NUM_X+1*CELL_SIZE,CELL_SIZE,CELL_SIZE+CELL_SIZE/2,CELL_SIZE+CELL_SIZE/2,this);
+			}
+				
+				
+			if (i==PLAYER_ID_P2) {
+				this.playerLifeText[i].setText(String.valueOf(playerHP));
+				g.setColor(Color.BLUE);
+				g.drawRect(CELL_SIZE * CELL_NUM_X+1*CELL_SIZE,6*CELL_SIZE, 100, CELL_SIZE/2);
+				g.setColor(Color.ORANGE);
+				g.fillRect(CELL_SIZE * CELL_NUM_X+1*CELL_SIZE,6*CELL_SIZE, player[i].getHP(), CELL_SIZE/2);
+				
+				g.drawImage(player2Image[DIRECTION_DOWN],CELL_SIZE * CELL_NUM_X+1*CELL_SIZE,4*CELL_SIZE,CELL_SIZE+CELL_SIZE/2,CELL_SIZE+CELL_SIZE/2,this);
+			}
+			
+		
+		}
 	}
 
 	/**
@@ -159,6 +214,7 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		paintPlayer(g);
 		paintMonsters(g);
 
+		this.refreshStatusPanel(g);
 		
 		for (int i=0;i<playerNum;i++) {
 			if (player[i].acquireItem(item)==false) {
@@ -184,16 +240,12 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 			g.drawImage(player2Image[player[i].getImageDirection()], player[i].getX(), player[i].getY(), PLAYER_WIDTH,
 					PLAYER_HEIGHT, this);
 			}
-			
 			g.setColor(Color.BLUE);
-			
 			
 			/*
 			 * Draw HP bar of the player
 			 */
-			g.drawRect(player[i].getX(), player[i].getY() - 15, CELL_WIDTH, 10);
-			g.setColor(Color.RED);
-			g.fillRect(player[i].getX(), player[i].getY() - 15, player[i].getHP(), 10);
+		
 		}
 	}
 
@@ -255,20 +307,23 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		 * alive. If new bombs are planted? Have bombs exploded? Eliminate those walls
 		 * and monsters that have been boomed.
 		 */
-		for (int i=0;i<playerNum;i++) {
-			player[i].playerMove();// Change the location of the player
-		}
-		for (Monster m : monsters) { // Change the location of monsters
-			if (m.isAlive()) {
-				int p = (int)(playerNum*Math.random());	// select a bad luck player randomly
-				m.monsterMove(player[p], map);
+		if (this.pauseFlag==0) {
+			for (int i=0;i<playerNum;i++) {
+				player[i].refresh(map);//refresh player
 			}
-		}
-
-		map.refresh(); // Refresh the map, for bomb
-
-		if (this.gameOver == false) {
-			repaint();
+			
+			for (Monster m : monsters) { // Change the location of monsters
+				if (m.isAlive()) {
+					int p = (int)(playerNum*Math.random());	// select a bad luck player randomly
+					m.monsterMove(player[p], map);
+				}
+			}
+	
+			map.refresh(); // Refresh the map, for bomb
+	
+			if (this.gameOver == false) {
+				repaint();
+			}
 		}
 
 	}
@@ -277,7 +332,7 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 	 * This method should be invoked in the constructor to initialize. <br>
 	 * Consider all components including player, walls, monsters, etc. <br>
 	 * Perhaps using paintComponent(Graphics g) will be a more appropriate
-	 * method＄1�7 ---Comment from Chengsong Xiong <br>
+	 * method ---Comment from Chengsong Xiong <br>
 	 * What I mean is, for example, setting the player's initial place or velocity
 	 * here, not painting. ---Comment from Wang <br>
 	 * Another thought, we should do all these in the construction methods. Maybe
@@ -314,5 +369,44 @@ public class Display extends JPanel implements ActionListener, GameConstants {
 		bombImage[BOMB] = ImageIO.read(new File("image/bomb/bomb.png"));
 		bombImage[EXPLODE] = ImageIO.read(new File("image/bomb/explode.jpeg"));
 
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		if (e.getSource()==this.pauseButton) {
+			if (this.pauseFlag==0) {
+				this.pauseFlag=1;
+				this.pauseButton.setText("Start");
+			}
+			else {
+				this.pauseFlag=0;
+				this.pauseButton.setText("Pause");
+			}
+		}
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

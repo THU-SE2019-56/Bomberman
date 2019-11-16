@@ -5,6 +5,7 @@ import java.lang.Math;
 
 import bomb.Bomb;
 import items.Item;
+import player.Player;
 
 /**
  * <p>
@@ -116,8 +117,9 @@ public class Map implements GameConstants {
 	 * @param bombPower power of bomb
 	 * @return if the bomb is successfully set
 	 */
-	public boolean setBomb(int xPos, int yPos, int bombPower) {
-		if (isInMap(xPos, yPos) && _map[yPos][xPos].setBomb(new Bomb(xPos, yPos, bombPower, this))) {
+	public boolean setBomb(int xPos, int yPos, int bombPower, Player owner) {
+		if (isInMap(xPos, yPos) && _map[yPos][xPos].setBomb(new Bomb(xPos, yPos, bombPower, this, owner))) {
+			owner.addBombPlantedNumber();
 			return true;
 		}
 		return false;

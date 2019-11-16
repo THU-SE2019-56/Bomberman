@@ -2,6 +2,7 @@ package bomb;
 
 import map.Map;
 import map.Cell;
+import player.Player;
 import game.GameConstants;
 
 /**
@@ -16,6 +17,7 @@ public class Bomb implements GameConstants {
     private int x;
     private int y;
     private Map currMap;
+    private Player owner;
     private int timeRemain = BOMB_TIME;
     private final static int[] dxs = {-1, 1, 0, 0};
     private final static int[] dys = {0, 0, -1, 1};
@@ -26,11 +28,12 @@ public class Bomb implements GameConstants {
      * @param bombPow the distance the bomb can spread
      * @param map     where bomb on
      */
-    public Bomb(int x, int y, int bombPow, Map map) {
+    public Bomb(int x, int y, int bombPow, Map map, Player owner) {
         this.x = x;
         this.y = y;
         this.bombPow = bombPow;
         this.currMap = map;
+        this.owner = owner;
     }
 
     /**
@@ -40,6 +43,7 @@ public class Bomb implements GameConstants {
         timeRemain--;
         if (timeRemain < 0) {
             explode();
+            owner.reduceBombPlantedNumber();
             currMap.getCell(x, y).removeBomb();
         }
     }

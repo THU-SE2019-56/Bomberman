@@ -67,8 +67,12 @@ public class Player implements AWTEventListener, GameConstants {
 		this.bombPlantedNumber = bombPlantedNum;
 	}
 	
-	public void reduceBombPlantedNumber(int bombPlantedNum) {
+	public void reduceBombPlantedNumber() {
 		this.bombPlantedNumber--;
+	}
+
+	public void addBombPlantedNumber() {
+		this.bombPlantedNumber++;
 	}
 	
 	public int getBombPlantedNumber() {
@@ -428,12 +432,8 @@ public class Player implements AWTEventListener, GameConstants {
 	 * Update map BOMB_INFO
 	 */
 	public void plantBomb(Map mi, int mapx,int mapy ) {
-		
 		if (this.bombPlantedNumber <= this.bombMaxNumber) {
-			
-			mi.setBomb(mapx,mapy,4);
-			this.bombPlantedNumber++;
-			
+			mi.setBomb(mapx,mapy,4, this);
 		}
 		
 	}

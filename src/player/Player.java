@@ -10,6 +10,7 @@ import map.Map;
 import game.GameConstants;
 import map.Cell;
 import items.Item;
+import game.Display;
 //import map.Map;
 //import monster.Monster;
 
@@ -434,6 +435,8 @@ public class Player implements AWTEventListener, GameConstants {
 	public void plantBomb(Map mi, int mapx,int mapy ) {
 		if (this.bombPlantedNumber <= this.bombMaxNumber) {
 			mi.setBomb(mapx,mapy,4, this);
+		}else {
+
 		}
 		
 	}

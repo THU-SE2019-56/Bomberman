@@ -38,7 +38,7 @@ public class MapMatrix implements GameConstants {
 		}
 
 		int findRoot(int n) {
-			while (set[n] >= 0) 
+			while (set[n] >= 0)
 				n = set[n];
 			return n;
 		}
@@ -86,17 +86,41 @@ public class MapMatrix implements GameConstants {
 		wall = new byte[ySize][xSize];
 		set = new UFSet();
 		visited = new boolean[ySize][xSize];
-		randomFillIndestructible();
-		randomFillDestrcutible();
-		wall[0][0] = wall[0][1] = wall[1][0] = NONE;	// clean up born place
+		randomFill();
+		wall[0][0] = wall[0][1] = wall[1][0] = NONE; // clean up born place
 	}
 
 	/**
-	 * Randomly fill the map with indestructible wall, guaranteeing connectivity
+	 * Clear all walls on the map matrix
+	 */
+	public void clearAll() {
+		wall = new byte[ySize][xSize];
+		set = new UFSet();
+		visited = new boolean[ySize][xSize];
+	}
+
+	/**
+	 * Randomly fill the map with walls
+	 */
+	public void randomFill() {
+		randomFillIndestructible();
+		randomFillDestrcutible();
+	}
+
+	/**
+	 * Clear all walls and randomly fill the map matrix again
+	 */
+	public void reFill() {
+		clearAll();
+		randomFill();
+	}
+
+	/**
+	 * Randomly fill the map with indestructible walls, guaranteeing connectivity
 	 */
 	public void randomFillIndestructible() {
 		for (int i = 0; i < ySize; i++)
-			for (int j = 0; j < xSize; j++) 
+			for (int j = 0; j < xSize; j++)
 				if ((float) Math.random() < indestructibleWallDensity) {
 					wall[i][j] = INDESTRUCTIBLE;
 					set.removeSet();
@@ -105,19 +129,18 @@ public class MapMatrix implements GameConstants {
 		clearBlock();
 		// Reset and random fill again when failed
 		if (!set.finishConnection()) {
-			wall = new byte[ySize][xSize];
-			set = new UFSet();
-			visited = new boolean[ySize][xSize];
+			clearAll();
 			randomFillIndestructible();
 		}
 	}
 
 	/**
-	 * Randomly fill the rest of map with destructible wall after randomFillIndestructible
+	 * Randomly fill the rest of map with destructible walls after
+	 * randomFillIndestructible
 	 */
 	public void randomFillDestrcutible() {
 		for (int i = 0; i < ySize; i++)
-			for (int j = 0; j < xSize; j++) 
+			for (int j = 0; j < xSize; j++)
 				if (wall[i][j] == NONE && (float) Math.random() < destructibleWallDensity)
 					wall[i][j] = DESTRUCTIBLE;
 	}
@@ -127,7 +150,7 @@ public class MapMatrix implements GameConstants {
 	 */
 	public void clearBlock() {
 		for (int i = 0; i < ySize; i++)
-			for (int j = 0; j < xSize; j++) 
+			for (int j = 0; j < xSize; j++)
 				if (wall[i][j] == INDESTRUCTIBLE && isBlockConnectivity(i, j)) {
 					wall[i][j] = NONE;
 					set.addSet();
@@ -248,5 +271,33 @@ public class MapMatrix implements GameConstants {
 
 	public boolean isWithIndestructibleWall(int yPos, int xPos) {
 		return wall[yPos][xPos] == INDESTRUCTIBLE;
+	}
+
+	/**
+	 * set a wall at given position
+	 * 
+	 * @param destructible whether the wall to be set is destructible
+	 */
+	public void setWall(int yPos, int xPos, boolean destructible) {
+		if (destructible)
+			wall[yPos][xPos] = DESTRUCTIBLE;
+		else
+			wall[yPos][xPos] = INDESTRUCTIBLE;
+	}
+
+	public void setDestructibleWallDensity(float density) {
+		destructibleWallDensity = density;
+	}
+
+	public void setIndestructibleWallDensity(float density) {
+		indestructibleWallDensity = density;
+	}
+
+	public float getDestructibleWallDensity() {
+		return destructibleWallDensity;
+	}
+
+	public float getIndestructibleWallDensity() {
+		return indestructibleWallDensity;
 	}
 }

@@ -30,10 +30,8 @@ public class Cell {
      */
     public void refresh() {
     	explosionDecay();
-    	if (withBomb){
+    	if (withBomb)
 			bomb.refresh();
-		}
-
     }
 
     /**
@@ -166,9 +164,8 @@ public class Cell {
      * @return if an item is successfully removed from this cell
      */
     public boolean removeItem() {
-        if (!withItem) {
+        if (!withItem) 
             return false;
-        }
         item = null;
         withItem = false;
         return true;

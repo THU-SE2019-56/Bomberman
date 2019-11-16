@@ -68,6 +68,9 @@ public interface GameConstants {
 	// For game
 	int GAMEOVER = 0;
 	
+	int PVE_MODE = 0;
+	int PVP_MODE = 1;
+	
 	// For MatMatrix
 	int NONE = 0;
 	int DESTRUCTIBLE = -1;

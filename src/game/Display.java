@@ -42,7 +42,7 @@ public class Display extends JPanel implements ActionListener, GameConstants, Mo
 	private Monster[] monsters = new Monster[MONSTER_NUMBER];
 	private Item item;
 	private boolean gameOver = false;
-	private int playerNum = 2;//Number of the players
+	private int playerNum = 0;//Number of the players
 	private int pauseFlag = 0;
 	
 	Player player[] = new Player[2];
@@ -64,15 +64,15 @@ public class Display extends JPanel implements ActionListener, GameConstants, Mo
 	 * The method “public static void main(String args[]) 17 is achieved here to
 	 * test the effects of the Player class. Remove it when you don't need it.
 	 */
-	public static void main(String args[]) {
-		Display dp = new Display();
-		dp.createPanel();
-	}
+//	public static void main(String args[]) {
+//		Display dp = new Display();
+//		dp.createPanel();
+//	}
 
 	/**
 	 * Initialize the Display class.
 	 */
-	public Display() {
+	public Display(int mode) {
 		try {
 			loadImage();
 		} catch (Exception e) {
@@ -88,27 +88,44 @@ public class Display extends JPanel implements ActionListener, GameConstants, Mo
 		//generateTestMap();
 		map = new Map(new MapMatrix(CELL_NUM_X,CELL_NUM_Y));
 		
+		for (int i = 0; i < MONSTER_NUMBER; i++) {
+			monsters[i] = new Monster(map);
+		}
+		
+		if (mode == PVE_MODE) {
+			playerNum = 1;
+		}
+		if (mode == PVP_MODE) {
+			playerNum = 2;
+			
+			for (Monster m : monsters) {
+				m.eliminate();
+			}
+		}
+		
 		for (int i=0;i<playerNum;i++) {
 			player[i] = new Player(map,i);
 		}
 		item = new Item(2, 2);
-		for (int i = 0; i < MONSTER_NUMBER; i++) {
-			monsters[i] = new Monster(map);
-		}
+		
+
 
 		this.setFocusable(true);
 		for (int i=0;i<playerNum;i++) {
 			this.getToolkit().addAWTEventListener(player[i], AWTEvent.KEY_EVENT_MASK);// Initialize the AWTEventListener.
 		}
+		
+
 	}
+
 
 
 	/**
 	 * Create JFrame and JPanel. Temp method.
 	 */
-	public void createPanel() {
-		JFrame f = new JFrame();
-		Display jp = new Display();
+	public void createPanel(JFrame f,int mode) {
+		//f = new JFrame();
+		Display jp = new Display(mode);
 
 		jp.setLayout(null);
 		jp.addStatusPanel();

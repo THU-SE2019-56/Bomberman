@@ -93,6 +93,18 @@ class Brain implements GameConstants {
 		reset();
 	}
 
+	private boolean isMovable(Map m, int i, int j) {	// filter out explosion or near bomb area
+		if (i<0 || i>=CELL_NUM_X || j<0 || j>=CELL_NUM_Y) return false;
+		if (m.isAtExplosion(i, j)) return false;
+		for (int k=0; k<4; ++k) {
+			int ii = i + dxs[k];
+			int jj = j + dys[k];
+			if (ii>=0 && ii<CELL_NUM_X && jj>=0 && jj<CELL_NUM_Y && m.isWithBomb(ii, jj))
+				return false;
+		}
+		return m.isAvailable(i, j);
+	}
+
 	private void reset() {
 		for (int i=0; i<CELL_NUM_X; ++i)
 			for (int j=0; j<CELL_NUM_Y; ++j) {
@@ -100,7 +112,6 @@ class Brain implements GameConstants {
 				fa[i][j] = -1;
 			}
 	}
-
 
 	private boolean bfs(Map m, int si, int sj, int ti, int tj) {
 		Deque<Point> q = new ArrayDeque<>();
@@ -113,7 +124,7 @@ class Brain implements GameConstants {
 			for (int k=0; k<4; ++k) {
 				int ii = p.x + dxs[k];
 				int jj = p.y + dys[k];
-				if (m.isAvailable(ii, jj) && !viz[ii][jj]) {
+				if (isMovable(m, ii, jj) && !viz[ii][jj]) {
 					q.addLast(new Point(ii, jj));
 					fa[ii][jj] = k;
 					viz[ii][jj] = true;
@@ -250,8 +261,9 @@ public class Monster implements GameConstants {
 				this.x = path.getNextX();
 				this.y = path.getNextY();
 				path.removeFirst();
-				// replanning if the next position in the path is invalid
-				if (path.size()>0 && !m.isAvailable(path.getNextI(), path.getNextJ()))
+				// replanning if the next position in the path is invalid or in exp
+				if (path.size()>0 && (!m.isAvailable(path.getNextI(), path.getNextJ())
+						|| m.isAtExplosion(path.getNextI(), path.getNextJ())))
 					path.clear();
 				return DIRECTION_STOP;
 			}

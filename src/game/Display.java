@@ -82,8 +82,6 @@ public class Display extends JPanel implements ActionListener, GameConstants, Mo
 		timer = new Timer(REFRESH, this);
 		timer.start();
 	
-	
-
 		// initializeMap(); May delete.
 
 		//map = new Map();

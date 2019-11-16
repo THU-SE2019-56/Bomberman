@@ -1,5 +1,6 @@
 package monster;
 
+import java.text.BreakIterator;
 import java.util.*;
 import map.Map;
 import player.Player;
@@ -86,22 +87,23 @@ class Brain implements GameConstants {
 	private final static int[] dys = {0, 0, -1, 1};
 	private boolean[][] viz;
 	private int[][] fa;
+	private int eer;	// estimate explosion range
 
-	Brain() {
+	Brain(int eer) {
+		this.eer = eer;
 		viz = new boolean[CELL_NUM_X][CELL_NUM_X];
 		fa = new int[CELL_NUM_X][CELL_NUM_Y];
 		reset();
 	}
 
-	private boolean isMovable(Map m, int i, int j) {	// filter out explosion or near bomb area
-		if (i<0 || i>=CELL_NUM_X || j<0 || j>=CELL_NUM_Y) return false;
+	Brain() {
+		this(1);
+	}
+
+	boolean isMovable(Map m, int i, int j) {	// filter out explosion or near bomb area
+		if (!m.isInMap(i, j)) return false;
 		if (m.isAtExplosion(i, j)) return false;
-		for (int k=0; k<4; ++k) {
-			int ii = i + dxs[k];
-			int jj = j + dys[k];
-			if (ii>=0 && ii<CELL_NUM_X && jj>=0 && jj<CELL_NUM_Y && m.isWithBomb(ii, jj))
-				return false;
-		}
+		if (m.isInExplosionRange(i, j, eer)) return false;
 		return m.isAvailable(i, j);
 	}
 
@@ -261,9 +263,8 @@ public class Monster implements GameConstants {
 				this.x = path.getNextX();
 				this.y = path.getNextY();
 				path.removeFirst();
-				// replanning if the next position in the path is invalid or in exp
-				if (path.size()>0 && (!m.isAvailable(path.getNextI(), path.getNextJ())
-						|| m.isAtExplosion(path.getNextI(), path.getNextJ())))
+				// replanning if the next position in the path is invalid or in explosion
+				if (path.size()>0 && !brain.isMovable(m, path.getNextI(), path.getNextJ()))
 					path.clear();
 				return DIRECTION_STOP;
 			}

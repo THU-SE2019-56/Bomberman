@@ -28,7 +28,7 @@ public class Player implements AWTEventListener, GameConstants {
 	private int playerID;//ID of the player
 	private int velocity; //The velocity should be divisible by 60
 	
-	private int bombMaxNumber = PLAYER_MAX_BOMB;
+	private int bombMaxNumber = PLAYER_MAX_BOMB - 1;
 	private int bombPlantedNumber = 0;
 	
 	private int bombPower;
@@ -434,7 +434,7 @@ public class Player implements AWTEventListener, GameConstants {
 	 */
 	public void plantBomb(Map mi, int mapx,int mapy ) {
 		if (this.bombPlantedNumber <= this.bombMaxNumber) {
-			mi.setBomb(mapx,mapy,4, this);
+			mi.setBomb(mapx,mapy,1, this);
 		}else {
 
 		}

@@ -2,7 +2,6 @@ package map;
 
 import game.GameConstants;
 import java.lang.Math;
-import java.util.*;
 
 /**
  * to be used to generate a map with a given or a new random matrix of wall
@@ -18,9 +17,7 @@ public class MapMatrix implements GameConstants {
 	private byte[][] wall;
 	// Chance for wall to be generated
 	private float destructibleWallDensity = 0.4f;
-	private float indestructibleWallDensity = 0.3f;
-	// Number of current indestructible wall
-	private int indestructibleWallNum = 0;
+	private float indestructibleWallDensity = 0.2f;
 	private boolean[][] visited;
 	private UFSet set;
 
@@ -41,9 +38,8 @@ public class MapMatrix implements GameConstants {
 		}
 
 		int findRoot(int n) {
-			while (set[n] >= 0) {
+			while (set[n] >= 0) 
 				n = set[n];
-			}
 			return n;
 		}
 
@@ -100,17 +96,13 @@ public class MapMatrix implements GameConstants {
 	 */
 	public void randomFillIndestructible() {
 		for (int i = 0; i < ySize; i++)
-			for (int j = 0; j < xSize; j++) {
+			for (int j = 0; j < xSize; j++) 
 				if ((float) Math.random() < indestructibleWallDensity) {
 					wall[i][j] = INDESTRUCTIBLE;
 					set.removeSet();
-					// indestructibleWallNum++;
 				}
-			}
 		checkConnectivity();
-		// testOutWall();
 		clearBlock();
-		// testOutWall();
 		// Reset and random fill again when failed
 		if (!set.finishConnection()) {
 			wall = new byte[ySize][xSize];
@@ -125,11 +117,9 @@ public class MapMatrix implements GameConstants {
 	 */
 	public void randomFillDestrcutible() {
 		for (int i = 0; i < ySize; i++)
-			for (int j = 0; j < xSize; j++) {
+			for (int j = 0; j < xSize; j++) 
 				if (wall[i][j] == NONE && (float) Math.random() < destructibleWallDensity)
 					wall[i][j] = DESTRUCTIBLE;
-			}
-
 	}
 
 	/**
@@ -137,13 +127,12 @@ public class MapMatrix implements GameConstants {
 	 */
 	public void clearBlock() {
 		for (int i = 0; i < ySize; i++)
-			for (int j = 0; j < xSize; j++) {
+			for (int j = 0; j < xSize; j++) 
 				if (wall[i][j] == INDESTRUCTIBLE && isBlockConnectivity(i, j)) {
 					wall[i][j] = NONE;
 					set.addSet();
 					connect(i, j);
 				}
-			}
 	}
 
 	/**
@@ -166,13 +155,12 @@ public class MapMatrix implements GameConstants {
 			root[3] = set.findRoot(yPos, xPos - 1);
 		}
 		int positiveRoot = -1;
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 4; i++)
 			if (root[i] >= 0) {
 				if (positiveRoot >= 0 && root[i] != positiveRoot)
 					return true;
 				positiveRoot = root[i];
 			}
-		}
 		return false;
 	}
 
@@ -214,37 +202,37 @@ public class MapMatrix implements GameConstants {
 		}
 	}
 
-	/**
-	 * test out for connectivity check
-	 */
-	public void testOut() {
-		for (int i = 0; i < ySize; i++) {
-			for (int j = 0; j < xSize; j++) {
-				System.out.print(set.findRoot(i, j));
-				System.out.print("\t");
-			}
-			System.out.print("\n");
-		}
-		System.out.println(set.setCount);
-	}
-
-	/**
-	 * test out to show the walls during clearBlock
-	 */
-	public void testOutWall() {
-		for (int i = 0; i < ySize; i++) {
-			for (int j = 0; j < xSize; j++) {
-				if (isBlockConnectivity(i, j))
-					System.out.print("{}");
-				else if (wall[i][j] == NONE)
-					System.out.print("  ");
-				else
-					System.out.print("[]");
-			}
-			System.out.print("\n");
-		}
-		System.out.println(set.setCount);
-	}
+//	/**
+//	 * test out for connectivity check
+//	 */
+//	public void testOut() {
+//		for (int i = 0; i < ySize; i++) {
+//			for (int j = 0; j < xSize; j++) {
+//				System.out.print(set.findRoot(i, j));
+//				System.out.print("\t");
+//			}
+//			System.out.print("\n");
+//		}
+//		System.out.println(set.setCount);
+//	}
+//
+//	/**
+//	 * test out to show the walls during clearBlock
+//	 */
+//	public void testOutWall() {
+//		for (int i = 0; i < ySize; i++) {
+//			for (int j = 0; j < xSize; j++) {
+//				if (isBlockConnectivity(i, j))
+//					System.out.print("{}");
+//				else if (wall[i][j] == NONE)
+//					System.out.print("  ");
+//				else
+//					System.out.print("[]");
+//			}
+//			System.out.print("\n");
+//		}
+//		System.out.println(set.setCount);
+//	}
 
 	public int getXSize() {
 		return xSize;

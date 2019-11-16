@@ -27,11 +27,10 @@ public class Map implements GameConstants {
 	 */
 	public Map() {
 		_map = new Cell[ySize][xSize]; // initialize _map
-		for (int i = 0; i < ySize; i++) {
+		for (int i = 0; i < ySize; i++)
 			for (int j = 0; j < xSize; j++) {
 				_map[i][j] = new Cell();
 			}
-		}
 	}
 
 	/**
@@ -41,11 +40,10 @@ public class Map implements GameConstants {
 		this.ySize = ySize;
 		this.xSize = xSize;
 		_map = new Cell[ySize][xSize]; // initialize _map;
-		for (int i = 0; i < ySize; i++) {
+		for (int i = 0; i < ySize; i++)
 			for (int j = 0; j < xSize; j++) {
 				_map[i][j] = new Cell();
 			}
-		}
 	}
 
 	/**
@@ -55,15 +53,14 @@ public class Map implements GameConstants {
 		xSize = mmat.getXSize();
 		ySize = mmat.getYSize();
 		_map = new Cell[ySize][xSize];
-		for (int i = 0; i < ySize; i++) {
+		for (int i = 0; i < ySize; i++)
 			for (int j = 0; j < xSize; j++) {
 				_map[i][j] = new Cell();
-				if(mmat.isWithDestructibleWall(i, j))
+				if (mmat.isWithDestructibleWall(i, j))
 					_map[i][j].setWall(true);
-				if(mmat.isWithIndestructibleWall(i, j))
+				if (mmat.isWithIndestructibleWall(i, j))
 					_map[i][j].setWall(false);
 			}
-		}
 	}
 
 	/**
@@ -76,8 +73,8 @@ public class Map implements GameConstants {
 	}
 
 	/**
-	 * @return the cell at given position for any operation on certain cell
-	 * !!this method is NOT RECOMMENDED!!
+	 * @return the cell at given position for any operation on certain cell !!this
+	 *         method is NOT RECOMMENDED!!
 	 */
 	public Cell getCell(int xPos, int yPos) {
 		return _map[yPos][xPos];
@@ -229,6 +226,43 @@ public class Map implements GameConstants {
 	 */
 	public boolean isWithIndestructibleWall(int xPos, int yPos) {
 		return (isInMap(xPos, yPos) && _map[yPos][xPos].isWithIndestructibleWall());
+	}
+
+	/**
+	 * @param power assumed bomb power
+	 * @return true if given position is threatened by bomb, assuming all bomb with
+	 *         a certain power
+	 */
+	public boolean isInExplosionRange(int xPos, int yPos, int power) {
+		if (!isInMap(xPos, yPos))
+			return false;
+		if (isWithBomb(xPos, yPos))
+			return true;
+		for (int i = xPos - 1; i >= xPos - power; i--) {
+			if (!isInMap(i, yPos) || isWithWall(i, yPos))
+				break;
+			if (isWithBomb(i, yPos))
+				return true;
+		}
+		for (int i = xPos + 1; i <= xPos + power; i++) {
+			if (!isInMap(i, yPos) || isWithWall(i, yPos))
+				break;
+			if (isWithBomb(i, yPos))
+				return true;
+		}
+		for (int i = yPos - 1; i >= yPos - power; i--) {
+			if (!isInMap(xPos, i) || isWithWall(xPos, i))
+				break;
+			if (isWithBomb(xPos, i))
+				return true;
+		}
+		for (int i = yPos + 1; i <= yPos + power; i++) {
+			if (!isInMap(xPos, i) || isWithWall(xPos, i))
+				break;
+			if (isWithBomb(xPos, i))
+				return true;
+		}
+		return false;
 	}
 
 }

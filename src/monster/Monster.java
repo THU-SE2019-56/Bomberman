@@ -283,6 +283,7 @@ public class Monster implements GameConstants {
 		int pj = Math.round((float) p.getY()/CELL_HEIGHT);
 		int dis = Math.abs(mi-pi) + Math.abs(mj-pj);
 		this.alert = (dis <= ALERT_DISTANCE);
+//		System.out.println(this.alert);
 	}
 
 	public void setDirection(int d) {

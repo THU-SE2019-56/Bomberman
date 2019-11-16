@@ -118,13 +118,15 @@ public class Display extends JPanel implements ActionListener, GameConstants, Mo
 		f.pack();
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setResizable(false);
-		// f.setLocationRelativeTo(null); // set location to screen center
-		// --this method will lead to the failure of the game, and I don't know why..... Perhaps owning to the macOS system
+
+		// set location to screen center
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		f.setLocation((ge.getMaximumWindowBounds().width-SCREEN_WIDTH)/2,
+				(ge.getMaximumWindowBounds().height-SCREEN_HEIGHT)/2);
+
 		f.setVisible(true);
 		jp.setVisible(true);
-	
 		f.add(jp);
-		
 	}
 	
 	/**

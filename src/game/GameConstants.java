@@ -13,7 +13,7 @@ public interface GameConstants {
 	int PLAYER_HEIGHT = 45;
 	int PLAYER_ID_P1 = 0;
 	int PLAYER_ID_P2 = 1;
-	int PLAYER_MAX_BOMB = 2;
+	int PLAYER_MAX_BOMB = 1;
 
 	// Monster constants
 	int MONSTER_NUMBER = 5;
@@ -75,4 +75,8 @@ public interface GameConstants {
 	int NONE = 0;
 	int DESTRUCTIBLE = -1;
 	int INDESTRUCTIBLE = 1;
-}
+	
+	//For Menu
+	int MENU_WIDTH = 930;
+	int MENU_HEIGHT = 670;
+ }

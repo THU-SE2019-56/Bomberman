@@ -108,17 +108,11 @@ public class Display extends JPanel implements ActionListener, GameConstants, Mo
 		}
 		item = new Item(2, 2);
 		
-
-
 		this.setFocusable(true);
 		for (int i=0;i<playerNum;i++) {
 			this.getToolkit().addAWTEventListener(player[i], AWTEvent.KEY_EVENT_MASK);// Initialize the AWTEventListener.
 		}
-		
-
 	}
-
-
 
 	/**
 	 * Create JFrame and JPanel. Temp method.
@@ -135,8 +129,6 @@ public class Display extends JPanel implements ActionListener, GameConstants, Mo
 		f.pack();
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setResizable(false);
-
-
 
 		f.setVisible(true);
 		jp.setVisible(true);
@@ -420,6 +412,7 @@ public class Display extends JPanel implements ActionListener, GameConstants, Mo
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
+
 		
 	}
 

@@ -43,6 +43,7 @@ public class MainMenu extends JFrame implements GameConstants{
 		this.setTitle("Bomberman");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.getContentPane().setPreferredSize(new Dimension(MENU_WIDTH, MENU_HEIGHT));
+		this.pack();
 		this.setResizable(false);
 
 		menuIcon = new ImageIcon("image//menu//menuBackground.png");//Background image
@@ -55,11 +56,10 @@ public class MainMenu extends JFrame implements GameConstants{
 		this.add(mainMenu);
 		this.setVisible(true);
 		this.setFocusable(true);
-		
+
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		this.setLocation((ge.getMaximumWindowBounds().width-MENU_WIDTH)/2,
 				(ge.getMaximumWindowBounds().height-MENU_HEIGHT)/2);
-		this.setSize(MENU_WIDTH, MENU_HEIGHT);
 	}
 
 	public void addBackground() {

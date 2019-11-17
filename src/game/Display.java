@@ -184,7 +184,7 @@ public class Display extends JPanel implements ActionListener, GameConstants, Mo
 				this.playerLifeText[i].setText(String.valueOf(playerHP));
 				g.setColor(Color.BLUE);
 				g.drawRect(CELL_SIZE * CELL_NUM_X+1*CELL_SIZE,3*CELL_SIZE, 100, CELL_SIZE/2);
-				g.setColor(Color.ORANGE);
+				g.setColor(Color.getHSBColor((float) playerHP/300, 1, 1));
 				g.fillRect(CELL_SIZE * CELL_NUM_X+1*CELL_SIZE,3*CELL_SIZE, player[i].getHP(), CELL_SIZE/2);
 				
 				g.drawImage(player1Image[DIRECTION_DOWN],CELL_SIZE * CELL_NUM_X+1*CELL_SIZE,CELL_SIZE,CELL_SIZE+CELL_SIZE/2,CELL_SIZE+CELL_SIZE/2,this);
@@ -195,7 +195,7 @@ public class Display extends JPanel implements ActionListener, GameConstants, Mo
 				this.playerLifeText[i].setText(String.valueOf(playerHP));
 				g.setColor(Color.BLUE);
 				g.drawRect(CELL_SIZE * CELL_NUM_X+1*CELL_SIZE,6*CELL_SIZE, 100, CELL_SIZE/2);
-				g.setColor(Color.ORANGE);
+				g.setColor(Color.getHSBColor((float) playerHP/300, 1, 1));
 				g.fillRect(CELL_SIZE * CELL_NUM_X+1*CELL_SIZE,6*CELL_SIZE, player[i].getHP(), CELL_SIZE/2);
 				
 				g.drawImage(player2Image[DIRECTION_DOWN],CELL_SIZE * CELL_NUM_X+1*CELL_SIZE,4*CELL_SIZE,CELL_SIZE+CELL_SIZE/2,CELL_SIZE+CELL_SIZE/2,this);

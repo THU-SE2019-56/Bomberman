@@ -19,7 +19,7 @@ public interface GameConstants {
 	int MONSTER_NUMBER = 5;
 	int MONSTER_WIDTH = 45;
 	int MONSTER_HEIGHT = 45;
-	int HP_LOSS_BY_MONSTER = 15;
+	int HP_LOSS_BY_MONSTER = 51;
 	int ALERT_DISTANCE = 5;
 
 	// Item constants

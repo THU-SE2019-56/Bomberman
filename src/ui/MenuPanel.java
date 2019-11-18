@@ -1,33 +1,24 @@
-package game;
+package ui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GraphicsEnvironment;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 import javax.swing.border.Border;
 
-/**
- * <p>
- * The entry for project.
- * <p>
- * Provide main menu to select mode, setting, tutorial, etc.
- * 
- * @author Chengsong Xiong, Wang
- * @version 0.2
- */
-public class MainMenu extends JFrame implements GameConstants {
+import game.Game;
+import game.GameConstants;
+import game.TimerListener;
 
-	private static final long serialVersionUID = 1L;
-	private JPanel menuPanel;
+public class MenuPanel extends JPanel implements GameConstants {
+	private MainFrame mainFrame;
 	private JButton buttonPve;
 	private JButton buttonPvp;
 	private JButton buttonExit;
@@ -36,38 +27,22 @@ public class MainMenu extends JFrame implements GameConstants {
 	private ImageIcon menuBackgroundIcon;
 	private JLabel menuBackgroundLabel;
 
-	public MainMenu() {
+	public MenuPanel(MainFrame mainFrame) {
+		this.mainFrame = mainFrame;
 
-		this.setTitle("Bomberman");
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.getContentPane().setPreferredSize(new Dimension(MENU_WIDTH, MENU_HEIGHT));
-		this.pack();
-		this.setResizable(false);
-
-		menuBackgroundIcon = new ImageIcon("image/menu/menuBackground.png");// Background image
-		menuBackgroundIcon.setImage(menuBackgroundIcon.getImage().getScaledInstance(MENU_WIDTH, MENU_HEIGHT, 1));
-
-		menuPanel = new JPanel();
 		this.addButton();
 		this.addBackground();
-
-		this.add(menuPanel);
-		this.setVisible(true);
-		this.setFocusable(true);
-
-		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		this.setLocation((ge.getMaximumWindowBounds().width - MENU_WIDTH) / 2,
-				(ge.getMaximumWindowBounds().height - MENU_HEIGHT) / 2);
 	}
 
 	public void addBackground() {
+		menuBackgroundIcon = new ImageIcon("image/menu/menuBackground.png");// Background image
+		menuBackgroundIcon.setImage(menuBackgroundIcon.getImage().getScaledInstance(WINDOW_WIDTH, WINDOW_HEIGHT, 1));
 		menuBackgroundLabel = new JLabel(menuBackgroundIcon);
-		menuBackgroundLabel.setBounds(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		menuPanel.add(menuBackgroundLabel);
+		menuBackgroundLabel.setBounds(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+		this.add(menuBackgroundLabel);
 	}
 
 	public void addButton() {
-
 		/*
 		 * PVE mode
 		 */
@@ -103,23 +78,23 @@ public class MainMenu extends JFrame implements GameConstants {
 		buttonAbout.setBounds(700, 300, 150, 50);
 		initializeButton(buttonAbout);
 
-		menuPanel.setLayout(null);
+		this.setLayout(null);
 
-		menuPanel.add(buttonPve);
-		menuPanel.add(buttonPvp);
-		menuPanel.add(buttonExit);
-		menuPanel.add(buttonHelp);
-		menuPanel.add(buttonAbout);
+		this.add(buttonPve);
+		this.add(buttonPvp);
+		this.add(buttonExit);
+		this.add(buttonHelp);
+		this.add(buttonAbout);
 
-		buttonPve.addMouseListener(new ButtonListener(this, "pve"));
-		buttonPvp.addMouseListener(new ButtonListener(this, "pvp"));
-		buttonExit.addMouseListener(new ButtonListener(this, "exit"));
-		buttonHelp.addMouseListener(new ButtonListener(this, "help"));
-		buttonAbout.addMouseListener(new ButtonListener(this, "about us"));
+		buttonPve.addMouseListener(new ButtonListener(mainFrame, "pve"));
+		buttonPvp.addMouseListener(new ButtonListener(mainFrame, "pvp"));
+		buttonExit.addMouseListener(new ButtonListener(mainFrame, "exit"));
+		buttonHelp.addMouseListener(new ButtonListener(mainFrame, "help"));
+		buttonAbout.addMouseListener(new ButtonListener(mainFrame, "about us"));
 
 	}
 
-	/*
+	/**
 	 * Initialize buttons
 	 */
 	public void initializeButton(JButton button) {
@@ -159,15 +134,15 @@ public class MainMenu extends JFrame implements GameConstants {
 	}
 
 	/**
-	 * Response to button events
+	 * Respond to button events
 	 */
 	class ButtonListener implements MouseListener {
 
-		JFrame jframe;
+		MainFrame mainFrame;
 		String name;
 
-		public ButtonListener(JFrame jframe, String name) {
-			this.jframe = jframe;
+		public ButtonListener(MainFrame mainFrame, String name) {
+			this.mainFrame = mainFrame;
 			this.name = name;
 		}
 
@@ -181,16 +156,55 @@ public class MainMenu extends JFrame implements GameConstants {
 
 			switch (this.name) {
 			case "pve":
-				Display dp1 = new Display(PVE_MODE);
-				jframe.remove(menuPanel);
-				jframe.add(dp1);
-				jframe.validate();// repaint
+				Game gamePve = new Game(PVE_MODE);
+				MapPanel mapPanelPve = new MapPanel(gamePve);
+				StatusPanel statusPanelPve = new StatusPanel(gamePve, mainFrame);
+
+				mainFrame.remove(MenuPanel.this);
+				
+				mainFrame.add(mapPanelPve);
+				mainFrame.validate();// repaint
+
+				mainFrame.add(statusPanelPve);
+				mainFrame.validate();// repaint
+
+				mainFrame.setLayout(null);
+
+				mapPanelPve.setLocation(0, 0);
+				mapPanelPve.setSize(MAP_WIDTH, MAP_HEIGHT);
+
+				statusPanelPve.setLocation(MAP_WIDTH, 0);
+				statusPanelPve.setSize(STATUS_PANEL_WIDTH, STATUS_PANEL_HEIGHT);
+
+				TimerListener timerListenerPve = new TimerListener(gamePve, mapPanelPve, statusPanelPve);
+				Timer timerPve = new Timer(REFRESH, timerListenerPve);
+				timerPve.start();
 				break;
+
 			case "pvp":
-				Display dp2 = new Display(PVP_MODE);
-				jframe.remove(menuPanel);
-				jframe.add(dp2);
-				jframe.validate();// repaint
+				Game gamePvp = new Game(PVP_MODE);
+				MapPanel mapPanelPvp = new MapPanel(gamePvp);
+				StatusPanel statusPanelPvp = new StatusPanel(gamePvp,mainFrame);
+
+				mainFrame.remove(MenuPanel.this);
+				
+				mainFrame.add(mapPanelPvp);
+				mainFrame.validate();// repaint
+
+				mainFrame.add(statusPanelPvp);
+				mainFrame.validate();// repaint
+
+				mainFrame.setLayout(null);
+
+				mapPanelPvp.setLocation(0, 0);
+				mapPanelPvp.setSize(MAP_WIDTH, MAP_HEIGHT);
+
+				statusPanelPvp.setLocation(MAP_WIDTH, 0);
+				statusPanelPvp.setSize(STATUS_PANEL_WIDTH, STATUS_PANEL_HEIGHT);
+
+				TimerListener timerListenerPvp = new TimerListener(gamePvp, mapPanelPvp, statusPanelPvp);
+				Timer timerPvp = new Timer(REFRESH, timerListenerPvp);
+				timerPvp.start();
 				break;
 			case "exit":
 				System.exit(0);// End game
@@ -245,9 +259,5 @@ public class MainMenu extends JFrame implements GameConstants {
 				break;
 			}
 		}
-	}
-
-	public static void main(String[] args) {
-		new MainMenu();
 	}
 }

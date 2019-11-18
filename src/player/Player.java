@@ -10,7 +10,6 @@ import map.Map;
 import game.GameConstants;
 import map.Cell;
 import items.Item;
-import game.Display;
 //import map.Map;
 //import monster.Monster;
 
@@ -481,7 +480,7 @@ public class Player implements AWTEventListener, GameConstants {
 		if (mi.isAtExplosion(this.getMapX(),this.getMapY())) {
 		
 			if (this.playerCanBeHurt == 1) {
-				this.setHP(this.getHP()-5);
+				this.setHP(this.getHP()-HP_LOSS_BY_BOMB);
 				this.playerCanBeHurt=0;
 			}
 		}

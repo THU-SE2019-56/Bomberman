@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
+import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -13,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 import javax.swing.border.Border;
 
 /**
@@ -42,7 +44,7 @@ public class MainMenu extends JFrame implements GameConstants {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.getContentPane().setPreferredSize(new Dimension(MENU_WIDTH, MENU_HEIGHT));
 		this.pack();
-		this.setResizable(false);
+		//this.setResizable(false);
 
 		menuBackgroundIcon = new ImageIcon("image/menu/menuBackground.png");// Background image
 		menuBackgroundIcon.setImage(menuBackgroundIcon.getImage().getScaledInstance(MENU_WIDTH, MENU_HEIGHT, 1));
@@ -52,12 +54,14 @@ public class MainMenu extends JFrame implements GameConstants {
 		this.addBackground();
 
 		this.add(menuPanel);
-		this.setVisible(true);
+	
 		this.setFocusable(true);
 
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		this.setLocation((ge.getMaximumWindowBounds().width - MENU_WIDTH) / 2,
 				(ge.getMaximumWindowBounds().height - MENU_HEIGHT) / 2);
+		
+		this.setVisible(true);
 	}
 
 	public void addBackground() {
@@ -181,16 +185,51 @@ public class MainMenu extends JFrame implements GameConstants {
 
 			switch (this.name) {
 			case "pve":
-				Display dp1 = new Display(PVE_MODE);
+				MapPanel mp1 = new MapPanel(PVE_MODE);
+				StatusPanel sp1=new StatusPanel(mp1);	
+			
 				jframe.remove(menuPanel);
-				jframe.add(dp1);
+				jframe.add(mp1);
 				jframe.validate();// repaint
+		
+			
+				jframe.add(sp1);
+				jframe.validate();// repaint
+				
+				jframe.setLayout(null);
+				
+				mp1.setLocation(0,0);
+				mp1.setSize(CELL_NUM_X*CELL_WIDTH, CELL_NUM_Y*CELL_HEIGHT);
+				
+				sp1.setLocation(CELL_NUM_X*CELL_WIDTH, 0);
+				sp1.setSize(STATUS_PANEL_WIDTH, STATUS_PANEL_HEIGHT);
+				
+				PanelListener panelListener1=new PanelListener(mp1,sp1);
+				Timer timer1 = new Timer(REFRESH, panelListener1);
+				timer1.start();
 				break;
+				
 			case "pvp":
-				Display dp2 = new Display(PVP_MODE);
+				MapPanel mp2 = new MapPanel(PVP_MODE);
+				StatusPanel sp2=new StatusPanel(mp2);
+				
 				jframe.remove(menuPanel);
-				jframe.add(dp2);
+				jframe.add(mp2);
 				jframe.validate();// repaint
+				jframe.add(sp2);
+				jframe.validate();// repaint
+				
+				jframe.setLayout(null);
+				
+				mp2.setLocation(0,0);
+				mp2.setSize(CELL_NUM_X*CELL_WIDTH, CELL_NUM_Y*CELL_HEIGHT);
+				
+				sp2.setLocation(CELL_NUM_X*CELL_WIDTH, 0);
+				sp2.setSize(STATUS_PANEL_WIDTH, STATUS_PANEL_HEIGHT);
+				
+				PanelListener panelListener2=new PanelListener(mp2,sp2);
+				Timer timer2 = new Timer(REFRESH, panelListener2);
+				timer2.start();
 				break;
 			case "exit":
 				System.exit(0);// End game

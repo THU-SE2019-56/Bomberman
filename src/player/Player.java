@@ -10,7 +10,7 @@ import map.Map;
 import game.GameConstants;
 import map.Cell;
 import items.Item;
-import game.Display;
+import game.MapPanel;
 //import map.Map;
 //import monster.Monster;
 

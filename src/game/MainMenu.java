@@ -1,7 +1,19 @@
 package game;
 
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GraphicsEnvironment;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.Border;
 
 /**
  * <p>
@@ -9,37 +21,148 @@ import javax.swing.*;
  * <p>
  * Provide main menu to select mode, setting, tutorial, etc.
  * 
- * @author Wang
- * @version 0.1
+ * @author Chengsong Xiong, Wang
+ * @version 0.2
  */
-public class MainMenu extends JFrame {
-	private JPanel mainMenu;
-	private JButton button_pve;
-	private JButton button_pvp;
-	private JButton button_exit;
+public class MainMenu extends JFrame implements GameConstants {
+
+	private static final long serialVersionUID = 1L;
+	private JPanel menuPanel;
+	private JButton buttonPve;
+	private JButton buttonPvp;
+	private JButton buttonExit;
+	private JButton buttonHelp;
+	private JButton buttonAbout;
+	private ImageIcon menuBackgroundIcon;
+	private JLabel menuBackgroundLabel;
 
 	public MainMenu() {
-		this.setBounds(50, 50, 750, 670);
+
 		this.setTitle("Bomberman");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.getContentPane().setPreferredSize(new Dimension(MENU_WIDTH, MENU_HEIGHT));
+		this.pack();
+		this.setResizable(false);
 
-		mainMenu = new JPanel();
-		button_pve = new JButton("PVE mode");
-		button_pvp = new JButton("PVP mode");
-		button_exit = new JButton("Exit");
-		mainMenu.add(button_pve);
-		mainMenu.add(button_pvp);
-		mainMenu.add(button_exit);
+		menuBackgroundIcon = new ImageIcon("image/menu/menuBackground.png");// Background image
+		menuBackgroundIcon.setImage(menuBackgroundIcon.getImage().getScaledInstance(MENU_WIDTH, MENU_HEIGHT, 1));
 
-		button_pve.addActionListener(new ButtonListener(this, "pve"));
-		//TODO Add buttons, combine them to listener, make them nice-looking
-		
-		this.add(mainMenu);
+		menuPanel = new JPanel();
+		this.addButton();
+		this.addBackground();
+
+		this.add(menuPanel);
 		this.setVisible(true);
 		this.setFocusable(true);
+
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		this.setLocation((ge.getMaximumWindowBounds().width - MENU_WIDTH) / 2,
+				(ge.getMaximumWindowBounds().height - MENU_HEIGHT) / 2);
 	}
 
-	class ButtonListener implements ActionListener {
+	public void addBackground() {
+		menuBackgroundLabel = new JLabel(menuBackgroundIcon);
+		menuBackgroundLabel.setBounds(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		menuPanel.add(menuBackgroundLabel);
+	}
+
+	public void addButton() {
+
+		/*
+		 * PVE mode
+		 */
+		buttonPve = new JButton("PVE mode");
+		buttonPve.setBounds(50, 150, 150, 50);
+		initializeButton(buttonPve);
+
+		/*
+		 * PVP mode
+		 */
+		buttonPvp = new JButton("PVP mode");
+		buttonPvp.setBounds(50, 250, 150, 50);
+		initializeButton(buttonPvp);
+
+		/*
+		 * Help
+		 */
+		buttonHelp = new JButton("Help");
+		buttonHelp.setBounds(50, 350, 150, 50);
+		initializeButton(buttonHelp);
+
+		/*
+		 * Exit
+		 */
+		buttonExit = new JButton("Exit");
+		buttonExit.setBounds(700, 200, 150, 50);
+		initializeButton(buttonExit);
+
+		/*
+		 * About us
+		 */
+		buttonAbout = new JButton("About us");
+		buttonAbout.setBounds(700, 300, 150, 50);
+		initializeButton(buttonAbout);
+
+		menuPanel.setLayout(null);
+
+		menuPanel.add(buttonPve);
+		menuPanel.add(buttonPvp);
+		menuPanel.add(buttonExit);
+		menuPanel.add(buttonHelp);
+		menuPanel.add(buttonAbout);
+
+		buttonPve.addMouseListener(new ButtonListener(this, "pve"));
+		buttonPvp.addMouseListener(new ButtonListener(this, "pvp"));
+		buttonExit.addMouseListener(new ButtonListener(this, "exit"));
+		buttonHelp.addMouseListener(new ButtonListener(this, "help"));
+		buttonAbout.addMouseListener(new ButtonListener(this, "about us"));
+
+	}
+
+	/*
+	 * Initialize buttons
+	 */
+	public void initializeButton(JButton button) {
+
+		Border originBorder = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1);
+		// This is the default border of WIN10 system.For macOS, use this border to make
+		// sure the buttons are correctly initialized.
+
+		Font buttonFont = new Font("Times New Roman Italic", Font.BOLD, 14);
+
+		button.setForeground(Color.BLACK);
+		button.setBorder(originBorder);
+		button.setBackground(Color.WHITE);
+		button.setFont(buttonFont);
+		button.setOpaque(true);
+
+	}
+
+	/**
+	 * Highlight the buttons when the mouse is on them
+	 */
+	public void highLightButton(JButton button) {
+		button.setBackground(Color.ORANGE);
+		button.setBounds(button.getX() - 20, button.getY() - 10, button.getWidth() + 40, button.getHeight() + 20);
+		Font buttonFont = new Font("Times New Roman Italic", Font.BOLD, 20);
+		button.setFont(buttonFont);
+	}
+
+	/**
+	 * Reset the buttons when the mouse leaves
+	 */
+	public void resetButton(JButton button) {
+		button.setBackground(Color.WHITE);
+		button.setBounds(button.getX() + 20, button.getY() + 10, button.getWidth() - 40, button.getHeight() - 20);
+		Font buttonFont = new Font("Times New Roman Italic", Font.BOLD, 14);
+		button.setFont(buttonFont);
+	}
+
+	/**
+	 * Response to button events
+	 */
+	class ButtonListener implements MouseListener {
+
 		JFrame jframe;
 		String name;
 
@@ -49,25 +172,82 @@ public class MainMenu extends JFrame {
 		}
 
 		@Override
-		public void actionPerformed(ActionEvent e) {
+		public void mouseClicked(MouseEvent e) {
+
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+
 			switch (this.name) {
 			case "pve":
-				jframe.remove(mainMenu);
-				jframe.add(new JPanel());// TODO Redirect to pve map
+				Display dp1 = new Display(PVE_MODE);
+				jframe.remove(menuPanel);
+				jframe.add(dp1);
 				jframe.validate();// repaint
+				break;
 			case "pvp":
-				jframe.remove(mainMenu);
-				jframe.add(new JPanel());// TODO Redirect to pvp map
+				Display dp2 = new Display(PVP_MODE);
+				jframe.remove(menuPanel);
+				jframe.add(dp2);
 				jframe.validate();// repaint
+				break;
 			case "exit":
-				System.exit(0);
+				System.exit(0);// End game
+				break;
+			}
+
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			switch (this.name) {
+			case "pve":
+				highLightButton(buttonPve);
+				break;
+			case "pvp":
+				highLightButton(buttonPvp);
+				break;
+			case "exit":
+				highLightButton(buttonExit);
+				break;
+			case "help":
+				highLightButton(buttonHelp);
+				break;
+			case "about us":
+				highLightButton(buttonAbout);
+				break;
+			}
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			switch (this.name) {
+			case "pve":
+				resetButton(buttonPve);
+				break;
+			case "pvp":
+				resetButton(buttonPvp);
+				break;
+			case "exit":
+				resetButton(buttonExit);
+				break;
+			case "help":
+				resetButton(buttonHelp);
+				break;
+			case "about us":
+				resetButton(buttonAbout);
+				break;
 			}
 		}
 	}
 
 	public static void main(String[] args) {
 		new MainMenu();
-
 	}
-
 }

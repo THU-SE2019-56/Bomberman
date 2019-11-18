@@ -172,7 +172,7 @@ public class MapPanel extends JPanel implements GameConstants {
 		player2Image[DIRECTION_DOWN] = ImageIO.read(new File("image/player/p2DOWN.png"));
 		player2Image[DIRECTION_LEFT] = ImageIO.read(new File("image/player/p2LEFT.png"));
 
-		itemImage[VELOCITY_UP] = ImageIO.read(new File("image/Item/velocity.png"));
+		itemImage[VELOCITY_UP] = ImageIO.read(new File("image/item/velocity.png"));
 
 		monsterImage[DIRECTION_UP] = ImageIO.read(new File("image/monster/up.png"));
 		monsterImage[DIRECTION_DOWN] = ImageIO.read(new File("image/monster/down.png"));

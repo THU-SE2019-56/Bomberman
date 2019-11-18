@@ -14,17 +14,15 @@ public interface GameConstants {
 	int PLAYER_ID_P1 = 0;
 	int PLAYER_ID_P2 = 1;
 	int PLAYER_MAX_BOMB = 1;
-	int PLAYER_NUMBER = 2;
+	int MAX_PLAYER_NUMBER = 2;
 	
 	int HP_LOSS_BY_MONSTER = 5;
 	int HP_LOSS_BY_BOMB = 50;
-	
 
 	// Monster constants
-	int MONSTER_NUMBER = 5;
+	int MAX_MONSTER_NUMBER = 5;
 	int MONSTER_WIDTH = 45;
 	int MONSTER_HEIGHT = 45;
-
 	int ALERT_DISTANCE = 5;
 
 	// Item constants
@@ -40,19 +38,21 @@ public interface GameConstants {
 	// Chance for item to be created
 	float ITEM_CHANCE = 0.5f;
 
-	// Display constants
-	int CELL_SIZE = 45;
+	// For display
 	int CELL_WIDTH = 45;
 	int CELL_HEIGHT = 45;
 
 	int CELL_NUM_X = 16;
 	int CELL_NUM_Y = 16;
 
-	int STATUS_PANEL_WIDTH = CELL_SIZE * 7;
-	int STATUS_PANEL_HEIGHT = CELL_SIZE * 16;
-
-	int SCREEN_WIDTH = CELL_SIZE * CELL_NUM_X + STATUS_PANEL_WIDTH;
-	int SCREEN_HEIGHT = CELL_SIZE * CELL_NUM_Y;
+	int MAP_WIDTH = CELL_WIDTH*CELL_NUM_X;
+	int MAP_HEIGHT = CELL_HEIGHT*CELL_NUM_Y;
+	
+	int STATUS_PANEL_WIDTH = CELL_WIDTH * 5;
+	int STATUS_PANEL_HEIGHT = CELL_HEIGHT * 16;
+	
+	int WINDOW_WIDTH = CELL_WIDTH*CELL_NUM_X+STATUS_PANEL_WIDTH;
+	int WINDOW_HEIGHT = CELL_HEIGHT*CELL_NUM_Y;
 
 	// For map image
 	int GROUND_1 = 0;
@@ -68,7 +68,6 @@ public interface GameConstants {
 
 	// For game
 	int GAMEOVER = 0;
-
 	int PVE_MODE = 0;
 	int PVP_MODE = 1;
 
@@ -76,10 +75,6 @@ public interface GameConstants {
 	int NONE = 0;
 	int DESTRUCTIBLE = -1;
 	int INDESTRUCTIBLE = 1;
-
-	// For Menu
-	int MENU_WIDTH = 930;
-	int MENU_HEIGHT = 670;
 
 	// For Refresh
 	int REFRESH = 30;

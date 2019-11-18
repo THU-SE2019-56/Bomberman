@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
 
 import items.Item;
 import player.Player;
@@ -35,7 +36,8 @@ public class MapPanel extends JPanel implements GameConstants {
 	private Item item;
 	public boolean gameOver = false;
 	private int playerNum = 0;// Number of the players
-	private int pauseFlag = 0;
+	private int pauseFlag;
+	private int gameMode;
 
 	BufferedImage player1Image[] = new BufferedImage[4];
 	BufferedImage player2Image[] = new BufferedImage[4];
@@ -73,6 +75,8 @@ public class MapPanel extends JPanel implements GameConstants {
 				m.eliminate();
 			}
 		}
+		this.gameMode = mode;
+		this.pauseFlag = 0;
 
 		for (int i = 0; i < getPlayerNum(); i++) {
 			getPlayer()[i] = new Player(getMap(), i);
@@ -86,6 +90,10 @@ public class MapPanel extends JPanel implements GameConstants {
 
 		this.setFocusable(true);
 	}
+	
+	public int getMode(){
+		return this.gameMode;
+	}
 
 	/**
 	 * Get the pauseFlag
@@ -96,8 +104,6 @@ public class MapPanel extends JPanel implements GameConstants {
 
 	/**
 	 * Set the pauseFlag
-	 * 
-	 * @param flag
 	 */
 	public void setPauseFlag(int pauseFlag) {
 		this.pauseFlag = pauseFlag;
@@ -138,10 +144,18 @@ public class MapPanel extends JPanel implements GameConstants {
 	/**
 	 * End the game and show "game over"
 	 */
-	public void endGame(Graphics g) {
-		g.drawImage(gameImage[GAMEOVER], 230, 230, 500, 300, this);
+	public void endGame(Graphics g,String endMessage) {
+		
+		//Draw "game over" Image
+		g.drawImage(gameImage[GAMEOVER], CELL_NUM_X*CELL_WIDTH/4, CELL_NUM_Y*CELL_HEIGHT/4, CELL_NUM_X*CELL_WIDTH/2, CELL_NUM_Y*CELL_HEIGHT/4, this);
+		g.setFont(new Font("Times New Roman Italic", Font.BOLD, 60));
+		
+		//Show message
+		g.setColor(Color.WHITE);
+		g.drawString(endMessage, CELL_NUM_X*CELL_WIDTH/4, CELL_NUM_Y*CELL_HEIGHT*2/3 );
 		this.gameOver = true;
 	}
+
 
 	/**
 	 * All painting methods are invoked in "paintComponent(Graphics g)".
@@ -158,10 +172,30 @@ public class MapPanel extends JPanel implements GameConstants {
 				paintItem(g);
 			}
 		}
+		
+		if (this.gameMode == PVE_MODE) {
+			
+			//Monsters win
+			if (player[PLAYER_ID_P1].getHP() <= 0) endGame(g,"Monsters Win!");
+			
+			//Player wins
+			else {
+				boolean monstersAlive = false;
+				for (Monster m : getMonsters()) {
+					monstersAlive |= m.isAlive();
+				}
+				if (monstersAlive==false&&player[PLAYER_ID_P1].getHP() > 0) {
+					endGame(g,"Player Wins!");
+				}
+			}
+		}
+		else if (this.gameMode == PVP_MODE) {
+			if (player[PLAYER_ID_P1].getHP() <= 0&&player[PLAYER_ID_P2].getHP()>0 ) endGame(g,"Player 1 Wins!");
+			else if (player[PLAYER_ID_P2].getHP() <= 0&&player[PLAYER_ID_P1].getHP()>0 ) endGame(g,"Player 2 Wins!");
+			else if (player[PLAYER_ID_P1].getHP() <= 0&&player[PLAYER_ID_P2].getHP() <= 0 ) endGame(g,"Game Tie!");
+		}	
+		
 
-		// if (player.getHP() <= 0) {
-		// endGame(g);
-		// }
 	}
 
 	/**
@@ -178,10 +212,6 @@ public class MapPanel extends JPanel implements GameConstants {
 						PLAYER_WIDTH, PLAYER_HEIGHT, this);
 			}
 			g.setColor(Color.BLUE);
-
-			/*
-			 * Draw HP bar of the player
-			 */
 
 		}
 	}

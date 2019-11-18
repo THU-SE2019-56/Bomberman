@@ -186,7 +186,7 @@ public class MainMenu extends JFrame implements GameConstants {
 			switch (this.name) {
 			case "pve":
 				MapPanel mp1 = new MapPanel(PVE_MODE);
-				StatusPanel sp1=new StatusPanel(mp1);	
+				StatusPanel sp1=new StatusPanel(mp1,jframe);	
 			
 				jframe.remove(menuPanel);
 				jframe.add(mp1);
@@ -211,7 +211,7 @@ public class MainMenu extends JFrame implements GameConstants {
 				
 			case "pvp":
 				MapPanel mp2 = new MapPanel(PVP_MODE);
-				StatusPanel sp2=new StatusPanel(mp2);
+				StatusPanel sp2=new StatusPanel(mp2,jframe);
 				
 				jframe.remove(menuPanel);
 				jframe.add(mp2);
@@ -235,7 +235,6 @@ public class MainMenu extends JFrame implements GameConstants {
 				System.exit(0);// End game
 				break;
 			}
-
 		}
 
 		@Override

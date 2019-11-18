@@ -481,7 +481,7 @@ public class Player implements AWTEventListener, GameConstants {
 		if (mi.isAtExplosion(this.getMapX(),this.getMapY())) {
 		
 			if (this.playerCanBeHurt == 1) {
-				this.setHP(this.getHP()-5);
+				this.setHP(this.getHP()-HP_LOSS_BY_BOMB);
 				this.playerCanBeHurt=0;
 			}
 		}

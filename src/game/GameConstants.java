@@ -15,12 +15,16 @@ public interface GameConstants {
 	int PLAYER_ID_P2 = 1;
 	int PLAYER_MAX_BOMB = 1;
 	int PLAYER_NUMBER = 2;
+	
+	int HP_LOSS_BY_MONSTER = 5;
+	int HP_LOSS_BY_BOMB = 50;
+	
 
 	// Monster constants
 	int MONSTER_NUMBER = 5;
 	int MONSTER_WIDTH = 45;
 	int MONSTER_HEIGHT = 45;
-	int HP_LOSS_BY_MONSTER = 51;
+
 	int ALERT_DISTANCE = 5;
 
 	// Item constants

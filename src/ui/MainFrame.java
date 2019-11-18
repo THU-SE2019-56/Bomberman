@@ -18,6 +18,7 @@ public class MainFrame extends JFrame implements GameConstants {
 	 */
 	public MainFrame() {
 		this.setTitle("Bomberman");
+		this.setUndecorated(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.getContentPane().setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
 		this.pack();

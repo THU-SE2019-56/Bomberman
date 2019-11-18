@@ -45,26 +45,26 @@
 
 ---
 ### game
-11.18更新-已经不再是负责前端的包，前端相关已统一移到[ui](#ui)包中
+11.18更新-已经不再是负责前端的包，前端相关已统一移到[ui](#ui)包中。  
 
 > 这样做的原因在于之前想要独立StatusPanel时，发现必须要MapPanel(原Display)的引用。创建一个前端页面需要另一个前端就很奇怪，MapPanel实际上承担了不应属于它的职责，因此做了进一步分离。
 
 负责储存整个游戏信息的[包](src/game)。  
 
 #### Game
-储存游戏进程的[类](src/game/Game.java)。 
+储存游戏进程的[类](src/game/Game.java)。   
 储存整个游戏进程，主要负责游戏的初始化，提供set(),get()方法供前端使用。
 
 #### GameConstants
-储存游戏常数的[接口](src/game/GameConstants.java)。 
+储存游戏常数的[接口](src/game/GameConstants.java)。   
 作为接口，储存游戏所需常数。
 
 #### StartGame
-游戏入口的[类](src/game/StartGame.java)。 
+游戏入口的[类](src/game/StartGame.java)。   
 整个游戏的入口，只包含main方法。
 
 #### TimerListener
-负责刷新游戏状态的[类](src/game/TimerListener.java)。 
+负责刷新游戏状态的[类](src/game/TimerListener.java)。   
 将每30毫秒的刷新方法从原Display类中独立出来。目前负责刷新游戏状态、重画MapPanel和StatusPanel。
 
 ---
@@ -77,7 +77,7 @@
 储存整个地图的信息，地图可认为由Cell构成。此类主要只处理和地图有关的逻辑，即人物移动、炸弹爆炸等方法均应该在其它类中实现，逻辑上**不适合**出现在此类中。可通过调用地图中各方法获得每个地图格点上的信息，鉴于存在数组越界风险且多层调用增加繁琐步骤，**不再建议**通过地图类中的map函数获得格点对象获取相应信息。
 
 #### Cell
-负责地图每个格点的[类](src/map/Cell.java)。  
+负责地图每个格点的[类](src/map/Cell.java)。    
 每个Cell中可以有可破坏障碍物，不可破坏障碍物，炸弹，道具，是否处于爆炸范围等等信息。其它类的方法应通过调用地图类中的方法访问格点上的信息。
 
 #### MapMatrix
@@ -141,15 +141,15 @@ MapMatrix中包含可以随机生成含障碍物的地图或载入已有矩阵�
 
 ---
 ### ui
-负责前端展示的[包](src/ui)。
+负责前端展示的[包](src/ui)。  
 所有前端界面在此绘制。
 
 #### MainFrame
-负责主窗口的[类](src/ui/MainFrame.java)。
+负责主窗口的[类](src/ui/MainFrame.java)。  
 只负责提供一个窗口JFrame。上面的所有Panel均在其他类中实现。
 
 #### MapPanel
-负责绘制地图界面的[类](src/ui/MapPanel.java)。原名Display
+负责绘制地图界面的[类](src/ui/MapPanel.java)。原名Display  
 将Player, Monster等类的对象作为成员变量统一在此，进而能够通过各个类提供的方法，获取这些成员变量的坐标值，最后通过JPanel提供的方法将图像绘制在视窗中。具体使用方法是通过每30毫秒执行一次的actionPerformed()方法重新绘制界面。
 
 10.22更新-将Display类和Player类结合，能够实现人物在空白窗口的移动。
@@ -159,13 +159,13 @@ MapMatrix中包含可以随机生成含障碍物的地图或载入已有矩阵�
 11.18更新-更名为MapPanel，Display中的前端部分独立放置于此。不再有player等成员变量，只保留game一个成员变量，再通过game调用人物怪物的位置。
 
 #### MenuPanel
-负责绘制主菜单的[类](src/ui/MenuPanel.java)。  
+负责绘制主菜单的[类](src/ui/MenuPanel.java)。    
 逻辑相对比较简单，即通过不同按钮链接到不同页面中，需要等待其它类实现完成后，最后实现。
 
 11.18更新-基本完成。
 
 #### StatusPanel
-负责绘制状态栏的[类](src/ui/StatusPanel.java)。  
+负责绘制状态栏的[类](src/ui/StatusPanel.java)。    
 提供人物血量，暂停，返回，重开功能。
 
 ---

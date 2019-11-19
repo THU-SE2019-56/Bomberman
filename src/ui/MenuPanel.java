@@ -17,6 +17,13 @@ import game.Game;
 import game.GameConstants;
 import game.TimerListener;
 
+/**
+ * Main menu panel. Fill in the MainFrame. Contain buttons to jump to other
+ * panels.
+ * 
+ * @author Chengsong Xiong, Wang
+ * @version 0.9
+ */
 public class MenuPanel extends JPanel implements GameConstants {
 	private MainFrame mainFrame;
 	private JButton buttonPve;
@@ -161,7 +168,7 @@ public class MenuPanel extends JPanel implements GameConstants {
 				StatusPanel statusPanelPve = new StatusPanel(gamePve, mainFrame);
 
 				mainFrame.remove(MenuPanel.this);
-				
+
 				mainFrame.add(mapPanelPve);
 				mainFrame.validate();// repaint
 
@@ -184,10 +191,10 @@ public class MenuPanel extends JPanel implements GameConstants {
 			case "pvp":
 				Game gamePvp = new Game(PVP_MODE);
 				MapPanel mapPanelPvp = new MapPanel(gamePvp);
-				StatusPanel statusPanelPvp = new StatusPanel(gamePvp,mainFrame);
+				StatusPanel statusPanelPvp = new StatusPanel(gamePvp, mainFrame);
 
 				mainFrame.remove(MenuPanel.this);
-				
+
 				mainFrame.add(mapPanelPvp);
 				mainFrame.validate();// repaint
 

@@ -1,27 +1,29 @@
 package map;
 
-import game.GameConstants;
 import java.lang.Math;
 
+import game.GameConstants;
 import bomb.Bomb;
 import items.Item;
 import player.Player;
 
 /**
- * <p>
- * Store the necessary information. Should be updated by package bomb, items,
- * player. Used by player to decide its location after moving.
+ * Core class of the game. It is composed of Cell, and store a matrix of size
+ * CELL_NUM_Y*CELL_NUM_X.<br>
+ * Provides methods with params x, y to get access to the state of a certain
+ * cell.
  *
- * @author Zhuofan Chen, Wang
+ * @author Zhuofan Chen
  * @version 1.0
  */
 public class Map implements GameConstants {
-	// Define map matrix and its size
-	// In matrix _map, the first index refers to the y axis position and the second
-	// index refers to the x axis position
+	/*
+	 * Define map matrix and its size. In matrix _map, the first index refers to the
+	 * y axis position and the second index refers to the x axis position.
+	 */
 	private Cell[][] _map;
 	private int ySize = CELL_NUM_Y;
-	private int xSize = CELL_NUM_Y;
+	private int xSize = CELL_NUM_X;
 
 	/**
 	 * Default construction method
@@ -76,6 +78,7 @@ public class Map implements GameConstants {
 	/**
 	 * @return the cell at given position for any operation on certain cell !!this
 	 *         method is NOT RECOMMENDED!!
+	 * @deprecated
 	 */
 	public Cell getCell(int xPos, int yPos) {
 		return _map[yPos][xPos];
@@ -110,8 +113,10 @@ public class Map implements GameConstants {
 	}
 
 	/**
-	 * @param           xPos, yPos position to set bomb
+	 * @param xPos      x position to set bomb
+	 * @param yPos      y position to set bomb
 	 * @param bombPower power of bomb
+	 * @param owner     the player who set the bomb
 	 * @return if the bomb is successfully set
 	 */
 	public boolean setBomb(int xPos, int yPos, int bombPower, Player owner) {
@@ -194,7 +199,7 @@ public class Map implements GameConstants {
 	/**
 	 * set a wall at given position
 	 * 
-	 * @param destructible: whether the wall to be set is destructible
+	 * @param destructible whether the wall to be set is destructible
 	 */
 	public void setWall(int xPos, int yPos, boolean destructible) {
 		if (isInMap(xPos, yPos))

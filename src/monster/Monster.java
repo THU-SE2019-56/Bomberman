@@ -1,7 +1,7 @@
 package monster;
 
-import java.text.BreakIterator;
 import java.util.*;
+
 import map.Map;
 import player.Player;
 import game.GameConstants;
@@ -201,7 +201,7 @@ class Brain implements GameConstants {
  * in this case the player's HP will reduce by HP_LOSS_BY_MONSTER).
  *
  * @author  Hang Chen
- * @version 0.2
+ * @version 0.9
  */
 public class Monster implements GameConstants {
 	private boolean alive;

@@ -1,10 +1,12 @@
 package map;
 
-import game.GameConstants;
 import java.lang.Math;
 
+import game.GameConstants;
+
 /**
- * to be used to generate a map with a given or a new random matrix of wall
+ * Generate a map with a given or a new random matrix of wall. Contain methods
+ * to ensure the connectivity of the map.
  * 
  * @author Zhuofan Chen
  * @version 1.0
@@ -14,7 +16,7 @@ public class MapMatrix implements GameConstants {
 	private int xSize;
 	private int ySize;
 	// Define wall matrix
-	private byte[][] wall;
+	private int[][] wall;
 	// Chance for wall to be generated
 	private float destructibleWallDensity = 0.4f;
 	private float indestructibleWallDensity = 0.2f;
@@ -83,7 +85,7 @@ public class MapMatrix implements GameConstants {
 	public MapMatrix(int xSize, int ySize) {
 		this.xSize = xSize;
 		this.ySize = ySize;
-		wall = new byte[ySize][xSize];
+		wall = new int[ySize][xSize];
 		set = new UFSet();
 		visited = new boolean[ySize][xSize];
 		randomFill();
@@ -94,7 +96,7 @@ public class MapMatrix implements GameConstants {
 	 * Clear all walls on the map matrix
 	 */
 	public void clearAll() {
-		wall = new byte[ySize][xSize];
+		wall = new int[ySize][xSize];
 		set = new UFSet();
 		visited = new boolean[ySize][xSize];
 	}

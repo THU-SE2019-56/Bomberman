@@ -10,7 +10,7 @@ import game.GameConstants;
  * Create a frame that hold all panels.
  * 
  * @author Wang
- *
+ * @version 0.9
  */
 public class MainFrame extends JFrame implements GameConstants {
 	/**
@@ -30,7 +30,7 @@ public class MainFrame extends JFrame implements GameConstants {
 
 		MenuPanel menuPanel = new MenuPanel(this);
 		this.add(menuPanel);
-		
+
 		this.setVisible(true);
 	}
 }

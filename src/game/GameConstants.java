@@ -13,7 +13,7 @@ public interface GameConstants {
 	int PLAYER_HEIGHT = 45;
 	int PLAYER_ID_P1 = 0;
 	int PLAYER_ID_P2 = 1;
-	int PLAYER_MAX_BOMB = 1;
+	int PLAYER_MAX_BOMB = 4;
 	int MAX_PLAYER_NUMBER = 2;
 	
 	int HP_LOSS_BY_MONSTER = 5;
@@ -26,9 +26,11 @@ public interface GameConstants {
 	int ALERT_DISTANCE = 5;
 
 	// Item constants
+	int ITEM_NUM = 4;
 	int BOMB_UP = 0;
 	int VELOCITY_UP = 1;
 	int POWER_UP = 2;
+	int HP_UP = 3;
 	int ITEM_WIDTH = 45;
 	int ITEM_HEIGHT = 45;
 
@@ -36,7 +38,7 @@ public interface GameConstants {
 	int BOMB_TIME = 100; // time between plant and explode
 
 	// Chance for item to be created
-	float ITEM_CHANCE = 0.5f;
+	float ITEM_CHANCE = 0.4f;
 
 	// For display
 	int CELL_WIDTH = 45;

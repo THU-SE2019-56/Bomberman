@@ -22,7 +22,7 @@ public class MapPanel extends JPanel implements GameConstants {
 
 	BufferedImage player1Image[] = new BufferedImage[4];
 	BufferedImage player2Image[] = new BufferedImage[4];
-	BufferedImage itemImage[] = new BufferedImage[3];
+	BufferedImage itemImage[] = new BufferedImage[ITEM_NUM];
 	BufferedImage monsterImage[] = new BufferedImage[4];
 	BufferedImage mapImage[] = new BufferedImage[4];
 	BufferedImage gameImage[] = new BufferedImage[3];
@@ -128,6 +128,9 @@ public class MapPanel extends JPanel implements GameConstants {
 				if (game.getMap().isWithBomb(i, j))
 					g.drawImage(bombImage[BOMB], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), BOMB_WIDTH,
 							BOMB_HEIGHT, this);
+				if (game.getMap().isWithItem(i, j))
+					g.drawImage(itemImage[game.getMap().getItemID(i, j)], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), 
+							ITEM_WIDTH, ITEM_HEIGHT, this);
 				if (game.getMap().isAtExplosion(i, j))
 					g.drawImage(bombImage[EXPLODE], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), BOMB_WIDTH,
 							BOMB_HEIGHT, this);
@@ -173,6 +176,9 @@ public class MapPanel extends JPanel implements GameConstants {
 		player2Image[DIRECTION_LEFT] = ImageIO.read(new File("image/player/p2LEFT.png"));
 
 		itemImage[VELOCITY_UP] = ImageIO.read(new File("image/item/velocity.png"));
+		itemImage[BOMB_UP] = ImageIO.read(new File("image/item/bomb.png"));
+		itemImage[HP_UP] = ImageIO.read(new File("image/item/HP_UP.png"));
+		itemImage[POWER_UP] = ImageIO.read(new File("image/item/power.jpg"));
 
 		monsterImage[DIRECTION_UP] = ImageIO.read(new File("image/monster/up.png"));
 		monsterImage[DIRECTION_DOWN] = ImageIO.read(new File("image/monster/down.png"));
@@ -188,5 +194,6 @@ public class MapPanel extends JPanel implements GameConstants {
 
 		bombImage[BOMB] = ImageIO.read(new File("image/bomb/bomb.png"));
 		bombImage[EXPLODE] = ImageIO.read(new File("image/bomb/explode.jpeg"));
+		
 	}
 }

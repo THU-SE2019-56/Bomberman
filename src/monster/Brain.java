@@ -151,7 +151,7 @@ class Brain implements GameConstants {
                 if (viz[i][j]) cnt++;
 
         // random select a position
-        int stp = (int)(cnt*Math.random());
+        int stp = (int)(cnt*Math.random()) + 1;
         for (int i=0; i<CELL_NUM_X; ++i) {
             for (int j=0; j<CELL_NUM_Y; ++j) {
                 if (viz[i][j]) p++;

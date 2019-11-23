@@ -2,10 +2,15 @@ package ui;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -33,10 +38,13 @@ public class MenuPanel extends JPanel implements GameConstants {
 	private JButton buttonAbout;
 	private ImageIcon menuBackgroundIcon;
 	private JLabel menuBackgroundLabel;
+	
+	
 
 	public MenuPanel(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
-
+         
+	
 		this.addButton();
 		this.addBackground();
 	}
@@ -53,20 +61,23 @@ public class MenuPanel extends JPanel implements GameConstants {
 		/*
 		 * PVE mode
 		 */
-		buttonPve = new JButton("PVE mode");
+		
+		buttonPve = new JButton("PVE Mode");
 		buttonPve.setBounds(50, 150, 150, 50);
 		initializeButton(buttonPve);
 
 		/*
 		 * PVP mode
 		 */
-		buttonPvp = new JButton("PVP mode");
+
+		buttonPvp = new JButton("PVP Mode");
 		buttonPvp.setBounds(50, 250, 150, 50);
 		initializeButton(buttonPvp);
 
 		/*
 		 * Help
 		 */
+
 		buttonHelp = new JButton("Help");
 		buttonHelp.setBounds(50, 350, 150, 50);
 		initializeButton(buttonHelp);
@@ -74,6 +85,7 @@ public class MenuPanel extends JPanel implements GameConstants {
 		/*
 		 * Exit
 		 */
+		
 		buttonExit = new JButton("Exit");
 		buttonExit.setBounds(700, 200, 150, 50);
 		initializeButton(buttonExit);
@@ -81,6 +93,7 @@ public class MenuPanel extends JPanel implements GameConstants {
 		/*
 		 * About us
 		 */
+	
 		buttonAbout = new JButton("About us");
 		buttonAbout.setBounds(700, 300, 150, 50);
 		initializeButton(buttonAbout);
@@ -134,12 +147,16 @@ public class MenuPanel extends JPanel implements GameConstants {
 	 * Reset the buttons when the mouse leaves
 	 */
 	public void resetButton(JButton button) {
+		
 		button.setBackground(Color.WHITE);
 		button.setBounds(button.getX() + 20, button.getY() + 10, button.getWidth() - 40, button.getHeight() - 20);
 		Font buttonFont = new Font("Times New Roman Italic", Font.BOLD, 14);
 		button.setFont(buttonFont);
-	}
 
+	}
+	
+	
+	
 	/**
 	 * Respond to button events
 	 */
@@ -154,12 +171,12 @@ public class MenuPanel extends JPanel implements GameConstants {
 		}
 
 		@Override
-		public void mouseClicked(MouseEvent e) {
+		public void mousePressed(MouseEvent e) {
 
 		}
 
 		@Override
-		public void mousePressed(MouseEvent e) {
+		public void mouseClicked(MouseEvent e) {
 
 			switch (this.name) {
 			case "pve":
@@ -220,12 +237,12 @@ public class MenuPanel extends JPanel implements GameConstants {
 			case "pvp":
 				highLightButton(buttonPvp);
 				break;
-			case "exit":
-				highLightButton(buttonExit);
-				break;
 			case "help":
 				highLightButton(buttonHelp);
 				break;
+			case "exit":
+				highLightButton(buttonExit);
+				break;	
 			case "about us":
 				highLightButton(buttonAbout);
 				break;
@@ -241,16 +258,20 @@ public class MenuPanel extends JPanel implements GameConstants {
 			case "pvp":
 				resetButton(buttonPvp);
 				break;
-			case "exit":
-				resetButton(buttonExit);
-				break;
 			case "help":
 				resetButton(buttonHelp);
 				break;
+			case "exit":
+				resetButton(buttonExit);
+				break;
+
 			case "about us":
 				resetButton(buttonAbout);
 				break;
 			}
 		}
+		
+		
 	}
+	
 }

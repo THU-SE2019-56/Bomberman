@@ -162,11 +162,18 @@ public class Map implements GameConstants {
 	 * @param xPos, yPos position to set item
 	 * @return if the item is successfully set
 	 */
-	public boolean setItem(int xPos, int yPos) {
-		if (isInMap(xPos, yPos) && _map[yPos][xPos].setItem(new Item(xPos, yPos))) {
+	public void setItem(int xPos, int yPos) {
+		int itemID = createItem(xPos, yPos);
+		/*
+		 * 
+		if (isInMap(xPos, yPos) && _map[yPos][xPos].setItem(new Item(xPos, yPos, itemID))) {
 			return true;
 		}
 		return false;
+		 */
+		if (isInMap(xPos, yPos) && itemID != -1) {
+			_map[yPos][xPos].setItem(new Item(xPos, yPos, itemID));
+		}
 	}
 
 	/**
@@ -174,11 +181,21 @@ public class Map implements GameConstants {
 	 * 
 	 * @return if the item is successfully created
 	 */
-	public boolean createItem(int xPos, int yPos) {
+	public int createItem(int xPos, int yPos) {
 		if ((float) Math.random() < ITEM_CHANCE) {
-			return (setItem(xPos, yPos));
+			int ID = (int) (ITEM_NUM * (float)Math.random());
+			switch (ID) {
+			case 0:
+				return BOMB_UP;
+			case 1:
+				return VELOCITY_UP;
+			case 2:
+				return POWER_UP;
+			case 3:
+				return HP_UP;
+			}
 		}
-		return false;
+		return -1;
 	}
 
 	/**

@@ -22,7 +22,7 @@ public class MapPanel extends JPanel implements GameConstants {
 
 	BufferedImage player1Image[] = new BufferedImage[4];
 	BufferedImage player2Image[] = new BufferedImage[4];
-	BufferedImage itemImage[] = new BufferedImage[3];
+	BufferedImage itemImage[] = new BufferedImage[ITEM_NUM];
 	BufferedImage monsterImage[] = new BufferedImage[4];
 	BufferedImage mapImage[] = new BufferedImage[4];
 	BufferedImage gameImage[] = new BufferedImage[3];
@@ -173,6 +173,7 @@ public class MapPanel extends JPanel implements GameConstants {
 		player2Image[DIRECTION_LEFT] = ImageIO.read(new File("image/player/p2LEFT.png"));
 
 		itemImage[VELOCITY_UP] = ImageIO.read(new File("image/item/velocity.png"));
+		itemImage[HP_UP] = ImageIO.read(new File("image/item/HP_UP.png"));
 
 		monsterImage[DIRECTION_UP] = ImageIO.read(new File("image/monster/up.png"));
 		monsterImage[DIRECTION_DOWN] = ImageIO.read(new File("image/monster/down.png"));
@@ -188,5 +189,6 @@ public class MapPanel extends JPanel implements GameConstants {
 
 		bombImage[BOMB] = ImageIO.read(new File("image/bomb/bomb.png"));
 		bombImage[EXPLODE] = ImageIO.read(new File("image/bomb/explode.jpeg"));
+		
 	}
 }

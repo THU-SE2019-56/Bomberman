@@ -13,13 +13,12 @@ public class Item implements GameConstants {
 
 	private int x;
 	private int y;
-	private int itemID; // saved in GameConstants to judge which item is created and used
+	private int itemID = (int) (ITEM_NUM * (float)Math.random()); // saved in GameConstants to judge which item is created and used
 	private boolean isAcquired = false;
 
 	public Item(int xPos, int yPos) {
 		x = xPos * 45 ;
 		y = yPos * 45 ;
-		itemID = VELOCITY_UP;
 	}
 
 	/**
@@ -28,12 +27,20 @@ public class Item implements GameConstants {
 	 * @param player
 	 * 
 	 */
+	/*public void RandomID() {
+		itemID = (int) (ITEM_NUM * (float)Math.random());
+	}*/
 	public void getItem(Player player) {
 		if (!this.isAcquired) {
 			switch (this.getItemID()) {
 			case VELOCITY_UP:
 				// Correctly set the location of the player to avoid bugs
 				player.addVelocityByItems();
+				break;
+			case BOMB_UP:
+				player.setBombMaxNumber(player.getBombMaxNumber() + 1);
+				break;
+			case POWER_UP:
 				break;
 			case HP_UP:
 				player.setHP(player.getHP() + 50);

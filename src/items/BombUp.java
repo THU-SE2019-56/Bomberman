@@ -4,7 +4,7 @@ import player.Player;
 
 public class BombUp extends Item {
 	
-	public BombUp(int xPos,int yPos, int ID) {
+	public BombUp(int xPos,int yPos) {
 		super(xPos,yPos);
 	}
 

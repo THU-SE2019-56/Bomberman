@@ -24,6 +24,7 @@ public class Game implements GameConstants,Serializable{
 	private int playerNum = 0;// Number of the players
 	private int pauseFlag;
 	private int gameMode;
+	private int stageNumber;
 
 	public Game(int gameMode) {
 
@@ -76,7 +77,35 @@ public class Game implements GameConstants,Serializable{
 		this.pauseFlag = 0;
 
 	}
+	
+	public Game(Map map,int gameMode) {
 
+		// Initialize map, player, monsters
+		this.map = map;
+
+		for (int i = 0; i < MAX_MONSTER_NUMBER; i++) {
+			this.monsters[i] = new Monster(map);
+		}
+
+		if (gameMode == PVE_MODE) {
+			this.playerNum = 1;
+		}
+		if (gameMode == PVP_MODE) {
+			this.playerNum = 2;
+			for (Monster m : getMonsters()) {
+				m.eliminate();
+			}
+		}
+
+		for (int i = 0; i < getPlayerNum(); i++) {
+			this.player[i] = new Player(getMap(), i);
+		}
+		this.item = new Item(2, 2);
+		this.setGameMode(gameMode);
+		this.pauseFlag = 0;
+
+	}
+	
 	public int getPauseFlag() {
 		return this.pauseFlag;
 	}
@@ -139,5 +168,11 @@ public class Game implements GameConstants,Serializable{
 
 	public void setGameMode(int gameMode) {
 		this.gameMode = gameMode;
+	}
+	public int getStageNumber() {
+		return stageNumber;
+	}
+	public void setStageNumber(int stageNumber) {
+		this.stageNumber = stageNumber;
 	}
 }

@@ -11,8 +11,8 @@ import game.Game;
 import monster.Monster;
 
 /**
- * Display necessary elements here, including player(s), monsters, walls, items,
- * etc.
+ * Display necessary elements for the game, including player(s), monsters,
+ * walls, items, etc.
  *
  * @author Chengsong Xiong, Wang
  * @version 0.9
@@ -151,7 +151,7 @@ public class MapPanel extends JPanel implements GameConstants {
 		// Draw "game over" Image
 		g.drawImage(gameImage[GAMEOVER], CELL_NUM_X * CELL_WIDTH / 4, CELL_NUM_Y * CELL_HEIGHT / 4,
 				CELL_NUM_X * CELL_WIDTH / 2, CELL_NUM_Y * CELL_HEIGHT / 4, this);
-		
+
 		// Show message
 		g.setFont(new Font("Times New Roman Italic", Font.BOLD, 60));
 		g.setColor(Color.WHITE);

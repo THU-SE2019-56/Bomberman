@@ -17,6 +17,13 @@ import game.Game;
 import game.GameConstants;
 import game.TimerListener;
 
+/**
+ * Main menu panel. Fill in the MainFrame. Contain buttons to jump to other
+ * panels.
+ * 
+ * @author Chengsong Xiong, Wang
+ * @version 0.9
+ */
 public class MenuPanel extends JPanel implements GameConstants {
 	private MainFrame mainFrame;
 	private JButton buttonPve;
@@ -156,38 +163,24 @@ public class MenuPanel extends JPanel implements GameConstants {
 
 			switch (this.name) {
 			case "pve":
-				Game gamePve = new Game(PVE_MODE);
-				MapPanel mapPanelPve = new MapPanel(gamePve);
-				StatusPanel statusPanelPve = new StatusPanel(gamePve, mainFrame);
-
-				mainFrame.remove(MenuPanel.this);
+				StagePanel stagePanel=new StagePanel(mainFrame);
 				
-				mainFrame.add(mapPanelPve);
+				mainFrame.remove(MenuPanel.this);
+				mainFrame.add(stagePanel);
 				mainFrame.validate();// repaint
-
-				mainFrame.add(statusPanelPve);
-				mainFrame.validate();// repaint
-
+				
 				mainFrame.setLayout(null);
 
-				mapPanelPve.setLocation(0, 0);
-				mapPanelPve.setSize(MAP_WIDTH, MAP_HEIGHT);
-
-				statusPanelPve.setLocation(MAP_WIDTH, 0);
-				statusPanelPve.setSize(STATUS_PANEL_WIDTH, STATUS_PANEL_HEIGHT);
-
-				TimerListener timerListenerPve = new TimerListener(gamePve, mapPanelPve, statusPanelPve);
-				Timer timerPve = new Timer(REFRESH, timerListenerPve);
-				timerPve.start();
+				stagePanel.setLocation(0, 0);
+				stagePanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 				break;
-
 			case "pvp":
 				Game gamePvp = new Game(PVP_MODE);
 				MapPanel mapPanelPvp = new MapPanel(gamePvp);
-				StatusPanel statusPanelPvp = new StatusPanel(gamePvp,mainFrame);
+				StatusPanel statusPanelPvp = new StatusPanel(gamePvp, mainFrame);
 
 				mainFrame.remove(MenuPanel.this);
-				
+
 				mainFrame.add(mapPanelPvp);
 				mainFrame.validate();// repaint
 

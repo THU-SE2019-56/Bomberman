@@ -21,7 +21,9 @@ import game.GameConstants;
 import game.TimerListener;
 
 /**
- * Create a panel on the right side of mapManel. Related to mapPanel.
+ * Create a panel on the right side of mapManel. Show the status of player(s)
+ * and provide buttons for specific usage. Related to mainFrame in order to
+ * realize the "back" function.
  * 
  * @author Chengsong Xiong, Wang
  * @version 0.9
@@ -36,10 +38,10 @@ public class StatusPanel extends JPanel implements GameConstants {
 	private Game game;
 	private MainFrame mainFrame;
 
-	public StatusPanel(Game game,MainFrame mainFrame) {
+	public StatusPanel(Game game, MainFrame mainFrame) {
 		this.game = game;
-		this.mainFrame=mainFrame;
-		
+		this.mainFrame = mainFrame;
+
 		try {
 			loadImage();
 		} catch (Exception e) {
@@ -68,24 +70,25 @@ public class StatusPanel extends JPanel implements GameConstants {
 			this.add(this.playerLifeText[i]);
 		}
 
-		//Pause
-				this.pauseButton.setBounds( CELL_WIDTH, 8 * CELL_HEIGHT, 2 * CELL_WIDTH, CELL_HEIGHT);
-				initializeButton(pauseButton,"pause");
-			
-				//Back to main menu
-				this.backButton.setBounds( CELL_WIDTH, 10 * CELL_HEIGHT, 2 * CELL_WIDTH, CELL_HEIGHT);
-				initializeButton(backButton,"back");
-			
-				//Restart game
-				this.restartButton.setBounds( CELL_WIDTH, 12* CELL_HEIGHT, 2 * CELL_WIDTH, CELL_HEIGHT);
-				initializeButton(restartButton,"restart");
+		// Pause
+		this.pauseButton.setBounds(CELL_WIDTH, 8 * CELL_HEIGHT, 2 * CELL_WIDTH, CELL_HEIGHT);
+		initializeButton(pauseButton, "pause");
+
+		// Back to main menu
+		this.backButton.setBounds(CELL_WIDTH, 10 * CELL_HEIGHT, 2 * CELL_WIDTH, CELL_HEIGHT);
+		initializeButton(backButton, "back");
+
+		// Restart game
+		this.restartButton.setBounds(CELL_WIDTH, 12 * CELL_HEIGHT, 2 * CELL_WIDTH, CELL_HEIGHT);
+		initializeButton(restartButton, "restart");
 
 	}
-	
-	public void initializeButton(JButton button,String name) {
+
+	public void initializeButton(JButton button, String name) {
 
 		Border originBorder = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1);
-		// This is the default border of WIN10 system.For macOS, use this border to make sure the buttons are correctly initialized.
+		// This is the default border of WIN10 system.For macOS, use this border to make
+		// sure the buttons are correctly initialized.
 		Font buttonFont = new Font("Times New Roman Italic", Font.BOLD, 14);
 
 		button.setForeground(Color.BLACK);
@@ -98,13 +101,14 @@ public class StatusPanel extends JPanel implements GameConstants {
 		this.add(button);
 
 	}
-	
+
 	/**
 	 * Highlight the buttons when the mouse is on them
 	 */
 	public void highlightButton(JButton button) {
 		button.setBackground(Color.CYAN);
-		button.setBounds(button.getX() - CELL_WIDTH/2, button.getY() - CELL_HEIGHT/4, button.getWidth() + CELL_WIDTH, button.getHeight() + CELL_HEIGHT/2);
+		button.setBounds(button.getX() - CELL_WIDTH / 2, button.getY() - CELL_HEIGHT / 4,
+				button.getWidth() + CELL_WIDTH, button.getHeight() + CELL_HEIGHT / 2);
 		Font buttonFont = new Font("Times New Roman Italic", Font.BOLD, 20);
 		button.setFont(buttonFont);
 	}
@@ -114,11 +118,12 @@ public class StatusPanel extends JPanel implements GameConstants {
 	 */
 	public void resetButton(JButton button) {
 		button.setBackground(Color.WHITE);
-		button.setBounds(button.getX() + CELL_WIDTH/2, button.getY() + CELL_WIDTH/4, button.getWidth() - CELL_WIDTH, button.getHeight() - CELL_HEIGHT/2);
+		button.setBounds(button.getX() + CELL_WIDTH / 2, button.getY() + CELL_WIDTH / 4, button.getWidth() - CELL_WIDTH,
+				button.getHeight() - CELL_HEIGHT / 2);
 		Font buttonFont = new Font("Times New Roman Italic", Font.BOLD, 14);
 		button.setFont(buttonFont);
 	}
-	
+
 	public void paintComponent(Graphics g) {
 
 		super.paintComponent(g);
@@ -150,8 +155,7 @@ public class StatusPanel extends JPanel implements GameConstants {
 		}
 
 	}
-	
-	
+
 	/**
 	 * Respond to button events
 	 */
@@ -163,7 +167,6 @@ public class StatusPanel extends JPanel implements GameConstants {
 			this.mainFrame = mainFrame;
 		}
 
-		
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
@@ -184,36 +187,36 @@ public class StatusPanel extends JPanel implements GameConstants {
 					pauseButton.setText("Pause");
 				}
 			}
-			
+
 			/*
 			 * Back
 			 */
 			if (e.getSource() == backButton) {
 				MenuPanel newMenuPanel = new MenuPanel(mainFrame);
-				
-				JPanel mainPanel=(JPanel)mainFrame.getContentPane();
+
+				JPanel mainPanel = (JPanel) mainFrame.getContentPane();
 				mainPanel.removeAll();
-				
+
 				mainFrame.add(newMenuPanel);
 				mainFrame.validate();
-				
+
 				mainFrame.setLayout(null);
 
 				newMenuPanel.setLocation(0, 0);
 				newMenuPanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 			}
-			
+
 			/*
 			 * Restart
 			 */
 			if (e.getSource() == restartButton) {
-				Game newGame=new Game(game.getGameMode());
+				Game newGame = new Game(game.getGameMode());
 				MapPanel newMapPanel = new MapPanel(newGame);
-				StatusPanel newStatusPanel=new StatusPanel(newGame,mainFrame);
-				
-				JPanel mainPanel=(JPanel)mainFrame.getContentPane();
+				StatusPanel newStatusPanel = new StatusPanel(newGame, mainFrame);
+
+				JPanel mainPanel = (JPanel) mainFrame.getContentPane();
 				mainPanel.removeAll();
-				
+
 				mainFrame.add(newMapPanel);
 				mainFrame.validate();// repaint
 
@@ -243,23 +246,28 @@ public class StatusPanel extends JPanel implements GameConstants {
 		@Override
 		public void mouseEntered(MouseEvent e) {
 
-			if (e.getSource() == pauseButton) highlightButton(pauseButton);
-			else if (e.getSource() == backButton) highlightButton(backButton);
-			else if (e.getSource() == restartButton) highlightButton(restartButton);
+			if (e.getSource() == pauseButton)
+				highlightButton(pauseButton);
+			else if (e.getSource() == backButton)
+				highlightButton(backButton);
+			else if (e.getSource() == restartButton)
+				highlightButton(restartButton);
 
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
 
-			if (e.getSource() == pauseButton) resetButton(pauseButton);
-			else if (e.getSource() == backButton) resetButton(backButton);
-			else if (e.getSource() == restartButton) resetButton(restartButton);
+			if (e.getSource() == pauseButton)
+				resetButton(pauseButton);
+			else if (e.getSource() == backButton)
+				resetButton(backButton);
+			else if (e.getSource() == restartButton)
+				resetButton(restartButton);
 
 		}
 	}
 
-	 
 	public void loadImage() throws Exception {
 		// TODO Load all the images here
 

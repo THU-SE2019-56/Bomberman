@@ -1,6 +1,5 @@
 package game;
 
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -8,16 +7,23 @@ import monster.Monster;
 import ui.MapPanel;
 import ui.StatusPanel;
 
-public class TimerListener implements ActionListener,GameConstants{
+/**
+ * The actionListener for timer. Refresh game, mapPanel and statusPanel.
+ * 
+ * @author Wang
+ * @version 0.9
+ */
+public class TimerListener implements ActionListener, GameConstants {
 	private MapPanel mapPanel;
 	private StatusPanel statusPanel;
 	private Game game;
-	
-	public TimerListener(Game game, MapPanel mapPanel,StatusPanel statusPanel) {
-		this.game=game;
-		this.mapPanel=mapPanel;
-		this.statusPanel=statusPanel;
+
+	public TimerListener(Game game, MapPanel mapPanel, StatusPanel statusPanel) {
+		this.game = game;
+		this.mapPanel = mapPanel;
+		this.statusPanel = statusPanel;
 	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -39,9 +45,8 @@ public class TimerListener implements ActionListener,GameConstants{
 				mapPanel.repaint();
 			}
 		}
-		
+
 		statusPanel.repaint();
-		Toolkit.getDefaultToolkit().sync();
 	}
 
 }

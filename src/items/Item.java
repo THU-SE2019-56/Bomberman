@@ -38,17 +38,14 @@ public class Item implements GameConstants {
 				player.addVelocityByItems();
 				break;
 			case BOMB_UP:
-				player.setBombMaxNumber(player.getBombMaxNumber() + 1);
+				if (player.getBombMaxNumber() < PLAYER_MAX_BOMB)
+					player.setBombMaxNumber(player.getBombMaxNumber() + 1);
 				break;
 			case POWER_UP:
 				break;
 			case HP_UP:
 				player.setHP(player.getHP() + 50);
 				break;
-			/*
-			 * case BOMB_UP: this.setY(this.getY() + this.getVelocity()); break; case
-			 * POWER_UP: this.setX(this.getX() - this.getVelocity()); break;
-			 */
 			}
 		}
 	}

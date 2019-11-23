@@ -13,7 +13,7 @@ public interface GameConstants {
 	int PLAYER_HEIGHT = 45;
 	int PLAYER_ID_P1 = 0;
 	int PLAYER_ID_P2 = 1;
-	int PLAYER_MAX_BOMB = 1;
+	int PLAYER_MAX_BOMB = 4;
 	int MAX_PLAYER_NUMBER = 2;
 	
 	int HP_LOSS_BY_MONSTER = 5;

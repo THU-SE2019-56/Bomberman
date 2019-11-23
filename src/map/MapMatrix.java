@@ -1,5 +1,8 @@
 package map;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.Math;
 
 import game.GameConstants;
@@ -90,7 +93,23 @@ public class MapMatrix implements GameConstants {
 		visited = new boolean[ySize][xSize];
 		randomFill();
 		wall[0][0] = wall[0][1] = wall[1][0] = NONE; // clean up born place
+		
+		FileWriter out;
+		try {
+			out = new FileWriter(new File("data/stage2.txt"));
+			for (int i = 0; i < xSize; i++) {
+				for (int j = 0; j < ySize; j++) {
+					out.write(wall[i][j] + "\t");
+				}
+				out.write("\r\n");
+			}
+			out.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
+
 
 	/**
 	 * Clear all walls on the map matrix

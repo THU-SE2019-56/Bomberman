@@ -163,31 +163,17 @@ public class MenuPanel extends JPanel implements GameConstants {
 
 			switch (this.name) {
 			case "pve":
-				Game gamePve = new Game(PVE_MODE);
-				MapPanel mapPanelPve = new MapPanel(gamePve);
-				StatusPanel statusPanelPve = new StatusPanel(gamePve, mainFrame);
-
+				StagePanel stagePanel=new StagePanel(mainFrame);
+				
 				mainFrame.remove(MenuPanel.this);
-
-				mainFrame.add(mapPanelPve);
+				mainFrame.add(stagePanel);
 				mainFrame.validate();// repaint
-
-				mainFrame.add(statusPanelPve);
-				mainFrame.validate();// repaint
-
+				
 				mainFrame.setLayout(null);
 
-				mapPanelPve.setLocation(0, 0);
-				mapPanelPve.setSize(MAP_WIDTH, MAP_HEIGHT);
-
-				statusPanelPve.setLocation(MAP_WIDTH, 0);
-				statusPanelPve.setSize(STATUS_PANEL_WIDTH, STATUS_PANEL_HEIGHT);
-
-				TimerListener timerListenerPve = new TimerListener(gamePve, mapPanelPve, statusPanelPve);
-				Timer timerPve = new Timer(REFRESH, timerListenerPve);
-				timerPve.start();
+				stagePanel.setLocation(0, 0);
+				stagePanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 				break;
-
 			case "pvp":
 				Game gamePvp = new Game(PVP_MODE);
 				MapPanel mapPanelPvp = new MapPanel(gamePvp);

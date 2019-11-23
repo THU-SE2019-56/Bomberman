@@ -65,6 +65,23 @@ public class Map implements GameConstants {
 					_map[i][j].setWall(false);
 			}
 	}
+	
+	/**
+	 * Construction method for given int[][]
+	 */
+	public Map(int[][] wallMatrix) {
+		ySize = wallMatrix.length;
+		xSize = wallMatrix[0].length;
+		_map = new Cell[ySize][xSize];
+		for (int i = 0; i < ySize; i++)
+			for (int j = 0; j < xSize; j++) {
+				_map[i][j] = new Cell();
+				if (wallMatrix[i][j]==DESTRUCTIBLE)
+					_map[i][j].setWall(true);
+				if (wallMatrix[i][j]==INDESTRUCTIBLE)
+					_map[i][j].setWall(false);
+			}
+	}
 
 	/**
 	 * Call all member methods needing refreshing

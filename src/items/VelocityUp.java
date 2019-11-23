@@ -10,8 +10,8 @@ import player.Player;
  */
 public class VelocityUp extends Item {
 
-	public VelocityUp(int xPos, int yPos) {
-		super(xPos,yPos);
+	public VelocityUp(int xPos, int yPos, int ID) {
+		super(xPos,yPos,ID);
 	}
 
 	public void getItem(Player player) {

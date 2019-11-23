@@ -4,8 +4,8 @@ import player.Player;
 
 public class BombUp extends Item {
 	
-	public BombUp(int xPos,int yPos) {
-		super(xPos,yPos);
+	public BombUp(int xPos,int yPos, int ID) {
+		super(xPos,yPos,ID);
 	}
 
 	public void getItem(Player player) {

@@ -38,7 +38,7 @@ public interface GameConstants {
 	int BOMB_TIME = 100; // time between plant and explode
 
 	// Chance for item to be created
-	float ITEM_CHANCE = 0.5f;
+	float ITEM_CHANCE = 0.4f;
 
 	// For display
 	int CELL_WIDTH = 45;

@@ -5,7 +5,7 @@ import player.Player;
 public class BombUp extends Item {
 	
 	public BombUp(int xPos,int yPos, int ID) {
-		super(xPos,yPos,ID);
+		super(xPos,yPos);
 	}
 
 	public void getItem(Player player) {

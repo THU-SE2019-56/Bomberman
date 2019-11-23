@@ -16,10 +16,10 @@ public class Item implements GameConstants {
 	private int itemID; // saved in GameConstants to judge which item is created and used
 	private boolean isAcquired = false;
 
-	public Item(int xPos, int yPos, int ID) {
+	public Item(int xPos, int yPos) {
 		x = xPos * 45 ;
 		y = yPos * 45 ;
-		itemID = ID;
+		itemID = VELOCITY_UP;
 	}
 
 	/**

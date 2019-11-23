@@ -170,4 +170,10 @@ public class Cell {
 		withItem = false;
 		return true;
 	}
+	
+	public int getItemID() {
+		if(withItem)
+			return item.getItemID();
+		return -1;
+	}
 }

@@ -65,7 +65,7 @@ public class Map implements GameConstants {
 					_map[i][j].setWall(false);
 			}
 	}
-	
+
 	/**
 	 * Construction method for given int[][]
 	 */
@@ -76,9 +76,9 @@ public class Map implements GameConstants {
 		for (int i = 0; i < ySize; i++)
 			for (int j = 0; j < xSize; j++) {
 				_map[i][j] = new Cell();
-				if (wallMatrix[i][j]==DESTRUCTIBLE)
+				if (wallMatrix[i][j] == DESTRUCTIBLE)
 					_map[i][j].setWall(true);
-				if (wallMatrix[i][j]==INDESTRUCTIBLE)
+				if (wallMatrix[i][j] == INDESTRUCTIBLE)
 					_map[i][j].setWall(false);
 			}
 	}
@@ -162,18 +162,11 @@ public class Map implements GameConstants {
 	 * @param xPos, yPos position to set item
 	 * @return if the item is successfully set
 	 */
-	public void setItem(int xPos, int yPos) {
-		int itemID = createItem(xPos, yPos);
-		/*
-		 * 
-		if (isInMap(xPos, yPos) && _map[yPos][xPos].setItem(new Item(xPos, yPos, itemID))) {
+	public boolean setItem(int xPos, int yPos) {
+		if (isInMap(xPos, yPos) && _map[yPos][xPos].setItem(new Item(xPos, yPos))) {
 			return true;
 		}
 		return false;
-		 */
-		if (isInMap(xPos, yPos) && itemID != -1) {
-			_map[yPos][xPos].setItem(new Item(xPos, yPos, itemID));
-		}
 	}
 
 	/**
@@ -181,21 +174,11 @@ public class Map implements GameConstants {
 	 * 
 	 * @return if the item is successfully created
 	 */
-	public int createItem(int xPos, int yPos) {
+	public boolean createItem(int xPos, int yPos) {
 		if ((float) Math.random() < ITEM_CHANCE) {
-			int ID = (int) (ITEM_NUM * (float)Math.random());
-			switch (ID) {
-			case 0:
-				return BOMB_UP;
-			case 1:
-				return VELOCITY_UP;
-			case 2:
-				return POWER_UP;
-			case 3:
-				return HP_UP;
-			}
+			return (setItem(xPos, yPos));
 		}
-		return -1;
+		return false;
 	}
 
 	/**
@@ -212,14 +195,23 @@ public class Map implements GameConstants {
 		return (isInMap(xPos, yPos) && _map[yPos][xPos].isWithItem());
 	}
 
+	public int getItemID(int xPos, int yPos) {
+		if (isWithItem(xPos, yPos))
+			return _map[yPos][xPos].getItemID();
+		return -1;
+	}
+
 	/**
 	 * Activate a explosion effect on given position
 	 */
 	public void explosionActivate(int xPos, int yPos) {
+		boolean ci = false;
 		if (isInMap(xPos, yPos)) {
 			if (_map[yPos][xPos].isWithDestructibleWall())
-				createItem(xPos, yPos);
+				ci = true;
 			_map[yPos][xPos].explosionActivate();
+			if (ci)
+				createItem(xPos, yPos);
 		}
 	}
 

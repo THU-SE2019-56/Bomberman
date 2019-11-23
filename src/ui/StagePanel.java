@@ -271,7 +271,7 @@ public class StagePanel extends JPanel implements GameConstants {
 				resetButton(button3);
 				break;
 			case "Back":
-				highLightButton(buttonBack);
+				resetButton(buttonBack);
 				break;
 			}
 		}

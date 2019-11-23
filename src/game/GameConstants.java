@@ -26,9 +26,11 @@ public interface GameConstants {
 	int ALERT_DISTANCE = 5;
 
 	// Item constants
+	int ITEM_NUM = 4;
 	int BOMB_UP = 0;
 	int VELOCITY_UP = 1;
 	int POWER_UP = 2;
+	int HP_UP = 3;
 	int ITEM_WIDTH = 45;
 	int ITEM_HEIGHT = 45;
 

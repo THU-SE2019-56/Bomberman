@@ -48,7 +48,7 @@ public class Game implements GameConstants,Serializable{
 		for (int i = 0; i < getPlayerNum(); i++) {
 			this.player[i] = new Player(getMap(), i);
 		}
-		this.item = new Item(2, 2);
+		this.item = new Item(2, 2, 1);
 		this.setGameMode(gameMode);
 		this.pauseFlag = 0;
 
@@ -70,7 +70,7 @@ public class Game implements GameConstants,Serializable{
 			this.player[i] = new Player(getMap(), i);
 		}
 
-		this.item = new Item(2, 2);
+		this.item = new Item(2, 2, 1);
 		// Items should be generated when wall explodes, not when game starts.
 
 		this.setGameMode(PVE_MODE);
@@ -100,7 +100,7 @@ public class Game implements GameConstants,Serializable{
 		for (int i = 0; i < getPlayerNum(); i++) {
 			this.player[i] = new Player(getMap(), i);
 		}
-		this.item = new Item(2, 2);
+		this.item = new Item(2, 2, 1);
 		this.setGameMode(gameMode);
 		this.pauseFlag = 0;
 

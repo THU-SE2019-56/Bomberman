@@ -192,25 +192,42 @@ public class StatusPanel extends JPanel implements GameConstants {
 			 * Back
 			 */
 			if (e.getSource() == backButton) {
-				MenuPanel newMenuPanel = new MenuPanel(mainFrame);
+				int gameMode=game.getGameMode();
+				if(gameMode==PVP_MODE) {
+					MenuPanel newMenuPanel = new MenuPanel(mainFrame);
 
-				JPanel mainPanel = (JPanel) mainFrame.getContentPane();
-				mainPanel.removeAll();
+					JPanel mainPanel = (JPanel) mainFrame.getContentPane();
+					mainPanel.removeAll();
 
-				mainFrame.add(newMenuPanel);
-				mainFrame.validate();
+					mainFrame.add(newMenuPanel);
+					mainFrame.validate();
 
-				mainFrame.setLayout(null);
+					mainFrame.setLayout(null);
 
-				newMenuPanel.setLocation(0, 0);
-				newMenuPanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+					newMenuPanel.setLocation(0, 0);
+					newMenuPanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+				}else {
+					StagePanel newStagePanel = new StagePanel(mainFrame);
+
+					JPanel mainPanel = (JPanel) mainFrame.getContentPane();
+					mainPanel.removeAll();
+
+					mainFrame.add(newStagePanel);
+					mainFrame.validate();
+
+					mainFrame.setLayout(null);
+
+					newStagePanel.setLocation(0, 0);
+					newStagePanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+				}
+				
 			}
 
 			/*
 			 * Restart
 			 */
 			if (e.getSource() == restartButton) {
-				Game newGame = new Game(game.getGameMode());
+				Game newGame = new Game(game.getMap(),game.getGameMode());
 				MapPanel newMapPanel = new MapPanel(newGame);
 				StatusPanel newStatusPanel = new StatusPanel(newGame, mainFrame);
 

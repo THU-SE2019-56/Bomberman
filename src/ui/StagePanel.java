@@ -34,6 +34,7 @@ public class StagePanel extends JPanel implements GameConstants {
 	private JButton button1;
 	private JButton button2;
 	private JButton button3;
+	private JButton buttonBack;
 
 	private ImageIcon stageBackgroundIcon;
 	private JLabel stageBackgroundLabel;
@@ -75,16 +76,25 @@ public class StagePanel extends JPanel implements GameConstants {
 		button3 = new JButton("Stage 3");
 		button3.setBounds(50, 350, 150, 50);
 		initializeButton(button3);
+		
+		/*
+		 * Back
+		 */
+		buttonBack = new JButton("Back");
+		buttonBack.setBounds(50, 550, 150, 50);
+		initializeButton(buttonBack);
 
 		this.setLayout(null);
 
 		this.add(button1);
 		this.add(button2);
 		this.add(button3);
+		this.add(buttonBack);
 
 		button1.addMouseListener(new ButtonListener(mainFrame, "1"));
 		button2.addMouseListener(new ButtonListener(mainFrame, "2"));
 		button3.addMouseListener(new ButtonListener(mainFrame, "3"));
+		buttonBack.addMouseListener(new ButtonListener(mainFrame, "Back"));
 	}
 
 	/**
@@ -162,6 +172,7 @@ public class StagePanel extends JPanel implements GameConstants {
 		public void generateStage(int stageNumber) {
 			loadStage(stageNumber);
 			Game gamePve = new Game(wallMatrix,0,0,new int[5],new int[5]);
+			gamePve.setStageNumber(stageNumber);
 			MapPanel mapPanelPve = new MapPanel(gamePve);
 			StatusPanel statusPanelPve = new StatusPanel(gamePve, mainFrame);
 
@@ -206,6 +217,20 @@ public class StagePanel extends JPanel implements GameConstants {
 			case "3":
 				generateStage(3);
 				break;
+			case "Back":
+				MenuPanel newMenuPanel = new MenuPanel(mainFrame);
+
+				JPanel mainPanel = (JPanel) mainFrame.getContentPane();
+				mainPanel.removeAll();
+
+				mainFrame.add(newMenuPanel);
+				mainFrame.validate();
+
+				mainFrame.setLayout(null);
+
+				newMenuPanel.setLocation(0, 0);
+				newMenuPanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+				break;
 			}
 
 		}
@@ -227,6 +252,9 @@ public class StagePanel extends JPanel implements GameConstants {
 			case "3":
 				highLightButton(button3);
 				break;
+			case "Back":
+				highLightButton(buttonBack);
+				break;
 			}
 		}
 
@@ -241,6 +269,9 @@ public class StagePanel extends JPanel implements GameConstants {
 				break;
 			case "3":
 				resetButton(button3);
+				break;
+			case "Back":
+				highLightButton(buttonBack);
 				break;
 			}
 		}

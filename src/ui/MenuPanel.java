@@ -163,41 +163,28 @@ public class MenuPanel extends JPanel implements GameConstants {
 
 			switch (this.name) {
 			case "pve":
-				StagePanel stagePanel=new StagePanel(mainFrame);
-				
+				StagePanel stagePanelPve = new StagePanel(mainFrame,PVE_MODE);
+
 				mainFrame.remove(MenuPanel.this);
-				mainFrame.add(stagePanel);
+				mainFrame.add(stagePanelPve);
 				mainFrame.validate();// repaint
-				
+
 				mainFrame.setLayout(null);
 
-				stagePanel.setLocation(0, 0);
-				stagePanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+				stagePanelPve.setLocation(0, 0);
+				stagePanelPve.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 				break;
 			case "pvp":
-				Game gamePvp = new Game(PVP_MODE);
-				MapPanel mapPanelPvp = new MapPanel(gamePvp);
-				StatusPanel statusPanelPvp = new StatusPanel(gamePvp, mainFrame);
+				StagePanel stagePanelPvp = new StagePanel(mainFrame,PVP_MODE);
 
 				mainFrame.remove(MenuPanel.this);
-
-				mainFrame.add(mapPanelPvp);
-				mainFrame.validate();// repaint
-
-				mainFrame.add(statusPanelPvp);
+				mainFrame.add(stagePanelPvp);
 				mainFrame.validate();// repaint
 
 				mainFrame.setLayout(null);
 
-				mapPanelPvp.setLocation(0, 0);
-				mapPanelPvp.setSize(MAP_WIDTH, MAP_HEIGHT);
-
-				statusPanelPvp.setLocation(MAP_WIDTH, 0);
-				statusPanelPvp.setSize(STATUS_PANEL_WIDTH, STATUS_PANEL_HEIGHT);
-
-				TimerListener timerListenerPvp = new TimerListener(gamePvp, mapPanelPvp, statusPanelPvp);
-				Timer timerPvp = new Timer(REFRESH, timerListenerPvp);
-				timerPvp.start();
+				stagePanelPvp.setLocation(0, 0);
+				stagePanelPvp.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 				break;
 			case "exit":
 				System.exit(0);// End game

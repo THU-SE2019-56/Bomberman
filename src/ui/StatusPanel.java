@@ -193,41 +193,26 @@ public class StatusPanel extends JPanel implements GameConstants {
 			 */
 			if (e.getSource() == backButton) {
 				int gameMode=game.getGameMode();
-				if(gameMode==PVP_MODE) {
-					MenuPanel newMenuPanel = new MenuPanel(mainFrame);
+				StagePanel newStagePanel = new StagePanel(mainFrame,gameMode);
 
-					JPanel mainPanel = (JPanel) mainFrame.getContentPane();
-					mainPanel.removeAll();
+				JPanel mainPanel = (JPanel) mainFrame.getContentPane();
+				mainPanel.removeAll();
 
-					mainFrame.add(newMenuPanel);
-					mainFrame.validate();
+				mainFrame.add(newStagePanel);
+				mainFrame.validate();
 
-					mainFrame.setLayout(null);
+				mainFrame.setLayout(null);
 
-					newMenuPanel.setLocation(0, 0);
-					newMenuPanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-				}else {
-					StagePanel newStagePanel = new StagePanel(mainFrame);
-
-					JPanel mainPanel = (JPanel) mainFrame.getContentPane();
-					mainPanel.removeAll();
-
-					mainFrame.add(newStagePanel);
-					mainFrame.validate();
-
-					mainFrame.setLayout(null);
-
-					newStagePanel.setLocation(0, 0);
-					newStagePanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-				}
-				
+				newStagePanel.setLocation(0, 0);
+				newStagePanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 			}
 
 			/*
 			 * Restart
 			 */
 			if (e.getSource() == restartButton) {
-				Game newGame = new Game(game.getMap(),game.getGameMode());
+				int[][] wallMatrix=StagePanel.loadStage(game.getStageNumber());
+				Game newGame =  new Game(wallMatrix,0,0,new int[5],new int[5],game.getGameMode(),game.getStageNumber());
 				MapPanel newMapPanel = new MapPanel(newGame);
 				StatusPanel newStatusPanel = new StatusPanel(newGame, mainFrame);
 

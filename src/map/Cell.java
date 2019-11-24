@@ -176,4 +176,8 @@ public class Cell {
 			return item.getItemID();
 		return -1;
 	}
+	
+	public Item getItem() {
+		return item;
+	}
 }

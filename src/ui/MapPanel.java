@@ -60,9 +60,10 @@ public class MapPanel extends JPanel implements GameConstants {
 		paintPlayer(g);
 		paintMonsters(g);
 		for (int i = 0; i < game.getPlayerNum(); i++) {
-			if (game.getPlayer()[i].acquireItem(game.getItem()) == false) {
+			if (game.getPlayer()[i].acquireItem(game.getItem(),game.getMap()) == false) {
 				paintItem(g);
 			}
+			game.getPlayer()[i].acquireItemPrime(game.getMap());
 		}
 
 		if (game.getGameMode() == PVE_MODE) {

@@ -455,18 +455,35 @@ public class Player implements AWTEventListener, GameConstants {
 		return (x2 > x1) && (y2 > y1);
 	}
 	
-	public boolean acquireItem(Item item) {
+	public boolean acquireItem(Item item,Map mi) {
 		int itemX = item.getX();
 		int itemY = item.getY();
 
 		if (isCollided(itemX, itemY)) {
 			item.getItem(this);
 			item.setIsAcquired(true);
+			mi.removeItem(itemX/CELL_WIDTH, itemY/CELL_HEIGHT);
+			System.out.print(itemX/CELL_WIDTH);
+			System.out.print("  ");
+			System.out.print(itemY/CELL_HEIGHT);
+			System.out.println("  ");
 		}
 
 		return item.getIsAcquired();
 	}
 
+	public void acquireItemPrime(Map mi) {
+		if (mi.isWithItem(this.getMapX(), this.getMapY())) {
+			
+			Item item = mi.getItem(this.getMapX(), this.getMapY());
+			item.getItem(this);
+			item.setIsAcquired(true);
+			
+			mi.removeItem(this.getMapX(), this.getMapY());
+		
+		}
+	}
+	
 	/**
 	 * Use map and monsters to decide whether the player is alive, whether the
 	 * player acquire any item, etc.

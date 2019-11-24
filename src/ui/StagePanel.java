@@ -1,20 +1,15 @@
 package ui;
 
-import java.awt.Color;
-import java.awt.Font;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.RoundRectangle2D;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.Timer;
+import javax.swing.*;
 import javax.swing.border.Border;
 
 import game.Game;
@@ -31,6 +26,7 @@ import game.TimerListener;
  */
 public class StagePanel extends JPanel implements GameConstants {
 	private MainFrame mainFrame;
+	private JFrame thumbFrame;
 	private JButton button1;
 	private JButton button2;
 	private JButton button3;
@@ -39,9 +35,17 @@ public class StagePanel extends JPanel implements GameConstants {
 	private ImageIcon stageBackgroundIcon;
 	private JLabel stageBackgroundLabel;
 	private int[][] wallMatrix=new int[CELL_NUM_X][CELL_NUM_Y];
-	
+
+
 	public StagePanel(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
+
+		thumbFrame = new JFrame();
+		thumbFrame.setAlwaysOnTop(true);
+		thumbFrame.setUndecorated(true);
+		thumbFrame.setVisible(false);
+		thumbFrame.setSize(CELL_WIDTH/SCALE_FACTOR*CELL_NUM_X,
+				CELL_HEIGHT/SCALE_FACTOR*CELL_NUM_Y);
 
 		this.addButton();
 		this.addBackground();
@@ -197,6 +201,15 @@ public class StagePanel extends JPanel implements GameConstants {
 			Timer timerPve = new Timer(REFRESH, timerListenerPve);
 			timerPve.start();
 		}
+
+
+		private void updateThumbFrame(JButton button, int stageNum) {
+			thumbFrame.getContentPane().removeAll();
+			thumbFrame.add(new ThumbnailPanel(stageNum));
+			thumbFrame.setLocation(button.getX()+mainFrame.getX()+button.getWidth()+40,
+					button.getY()+mainFrame.getY()-thumbFrame.getHeight()/2+button.getHeight()/2);
+			thumbFrame.setVisible(true);
+		}
 		
 		
 		@Override
@@ -206,6 +219,8 @@ public class StagePanel extends JPanel implements GameConstants {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
+			thumbFrame.setVisible(false);
+			thumbFrame.dispose();
 
 			switch (this.name) {
 			case "1":
@@ -232,7 +247,6 @@ public class StagePanel extends JPanel implements GameConstants {
 				newMenuPanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 				break;
 			}
-
 		}
 
 		@Override
@@ -245,12 +259,16 @@ public class StagePanel extends JPanel implements GameConstants {
 			switch (this.name) {
 			case "1":
 				highLightButton(button1);
+				updateThumbFrame(button1, 1);
 				break;
+
 			case "2":
 				highLightButton(button2);
+				updateThumbFrame(button2, 2);
 				break;
 			case "3":
 				highLightButton(button3);
+				updateThumbFrame(button3, 3);
 				break;
 			case "Back":
 				highLightButton(buttonBack);
@@ -260,6 +278,9 @@ public class StagePanel extends JPanel implements GameConstants {
 
 		@Override
 		public void mouseExited(MouseEvent e) {
+			thumbFrame.setVisible(false);
+			thumbFrame.dispose();	// necessary when mouse move too quickly
+
 			switch (this.name) {
 			case "1":
 				resetButton(button1);

@@ -35,10 +35,11 @@ public class StagePanel extends JPanel implements GameConstants {
 	private ImageIcon stageBackgroundIcon;
 	private JLabel stageBackgroundLabel;
 	private int[][] wallMatrix=new int[CELL_NUM_X][CELL_NUM_Y];
-
-
-	public StagePanel(MainFrame mainFrame) {
+	private int gameMode;
+	
+	public StagePanel(MainFrame mainFrame,int gameMode) {
 		this.mainFrame = mainFrame;
+		this.gameMode=gameMode;
 
 		thumbFrame = new JFrame();
 		thumbFrame.setAlwaysOnTop(true);
@@ -140,8 +141,9 @@ public class StagePanel extends JPanel implements GameConstants {
 		button.setFont(buttonFont);
 	}
 	
-	public void loadStage(int stageNumber) {
+	public static int[][] loadStage(int stageNumber) {
 		BufferedReader in;
+		int[][] wallMatrix=new int[CELL_NUM_X][CELL_NUM_Y];
 		try {
 			in = new BufferedReader(new FileReader(new File("data/stage"+stageNumber+".txt")));
 			String line;
@@ -158,6 +160,8 @@ public class StagePanel extends JPanel implements GameConstants {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		return wallMatrix;
 	}
 	
 	/**
@@ -174,30 +178,29 @@ public class StagePanel extends JPanel implements GameConstants {
 		}
 		
 		public void generateStage(int stageNumber) {
-			loadStage(stageNumber);
-			Game gamePve = new Game(wallMatrix,0,0,new int[5],new int[5]);
-			gamePve.setStageNumber(stageNumber);
-			MapPanel mapPanelPve = new MapPanel(gamePve);
-			StatusPanel statusPanelPve = new StatusPanel(gamePve, mainFrame);
+			wallMatrix=loadStage(stageNumber);
+			Game game = new Game(wallMatrix,0,0,new int[5],new int[5],gameMode,stageNumber);
+			MapPanel mapPanel = new MapPanel(game);
+			StatusPanel statusPanel = new StatusPanel(game, mainFrame);
 
 			JPanel mainPanel = (JPanel) mainFrame.getContentPane();
 			mainPanel.removeAll();
 
-			mainFrame.add(mapPanelPve);
+			mainFrame.add(mapPanel);
 			mainFrame.validate();// repaint
 
-			mainFrame.add(statusPanelPve);
+			mainFrame.add(statusPanel);
 			mainFrame.validate();// repaint
 
 			mainFrame.setLayout(null);
 
-			mapPanelPve.setLocation(0, 0);
-			mapPanelPve.setSize(MAP_WIDTH, MAP_HEIGHT);
+			mapPanel.setLocation(0, 0);
+			mapPanel.setSize(MAP_WIDTH, MAP_HEIGHT);
 
-			statusPanelPve.setLocation(MAP_WIDTH, 0);
-			statusPanelPve.setSize(STATUS_PANEL_WIDTH, STATUS_PANEL_HEIGHT);
+			statusPanel.setLocation(MAP_WIDTH, 0);
+			statusPanel.setSize(STATUS_PANEL_WIDTH, STATUS_PANEL_HEIGHT);
 
-			TimerListener timerListenerPve = new TimerListener(gamePve, mapPanelPve, statusPanelPve);
+			TimerListener timerListenerPve = new TimerListener(game, mapPanel, statusPanel);
 			Timer timerPve = new Timer(REFRESH, timerListenerPve);
 			timerPve.start();
 		}

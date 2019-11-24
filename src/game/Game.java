@@ -15,7 +15,7 @@ import player.Player;
  * @author Wang
  * @version 0.9
  */
-public class Game implements GameConstants,Serializable{
+public class Game implements GameConstants, Serializable {
 	private Map map;
 	private Monster[] monsters = new Monster[MAX_MONSTER_NUMBER];
 	private Player[] player = new Player[MAX_PLAYER_NUMBER];
@@ -53,36 +53,16 @@ public class Game implements GameConstants,Serializable{
 		this.pauseFlag = 0;
 
 	}
+
 	/**
-	 * Only for PVE mode, choose stage
-	 * Different type of monsters, number of monsters...
+	 * Only for PVE mode, choose stage Different type of monsters, number of
+	 * monsters...
 	 */
-	public Game(int[][] wallMatrix, int playerX, int playerY, int[] monsterX, int[] monsterY) {
+	public Game(int[][] wallMatrix, int playerX, int playerY, int[] monsterX, int[] monsterY, int gameMode,
+			int stageNumber) {
 		this.map = new Map(wallMatrix);
-		
+
 		// TODO Generate player and monsters according to X and Y
-		for (int i = 0; i < MAX_MONSTER_NUMBER; i++) {
-			this.monsters[i] = new Monster(map);
-		}
-		
-		this.playerNum = 1;
-		for (int i = 0; i < getPlayerNum(); i++) {
-			this.player[i] = new Player(getMap(), i);
-		}
-
-		this.item = new Item(2, 2);
-		// Items should be generated when wall explodes, not when game starts.
-
-		this.setGameMode(PVE_MODE);
-		this.pauseFlag = 0;
-
-	}
-	
-	public Game(Map map,int gameMode) {
-
-		// Initialize map, player, monsters
-		this.map = map;
-
 		for (int i = 0; i < MAX_MONSTER_NUMBER; i++) {
 			this.monsters[i] = new Monster(map);
 		}
@@ -96,16 +76,19 @@ public class Game implements GameConstants,Serializable{
 				m.eliminate();
 			}
 		}
-
 		for (int i = 0; i < getPlayerNum(); i++) {
 			this.player[i] = new Player(getMap(), i);
 		}
+
 		this.item = new Item(2, 2);
-		this.setGameMode(gameMode);
+		// Items should be generated when wall explodes, not when game starts.
+
+		this.gameMode = gameMode;
+		this.stageNumber = stageNumber;
 		this.pauseFlag = 0;
 
 	}
-	
+
 	public int getPauseFlag() {
 		return this.pauseFlag;
 	}
@@ -169,9 +152,11 @@ public class Game implements GameConstants,Serializable{
 	public void setGameMode(int gameMode) {
 		this.gameMode = gameMode;
 	}
+
 	public int getStageNumber() {
 		return stageNumber;
 	}
+
 	public void setStageNumber(int stageNumber) {
 		this.stageNumber = stageNumber;
 	}

@@ -1,7 +1,7 @@
 package player;
 
 import java.awt.AWTEvent;
-import java.awt.Rectangle;
+//import java.awt.Rectangle;
 import java.awt.event.AWTEventListener;
 import java.awt.event.KeyEvent;
 
@@ -26,7 +26,7 @@ public class Player implements AWTEventListener, GameConstants {
 	private int playerID;// ID of the player
 	private int velocity; // The velocity should be divisible by 60
 
-	private int bombMaxNumber = PLAYER_MAX_BOMB - 1;
+	private int bombMaxNumber = 1;
 	private int bombPlantedNumber = 0;
 
 	private int bombPower;
@@ -439,7 +439,7 @@ public class Player implements AWTEventListener, GameConstants {
 	 * Update map BOMB_INFO
 	 */
 	public void plantBomb(Map mi, int mapx, int mapy) {
-		if (this.bombPlantedNumber <= this.bombMaxNumber) {
+		if (this.bombPlantedNumber < this.bombMaxNumber) {
 			mi.setBomb(mapx, mapy, 1, this);
 		} else {
 
@@ -447,18 +447,19 @@ public class Player implements AWTEventListener, GameConstants {
 
 	}
 
+	public boolean isCollided(int x, int y) {
+		int x1 = Math.max(x, this.x);
+		int x2 = Math.min(x + ITEM_WIDTH, this.x + PLAYER_WIDTH);
+		int y1 = Math.max(y, this.y);
+		int y2 = Math.min(y + ITEM_HEIGHT, this.y + PLAYER_HEIGHT);
+		return (x2 > x1) && (y2 > y1);
+	}
+	
 	public boolean acquireItem(Item item) {
-
-		int playerX = this.getX();
-		int playerY = this.getY();
 		int itemX = item.getX();
 		int itemY = item.getY();
 
-		Rectangle playerRectangle = new Rectangle(playerX, playerY, PLAYER_WIDTH, PLAYER_HEIGHT);
-		Rectangle itemRectangle = new Rectangle(itemX, itemY, ITEM_WIDTH, ITEM_HEIGHT);
-
-		if (playerRectangle.intersects(itemRectangle)) {
-
+		if (isCollided(itemX, itemY)) {
 			item.getItem(this);
 			item.setIsAcquired(true);
 		}

@@ -195,10 +195,25 @@ public class Map implements GameConstants {
 		return (isInMap(xPos, yPos) && _map[yPos][xPos].isWithItem());
 	}
 
+	/**
+	 * @return ID of Item on given position
+	 */
 	public int getItemID(int xPos, int yPos) {
 		if (isWithItem(xPos, yPos))
 			return _map[yPos][xPos].getItemID();
 		return -1;
+	}
+
+	/**
+	 * @param p the player to give the Item to
+	 * @return
+	 */
+	public boolean giveItem(int xPos, int yPos, Player p) {
+		if (getItemID(xPos, yPos) == -1)
+			return false;
+		_map[yPos][xPos].getItem().getItem(p);
+		_map[yPos][xPos].removeItem();
+		return true;
 	}
 
 	/**

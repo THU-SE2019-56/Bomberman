@@ -276,9 +276,6 @@ public class Map implements GameConstants {
 		return (isInMap(xPos, yPos) && _map[yPos][xPos].isWithIndestructibleWall());
 	}
 	
-	public Item getItem(int xPos, int yPos) {
-			return _map[yPos][xPos].getItem();
-	}
 	/**
 	 * @param power assumed bomb power
 	 * @return true if given position is threatened by bomb, assuming all bomb with

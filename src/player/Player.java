@@ -463,24 +463,14 @@ public class Player implements AWTEventListener, GameConstants {
 			item.getItem(this);
 			item.setIsAcquired(true);
 			mi.removeItem(itemX/CELL_WIDTH, itemY/CELL_HEIGHT);
-			System.out.print(itemX/CELL_WIDTH);
-			System.out.print("  ");
-			System.out.print(itemY/CELL_HEIGHT);
-			System.out.println("  ");
 		}
 
 		return item.getIsAcquired();
 	}
 
 	public void acquireItemPrime(Map mi) {
-		if (mi.isWithItem(this.getMapX(), this.getMapY())) {
-			
-			Item item = mi.getItem(this.getMapX(), this.getMapY());
-			item.getItem(this);
-			item.setIsAcquired(true);
-			
-			mi.removeItem(this.getMapX(), this.getMapY());
-		
+		if (mi.isWithItem(this.getMapX(), this.getMapY())) {	
+			mi.giveItem(this.getMapX(), this.getMapY(), this);	
 		}
 	}
 	

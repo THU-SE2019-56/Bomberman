@@ -171,6 +171,9 @@ public class Cell {
 		return true;
 	}
 	
+	/**
+	 * @return ID of current Item on this cell. Return -1 while no Item is on this cell
+	 */
 	public int getItemID() {
 		if(withItem)
 			return item.getItemID();

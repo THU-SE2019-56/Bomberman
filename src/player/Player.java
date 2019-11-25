@@ -43,7 +43,7 @@ public class Player implements AWTEventListener, GameConstants {
 	private Map playerMap; // Relate the player with the map
 	private int mapX;
 	private int mapY;
-	private int playerHP = 100;
+	private int playerHP;
 
 	public Player(Map newmap, int id) {
 		this.direction = DIRECTION_STOP;
@@ -55,8 +55,13 @@ public class Player implements AWTEventListener, GameConstants {
 		this.playerID = id;
 		this.playerHurtDelayCount = 0;
 		this.playerCanBeHurt = 1;
+		this.playerHP = HP_MAX;
+		this.bombPower = 1;
 	}
 
+	/*
+	 * For bombs
+	 */
 	public void setBombPlantedNumber(int bombPlantedNum) {
 		this.bombPlantedNumber = bombPlantedNum;
 	}
@@ -80,7 +85,18 @@ public class Player implements AWTEventListener, GameConstants {
 	public int getBombMaxNumber() {
 		return this.bombMaxNumber;
 	}
-
+	
+	public int getBombPower() {
+		return this.bombPower;
+	}
+	
+	public void SetBombPower(int power) {
+			this.bombPower = power;
+	}
+	
+	/*
+	 * For ID
+	 */
 	public void setPlayerID(int id) {
 		this.playerID = id;
 	}
@@ -89,20 +105,22 @@ public class Player implements AWTEventListener, GameConstants {
 		return this.playerID;
 	}
 
-	/**
-	 * Set the HP of the player
+
+	/*
+	 * For HP
 	 */
 	public void setHP(int hp) {
-		this.playerHP = hp;
+		if (hp<0) this.playerHP = 0;
+		else this.playerHP = hp;
 	}
 
-	/**
-	 * Get the HP of the player
-	 */
 	public int getHP() {
 		return this.playerHP;
 	}
 
+	/*
+	 * For velocity
+	 */
 	public void setVelocity(int v) {
 		this.velocity = v;
 	}
@@ -112,29 +130,12 @@ public class Player implements AWTEventListener, GameConstants {
 	}
 
 	public void addVelocityByItems() {
-		switch (this.getDirection()) {
-		case DIRECTION_UP:
-			this.setX(CELL_WIDTH * (this.getX() / CELL_WIDTH));
-			this.setY(CELL_HEIGHT * (this.getY() / CELL_HEIGHT + 1));
-
-		case DIRECTION_DOWN:
-			this.setX(CELL_WIDTH * (this.getX() / CELL_WIDTH - 1));
-			this.setY(CELL_HEIGHT * (this.getY() / CELL_HEIGHT));
-
-		case DIRECTION_LEFT:
-			this.setX(CELL_WIDTH * (this.getX() / CELL_WIDTH + 1));
-			this.setY(CELL_HEIGHT * (this.getY() / CELL_HEIGHT));
-
-		case DIRECTION_RIGHT:
-			this.setX(CELL_WIDTH * (this.getX() / CELL_WIDTH));
-			this.setY(CELL_HEIGHT * (this.getY() / CELL_HEIGHT));
-		}
 
 		this.setVelocity(9);
 	}
 
-	/**
-	 * Use setDirection() to set the direction of the player.
+	/*
+	 * For direction
 	 */
 	public void setDirection(int d) {
 
@@ -146,20 +147,18 @@ public class Player implements AWTEventListener, GameConstants {
 		}
 	}
 
-	/**
-	 * Get the direction of the players.
-	 */
+
 	public int getDirection() {
 		return this.direction;
 	}
 
-	/**
-	 * Get the image direction of the players.
-	 */
 	public int getImageDirection() {
 		return this.imageDirection;
 	}
 
+	/*
+	 * For location
+	 */
 	public void setX(int X) {
 		this.x = X;
 	}
@@ -176,9 +175,6 @@ public class Player implements AWTEventListener, GameConstants {
 		return this.y;
 	}
 
-	/**
-	 * Set the location of the player.
-	 */
 	public void setLocation(int X, int Y) {
 		this.x = X;
 		this.y = Y;
@@ -199,20 +195,35 @@ public class Player implements AWTEventListener, GameConstants {
 	public int getMapY() {
 		return this.mapY;
 	}
+	
+	/**
+	 * Use map to decide the player's location after moving. Can not receive any
+	 * command before it moves completely into a new integral cell.
+	 * 
+	 * @throws InterruptedException
+	 */
+	public void setLocationOnMap(Player player, Map mi, int mapX, int mapY) {
+
+		if (mi.isAvailable(mapX,mapY)) {
+
+			player.setMapX(mapX);
+			player.setMapY(mapY);
+		}
+	}
 
 	/**
 	 * Stop the player and clear the flag
 	 */
 	public void playerStop() {
-		if (this.getX() % CELL_WIDTH == 0 && this.getY() % CELL_HEIGHT == 0) // Stop only when the x and y of the player
-																				// are multiples of 60.
+		
+		// Stop only when the x and y of the player are multiples of 60
+		if (this.getX() % CELL_WIDTH == 0 && this.getY() % CELL_HEIGHT == 0) 
 		{
 			if (this.stopflag == 1) {
 				this.setDirection(DIRECTION_STOP);
 				this.stopflag = 0;
 			}
-			this.setLocationOnMap(this, this.playerMap, this.x / CELL_WIDTH, this.y / CELL_HEIGHT);// Update mapX and
-																									// mapY
+			this.setLocationOnMap(this, this.playerMap, this.x / CELL_WIDTH, this.y / CELL_HEIGHT);// Update mapX and																							// mapY
 		}
 	}
 
@@ -258,30 +269,21 @@ public class Player implements AWTEventListener, GameConstants {
 
 		double mapx = (double) (this.x) / (double) (CELL_WIDTH);
 		double mapy = (double) (this.y) / (double) (CELL_HEIGHT);
-		Cell playerNextCell;// The next cell which the player is going to step on
 
 		if (playerInMap()) // Move the player only when it's in the range of the map
 		{
 			switch (this.getDirection()) {
 			case DIRECTION_UP:
-
-				playerNextCell = this.playerMap.getCell((int) (Math.ceil(mapx)), (int) (Math.ceil(mapy) - 1));// Use
-																												// math.ceil
-																												// to
-																												// round
-																												// up
-
-				if (playerNextCell.isAvailable()) // If the cell which the player is going to step on is available
+																					
+				if (this.playerMap.isAvailable((int) (Math.ceil(mapx)), (int) (Math.ceil(mapy) - 1)) ) // If the cell which the player is going to step on is available
 				{
 					this.setY(this.getY() - this.getVelocity());
 					this.playerStop();
 				}
 				break;
-			case DIRECTION_DOWN:
-
-				playerNextCell = this.playerMap.getCell((int) (Math.floor(mapx)), (int) (Math.floor(mapy) + 1));
-
-				if (playerNextCell.isAvailable()) {
+			case DIRECTION_DOWN:				
+				
+				if (this.playerMap.isAvailable((int) (Math.floor(mapx)), (int) (Math.floor(mapy) + 1))) {
 					this.setY(this.getY() + this.getVelocity());
 					this.playerStop();
 				}
@@ -289,18 +291,15 @@ public class Player implements AWTEventListener, GameConstants {
 
 			case DIRECTION_LEFT:
 
-				playerNextCell = this.playerMap.getCell((int) (Math.ceil(mapx) - 1), (int) (Math.ceil(mapy)));
-
-				if (playerNextCell.isAvailable()) {
+				if (this.playerMap.isAvailable((int) (Math.ceil(mapx) - 1), (int) (Math.ceil(mapy))) ) {
 					this.setX(this.getX() - this.getVelocity());
 					this.playerStop();
 				}
 
 				break;
 			case DIRECTION_RIGHT:
-
-				playerNextCell = this.playerMap.getCell((int) (Math.floor(mapx) + 1), (int) (Math.floor(mapy)));
-				if (playerNextCell.isAvailable()) {
+	
+				if (this.playerMap.isAvailable((int) (Math.floor(mapx) + 1), (int) (Math.floor(mapy)))) {
 					this.setX(this.getX() + this.getVelocity());
 					this.playerStop();
 				}
@@ -418,58 +417,16 @@ public class Player implements AWTEventListener, GameConstants {
 	}
 
 	/**
-	 * Use map to decide the player's location after moving. Can not receive any
-	 * command before it moves completely into a new integral cell.
-	 * 
-	 * @throws InterruptedException
-	 */
-	public void setLocationOnMap(Player player, Map mi, int mapX, int mapY) {
-		// TODO Move the player, consider walls, bombs. Use setLocation()
-
-		Cell playerCell = mi.getCell(mapX, mapY);
-
-		if (playerCell.isAvailable() == true) {
-
-			player.setMapX(mapX);
-			player.setMapY(mapY);
-		}
-	}
-
-	/**
 	 * Update map BOMB_INFO
 	 */
 	public void plantBomb(Map mi, int mapx, int mapy) {
-		if (this.bombPlantedNumber < this.bombMaxNumber) {
-			mi.setBomb(mapx, mapy, 1, this);
-		} else {
-
-		}
-
+		if (this.bombPlantedNumber < this.bombMaxNumber) 
+			mi.setBomb(mapx, mapy, this.bombPower, this);
 	}
 
-	public boolean isCollided(int x, int y) {
-		int x1 = Math.max(x, this.x);
-		int x2 = Math.min(x + ITEM_WIDTH, this.x + PLAYER_WIDTH);
-		int y1 = Math.max(y, this.y);
-		int y2 = Math.min(y + ITEM_HEIGHT, this.y + PLAYER_HEIGHT);
-		return (x2 > x1) && (y2 > y1);
-	}
-	
-	public boolean acquireItem(Item item,Map mi) {
-		int itemX = item.getX();
-		int itemY = item.getY();
 
-		if (isCollided(itemX, itemY)) {
-			item.getItem(this);
-			item.setIsAcquired(true);
-			mi.removeItem(itemX/CELL_WIDTH, itemY/CELL_HEIGHT);
-		}
-
-		return item.getIsAcquired();
-	}
-
-	public void acquireItemPrime(Map mi) {
-		if (mi.isWithItem(this.getMapX(), this.getMapY())) {	
+	public void acquireItemByMap(Map mi) {
+		if (this.x%CELL_WIDTH==0&&this.y%CELL_HEIGHT==0&&mi.isWithItem(this.getMapX(), this.getMapY())) {	
 			mi.giveItem(this.getMapX(), this.getMapY(), this);	
 		}
 	}

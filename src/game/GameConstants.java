@@ -18,6 +18,7 @@ public interface GameConstants {
 	
 	int HP_LOSS_BY_MONSTER = 5;
 	int HP_LOSS_BY_BOMB = 50;
+	int HP_MAX = 100;
 
 	// Monster constants
 	int MAX_MONSTER_NUMBER = 5;
@@ -31,11 +32,15 @@ public interface GameConstants {
 	int VELOCITY_UP = 1;
 	int POWER_UP = 2;
 	int HP_UP = 3;
+	
 	int ITEM_WIDTH = 45;
 	int ITEM_HEIGHT = 45;
+	
+	int HP_ADDED = 20; 
 
 	// Bomb constants
 	int BOMB_TIME = 100; // time between plant and explode
+	int BOMB_MAX_POWER  = 6;
 
 	// Chance for item to be created
 	float ITEM_CHANCE = 0.4f;

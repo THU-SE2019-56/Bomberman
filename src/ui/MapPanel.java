@@ -18,6 +18,9 @@ import monster.Monster;
  * @version 0.9
  */
 public class MapPanel extends JPanel implements GameConstants {
+
+	private static final long serialVersionUID = 1L;
+
 	private Game game;
 
 	BufferedImage player1Image[] = new BufferedImage[4];
@@ -59,11 +62,8 @@ public class MapPanel extends JPanel implements GameConstants {
 		paintMap(g);
 		paintPlayer(g);
 		paintMonsters(g);
-		for (int i = 0; i < game.getPlayerNum(); i++) {
-			if (game.getPlayer()[i].acquireItem(game.getItem(),game.getMap()) == false) {
-				paintItem(g);
-			}
-			game.getPlayer()[i].acquireItemPrime(game.getMap());
+		for (int i = 0; i < game.getPlayerNum(); i++) {			
+			game.getPlayer()[i].acquireItemByMap(game.getMap());
 		}
 
 		if (game.getGameMode() == PVE_MODE) {
@@ -102,11 +102,6 @@ public class MapPanel extends JPanel implements GameConstants {
 						game.getPlayer()[i].getY(), PLAYER_WIDTH, PLAYER_HEIGHT, this);
 			}
 		}
-	}
-
-	public void paintItem(Graphics g) {
-		g.drawImage(itemImage[game.getItem().getItemID()], game.getItem().getX(), game.getItem().getY(), ITEM_WIDTH,
-				ITEM_HEIGHT, this);
 	}
 
 	public void paintMap(Graphics g) {
@@ -194,7 +189,7 @@ public class MapPanel extends JPanel implements GameConstants {
 		gameImage[GAMEOVER] = ImageIO.read(new File("image/game/gameover.jpg"));
 
 		bombImage[BOMB] = ImageIO.read(new File("image/bomb/bomb.png"));
-		bombImage[EXPLODE] = ImageIO.read(new File("image/bomb/explode.jpeg"));
+		bombImage[EXPLODE] = ImageIO.read(new File("image/bomb/explode.png"));
 		
 	}
 }

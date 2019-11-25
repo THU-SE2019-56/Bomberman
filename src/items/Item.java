@@ -21,30 +21,36 @@ public class Item implements GameConstants {
 		y = yPos * 45 ;
 	}
 
+	/*public void RandomID() {
+		itemID = (int) (ITEM_NUM * (float)Math.random());
+	}*/
+	
 	/**
 	 * select item to use
 	 * 
 	 * @param player
-	 * 
 	 */
-	/*public void RandomID() {
-		itemID = (int) (ITEM_NUM * (float)Math.random());
-	}*/
 	public void getItem(Player player) {
 		if (!this.isAcquired) {
 			switch (this.getItemID()) {
 			case VELOCITY_UP:
-				// Correctly set the location of the player to avoid bugs
-				player.addVelocityByItems();
+				player.addVelocityByItems();// Correctly set the location of the player to avoid bugs
 				break;
 			case BOMB_UP:
-				if (player.getBombMaxNumber() < PLAYER_MAX_BOMB)
+				if (player.getBombMaxNumber() < PLAYER_MAX_BOMB) 
 					player.setBombMaxNumber(player.getBombMaxNumber() + 1);
 				break;
 			case POWER_UP:
+				if (player.getBombPower()<BOMB_MAX_POWER) 
+					player.SetBombPower(player.getBombPower()+1);
 				break;
 			case HP_UP:
-				player.setHP(player.getHP() + 50);
+				if (player.getHP()<=HP_MAX-HP_ADDED) {
+					player.setHP(player.getHP() + HP_ADDED);
+				}
+				else if (player.getHP()> HP_MAX-HP_ADDED) {
+					player.setHP(HP_MAX);
+				}
 				break;
 			}
 		}

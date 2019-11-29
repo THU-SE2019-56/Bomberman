@@ -1,4 +1,4 @@
-package src.map;
+package map;
 
 import java.lang.Math;
 
@@ -29,10 +29,10 @@ public class Map implements GameConstants {
 	 * Default construction method
 	 */
 	public Map() {
-		_map = new Cell[ySize][xSize]; // initialize _map
+		set_map(new Cell[ySize][xSize]); // initialize _map
 		for (int i = 0; i < ySize; i++)
 			for (int j = 0; j < xSize; j++) {
-				_map[i][j] = new Cell();
+				get_map()[i][j] = new Cell();
 			}
 	}
 
@@ -42,10 +42,10 @@ public class Map implements GameConstants {
 	public Map(int xSize, int ySize) {
 		this.ySize = ySize;
 		this.xSize = xSize;
-		_map = new Cell[ySize][xSize]; // initialize _map;
+		set_map(new Cell[ySize][xSize]); // initialize _map;
 		for (int i = 0; i < ySize; i++)
 			for (int j = 0; j < xSize; j++) {
-				_map[i][j] = new Cell();
+				get_map()[i][j] = new Cell();
 			}
 	}
 
@@ -55,14 +55,14 @@ public class Map implements GameConstants {
 	public Map(MapMatrix mmat) {
 		xSize = mmat.getXSize();
 		ySize = mmat.getYSize();
-		_map = new Cell[ySize][xSize];
+		set_map(new Cell[ySize][xSize]);
 		for (int i = 0; i < ySize; i++)
 			for (int j = 0; j < xSize; j++) {
-				_map[i][j] = new Cell();
+				get_map()[i][j] = new Cell();
 				if (mmat.isWithDestructibleWall(i, j))
-					_map[i][j].setWall(true);
+					get_map()[i][j].setWall(true);
 				if (mmat.isWithIndestructibleWall(i, j))
-					_map[i][j].setWall(false);
+					get_map()[i][j].setWall(false);
 			}
 	}
 
@@ -72,14 +72,14 @@ public class Map implements GameConstants {
 	public Map(int[][] wallMatrix) {
 		ySize = wallMatrix.length;
 		xSize = wallMatrix[0].length;
-		_map = new Cell[ySize][xSize];
+		set_map(new Cell[ySize][xSize]);
 		for (int i = 0; i < ySize; i++)
 			for (int j = 0; j < xSize; j++) {
-				_map[i][j] = new Cell();
+				get_map()[i][j] = new Cell();
 				if (wallMatrix[i][j] == DESTRUCTIBLE)
-					_map[i][j].setWall(true);
+					get_map()[i][j].setWall(true);
 				if (wallMatrix[i][j] == INDESTRUCTIBLE)
-					_map[i][j].setWall(false);
+					get_map()[i][j].setWall(false);
 			}
 	}
 
@@ -89,7 +89,7 @@ public class Map implements GameConstants {
 	public void refresh() {
 		for (int i = 0; i < ySize; i++)
 			for (int j = 0; j < xSize; j++)
-				_map[i][j].refresh();
+				get_map()[i][j].refresh();
 	}
 
 	/**
@@ -98,7 +98,15 @@ public class Map implements GameConstants {
 	 * @deprecated
 	 */
 	public Cell getCell(int xPos, int yPos) {
-		return _map[yPos][xPos];
+		return get_map()[yPos][xPos];
+	}
+
+	public Cell[][] get_map() {
+		return _map;
+	}
+
+	public void set_map(Cell[][] _map) {
+		this._map = _map;
 	}
 
 	/**
@@ -112,7 +120,7 @@ public class Map implements GameConstants {
 	 * @return if the cell of certain yPos and xPos is available
 	 */
 	public boolean isAvailable(int xPos, int yPos) {
-		return isInMap(xPos, yPos) && _map[yPos][xPos].isAvailable();
+		return isInMap(xPos, yPos) && get_map()[yPos][xPos].isAvailable();
 	}
 
 	/**
@@ -137,7 +145,7 @@ public class Map implements GameConstants {
 	 * @return if the bomb is successfully set
 	 */
 	public boolean setBomb(int xPos, int yPos, int bombPower, Player owner) {
-		if (isInMap(xPos, yPos) && _map[yPos][xPos].setBomb(new Bomb(xPos, yPos, bombPower, this, owner))) {
+		if (isInMap(xPos, yPos) && get_map()[yPos][xPos].setBomb(new Bomb(xPos, yPos, bombPower, this, owner))) {
 			owner.addBombPlantedNumber();
 			return true;
 		}
@@ -148,14 +156,14 @@ public class Map implements GameConstants {
 	 * @return if an bomb is successfully removed from given position
 	 */
 	public boolean removeBomb(int xPos, int yPos) {
-		return (isInMap(xPos, yPos) && _map[yPos][xPos].removeBomb());
+		return (isInMap(xPos, yPos) && get_map()[yPos][xPos].removeBomb());
 	}
 
 	/**
 	 * @return if a bomb is on given position
 	 */
 	public boolean isWithBomb(int xPos, int yPos) {
-		return (isInMap(xPos, yPos) && _map[yPos][xPos].isWithBomb());
+		return (isInMap(xPos, yPos) && get_map()[yPos][xPos].isWithBomb());
 	}
 
 	/**
@@ -163,7 +171,7 @@ public class Map implements GameConstants {
 	 * @return if the item is successfully set
 	 */
 	public boolean setItem(int xPos, int yPos) {
-		if (isInMap(xPos, yPos) && _map[yPos][xPos].setItem(new Item(xPos, yPos))) {
+		if (isInMap(xPos, yPos) && get_map()[yPos][xPos].setItem(new Item(xPos, yPos))) {
 			return true;
 		}
 		return false;
@@ -185,14 +193,14 @@ public class Map implements GameConstants {
 	 * @return if an item is successfully removed from given position
 	 */
 	public boolean removeItem(int xPos, int yPos) {
-		return (isInMap(xPos, yPos) && _map[yPos][xPos].removeItem());
+		return (isInMap(xPos, yPos) && get_map()[yPos][xPos].removeItem());
 	}
 
 	/**
 	 * @return if an item is on given position
 	 */
 	public boolean isWithItem(int xPos, int yPos) {
-		return (isInMap(xPos, yPos) && _map[yPos][xPos].isWithItem());
+		return (isInMap(xPos, yPos) && get_map()[yPos][xPos].isWithItem());
 	}
 
 	/**
@@ -200,7 +208,7 @@ public class Map implements GameConstants {
 	 */
 	public int getItemID(int xPos, int yPos) {
 		if (isWithItem(xPos, yPos))
-			return _map[yPos][xPos].getItemID();
+			return get_map()[yPos][xPos].getItemID();
 		return -1;
 	}
 
@@ -211,8 +219,8 @@ public class Map implements GameConstants {
 	public boolean giveItem(int xPos, int yPos, Player p) {
 		if (getItemID(xPos, yPos) == -1)
 			return false;
-		_map[yPos][xPos].getItem().getItem(p);
-		_map[yPos][xPos].removeItem();
+		get_map()[yPos][xPos].getItem().getItem(p);
+		get_map()[yPos][xPos].removeItem();
 		return true;
 	}
 
@@ -222,9 +230,9 @@ public class Map implements GameConstants {
 	public void explosionActivate(int xPos, int yPos) {
 		boolean ci = false;
 		if (isInMap(xPos, yPos)) {
-			if (_map[yPos][xPos].isWithDestructibleWall())
+			if (get_map()[yPos][xPos].isWithDestructibleWall())
 				ci = true;
-			_map[yPos][xPos].explosionActivate();
+			get_map()[yPos][xPos].explosionActivate();
 			if (ci)
 				createItem(xPos, yPos);
 		}
@@ -234,7 +242,7 @@ public class Map implements GameConstants {
 	 * @return given position is now at explosion
 	 */
 	public boolean isAtExplosion(int xPos, int yPos) {
-		return (isInMap(xPos, yPos) && _map[yPos][xPos].isAtExplosion());
+		return (isInMap(xPos, yPos) && get_map()[yPos][xPos].isAtExplosion());
 	}
 
 	/**
@@ -244,7 +252,7 @@ public class Map implements GameConstants {
 	 */
 	public void setWall(int xPos, int yPos, boolean destructible) {
 		if (isInMap(xPos, yPos))
-			_map[yPos][xPos].setWall(destructible);
+			get_map()[yPos][xPos].setWall(destructible);
 	}
 
 	/**
@@ -252,28 +260,28 @@ public class Map implements GameConstants {
 	 */
 	public void removeWall(int xPos, int yPos) {
 		if (isInMap(xPos, yPos))
-			_map[yPos][xPos].removeWall();
+			get_map()[yPos][xPos].removeWall();
 	}
 
 	/**
 	 * @return if a wall is on given position
 	 */
 	public boolean isWithWall(int xPos, int yPos) {
-		return (isInMap(xPos, yPos) && _map[yPos][xPos].isWithWall());
+		return (isInMap(xPos, yPos) && get_map()[yPos][xPos].isWithWall());
 	}
 
 	/**
 	 * @return if a destructible wall is on given position
 	 */
 	public boolean isWithDestructibleWall(int xPos, int yPos) {
-		return (isInMap(xPos, yPos) && _map[yPos][xPos].isWithDestructibleWall());
+		return (isInMap(xPos, yPos) && get_map()[yPos][xPos].isWithDestructibleWall());
 	}
 
 	/**
 	 * @return if an indestructible wall is on given position
 	 */
 	public boolean isWithIndestructibleWall(int xPos, int yPos) {
-		return (isInMap(xPos, yPos) && _map[yPos][xPos].isWithIndestructibleWall());
+		return (isInMap(xPos, yPos) && get_map()[yPos][xPos].isWithIndestructibleWall());
 	}
 	
 	/**

@@ -5,9 +5,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import game.GameConstants;
+import items.Item;
 import player.Player;
 
-class MapTest {
+class MapTest implements GameConstants{
 	private Map m1;
 	private Map m2;
 	private Map m3;
@@ -155,9 +157,57 @@ class MapTest {
 	}
 
 	@Test
+	/**
+	 * Change private Cell[][] _map to public Cell[][] _map before testing.
+	 */
 	void testGiveItem() {
-
-		fail("Not yet implemented");
+		Map map = new Map();
+		Player player = new Player(map, 1);
+		for(int i = 0; i < ITEM_NUM; i++) {
+			map._map[0][0].setItem(new Item(0, 0));
+			map._map[0][0].item.setItemID(i);
+			assertEquals(true, map.giveItem(0, 0, player));
+			switch(i) {
+			case VELOCITY_UP:
+				assertEquals(9, player.getVelocity());
+				break;
+			case BOMB_UP:
+				assertEquals(2, player.getBombMaxNumber());
+				break;
+			case POWER_UP:
+				assertEquals(2, player.getBombPower());
+				break;
+			case HP_UP:
+				assertEquals(100, player.getHP());
+				break;
+			}
+				
+		}
+		player.setBombMaxNumber(PLAYER_MAX_BOMB);
+		map._map[0][0].setItem(new Item(0, 0));
+		map._map[0][0].item.setItemID(BOMB_UP);
+		assertEquals(true, map.giveItem(0, 0, player));
+		assertEquals(PLAYER_MAX_BOMB, player.getBombMaxNumber());
+		
+		player.SetBombPower(BOMB_MAX_POWER);
+		map._map[0][0].setItem(new Item(0, 0));
+		map._map[0][0].item.setItemID(POWER_UP);
+		assertEquals(true, map.giveItem(0, 0, player));
+		assertEquals(BOMB_MAX_POWER, player.getBombPower());
+		
+		player.setHP(50);
+		map._map[0][0].setItem(new Item(0, 0));
+		map._map[0][0].item.setItemID(HP_UP);
+		assertEquals(true, map.giveItem(0, 0, player));
+		assertEquals(50 + HP_ADDED, player.getHP());
+		
+		player.setHP(90);
+		map._map[0][0].setItem(new Item(0, 0));
+		map._map[0][0].item.setItemID(HP_UP);
+		assertEquals(true, map.giveItem(0, 0, player));
+		assertEquals(100, player.getHP());
+		
+		assertEquals(false, map.giveItem(0, 0, player));
 	}
 
 	@Test

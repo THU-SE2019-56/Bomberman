@@ -17,15 +17,15 @@ import game.GameConstants;
  * @version 0.9
  */
 public class Monster implements GameConstants {
-	private boolean alive;
-	private boolean alert;		// whether the monster is in alert state
-	private int velocity;
-	private int oldDirection;
-	private int direction;
-	private int x;
-	private int y;
-	private Brain brain;
-	private Path path;
+	public boolean alive;
+	public boolean alert;		// whether the monster is in alert state
+	public int velocity;
+	public int oldDirection;
+	public int direction;
+	public int x;
+	public int y;
+	public Brain brain;
+	public Path path;
 
 	/**
 	 * Create the monster at random position
@@ -52,7 +52,7 @@ public class Monster implements GameConstants {
 		init();
 	}
 
-	private void init() {
+	public void init() {
 		this.alive = true;
 		this.alert = false;
 		this.velocity = 3 + (int)(3*Math.random());
@@ -62,7 +62,7 @@ public class Monster implements GameConstants {
 		path = new Path();
 	}
 
-	private int nextDirection(Player p, Map m) {
+	public int nextDirection(Player p, Map m) {
 		if (path.size() > 0) {
 			// compute direction
 			int dx = path.getNextX() - this.x;
@@ -87,7 +87,7 @@ public class Monster implements GameConstants {
 		return DIRECTION_STOP;
 	}
 
-	void updateAlert(Player p) {
+	public void updateAlert(Player p) {
 		int mi = Math.round((float) x/CELL_WIDTH);
 		int mj = Math.round((float) y/CELL_HEIGHT);
 		int pi = Math.round((float) p.getX()/CELL_WIDTH);
@@ -178,7 +178,7 @@ public class Monster implements GameConstants {
 	/**
 	 * Check whether the monster is collided with a blown region
 	 */
-	private boolean isBlownOff(Map m) {
+	public boolean isBlownOff(Map m) {
 		int mi = Math.round((float) x/CELL_WIDTH);
 		int mj = Math.round((float) y/CELL_HEIGHT);
 		for (int i=mi; i<Math.min(mi+2, CELL_NUM_X); ++i)
@@ -192,7 +192,7 @@ public class Monster implements GameConstants {
 	/**
 	 * Check whether the monster is collided with a rectangle [x,y,w,h]
 	 */
-	private boolean isCollided(int x, int y, int w, int h) {
+	public boolean isCollided(int x, int y, int w, int h) {
 		int x1 = Math.max(x, this.x);
 		int x2 = Math.min(x + w, this.x + MONSTER_WIDTH);
 		int y1 = Math.max(y, this.y);

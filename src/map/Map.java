@@ -39,7 +39,7 @@ public class Map implements GameConstants {
 	/**
 	 * Construction method for given y size and x size
 	 */
-	public Map(int ySize, int xSize) {
+	public Map(int xSize, int ySize) {
 		this.ySize = ySize;
 		this.xSize = xSize;
 		_map = new Cell[ySize][xSize]; // initialize _map;

@@ -44,8 +44,10 @@ public class Player implements AWTEventListener, GameConstants {
 	private int mapX;
 	private int mapY;
 	private int playerHP;
+	private int playerMaxHP;
+	private int playerCharacterID;
 
-	public Player(Map newmap, int id) {
+	public Player(Map newmap, int id,int playerCharacterID) {
 		this.direction = DIRECTION_STOP;
 		this.imageDirection = DIRECTION_DOWN;
 		this.x = 0;
@@ -55,8 +57,13 @@ public class Player implements AWTEventListener, GameConstants {
 		this.playerID = id;
 		this.playerHurtDelayCount = 0;
 		this.playerCanBeHurt = 1;
-		this.playerHP = HP_MAX;
+	
 		this.bombPower = 1;
+		this.playerCharacterID = playerCharacterID;
+		
+		this.generateCharacter(playerCharacterID);
+		
+		
 	}
 
 	/*
@@ -104,6 +111,36 @@ public class Player implements AWTEventListener, GameConstants {
 	public int getPlayerID() {
 		return this.playerID;
 	}
+	
+	public void generateCharacter(int cid) {
+		switch (cid) {
+		case 0:
+			this.playerHP = PLAYER_CHARACTER1_HP_MAX ;
+			this.playerMaxHP = PLAYER_CHARACTER1_HP_MAX ;
+			this.bombMaxNumber = PLAYER_CHARACTER1_BOMB_MAX;
+			this.bombPower = PLAYER_CHARACTER1_BOMB_POWER;
+			break;
+		case 1:
+			this.playerHP = PLAYER_CHARACTER2_HP_MAX ;
+			this.playerMaxHP = PLAYER_CHARACTER2_HP_MAX ;
+			this.bombMaxNumber = PLAYER_CHARACTER2_BOMB_MAX;
+			this.bombPower = PLAYER_CHARACTER2_BOMB_POWER;
+			break;
+		case 2:
+			this.playerHP = PLAYER_CHARACTER3_HP_MAX ;
+			this.playerMaxHP = PLAYER_CHARACTER3_HP_MAX ;
+			this.bombMaxNumber = PLAYER_CHARACTER3_BOMB_MAX;
+			this.bombPower = PLAYER_CHARACTER3_BOMB_POWER;
+			break;
+		case 3:
+			this.playerHP = PLAYER_CHARACTER4_HP_MAX ;
+			this.playerMaxHP = PLAYER_CHARACTER4_HP_MAX ;
+			this.bombMaxNumber = PLAYER_CHARACTER4_BOMB_MAX;
+			this.bombPower = PLAYER_CHARACTER4_BOMB_POWER;
+			break;
+
+		}
+	}
 
 
 	/*
@@ -116,6 +153,14 @@ public class Player implements AWTEventListener, GameConstants {
 
 	public int getHP() {
 		return this.playerHP;
+	}
+	
+	public void setMaxHP(int mhp) {
+		this.playerMaxHP = mhp;
+	}
+	
+	public int getMaxHP() {
+		return this.playerMaxHP;
 	}
 
 	/*
@@ -325,6 +370,7 @@ public class Player implements AWTEventListener, GameConstants {
 			 * are multiples of 60. As a result, the player will keep moving when the x and
 			 * y of the player are not multiples of 60.
 			 */
+			
 			if (event.getID() == KeyEvent.KEY_PRESSED) {
 				KeyEvent e = (KeyEvent) event;
 				switch (e.getKeyCode()) {

@@ -67,8 +67,7 @@ public class Bomb implements GameConstants {
 
     private void explode() {
         int currX, currY;
-        Cell currCell;
-        currMap.getCell(x, y).explosionActivate();  // explosion at bomb position
+        currMap.explosionActivate(x, y); // explosion at bomb position
         for (int i = 0; i < 4; i++) {
             currX = x;
             currY = y;
@@ -78,12 +77,11 @@ public class Bomb implements GameConstants {
                 if (!currMap.isInMap(currX, currY)) {
                     break;
                 }
-                currCell = currMap.getCell(currX, currY);
-                if (currCell.isWithWall()) {
-                    currCell.explosionActivate(); // In explosionActivate will judge whether wall distroible
+                if (currMap.isWithWall(currX, currY)) {
+                    currMap.explosionActivate(currX, currY); // In explosionActivate will judge whether wall distroible
                     break;
                 }
-                currCell.explosionActivate();
+                currMap.explosionActivate(currX, currY);
             }
         }
     }

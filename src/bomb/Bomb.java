@@ -44,7 +44,7 @@ public class Bomb implements GameConstants {
         if (timeRemain < 0) {
             explode();
             owner.reduceBombPlantedNumber();
-            currMap.removeBomb(x,y);
+            currMap.removeBomb(x, y);
         }
     }
 
@@ -57,6 +57,8 @@ public class Bomb implements GameConstants {
     public void setBombTime(int time) {
         timeRemain = time <= 0 ? 0 : time;
     }
+
+    public int getBombTime() { return timeRemain; }
 
 
     /**

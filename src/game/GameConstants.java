@@ -43,7 +43,7 @@ public interface GameConstants {
 	int BOMB_MAX_POWER  = 6;
 
 	// Chance for item to be created
-	float ITEM_CHANCE = 1.0f;
+	float ITEM_CHANCE = 0.4f;
 
 	// For display
 	int CELL_WIDTH = 45;

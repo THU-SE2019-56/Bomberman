@@ -1,27 +1,29 @@
 package map;
 
-import game.GameConstants;
 import java.lang.Math;
 
+import game.GameConstants;
 import bomb.Bomb;
 import items.Item;
 import player.Player;
 
 /**
- * <p>
- * Store the necessary information. Should be updated by package bomb, items,
- * player. Used by player to decide its location after moving.
+ * Core class of the game. It is composed of Cell, and store a matrix of size
+ * CELL_NUM_Y*CELL_NUM_X.<br>
+ * Provides methods with params x, y to get access to the state of a certain
+ * cell.
  *
- * @author Zhuofan Chen, Wang
+ * @author Zhuofan Chen
  * @version 1.0
  */
 public class Map implements GameConstants {
-	// Define map matrix and its size
-	// In matrix _map, the first index refers to the y axis position and the second
-	// index refers to the x axis position
+	/*
+	 * Define map matrix and its size. In matrix _map, the first index refers to the
+	 * y axis position and the second index refers to the x axis position.
+	 */
 	private Cell[][] _map;
 	private int ySize = CELL_NUM_Y;
-	private int xSize = CELL_NUM_Y;
+	private int xSize = CELL_NUM_X;
 
 	/**
 	 * Default construction method
@@ -65,6 +67,23 @@ public class Map implements GameConstants {
 	}
 
 	/**
+	 * Construction method for given int[][]
+	 */
+	public Map(int[][] wallMatrix) {
+		ySize = wallMatrix.length;
+		xSize = wallMatrix[0].length;
+		_map = new Cell[ySize][xSize];
+		for (int i = 0; i < ySize; i++)
+			for (int j = 0; j < xSize; j++) {
+				_map[i][j] = new Cell();
+				if (wallMatrix[i][j] == DESTRUCTIBLE)
+					_map[i][j].setWall(true);
+				if (wallMatrix[i][j] == INDESTRUCTIBLE)
+					_map[i][j].setWall(false);
+			}
+	}
+
+	/**
 	 * Call all member methods needing refreshing
 	 */
 	public void refresh() {
@@ -76,6 +95,7 @@ public class Map implements GameConstants {
 	/**
 	 * @return the cell at given position for any operation on certain cell !!this
 	 *         method is NOT RECOMMENDED!!
+	 * @deprecated
 	 */
 	public Cell getCell(int xPos, int yPos) {
 		return _map[yPos][xPos];
@@ -110,8 +130,10 @@ public class Map implements GameConstants {
 	}
 
 	/**
-	 * @param           xPos, yPos position to set bomb
+	 * @param xPos      x position to set bomb
+	 * @param yPos      y position to set bomb
 	 * @param bombPower power of bomb
+	 * @param owner     the player who set the bomb
 	 * @return if the bomb is successfully set
 	 */
 	public boolean setBomb(int xPos, int yPos, int bombPower, Player owner) {
@@ -174,13 +196,37 @@ public class Map implements GameConstants {
 	}
 
 	/**
+	 * @return ID of Item on given position
+	 */
+	public int getItemID(int xPos, int yPos) {
+		if (isWithItem(xPos, yPos))
+			return _map[yPos][xPos].getItemID();
+		return -1;
+	}
+
+	/**
+	 * @param p the player to give the Item to
+	 * @return
+	 */
+	public boolean giveItem(int xPos, int yPos, Player p) {
+		if (getItemID(xPos, yPos) == -1)
+			return false;
+		_map[yPos][xPos].getItem().getItem(p);
+		_map[yPos][xPos].removeItem();
+		return true;
+	}
+
+	/**
 	 * Activate a explosion effect on given position
 	 */
 	public void explosionActivate(int xPos, int yPos) {
+		boolean ci = false;
 		if (isInMap(xPos, yPos)) {
 			if (_map[yPos][xPos].isWithDestructibleWall())
-				createItem(xPos, yPos);
+				ci = true;
 			_map[yPos][xPos].explosionActivate();
+			if (ci)
+				createItem(xPos, yPos);
 		}
 	}
 
@@ -194,7 +240,7 @@ public class Map implements GameConstants {
 	/**
 	 * set a wall at given position
 	 * 
-	 * @param destructible: whether the wall to be set is destructible
+	 * @param destructible whether the wall to be set is destructible
 	 */
 	public void setWall(int xPos, int yPos, boolean destructible) {
 		if (isInMap(xPos, yPos))
@@ -229,7 +275,7 @@ public class Map implements GameConstants {
 	public boolean isWithIndestructibleWall(int xPos, int yPos) {
 		return (isInMap(xPos, yPos) && _map[yPos][xPos].isWithIndestructibleWall());
 	}
-
+	
 	/**
 	 * @param power assumed bomb power
 	 * @return true if given position is threatened by bomb, assuming all bomb with

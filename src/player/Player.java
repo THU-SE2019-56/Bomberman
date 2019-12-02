@@ -121,6 +121,14 @@ public class Player implements AWTEventListener, GameConstants {
 	public int getPlayerID() {
 		return this.playerID;
 	}
+	
+	public void setPlayerCharacterID(int cid) {
+		this.playerCharacterID = cid;
+	}
+	
+	public int getPlayerCharacterID() {
+		return this.playerCharacterID;
+	}
 
 	public void generateCharacter(int cid) {
 		switch (cid) {

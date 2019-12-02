@@ -31,6 +31,9 @@ import game.TimerListener;
 public class StatusPanel extends JPanel implements GameConstants {
 	private BufferedImage player1Image[] = new BufferedImage[4];
 	private BufferedImage player2Image[] = new BufferedImage[4];
+	private BufferedImage player3Image[] = new BufferedImage[4];
+	private BufferedImage player4Image[] = new BufferedImage[4];
+	
 	private JTextField playerLifeText[] = new JTextField[2];
 	private JButton pauseButton = new JButton("Pause");
 	private JButton backButton = new JButton("Back");
@@ -137,10 +140,27 @@ public class StatusPanel extends JPanel implements GameConstants {
 				g.setColor(Color.BLUE);
 				g.drawRect(CELL_WIDTH, 3 * CELL_HEIGHT, playerMaxHP, CELL_HEIGHT / 2);
 				g.setColor(Color.getHSBColor((float) playerHP / 300, 1, 1));
-				g.fillRect(CELL_WIDTH, 3 * CELL_HEIGHT, game.getPlayer()[i].getHP(), CELL_HEIGHT / 2);
-
-				g.drawImage(player1Image[DIRECTION_DOWN], CELL_WIDTH, CELL_HEIGHT, CELL_WIDTH + CELL_WIDTH / 2,
-						CELL_HEIGHT + CELL_HEIGHT / 2, this);
+				g.fillRect(CELL_WIDTH, 3 * CELL_HEIGHT, game.getPlayer()[i].getHP(), CELL_HEIGHT / 2);	
+				
+				switch (game.getPlayer()[i].getPlayerCharacterID()) {
+				case 0:
+					g.drawImage(player1Image[DIRECTION_DOWN], CELL_WIDTH, CELL_HEIGHT, CELL_WIDTH + CELL_WIDTH / 2,
+								CELL_HEIGHT + CELL_HEIGHT / 2, this);
+					break;
+				case 1:
+					g.drawImage(player2Image[DIRECTION_DOWN], CELL_WIDTH, CELL_HEIGHT, CELL_WIDTH + CELL_WIDTH / 2,
+								CELL_HEIGHT + CELL_HEIGHT / 2, this);
+					break;
+				case 2:
+					g.drawImage(player3Image[DIRECTION_DOWN], CELL_WIDTH, CELL_HEIGHT, CELL_WIDTH + CELL_WIDTH / 2,
+								CELL_HEIGHT + CELL_HEIGHT / 2, this);
+					break;
+				case 3:
+					g.drawImage(player4Image[DIRECTION_DOWN], CELL_WIDTH, CELL_HEIGHT, CELL_WIDTH + CELL_WIDTH / 2,
+								CELL_HEIGHT + CELL_HEIGHT / 2, this);
+					break;
+	
+				}
 			}
 
 			if (i == PLAYER_ID_P2) {
@@ -150,8 +170,25 @@ public class StatusPanel extends JPanel implements GameConstants {
 				g.setColor(Color.getHSBColor((float) playerHP / 300, 1, 1));
 				g.fillRect(CELL_WIDTH, 6 * CELL_HEIGHT, game.getPlayer()[i].getHP(), CELL_HEIGHT / 2);
 
-				g.drawImage(player2Image[DIRECTION_DOWN], CELL_WIDTH, 4 * CELL_HEIGHT, CELL_WIDTH + CELL_WIDTH / 2,
-						CELL_HEIGHT + CELL_HEIGHT / 2, this);
+				
+				switch (game.getPlayer()[i].getPlayerCharacterID()) {
+				case 0:
+					g.drawImage(player1Image[DIRECTION_DOWN], CELL_WIDTH, 4*CELL_HEIGHT, CELL_WIDTH + CELL_WIDTH / 2,
+								CELL_HEIGHT + CELL_HEIGHT / 2, this);
+					break;
+				case 1:
+					g.drawImage(player2Image[DIRECTION_DOWN], CELL_WIDTH, 4*CELL_HEIGHT, CELL_WIDTH + CELL_WIDTH / 2,
+								CELL_HEIGHT + CELL_HEIGHT / 2, this);
+					break;
+				case 2:
+					g.drawImage(player3Image[DIRECTION_DOWN], CELL_WIDTH, 4*CELL_HEIGHT, CELL_WIDTH + CELL_WIDTH / 2,
+								CELL_HEIGHT + CELL_HEIGHT / 2, this);
+					break;
+				case 3:
+					g.drawImage(player4Image[DIRECTION_DOWN], CELL_WIDTH, 4*CELL_HEIGHT, CELL_WIDTH + CELL_WIDTH / 2,
+								CELL_HEIGHT + CELL_HEIGHT / 2, this);
+					break;
+				}
 			}
 
 		}
@@ -276,6 +313,7 @@ public class StatusPanel extends JPanel implements GameConstants {
 	public void loadImage() throws Exception {
 		// TODO Load all the images here
 
+		
 		player1Image[DIRECTION_UP] = ImageIO.read(new File("image/player/p1UP.png"));
 		player1Image[DIRECTION_RIGHT] = ImageIO.read(new File("image/player/p1RIGHT.png"));
 		player1Image[DIRECTION_DOWN] = ImageIO.read(new File("image/player/p1DOWN.png"));
@@ -285,5 +323,16 @@ public class StatusPanel extends JPanel implements GameConstants {
 		player2Image[DIRECTION_RIGHT] = ImageIO.read(new File("image/player/p2RIGHT.png"));
 		player2Image[DIRECTION_DOWN] = ImageIO.read(new File("image/player/p2DOWN.png"));
 		player2Image[DIRECTION_LEFT] = ImageIO.read(new File("image/player/p2LEFT.png"));
+		
+		
+		player3Image[DIRECTION_UP] = ImageIO.read(new File("image/player/p3UP.png"));
+		player3Image[DIRECTION_RIGHT] = ImageIO.read(new File("image/player/p3RIGHT.png"));
+		player3Image[DIRECTION_DOWN] = ImageIO.read(new File("image/player/p3DOWN.png"));
+		player3Image[DIRECTION_LEFT] = ImageIO.read(new File("image/player/p3LEFT.png"));
+
+		player4Image[DIRECTION_UP] = ImageIO.read(new File("image/player/p4UP.png"));
+		player4Image[DIRECTION_RIGHT] = ImageIO.read(new File("image/player/p4RIGHT.png"));
+		player4Image[DIRECTION_DOWN] = ImageIO.read(new File("image/player/p4DOWN.png"));
+		player4Image[DIRECTION_LEFT] = ImageIO.read(new File("image/player/p4LEFT.png"));
 	}
 }

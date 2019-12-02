@@ -4,11 +4,13 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.RoundRectangle2D;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 
@@ -49,12 +51,27 @@ public class ChoosePlayerPanel extends JPanel implements GameConstants {
 	private JTextField p2Text;
 	
 	private ImageIcon stageBackgroundIcon;
+	private ImageIcon p1Icon;
+	private ImageIcon p2Icon;
+	private ImageIcon p3Icon;
+	private ImageIcon p4Icon;
+
+	
 	private JLabel stageBackgroundLabel;
+	private JLabel p1Label;
+	private JLabel p2Label;
+	private JLabel p3Label;
+	private JLabel p4Label;
 
 	private int gameMode;
 	
 	private int player1CID;
 	private int player2CID;
+	
+	private BufferedImage player1Image[] = new BufferedImage[4];
+	private BufferedImage player2Image[] = new BufferedImage[4];
+	private BufferedImage player3Image[] = new BufferedImage[4];
+	private BufferedImage player4Image[] = new BufferedImage[4];
 	
 	public ChoosePlayerPanel (MainFrame mainFrame,int gamemode) {
 		this.mainFrame = mainFrame;
@@ -72,17 +89,49 @@ public class ChoosePlayerPanel extends JPanel implements GameConstants {
 		
 		this.addPlayerInfo();
 		this.addJTextField();
-		
+		this.addPlayerLabel();
 		this.addBackground();
+		
+		try {
+			loadImage();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 
 	public void addBackground() {
-		stageBackgroundIcon = new ImageIcon("image/menu/menuBackground.png");// Background image
+		stageBackgroundIcon = new ImageIcon("image/menu/ChoosePlayerPanelBackground.png");// Background image
 		stageBackgroundIcon.setImage(stageBackgroundIcon.getImage().getScaledInstance(WINDOW_WIDTH, WINDOW_HEIGHT, 1));
 		stageBackgroundLabel = new JLabel(stageBackgroundIcon);
 		stageBackgroundLabel.setBounds(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 		this.add(stageBackgroundLabel);
+	}
+	
+	public void addPlayerLabel() {
+		p1Icon = new ImageIcon("image/player/p1DOWN.png");// Background image
+		p2Icon = new ImageIcon("image/player/p2DOWN.png");// Background image
+		p3Icon = new ImageIcon("image/player/p3DOWN.png");// Background image
+		p4Icon = new ImageIcon("image/player/p4DOWN.png");// Background image
+		
+		p1Icon.setImage(p1Icon.getImage().getScaledInstance(180, 180, 1));
+		p2Icon.setImage(p2Icon.getImage().getScaledInstance(180, 180, 1));
+		p3Icon.setImage(p3Icon.getImage().getScaledInstance(180, 180, 1));
+		p4Icon.setImage(p4Icon.getImage().getScaledInstance(180, 180, 1));
+		
+		p1Label = new JLabel(p1Icon);
+		p2Label = new JLabel(p2Icon);
+		p3Label = new JLabel(p3Icon);
+		p4Label = new JLabel(p4Icon);
+		
+		p1Label.setBounds(100, 50, 180, 180);
+		p2Label.setBounds(300, 50, 180, 180);
+		p3Label.setBounds(500, 50, 180, 180);
+		p4Label.setBounds(700, 50, 180, 180);
+		this.add(p1Label);
+		this.add(p2Label);
+		this.add(p3Label);
+		this.add(p4Label);
 	}
 
 	/**
@@ -293,6 +342,35 @@ public class ChoosePlayerPanel extends JPanel implements GameConstants {
 		jta.setBackground(Color.pink);
 		jta.setForeground(Color.WHITE);
 		jta.setEditable(false);
+	}
+	
+	public void loadImage() throws IOException {
+		player1Image[DIRECTION_UP] = ImageIO.read(new File("image/player/p1UP.png"));
+		player1Image[DIRECTION_RIGHT] = ImageIO.read(new File("image/player/p1RIGHT.png"));
+		player1Image[DIRECTION_DOWN] = ImageIO.read(new File("image/player/p1DOWN.png"));
+		player1Image[DIRECTION_LEFT] = ImageIO.read(new File("image/player/p1LEFT.png"));
+
+		player2Image[DIRECTION_UP] = ImageIO.read(new File("image/player/p2UP.png"));
+		player2Image[DIRECTION_RIGHT] = ImageIO.read(new File("image/player/p2RIGHT.png"));
+		player2Image[DIRECTION_DOWN] = ImageIO.read(new File("image/player/p2DOWN.png"));
+		player2Image[DIRECTION_LEFT] = ImageIO.read(new File("image/player/p2LEFT.png"));
+		
+		
+		player3Image[DIRECTION_UP] = ImageIO.read(new File("image/player/p3UP.png"));
+		player3Image[DIRECTION_RIGHT] = ImageIO.read(new File("image/player/p3RIGHT.png"));
+		player3Image[DIRECTION_DOWN] = ImageIO.read(new File("image/player/p3DOWN.png"));
+		player3Image[DIRECTION_LEFT] = ImageIO.read(new File("image/player/p3LEFT.png"));
+
+		player4Image[DIRECTION_UP] = ImageIO.read(new File("image/player/p4UP.png"));
+		player4Image[DIRECTION_RIGHT] = ImageIO.read(new File("image/player/p4RIGHT.png"));
+		player4Image[DIRECTION_DOWN] = ImageIO.read(new File("image/player/p4DOWN.png"));
+		player4Image[DIRECTION_LEFT] = ImageIO.read(new File("image/player/p4LEFT.png"));
+	}
+	
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		
+		g.drawImage(player1Image[DIRECTION_DOWN], 100, 50, 180, 180, this);
 	}
 	
 	

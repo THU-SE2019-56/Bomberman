@@ -25,6 +25,8 @@ public class MapPanel extends JPanel implements GameConstants {
 
 	BufferedImage player1Image[] = new BufferedImage[4];
 	BufferedImage player2Image[] = new BufferedImage[4];
+	BufferedImage player3Image[] = new BufferedImage[4];
+	BufferedImage player4Image[] = new BufferedImage[4];
 	BufferedImage itemImage[] = new BufferedImage[ITEM_NUM];
 	BufferedImage monsterImage[] = new BufferedImage[4];
 	BufferedImage mapImage[] = new BufferedImage[4];
@@ -33,15 +35,19 @@ public class MapPanel extends JPanel implements GameConstants {
 
 	/**
 	 * Initialize the Display class.
+	 * @throws Exception 
 	 */
-	public MapPanel(Game game) {
+	public MapPanel(Game game)  {
 		this.game = game;
 
-		try {
-			loadImage();
-		} catch (Exception e) {
-			System.out.println(e.toString());
-		}
+	
+			try {
+				loadImage();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	
 
 		this.setSize(MAP_WIDTH, MAP_HEIGHT);
 		this.setFocusable(true);
@@ -93,14 +99,25 @@ public class MapPanel extends JPanel implements GameConstants {
 	 */
 	public void paintPlayer(Graphics g) {
 		for (int i = 0; i < game.getPlayerNum(); i++) {
-			if (game.getPlayer()[i].getPlayerID() == PLAYER_ID_P1) {
-				g.drawImage(player1Image[game.getPlayer()[i].getImageDirection()], game.getPlayer()[i].getX(),
-						game.getPlayer()[i].getY(), PLAYER_WIDTH, PLAYER_HEIGHT, this);
-			}
-			if (game.getPlayer()[i].getPlayerID() == PLAYER_ID_P2) {
-				g.drawImage(player2Image[game.getPlayer()[i].getImageDirection()], game.getPlayer()[i].getX(),
-						game.getPlayer()[i].getY(), PLAYER_WIDTH, PLAYER_HEIGHT, this);
-			}
+			
+			 switch (game.getPlayer()[i].getPlayerCharacterID()) {			 
+			 case 0:
+				 g.drawImage(player1Image[game.getPlayer()[i].getImageDirection()], game.getPlayer()[i].getX(),
+							game.getPlayer()[i].getY()-(PLAYER_HEIGHT-CELL_HEIGHT), PLAYER_WIDTH, PLAYER_HEIGHT, this);	 
+				 break;
+			 case 1:
+				 g.drawImage(player2Image[game.getPlayer()[i].getImageDirection()], game.getPlayer()[i].getX(),
+							game.getPlayer()[i].getY()-(PLAYER_HEIGHT-CELL_HEIGHT), PLAYER_WIDTH, PLAYER_HEIGHT, this);
+				 break;
+			 case 2:
+				 g.drawImage(player3Image[game.getPlayer()[i].getImageDirection()], game.getPlayer()[i].getX(),
+							game.getPlayer()[i].getY()-(PLAYER_HEIGHT-CELL_HEIGHT), PLAYER_WIDTH, PLAYER_HEIGHT, this);
+				 break;
+			 case 3:
+				 g.drawImage(player4Image[game.getPlayer()[i].getImageDirection()], game.getPlayer()[i].getX(),
+							game.getPlayer()[i].getY()-(PLAYER_HEIGHT-CELL_HEIGHT), PLAYER_WIDTH, PLAYER_HEIGHT, this);
+				 break;
+			 }
 		}
 	}
 
@@ -170,6 +187,17 @@ public class MapPanel extends JPanel implements GameConstants {
 		player2Image[DIRECTION_RIGHT] = ImageIO.read(new File("image/player/p2RIGHT.png"));
 		player2Image[DIRECTION_DOWN] = ImageIO.read(new File("image/player/p2DOWN.png"));
 		player2Image[DIRECTION_LEFT] = ImageIO.read(new File("image/player/p2LEFT.png"));
+		
+		
+		player3Image[DIRECTION_UP] = ImageIO.read(new File("image/player/p3UP.png"));
+		player3Image[DIRECTION_RIGHT] = ImageIO.read(new File("image/player/p3RIGHT.png"));
+		player3Image[DIRECTION_DOWN] = ImageIO.read(new File("image/player/p3DOWN.png"));
+		player3Image[DIRECTION_LEFT] = ImageIO.read(new File("image/player/p3LEFT.png"));
+
+		player4Image[DIRECTION_UP] = ImageIO.read(new File("image/player/p4UP.png"));
+		player4Image[DIRECTION_RIGHT] = ImageIO.read(new File("image/player/p4RIGHT.png"));
+		player4Image[DIRECTION_DOWN] = ImageIO.read(new File("image/player/p4DOWN.png"));
+		player4Image[DIRECTION_LEFT] = ImageIO.read(new File("image/player/p4LEFT.png"));
 
 		itemImage[VELOCITY_UP] = ImageIO.read(new File("image/item/velocity.png"));
 		itemImage[BOMB_UP] = ImageIO.read(new File("image/item/bomb.png"));

@@ -229,26 +229,26 @@ public class ChoosePlayerPanel extends JPanel implements GameConstants {
 	public void addPlayerInfo() {
 		playerCharacterInfo1 = new JTextArea(" Max HP:"+String.valueOf(PLAYER_CHARACTER1_HP_MAX)+ 
 											  "\r\n\r\n"+" Max Bomb Number:"+String.valueOf(PLAYER_CHARACTER1_BOMB_MAX)+
-											  "\r\n\r\n" +"Max Bomb Power:"+String.valueOf(PLAYER_CHARACTER1_BOMB_POWER));
+											  "\r\n\r\n" +" Max Bomb Power:"+String.valueOf(PLAYER_CHARACTER1_BOMB_POWER));
 		initializeButtonTextArea(playerCharacterInfo1);
 		playerCharacterInfo1.setBounds(100, 250,180, 100);
 		
 		playerCharacterInfo2 = new JTextArea(" Max HP:"+String.valueOf(PLAYER_CHARACTER2_HP_MAX)+ 
 				  "\r\n\r\n"+" Max Bomb Number:"+String.valueOf(PLAYER_CHARACTER2_BOMB_MAX)+
-				  "\r\n\r\n" +"Max Bomb Power:"+String.valueOf(PLAYER_CHARACTER2_BOMB_POWER));
+				  "\r\n\r\n" +" Max Bomb Power:"+String.valueOf(PLAYER_CHARACTER2_BOMB_POWER));
 		initializeButtonTextArea(playerCharacterInfo2);
 		playerCharacterInfo2.setBounds(300, 250,180, 100);	
 		
 		
 		playerCharacterInfo3 = new JTextArea(" Max HP:"+String.valueOf(PLAYER_CHARACTER3_HP_MAX)+ 
 				  "\r\n\r\n"+" Max Bomb Number:"+String.valueOf(PLAYER_CHARACTER3_BOMB_MAX)+
-				  "\r\n\r\n" +"Max Bomb Power:"+String.valueOf(PLAYER_CHARACTER3_BOMB_POWER));
+				  "\r\n\r\n" +" Max Bomb Power:"+String.valueOf(PLAYER_CHARACTER3_BOMB_POWER));
 		initializeButtonTextArea(playerCharacterInfo3);
 		playerCharacterInfo3.setBounds(500, 250,180, 100);		
 
 		playerCharacterInfo4 = new JTextArea(" Max HP:"+String.valueOf(PLAYER_CHARACTER4_HP_MAX)+ 
 				  "\r\n\r\n"+" Max Bomb Number:"+String.valueOf(PLAYER_CHARACTER4_BOMB_MAX)+
-				  "\r\n\r\n" +"Max Bomb Power:"+String.valueOf(PLAYER_CHARACTER4_BOMB_POWER));
+				  "\r\n\r\n" +" Max Bomb Power:"+String.valueOf(PLAYER_CHARACTER4_BOMB_POWER));
 		initializeButtonTextArea(playerCharacterInfo4);
 		playerCharacterInfo4.setBounds(700, 250,180, 100);	
 
@@ -332,12 +332,11 @@ public class ChoosePlayerPanel extends JPanel implements GameConstants {
 
 	}
 	
-	
 	public void initializeButtonTextArea(JTextArea jta) {
 		jta.setLineWrap(true);
 		jta.setVisible(true);
 		
-		Font textAreaFont = new Font("Times New Roman Italic", Font.BOLD, 12);
+		Font textAreaFont = new Font("Times New Roman Italic", Font.ITALIC, 14);
 		jta.setFont(textAreaFont);
 		jta.setBackground(Color.pink);
 		jta.setForeground(Color.WHITE);

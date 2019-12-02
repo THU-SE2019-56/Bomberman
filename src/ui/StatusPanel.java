@@ -130,10 +130,12 @@ public class StatusPanel extends JPanel implements GameConstants {
 
 		for (int i = 0; i < game.getPlayerNum(); i++) {
 			int playerHP = game.getPlayer()[i].getHP();
+			int playerMaxHP = game.getPlayer()[i].getMaxHP();
+			
 			if (i == PLAYER_ID_P1) {
 				this.playerLifeText[i].setText(String.valueOf(playerHP));
 				g.setColor(Color.BLUE);
-				g.drawRect(CELL_WIDTH, 3 * CELL_HEIGHT, 100, CELL_HEIGHT / 2);
+				g.drawRect(CELL_WIDTH, 3 * CELL_HEIGHT, playerMaxHP, CELL_HEIGHT / 2);
 				g.setColor(Color.getHSBColor((float) playerHP / 300, 1, 1));
 				g.fillRect(CELL_WIDTH, 3 * CELL_HEIGHT, game.getPlayer()[i].getHP(), CELL_HEIGHT / 2);
 
@@ -144,7 +146,7 @@ public class StatusPanel extends JPanel implements GameConstants {
 			if (i == PLAYER_ID_P2) {
 				this.playerLifeText[i].setText(String.valueOf(playerHP));
 				g.setColor(Color.BLUE);
-				g.drawRect(CELL_WIDTH, 6 * CELL_HEIGHT, 100, CELL_HEIGHT / 2);
+				g.drawRect(CELL_WIDTH, 6 * CELL_HEIGHT, playerMaxHP, CELL_HEIGHT / 2);
 				g.setColor(Color.getHSBColor((float) playerHP / 300, 1, 1));
 				g.fillRect(CELL_WIDTH, 6 * CELL_HEIGHT, game.getPlayer()[i].getHP(), CELL_HEIGHT / 2);
 
@@ -193,7 +195,7 @@ public class StatusPanel extends JPanel implements GameConstants {
 			 */
 			if (e.getSource() == backButton) {
 				int gameMode=game.getGameMode();
-				StagePanel newStagePanel = new StagePanel(mainFrame,gameMode);
+				StagePanel newStagePanel = new StagePanel(mainFrame,gameMode,game.getPlayer1CID(),game.getPlayer2CID());
 
 				JPanel mainPanel = (JPanel) mainFrame.getContentPane();
 				mainPanel.removeAll();
@@ -212,7 +214,8 @@ public class StatusPanel extends JPanel implements GameConstants {
 			 */
 			if (e.getSource() == restartButton) {
 				int[][] wallMatrix=StagePanel.loadStage(game.getStageNumber());
-				Game newGame =  new Game(wallMatrix,0,0,new int[5],new int[5],game.getGameMode(),game.getStageNumber());
+				Game newGame =  new Game(wallMatrix,0,0,new int[5],new int[5],game.getGameMode(),game.getStageNumber(),
+										game.getPlayer1CID(),game.getPlayer2CID());
 				MapPanel newMapPanel = new MapPanel(newGame);
 				StatusPanel newStatusPanel = new StatusPanel(newGame, mainFrame);
 

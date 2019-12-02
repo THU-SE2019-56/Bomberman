@@ -36,10 +36,14 @@ public class StagePanel extends JPanel implements GameConstants {
 	private JLabel stageBackgroundLabel;
 	private int[][] wallMatrix=new int[CELL_NUM_X][CELL_NUM_Y];
 	private int gameMode;
+	private int player1CharacterID;
+	private int player2CharacterID;
 	
-	public StagePanel(MainFrame mainFrame,int gameMode) {
+	public StagePanel(MainFrame mainFrame,int gameMode,int p1cID, int p2cID) {
 		this.mainFrame = mainFrame;
 		this.gameMode=gameMode;
+		this.player1CharacterID = p1cID;
+		this.player2CharacterID = p2cID;
 
 		thumbFrame = new JFrame();
 		thumbFrame.setAlwaysOnTop(true);
@@ -96,10 +100,10 @@ public class StagePanel extends JPanel implements GameConstants {
 		this.add(button3);
 		this.add(buttonBack);
 
-		button1.addMouseListener(new ButtonListener(mainFrame, "1"));
-		button2.addMouseListener(new ButtonListener(mainFrame, "2"));
-		button3.addMouseListener(new ButtonListener(mainFrame, "3"));
-		buttonBack.addMouseListener(new ButtonListener(mainFrame, "Back"));
+		button1.addMouseListener(new ButtonListener(mainFrame, "1",this.player1CharacterID,this.player2CharacterID));
+		button2.addMouseListener(new ButtonListener(mainFrame, "2",this.player1CharacterID,this.player2CharacterID));
+		button3.addMouseListener(new ButtonListener(mainFrame, "3",this.player1CharacterID,this.player2CharacterID));
+		buttonBack.addMouseListener(new ButtonListener(mainFrame, "Back",this.player1CharacterID,this.player2CharacterID));
 	}
 
 	/**
@@ -171,15 +175,21 @@ public class StagePanel extends JPanel implements GameConstants {
 
 		MainFrame mainFrame;
 		String name;
+		private int player1CharacterID;
+		private int player2CharacterID;
 
-		public ButtonListener(MainFrame mainFrame, String name) {
+		public ButtonListener(MainFrame mainFrame, String name,int p1cid,int p2cid) {
 			this.mainFrame = mainFrame;
 			this.name = name;
+			this.player1CharacterID = p1cid;
+			this.player2CharacterID = p2cid;
 		}
 		
 		public void generateStage(int stageNumber) {
 			wallMatrix=loadStage(stageNumber);
-			Game game = new Game(wallMatrix,0,0,new int[5],new int[5],gameMode,stageNumber);
+			Game game = new Game(wallMatrix,0,0,new int[5],new int[5],gameMode,stageNumber,
+					player1CharacterID,player2CharacterID);
+			
 			MapPanel mapPanel = new MapPanel(game);
 			StatusPanel statusPanel = new StatusPanel(game, mainFrame);
 
@@ -203,6 +213,8 @@ public class StagePanel extends JPanel implements GameConstants {
 			TimerListener timerListenerPve = new TimerListener(game, mapPanel, statusPanel);
 			Timer timerPve = new Timer(REFRESH, timerListenerPve);
 			timerPve.start();
+			
+	
 		}
 
 
@@ -236,18 +248,18 @@ public class StagePanel extends JPanel implements GameConstants {
 				generateStage(3);
 				break;
 			case "Back":
-				MenuPanel newMenuPanel = new MenuPanel(mainFrame);
+				ChoosePlayerPanel choosePlayerPanel = new ChoosePlayerPanel(mainFrame,gameMode);
 
 				JPanel mainPanel = (JPanel) mainFrame.getContentPane();
 				mainPanel.removeAll();
 
-				mainFrame.add(newMenuPanel);
+				mainFrame.add(choosePlayerPanel);
 				mainFrame.validate();
 
 				mainFrame.setLayout(null);
 
-				newMenuPanel.setLocation(0, 0);
-				newMenuPanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+				choosePlayerPanel.setLocation(0, 0);
+				choosePlayerPanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 				break;
 			}
 		}

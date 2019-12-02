@@ -36,7 +36,7 @@ public class Player implements AWTEventListener, GameConstants {
 	private int imageDirection;// This variable is for deciding the image of DIRECTION_STOP
 	private int x;
 	private int y;
-	private int stopflag = 0;
+
 	private int playerHurtDelayCount = 0;
 	private int playerCanBeHurt = 1;
 
@@ -44,8 +44,22 @@ public class Player implements AWTEventListener, GameConstants {
 	private int mapX;
 	private int mapY;
 	private int playerHP;
+	private int playerMaxHP;
+	private int playerCharacterID;
 
-	public Player(Map newmap, int id) {
+	private int stopflag = 0;
+
+	private int upflag = 0;
+	private int downflag = 0;
+	private int leftflag = 0;
+	private int rightflag = 0;
+
+	private int futureUpflag = 0;
+	private int futureDownflag = 0;
+	private int futureLeftflag = 0;
+	private int futureRightflag = 0;
+
+	public Player(Map newmap, int id, int playerCharacterID) {
 		this.direction = DIRECTION_STOP;
 		this.imageDirection = DIRECTION_DOWN;
 		this.x = 0;
@@ -55,8 +69,11 @@ public class Player implements AWTEventListener, GameConstants {
 		this.playerID = id;
 		this.playerHurtDelayCount = 0;
 		this.playerCanBeHurt = 1;
-		this.playerHP = HP_MAX;
+
 		this.bombPower = 1;
+		this.playerCharacterID = playerCharacterID;
+
+		this.generateCharacter(playerCharacterID);
 	}
 
 	/*
@@ -85,15 +102,15 @@ public class Player implements AWTEventListener, GameConstants {
 	public int getBombMaxNumber() {
 		return this.bombMaxNumber;
 	}
-	
+
 	public int getBombPower() {
 		return this.bombPower;
 	}
-	
+
 	public void SetBombPower(int power) {
-			this.bombPower = power;
+		this.bombPower = power;
 	}
-	
+
 	/*
 	 * For ID
 	 */
@@ -105,17 +122,56 @@ public class Player implements AWTEventListener, GameConstants {
 		return this.playerID;
 	}
 
+	public void generateCharacter(int cid) {
+		switch (cid) {
+		case 0:
+			this.playerHP = PLAYER_CHARACTER1_HP_MAX;
+			this.playerMaxHP = PLAYER_CHARACTER1_HP_MAX;
+			this.bombMaxNumber = PLAYER_CHARACTER1_BOMB_MAX;
+			this.bombPower = PLAYER_CHARACTER1_BOMB_POWER;
+			break;
+		case 1:
+			this.playerHP = PLAYER_CHARACTER2_HP_MAX;
+			this.playerMaxHP = PLAYER_CHARACTER2_HP_MAX;
+			this.bombMaxNumber = PLAYER_CHARACTER2_BOMB_MAX;
+			this.bombPower = PLAYER_CHARACTER2_BOMB_POWER;
+			break;
+		case 2:
+			this.playerHP = PLAYER_CHARACTER3_HP_MAX;
+			this.playerMaxHP = PLAYER_CHARACTER3_HP_MAX;
+			this.bombMaxNumber = PLAYER_CHARACTER3_BOMB_MAX;
+			this.bombPower = PLAYER_CHARACTER3_BOMB_POWER;
+			break;
+		case 3:
+			this.playerHP = PLAYER_CHARACTER4_HP_MAX;
+			this.playerMaxHP = PLAYER_CHARACTER4_HP_MAX;
+			this.bombMaxNumber = PLAYER_CHARACTER4_BOMB_MAX;
+			this.bombPower = PLAYER_CHARACTER4_BOMB_POWER;
+			break;
+
+		}
+	}
 
 	/*
 	 * For HP
 	 */
 	public void setHP(int hp) {
-		if (hp<0) this.playerHP = 0;
-		else this.playerHP = hp;
+		if (hp < 0)
+			this.playerHP = 0;
+		else
+			this.playerHP = hp;
 	}
 
 	public int getHP() {
 		return this.playerHP;
+	}
+
+	public void setMaxHP(int mhp) {
+		this.playerMaxHP = mhp;
+	}
+
+	public int getMaxHP() {
+		return this.playerMaxHP;
 	}
 
 	/*
@@ -146,7 +202,6 @@ public class Player implements AWTEventListener, GameConstants {
 			this.direction = d;
 		}
 	}
-
 
 	public int getDirection() {
 		return this.direction;
@@ -195,7 +250,7 @@ public class Player implements AWTEventListener, GameConstants {
 	public int getMapY() {
 		return this.mapY;
 	}
-	
+
 	/**
 	 * Use map to decide the player's location after moving. Can not receive any
 	 * command before it moves completely into a new integral cell.
@@ -204,26 +259,10 @@ public class Player implements AWTEventListener, GameConstants {
 	 */
 	public void setLocationOnMap(Player player, Map mi, int mapX, int mapY) {
 
-		if (mi.isAvailable(mapX,mapY)) {
+		if (mi.isAvailable(mapX, mapY)) {
 
 			player.setMapX(mapX);
 			player.setMapY(mapY);
-		}
-	}
-
-	/**
-	 * Stop the player and clear the flag
-	 */
-	public void playerStop() {
-		
-		// Stop only when the x and y of the player are multiples of 60
-		if (this.getX() % CELL_WIDTH == 0 && this.getY() % CELL_HEIGHT == 0) 
-		{
-			if (this.stopflag == 1) {
-				this.setDirection(DIRECTION_STOP);
-				this.stopflag = 0;
-			}
-			this.setLocationOnMap(this, this.playerMap, this.x / CELL_WIDTH, this.y / CELL_HEIGHT);// Update mapX and																							// mapY
 		}
 	}
 
@@ -263,6 +302,37 @@ public class Player implements AWTEventListener, GameConstants {
 	}
 
 	/**
+	 * Stop the player and clear the flag
+	 */
+	public void playerStop() {
+		// Stop only when the x and y of the player are multiples of 45
+		if (this.getX() % CELL_WIDTH == 0 && this.getY() % CELL_HEIGHT == 0) {
+			if (this.futureUpflag == 1) {
+				this.setDirection(DIRECTION_UP);
+			}
+			if (this.futureDownflag == 1) {
+				this.setDirection(DIRECTION_DOWN);
+			}
+			if (this.futureRightflag == 1) {
+				this.setDirection(DIRECTION_RIGHT);
+			}
+			if (this.futureLeftflag == 1) {
+				this.setDirection(DIRECTION_LEFT);
+			}
+			if (this.futureDownflag == 0 & this.futureLeftflag == 0 & this.futureRightflag == 0
+					& this.futureUpflag == 0) {
+				if (this.stopflag == 1) {
+					this.setDirection(DIRECTION_STOP);
+					this.stopflag = 0;
+				}
+			}
+			// update mapX and mapY
+			this.setLocationOnMap(this, this.playerMap, this.x / CELL_WIDTH, this.y / CELL_HEIGHT);
+			clearFutureFlag();
+		}
+	}
+
+	/**
 	 * Judge the direction of the player and change the coordinates.
 	 */
 	public void playerMove() {
@@ -274,31 +344,25 @@ public class Player implements AWTEventListener, GameConstants {
 		{
 			switch (this.getDirection()) {
 			case DIRECTION_UP:
-																					
-				if (this.playerMap.isAvailable((int) (Math.ceil(mapx)), (int) (Math.ceil(mapy) - 1)) ) // If the cell which the player is going to step on is available
-				{
+				// If the cell which the player is going to step on is available
+				if (this.playerMap.isAvailable((int) (Math.ceil(mapx)), (int) (Math.ceil(mapy) - 1))) {
 					this.setY(this.getY() - this.getVelocity());
 					this.playerStop();
 				}
 				break;
-			case DIRECTION_DOWN:				
-				
+			case DIRECTION_DOWN:
 				if (this.playerMap.isAvailable((int) (Math.floor(mapx)), (int) (Math.floor(mapy) + 1))) {
 					this.setY(this.getY() + this.getVelocity());
 					this.playerStop();
 				}
 				break;
-
 			case DIRECTION_LEFT:
-
-				if (this.playerMap.isAvailable((int) (Math.ceil(mapx) - 1), (int) (Math.ceil(mapy))) ) {
+				if (this.playerMap.isAvailable((int) (Math.ceil(mapx) - 1), (int) (Math.ceil(mapy)))) {
 					this.setX(this.getX() - this.getVelocity());
 					this.playerStop();
 				}
-
 				break;
 			case DIRECTION_RIGHT:
-	
 				if (this.playerMap.isAvailable((int) (Math.floor(mapx) + 1), (int) (Math.floor(mapy)))) {
 					this.setX(this.getX() + this.getVelocity());
 					this.playerStop();
@@ -310,6 +374,20 @@ public class Player implements AWTEventListener, GameConstants {
 
 		}
 
+	}
+
+	public void clearFlag() {
+		this.upflag = 0;
+		this.downflag = 0;
+		this.leftflag = 0;
+		this.rightflag = 0;
+	}
+
+	public void clearFutureFlag() {
+		this.futureUpflag = 0;
+		this.futureDownflag = 0;
+		this.futureLeftflag = 0;
+		this.futureRightflag = 0;
 	}
 
 	/**
@@ -325,31 +403,54 @@ public class Player implements AWTEventListener, GameConstants {
 			 * are multiples of 60. As a result, the player will keep moving when the x and
 			 * y of the player are not multiples of 60.
 			 */
+
 			if (event.getID() == KeyEvent.KEY_PRESSED) {
 				KeyEvent e = (KeyEvent) event;
 				switch (e.getKeyCode()) {
-
 				case KeyEvent.VK_UP:
-					if (this.getX() % CELL_WIDTH == 0 && this.getY() % CELL_HEIGHT == 0)
-						this.setDirection(DIRECTION_UP);
+					clearFlag();
+					clearFutureFlag();
+					if (this.getX() % CELL_WIDTH == 0 && this.getY() % CELL_HEIGHT == 0) {
+						this.upflag = 1;
+					}
+					if(this.upflag==0) {
+						this.futureUpflag = 1;
+					}
 					break;
 				case KeyEvent.VK_DOWN:
-					if (this.getX() % CELL_WIDTH == 0 && this.getY() % CELL_HEIGHT == 0)
-						this.setDirection(DIRECTION_DOWN);
+					clearFlag();
+					clearFutureFlag();
+					if (this.getX() % CELL_WIDTH == 0 && this.getY() % CELL_HEIGHT == 0) {
+						this.downflag = 1;
+					}
+					if(this.downflag==0) {
+						this.futureDownflag = 1;
+					}
 					break;
 				case KeyEvent.VK_LEFT:
-					if (this.getX() % CELL_WIDTH == 0 && this.getY() % CELL_HEIGHT == 0)
-						this.setDirection(DIRECTION_LEFT);
+					clearFlag();
+					clearFutureFlag();
+					if (this.getX() % CELL_WIDTH == 0 && this.getY() % CELL_HEIGHT == 0) {
+						this.leftflag = 1;
+					}
+					if(this.leftflag==0) {
+						this.futureLeftflag = 1;
+					}
 					break;
 				case KeyEvent.VK_RIGHT:
-					if (this.getX() % CELL_WIDTH == 0 && this.getY() % CELL_HEIGHT == 0)
-						this.setDirection(DIRECTION_RIGHT);
+					clearFlag();
+					clearFutureFlag();
+					if (this.getX() % CELL_WIDTH == 0 && this.getY() % CELL_HEIGHT == 0) {
+						this.rightflag = 1;
+					}
+					if(this.rightflag==0) {
+						this.futureRightflag = 1;
+					}
 					break;
 				case KeyEvent.VK_ENTER:
-					this.plantBomb(this.playerMap, this.mapX, this.mapY);// Use the space key to plant bomb
+					this.plantBomb(this.playerMap, this.mapX, this.mapY);
 					break;
-				default:
-					this.setDirection(this.getDirection());
+
 				}
 			}
 			/*
@@ -358,13 +459,12 @@ public class Player implements AWTEventListener, GameConstants {
 			 */
 			if (event.getID() == KeyEvent.KEY_RELEASED) {
 				KeyEvent e = (KeyEvent) event;
-
 				if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_DOWN
 						|| e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_RIGHT) {
 					this.stopflag = 1;
+					clearFlag();
 					if (this.getX() % CELL_WIDTH == 0 && this.getY() % CELL_HEIGHT == 0) {
 						this.setDirection(DIRECTION_STOP);
-
 					}
 				}
 			}
@@ -377,26 +477,49 @@ public class Player implements AWTEventListener, GameConstants {
 				switch (e.getKeyCode()) {
 
 				case KeyEvent.VK_W:
-					if (this.getX() % CELL_WIDTH == 0 && this.getY() % CELL_HEIGHT == 0)
-						this.setDirection(DIRECTION_UP);
+					clearFlag();
+					clearFutureFlag();
+					if (this.getX() % CELL_WIDTH == 0 && this.getY() % CELL_HEIGHT == 0) {
+						this.upflag = 1;
+					}
+					if(this.upflag==0) {
+						this.futureUpflag = 1;
+					}
 					break;
 				case KeyEvent.VK_S:
-					if (this.getX() % CELL_WIDTH == 0 && this.getY() % CELL_HEIGHT == 0)
-						this.setDirection(DIRECTION_DOWN);
+					clearFlag();
+					clearFutureFlag();
+					if (this.getX() % CELL_WIDTH == 0 && this.getY() % CELL_HEIGHT == 0) {
+						this.downflag = 1;
+					}
+					if(this.downflag==0) {
+						this.futureDownflag = 1;
+					}
 					break;
 				case KeyEvent.VK_A:
-					if (this.getX() % CELL_WIDTH == 0 && this.getY() % CELL_HEIGHT == 0)
-						this.setDirection(DIRECTION_LEFT);
+					clearFlag();
+					clearFutureFlag();
+					if (this.getX() % CELL_WIDTH == 0 && this.getY() % CELL_HEIGHT == 0) {
+						this.leftflag = 1;
+					}
+					if(this.leftflag==0) {
+						this.futureLeftflag = 1;
+					}
 					break;
 				case KeyEvent.VK_D:
-					if (this.getX() % CELL_WIDTH == 0 && this.getY() % CELL_HEIGHT == 0)
-						this.setDirection(DIRECTION_RIGHT);
+					clearFlag();
+					clearFutureFlag();
+					if (this.getX() % CELL_WIDTH == 0 && this.getY() % CELL_HEIGHT == 0) {
+						this.rightflag = 1;
+					}
+					if(this.rightflag==0) {
+						this.futureRightflag = 1;
+					}
 					break;
 				case KeyEvent.VK_SPACE:
-					this.plantBomb(this.playerMap, this.mapX, this.mapY);// Use the space key to plant bomb
+					this.plantBomb(this.playerMap, this.mapX, this.mapY);
 					break;
-				default:
-					this.setDirection(this.getDirection());
+
 				}
 			}
 
@@ -406,9 +529,9 @@ public class Player implements AWTEventListener, GameConstants {
 				if (e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_S
 						|| e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_D) {
 					this.stopflag = 1;
+					clearFlag();
 					if (this.getX() % CELL_WIDTH == 0 && this.getY() % CELL_HEIGHT == 0) {
 						this.setDirection(DIRECTION_STOP);
-
 					}
 				}
 			}
@@ -420,17 +543,16 @@ public class Player implements AWTEventListener, GameConstants {
 	 * Update map BOMB_INFO
 	 */
 	public void plantBomb(Map mi, int mapx, int mapy) {
-		if (this.bombPlantedNumber < this.bombMaxNumber) 
+		if (this.bombPlantedNumber < this.bombMaxNumber)
 			mi.setBomb(mapx, mapy, this.bombPower, this);
 	}
 
-
 	public void acquireItemByMap(Map mi) {
-		if (this.x%CELL_WIDTH==0&&this.y%CELL_HEIGHT==0&&mi.isWithItem(this.getMapX(), this.getMapY())) {	
-			mi.giveItem(this.getMapX(), this.getMapY(), this);	
+		if (this.x % CELL_WIDTH == 0 && this.y % CELL_HEIGHT == 0 && mi.isWithItem(this.getMapX(), this.getMapY())) {
+			mi.giveItem(this.getMapX(), this.getMapY(), this);
 		}
 	}
-	
+
 	/**
 	 * Use map and monsters to decide whether the player is alive, whether the
 	 * player acquire any item, etc.
@@ -445,6 +567,19 @@ public class Player implements AWTEventListener, GameConstants {
 	 * on player at the same time.
 	 */
 	public void refresh(Map mi) {
+		if (upflag == 1) {
+			this.setDirection(DIRECTION_UP);
+		}
+		if (downflag == 1) {
+			this.setDirection(DIRECTION_DOWN);
+		}
+		if (leftflag == 1) {
+			this.setDirection(DIRECTION_LEFT);
+		}
+		if (rightflag == 1) {
+			this.setDirection(DIRECTION_RIGHT);
+		}
+
 		this.playerMove();// Change the location of the player
 
 		if (mi.isAtExplosion(this.getMapX(), this.getMapY())) {

@@ -45,11 +45,11 @@ public class Item implements GameConstants {
 					player.SetBombPower(player.getBombPower()+1);
 				break;
 			case HP_UP:
-				if (player.getHP()<=HP_MAX-HP_ADDED) {
+				if (player.getHP()<=player.getMaxHP()-HP_ADDED) {
 					player.setHP(player.getHP() + HP_ADDED);
 				}
-				else if (player.getHP()> HP_MAX-HP_ADDED) {
-					player.setHP(HP_MAX);
+				else if (player.getHP()> player.getMaxHP()-HP_ADDED) {
+					player.setHP(player.getMaxHP());
 				}
 				break;
 			}

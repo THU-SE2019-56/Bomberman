@@ -172,6 +172,7 @@ public class StatusPanel extends JPanel implements GameConstants {
 					break;
 				case 2:
 					g.drawImage(player3Image[DIRECTION_DOWN], 50, refY, 50, 50, this);
+					break;
 				case 3:
 					g.drawImage(player4Image[DIRECTION_DOWN], 50, refY, 50, 50, this);
 					break;

@@ -25,11 +25,15 @@ public class Game implements GameConstants, Serializable {
 	private int pauseFlag;
 	private int gameMode;
 	private int stageNumber;
+	private int player1CID;
+	private int player2CID;
 
-	public Game(int gameMode) {
+	/*
+	public Game(int gameMode,int player1CharacterID,int player2CharacterID) {
 
 		// Initialize map, player, monsters
 		this.map = new Map(new MapMatrix(CELL_NUM_X, CELL_NUM_Y));
+	
 
 		for (int i = 0; i < MAX_MONSTER_NUMBER; i++) {
 			this.monsters[i] = new Monster(map);
@@ -46,20 +50,22 @@ public class Game implements GameConstants, Serializable {
 		}
 
 		for (int i = 0; i < getPlayerNum(); i++) {
-			this.player[i] = new Player(getMap(), i);
+			if(i == PLAYER_ID_P1)  this.player[i] = new Player(getMap(), i,player1CharacterID);
+			else if (i==PLAYER_ID_P2) this.player[i] = new Player(getMap(),i,player2CharacterID);
 		}
 		this.item = new Item(2, 2);
 		this.setGameMode(gameMode);
 		this.pauseFlag = 0;
 
 	}
-
+	 */
+	
 	/**
 	 * Only for PVE mode, choose stage Different type of monsters, number of
 	 * monsters...
 	 */
 	public Game(int[][] wallMatrix, int playerX, int playerY, int[] monsterX, int[] monsterY, int gameMode,
-			int stageNumber) {
+			int stageNumber,int player1CharacterID,int player2CharacterID) {
 		this.map = new Map(wallMatrix);
 
 		// TODO Generate player and monsters according to X and Y
@@ -77,7 +83,8 @@ public class Game implements GameConstants, Serializable {
 			}
 		}
 		for (int i = 0; i < getPlayerNum(); i++) {
-			this.player[i] = new Player(getMap(), i);
+			if(i == PLAYER_ID_P1)  this.player[i] = new Player(getMap(), i,player1CharacterID);
+			else if (i==PLAYER_ID_P2) this.player[i] = new Player(getMap(),i,player2CharacterID);
 		}
 
 		this.item = new Item(2, 2);
@@ -86,11 +93,21 @@ public class Game implements GameConstants, Serializable {
 		this.gameMode = gameMode;
 		this.stageNumber = stageNumber;
 		this.pauseFlag = 0;
+		this.player1CID = player1CharacterID;
+		this.player2CID = player2CharacterID;
+		this.pauseFlag = 0;
 
 	}
 
+	public int getPlayer1CID() {
+		return player1CID;
+	}
+	public int getPlayer2CID() {
+		return player2CID;
+	}
+
 	public int getPauseFlag() {
-		return this.pauseFlag;
+		return pauseFlag;
 	}
 
 	public void setPauseFlag(int pauseFlag) {

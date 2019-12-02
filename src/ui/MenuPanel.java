@@ -178,30 +178,46 @@ public class MenuPanel extends JPanel implements GameConstants {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 
+			ChoosePlayerPanel chooseplayer ;
 			switch (this.name) {
-			case "pve":
-				StagePanel stagePanelPve = new StagePanel(mainFrame,PVE_MODE);
+			case "pve":	
+				chooseplayer = new ChoosePlayerPanel(mainFrame,PVE_MODE);
 
 				mainFrame.remove(MenuPanel.this);
-				mainFrame.add(stagePanelPve);
+				mainFrame.add(chooseplayer);
 				mainFrame.validate();// repaint
 
 				mainFrame.setLayout(null);
 
-				stagePanelPve.setLocation(0, 0);
-				stagePanelPve.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+				chooseplayer.setLocation(0, 0);
+				chooseplayer.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+				
 				break;
 			case "pvp":
-				StagePanel stagePanelPvp = new StagePanel(mainFrame,PVP_MODE);
+				
+//				StagePanel stagePanelPvp = new StagePanel(mainFrame,PVP_MODE);
+//
+//				mainFrame.remove(MenuPanel.this);
+//				mainFrame.add(stagePanelPvp);
+//				mainFrame.validate();// repaint
+//
+//				mainFrame.setLayout(null);
+//
+//				stagePanelPvp.setLocation(0, 0);
+//				stagePanelPvp.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+				
+				chooseplayer = new ChoosePlayerPanel(mainFrame,PVP_MODE);
+				
 
 				mainFrame.remove(MenuPanel.this);
-				mainFrame.add(stagePanelPvp);
+				mainFrame.add(chooseplayer);
 				mainFrame.validate();// repaint
 
 				mainFrame.setLayout(null);
 
-				stagePanelPvp.setLocation(0, 0);
-				stagePanelPvp.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+				chooseplayer.setLocation(0, 0);
+				chooseplayer.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+				
 				break;
 			case "exit":
 				System.exit(0);// End game

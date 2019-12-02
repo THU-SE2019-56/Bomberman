@@ -206,12 +206,12 @@ public class StatusPanel extends JPanel implements GameConstants {
                 }
             }
 
-            /*
-             * Back
-             */
-            if (e.getSource() == backButton) {
-                int gameMode = game.getGameMode();
-                StagePanel newStagePanel = new StagePanel(mainFrame, gameMode);
+			/*
+			 * Back
+			 */
+			if (e.getSource() == backButton) {
+				int gameMode=game.getGameMode();
+				StagePanel newStagePanel = new StagePanel(mainFrame,gameMode,game.getPlayer1CID(),game.getPlayer2CID());
 
                 JPanel mainPanel = (JPanel) mainFrame.getContentPane();
                 mainPanel.removeAll();
@@ -225,71 +225,72 @@ public class StatusPanel extends JPanel implements GameConstants {
                 newStagePanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
             }
 
-            /*
-             * Restart
-             */
-            if (e.getSource() == restartButton) {
-                int[][] wallMatrix = StagePanel.loadStage(game.getStageNumber());
-                Game newGame = new Game(wallMatrix, 0, 0, new int[5], new int[5], game.getGameMode(), game.getStageNumber());
-                MapPanel newMapPanel = new MapPanel(newGame);
-                StatusPanel newStatusPanel = new StatusPanel(newGame, mainFrame);
+			/*
+			 * Restart
+			 */
+			if (e.getSource() == restartButton) {
+				int[][] wallMatrix=StagePanel.loadStage(game.getStageNumber());
+				Game newGame =  new Game(wallMatrix,0,0,new int[5],new int[5],game.getGameMode(),game.getStageNumber(),
+										game.getPlayer1CID(),game.getPlayer2CID());
+				MapPanel newMapPanel = new MapPanel(newGame);
+				StatusPanel newStatusPanel = new StatusPanel(newGame, mainFrame);
 
-                JPanel mainPanel = (JPanel) mainFrame.getContentPane();
-                mainPanel.removeAll();
+				JPanel mainPanel = (JPanel) mainFrame.getContentPane();
+				mainPanel.removeAll();
 
-                mainFrame.add(newMapPanel);
-                mainFrame.validate();// repaint
+				mainFrame.add(newMapPanel);
+				mainFrame.validate();// repaint
 
-                mainFrame.add(newStatusPanel);
-                mainFrame.validate();// repaint
+				mainFrame.add(newStatusPanel);
+				mainFrame.validate();// repaint
 
-                mainFrame.setLayout(null);
+				mainFrame.setLayout(null);
 
-                newMapPanel.setLocation(0, 0);
-                newMapPanel.setSize(MAP_WIDTH, MAP_HEIGHT);
+				newMapPanel.setLocation(0, 0);
+				newMapPanel.setSize(MAP_WIDTH, MAP_HEIGHT);
 
-                newStatusPanel.setLocation(MAP_WIDTH, 0);
-                newStatusPanel.setSize(STATUS_PANEL_WIDTH, STATUS_PANEL_HEIGHT);
+				newStatusPanel.setLocation(MAP_WIDTH, 0);
+				newStatusPanel.setSize(STATUS_PANEL_WIDTH, STATUS_PANEL_HEIGHT);
 
-                TimerListener newTimerListener = new TimerListener(newGame, newMapPanel, newStatusPanel);
-                Timer newTimer = new Timer(REFRESH, newTimerListener);
-                newTimer.start();
-            }
-        }
+				TimerListener newTimerListener = new TimerListener(newGame, newMapPanel, newStatusPanel);
+				Timer newTimer = new Timer(REFRESH, newTimerListener);
+				newTimer.start();
+			}
+		}
 
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            // TODO Auto-generated method stub
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
 
-        }
+		}
 
-        @Override
-        public void mouseEntered(MouseEvent e) {
+		@Override
+		public void mouseEntered(MouseEvent e) {
 
-            if (e.getSource() == pauseButton)
-                highlightButton(pauseButton);
-            else if (e.getSource() == backButton)
-                highlightButton(backButton);
-            else if (e.getSource() == restartButton)
-                highlightButton(restartButton);
+			if (e.getSource() == pauseButton)
+				highlightButton(pauseButton);
+			else if (e.getSource() == backButton)
+				highlightButton(backButton);
+			else if (e.getSource() == restartButton)
+				highlightButton(restartButton);
 
-        }
+		}
 
-        @Override
-        public void mouseExited(MouseEvent e) {
+		@Override
+		public void mouseExited(MouseEvent e) {
 
-            if (e.getSource() == pauseButton)
-                resetButton(pauseButton);
-            else if (e.getSource() == backButton)
-                resetButton(backButton);
-            else if (e.getSource() == restartButton)
-                resetButton(restartButton);
+			if (e.getSource() == pauseButton)
+				resetButton(pauseButton);
+			else if (e.getSource() == backButton)
+				resetButton(backButton);
+			else if (e.getSource() == restartButton)
+				resetButton(restartButton);
 
-        }
-    }
+		}
+	}
 
-    public void loadImage() throws Exception {
-        // TODO Load all the images here
+	public void loadImage() throws Exception {
+		// TODO Load all the images here
 
         playerImage[0] = ImageIO.read(new File("image/player/p1DOWN.png"));
         playerImage[1] = ImageIO.read(new File("image/player/p2DOWN.png"));

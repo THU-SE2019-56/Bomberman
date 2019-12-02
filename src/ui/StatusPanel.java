@@ -149,9 +149,12 @@ public class StatusPanel extends JPanel implements GameConstants {
 
         for (int i = 0; i < game.getPlayerNum(); i++) {
             int playerHP = game.getPlayer()[i].getHP();
+            int playerMaxHP = game.getPlayer()[i].getMaxHP();
+            // int playerNormHP = playerHP / playerMaxHP * 100;
             int bombNum = game.getPlayer()[i].getBombMaxNumber() - game.getPlayer()[i].getBombPlantedNumber();
             int bombPow = game.getPlayer()[i].getBombPower();
             int refY = 50 + 150 * i;
+
 
             //Player Image
             g.drawImage(playerImage[i], 50, refY, 50, 50, this);
@@ -159,9 +162,9 @@ public class StatusPanel extends JPanel implements GameConstants {
             //HP bar
             this.playerLifeText[i].setText(String.valueOf(playerHP));
             g.setColor(Color.BLUE);
-            g.drawRect(50, 75 + refY, 100, 10);
+            g.drawRect(50, 75 + refY, playerMaxHP, 10);
             g.setColor(Color.getHSBColor((float) playerHP / 300, 1, 1));
-            g.fillRect(50, 75 + refY, game.getPlayer()[i].getHP(), 10);
+            g.fillRect(50, 75 + refY, playerHP, 10);
 
             // bomb
             this.bombNum[i].setText(" × " + String.valueOf(bombNum));

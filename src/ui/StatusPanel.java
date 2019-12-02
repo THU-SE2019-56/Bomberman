@@ -32,7 +32,8 @@ public class StatusPanel extends JPanel implements GameConstants {
     private BufferedImage playerImage[] = new BufferedImage[2];
 
     private BufferedImage bombImage[] = new BufferedImage[2];
-    private JTextField bombText[] = new JTextField[2];
+    private JTextField bombNum[] = new JTextField[2];
+    private JTextField bombPow[] = new JTextField[2];
 
 
     private JTextField playerLifeText[] = new JTextField[2];
@@ -43,6 +44,7 @@ public class StatusPanel extends JPanel implements GameConstants {
     private MainFrame mainFrame;
 
     public StatusPanel(Game game, MainFrame mainFrame) {
+
         this.game = game;
         this.mainFrame = mainFrame;
 
@@ -55,11 +57,13 @@ public class StatusPanel extends JPanel implements GameConstants {
         this.setLayout(null);
 
         for (int i = 0; i < game.getPlayerNum(); i++) {
-
+            int refY = 50 + 150 * i;
             this.playerLifeText[i] = new JTextField("");
-            this.playerLifeText[i].setBounds(4 * CELL_WIDTH, 3 * (i + 1) * CELL_HEIGHT, 4 * CELL_WIDTH, CELL_HEIGHT / 2);
-            this.bombText[i] = new JTextField("");
-            this.bombText[i].setBounds(4 * CELL_WIDTH, (3 * i + 1) * CELL_HEIGHT, 4 * CELL_WIDTH, CELL_HEIGHT / 2);
+            this.playerLifeText[i].setBounds(180, 70 + refY, 40, 20);
+            this.bombNum[i] = new JTextField("");
+            this.bombNum[i].setBounds(180, refY, 40, 20);
+            this.bombPow[i] = new JTextField("");
+            this.bombPow[i].setBounds(180, 30 + refY, 40, 20);
 
 
             Font textFont = new Font("Times New Roman Italic", Font.BOLD, 14);
@@ -69,14 +73,20 @@ public class StatusPanel extends JPanel implements GameConstants {
             this.playerLifeText[i].setFont(textFont);
             this.playerLifeText[i].setVisible(true);
             this.playerLifeText[i].setBackground(null);
-            this.bombText[i].setEditable(false);
-            this.bombText[i].setBorder(null);
-            this.bombText[i].setFont(textFont);
-            this.bombText[i].setVisible(true);
-            this.bombText[i].setBackground(null);
+            this.bombNum[i].setEditable(false);
+            this.bombNum[i].setBorder(null);
+            this.bombNum[i].setFont(textFont);
+            this.bombNum[i].setVisible(true);
+            this.bombNum[i].setBackground(null);
+            this.bombPow[i].setEditable(false);
+            this.bombPow[i].setBorder(null);
+            this.bombPow[i].setFont(textFont);
+            this.bombPow[i].setVisible(true);
+            this.bombPow[i].setBackground(null);
 
             this.add(this.playerLifeText[i]);
-            this.add(this.bombText[i]);
+            this.add(this.bombNum[i]);
+            this.add(this.bombPow[i]);
         }
 
         // Pause
@@ -140,20 +150,24 @@ public class StatusPanel extends JPanel implements GameConstants {
         for (int i = 0; i < game.getPlayerNum(); i++) {
             int playerHP = game.getPlayer()[i].getHP();
             int bombNum = game.getPlayer()[i].getBombMaxNumber() - game.getPlayer()[i].getBombPlantedNumber();
-            int pivotY = 3 * (i + 1);
+            int bombPow = game.getPlayer()[i].getBombPower();
+            int refY = 50 + 150 * i;
 
+            //Player Image
+            g.drawImage(playerImage[i], 50, refY, 50, 50, this);
 
+            //HP bar
             this.playerLifeText[i].setText(String.valueOf(playerHP));
             g.setColor(Color.BLUE);
-            g.drawRect(CELL_WIDTH, pivotY * CELL_HEIGHT, 100, CELL_HEIGHT / 2);
+            g.drawRect(50, 75 + refY, 100, 10);
             g.setColor(Color.getHSBColor((float) playerHP / 300, 1, 1));
-            g.fillRect(CELL_WIDTH, pivotY * CELL_HEIGHT, game.getPlayer()[i].getHP(), CELL_HEIGHT / 2);
+            g.fillRect(50, 75 + refY, game.getPlayer()[i].getHP(), 10);
 
-            g.drawImage(playerImage[i], CELL_WIDTH, (pivotY - 2) * CELL_HEIGHT, CELL_WIDTH + CELL_WIDTH / 2,
-                    CELL_HEIGHT + CELL_HEIGHT / 2, this);
             // bomb
-            this.bombText[i].setText(String.valueOf(bombNum));
-            g.drawImage(bombImage[1], 3 * CELL_WIDTH, (pivotY - 2) * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT, this);
+            this.bombNum[i].setText(" × " + String.valueOf(bombNum));
+            this.bombPow[i].setText(" × " + String.valueOf(bombPow));
+            g.drawImage(bombImage[0], 150, refY, 20, 20, this);
+            g.drawImage(bombImage[1], 150, 30 + refY, 20, 20, this);
 
 
         }
@@ -281,7 +295,8 @@ public class StatusPanel extends JPanel implements GameConstants {
         playerImage[1] = ImageIO.read(new File("image/player/p2DOWN.png"));
 
 
-        bombImage[1] = ImageIO.read(new File("image/bomb/bomb.png"));
+        bombImage[0] = ImageIO.read(new File("image/bomb/bomb.png"));
+        bombImage[1] = ImageIO.read(new File("image/bomb/explode.png"));
     }
 
 

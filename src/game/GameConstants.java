@@ -10,7 +10,7 @@ public interface GameConstants {
 
 	// Player constants
 	int PLAYER_WIDTH = 45;
-	int PLAYER_HEIGHT = 45;
+	int PLAYER_HEIGHT = 57;
 	int PLAYER_ID_P1 = 0;
 	int PLAYER_ID_P2 = 1;
 	int PLAYER_MAX_BOMB = 4;

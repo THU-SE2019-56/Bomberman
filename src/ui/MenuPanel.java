@@ -1,4 +1,4 @@
-package ui;
+package src.ui;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -33,18 +33,16 @@ public class MenuPanel extends JPanel implements GameConstants {
 	private MainFrame mainFrame;
 	private JButton buttonPve;
 	private JButton buttonPvp;
-	private JButton buttonExit;
+	private JButton buttonStageEditor;
 	private JButton buttonHelp;
+	private JButton buttonExit;
 	private JButton buttonAbout;
 	private ImageIcon menuBackgroundIcon;
 	private JLabel menuBackgroundLabel;
-	
-	
 
 	public MenuPanel(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
-         
-	
+
 		this.addButton();
 		this.addBackground();
 	}
@@ -61,7 +59,7 @@ public class MenuPanel extends JPanel implements GameConstants {
 		/*
 		 * PVE mode
 		 */
-		
+
 		buttonPve = new JButton("PVE Mode");
 		buttonPve.setBounds(50, 150, 150, 50);
 		initializeButton(buttonPve);
@@ -83,9 +81,17 @@ public class MenuPanel extends JPanel implements GameConstants {
 		initializeButton(buttonHelp);
 
 		/*
+		 * Stage Editor
+		 */
+
+		buttonStageEditor = new JButton("Stage Editor");
+		buttonStageEditor.setBounds(50, 450, 150, 50);
+		initializeButton(buttonStageEditor);
+
+		/*
 		 * Exit
 		 */
-		
+
 		buttonExit = new JButton("Exit");
 		buttonExit.setBounds(700, 200, 150, 50);
 		initializeButton(buttonExit);
@@ -93,7 +99,7 @@ public class MenuPanel extends JPanel implements GameConstants {
 		/*
 		 * About us
 		 */
-	
+
 		buttonAbout = new JButton("About us");
 		buttonAbout.setBounds(700, 300, 150, 50);
 		initializeButton(buttonAbout);
@@ -102,14 +108,16 @@ public class MenuPanel extends JPanel implements GameConstants {
 
 		this.add(buttonPve);
 		this.add(buttonPvp);
-		this.add(buttonExit);
 		this.add(buttonHelp);
+		this.add(buttonStageEditor);
+		this.add(buttonExit);
 		this.add(buttonAbout);
 
 		buttonPve.addMouseListener(new ButtonListener(mainFrame, "pve"));
 		buttonPvp.addMouseListener(new ButtonListener(mainFrame, "pvp"));
-		buttonExit.addMouseListener(new ButtonListener(mainFrame, "exit"));
 		buttonHelp.addMouseListener(new ButtonListener(mainFrame, "help"));
+		buttonStageEditor.addMouseListener(new ButtonListener(mainFrame, "stage editor"));
+		buttonExit.addMouseListener(new ButtonListener(mainFrame, "exit"));
 		buttonAbout.addMouseListener(new ButtonListener(mainFrame, "about us"));
 
 	}
@@ -147,16 +155,14 @@ public class MenuPanel extends JPanel implements GameConstants {
 	 * Reset the buttons when the mouse leaves
 	 */
 	public void resetButton(JButton button) {
-		
+
 		button.setBackground(Color.WHITE);
 		button.setBounds(button.getX() + 20, button.getY() + 10, button.getWidth() - 40, button.getHeight() - 20);
 		Font buttonFont = new Font("Times New Roman Italic", Font.BOLD, 14);
 		button.setFont(buttonFont);
 
 	}
-	
-	
-	
+
 	/**
 	 * Respond to button events
 	 */
@@ -178,10 +184,10 @@ public class MenuPanel extends JPanel implements GameConstants {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 
-			ChoosePlayerPanel chooseplayer ;
+			ChoosePlayerPanel chooseplayer;
 			switch (this.name) {
-			case "pve":	
-				chooseplayer = new ChoosePlayerPanel(mainFrame,PVE_MODE);
+			case "pve":
+				chooseplayer = new ChoosePlayerPanel(mainFrame, PVE_MODE);
 
 				mainFrame.remove(MenuPanel.this);
 				mainFrame.add(chooseplayer);
@@ -191,10 +197,10 @@ public class MenuPanel extends JPanel implements GameConstants {
 
 				chooseplayer.setLocation(0, 0);
 				chooseplayer.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-				
+
 				break;
 			case "pvp":
-				
+
 //				StagePanel stagePanelPvp = new StagePanel(mainFrame,PVP_MODE);
 //
 //				mainFrame.remove(MenuPanel.this);
@@ -205,9 +211,8 @@ public class MenuPanel extends JPanel implements GameConstants {
 //
 //				stagePanelPvp.setLocation(0, 0);
 //				stagePanelPvp.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-				
-				chooseplayer = new ChoosePlayerPanel(mainFrame,PVP_MODE);
-				
+
+				chooseplayer = new ChoosePlayerPanel(mainFrame, PVP_MODE);
 
 				mainFrame.remove(MenuPanel.this);
 				mainFrame.add(chooseplayer);
@@ -217,7 +222,20 @@ public class MenuPanel extends JPanel implements GameConstants {
 
 				chooseplayer.setLocation(0, 0);
 				chooseplayer.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-				
+
+				break;
+			case "stage editor":
+				EditorPanel editor = new EditorPanel(mainFrame);
+
+				mainFrame.remove(MenuPanel.this);
+				mainFrame.add(editor);
+				mainFrame.validate();// repaint
+
+				mainFrame.setLayout(null);
+
+				editor.setLocation(0, 0);
+				editor.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+
 				break;
 			case "exit":
 				System.exit(0);// End game
@@ -243,9 +261,12 @@ public class MenuPanel extends JPanel implements GameConstants {
 			case "help":
 				highLightButton(buttonHelp);
 				break;
+			case "stage editor":
+				highLightButton(buttonStageEditor);
+				break;
 			case "exit":
 				highLightButton(buttonExit);
-				break;	
+				break;
 			case "about us":
 				highLightButton(buttonAbout);
 				break;
@@ -264,17 +285,18 @@ public class MenuPanel extends JPanel implements GameConstants {
 			case "help":
 				resetButton(buttonHelp);
 				break;
+			case "stage editor":
+				resetButton(buttonStageEditor);
+				break;
 			case "exit":
 				resetButton(buttonExit);
 				break;
-
 			case "about us":
 				resetButton(buttonAbout);
 				break;
 			}
 		}
-		
-		
+
 	}
-	
+
 }

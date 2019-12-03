@@ -37,6 +37,7 @@
 	- [MapPanel](#MapPanel)
 	- [StatusPanel](#StatusPanel)
 	- [ThumbnailPanel](#ThumbnailPanel)
+	- [EditorPanel](#EditorPanel)
 
 > 目前只是对各个类实现功能的初步描述，欢迎大家在上传代码后或码代码的同时，完善各个类的功能介绍。这样大家在调用别的类的方法时，能够得到清晰的描述，更加方便。
 ---
@@ -172,11 +173,14 @@ MapMatrix中包含可以随机生成含障碍物的地图或载入已有矩阵�
 #### ThumbnailPanel
 用于在选择关卡时绘制缩略图，缩略图中仅包括地面和障碍物，不包括玩家，怪物，道具等组件．缩略图的大小由`SCALE_FACTOR`定义．
 
+#### EditorPanel
+关卡编辑器的可视化界面，用于在此界面内创建及修改玩家自定义关卡的地图、人物和怪物生成位置等信息
+
 ---
 ## 任务分工
 > 大家每次向github提交代码的时候，欢迎修改此项以描述自己所做的工作
 
-- 陈卓凡：组长，后端，负责[map](#map)包，[Bomb](#Bomb-1)类爆炸方法
+- 陈卓凡：组长，后端，负责[map](#map)包，关卡编辑器界面
 - 郑俊悦：后端，负责[items](#items)包
 - 陶然：前端，负责[game](#game)包
 - 杨韫加：后端，负责[bomb](#bomb)包

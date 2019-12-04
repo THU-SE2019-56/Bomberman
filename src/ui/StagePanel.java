@@ -39,11 +39,15 @@ public class StagePanel extends JPanel implements GameConstants {
 	private int player1CharacterID;
 	private int player2CharacterID;
 	
+	private Controls control;
+	
 	public StagePanel(MainFrame mainFrame,int gameMode,int p1cID, int p2cID) {
 		this.mainFrame = mainFrame;
 		this.gameMode=gameMode;
 		this.player1CharacterID = p1cID;
 		this.player2CharacterID = p2cID;
+		
+		control = new Controls();
 
 		thumbFrame = new JFrame();
 		thumbFrame.setAlwaysOnTop(true);
@@ -69,29 +73,25 @@ public class StagePanel extends JPanel implements GameConstants {
 		 * Stage 1
 		 */
 		button1 = new JButton("Stage 1");
-		button1.setBounds(50, 150, 150, 50);
-		initializeButton(button1);
+		control.initializeButton(button1,50, 150, 150, 50);
 
 		/*
 		 * Stage 2
 		 */
 		button2 = new JButton("Stage 2");
-		button2.setBounds(50, 250, 150, 50);
-		initializeButton(button2);
+		control.initializeButton(button2,50, 250, 150, 50);
 
 		/*
 		 * Stage 3
 		 */
 		button3 = new JButton("Stage 3");
-		button3.setBounds(50, 350, 150, 50);
-		initializeButton(button3);
+		control.initializeButton(button3,50, 350, 150, 50);
 		
 		/*
 		 * Back
 		 */
 		buttonBack = new JButton("Back");
-		buttonBack.setBounds(50, 550, 150, 50);
-		initializeButton(buttonBack);
+		control.initializeButton(buttonBack,50, 550, 150, 50);
 
 		this.setLayout(null);
 
@@ -106,44 +106,6 @@ public class StagePanel extends JPanel implements GameConstants {
 		buttonBack.addMouseListener(new ButtonListener(mainFrame, "Back",this.player1CharacterID,this.player2CharacterID));
 	}
 
-	/**
-	 * Initialize buttons
-	 */
-	public void initializeButton(JButton button) {
-
-		Border originBorder = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1);
-		// This is the default border of WIN10 system.For macOS, use this border to make
-		// sure the buttons are correctly initialized.
-
-		Font buttonFont = new Font("Times New Roman Italic", Font.BOLD, 14);
-
-		button.setForeground(Color.BLACK);
-		button.setBorder(originBorder);
-		button.setBackground(Color.WHITE);
-		button.setFont(buttonFont);
-		button.setOpaque(true);
-
-	}
-
-	/**
-	 * Highlight the buttons when the mouse is on them
-	 */
-	public void highLightButton(JButton button) {
-		button.setBackground(Color.ORANGE);
-		button.setBounds(button.getX() - 20, button.getY() - 10, button.getWidth() + 40, button.getHeight() + 20);
-		Font buttonFont = new Font("Times New Roman Italic", Font.BOLD, 20);
-		button.setFont(buttonFont);
-	}
-
-	/**
-	 * Reset the buttons when the mouse leaves
-	 */
-	public void resetButton(JButton button) {
-		button.setBackground(Color.WHITE);
-		button.setBounds(button.getX() + 20, button.getY() + 10, button.getWidth() - 40, button.getHeight() - 20);
-		Font buttonFont = new Font("Times New Roman Italic", Font.BOLD, 14);
-		button.setFont(buttonFont);
-	}
 	
 	public static int[][] loadStage(int stageNumber) {
 		BufferedReader in;
@@ -273,20 +235,20 @@ public class StagePanel extends JPanel implements GameConstants {
 		public void mouseEntered(MouseEvent e) {
 			switch (this.name) {
 			case "1":
-				highLightButton(button1);
+				control.highLightButton(button1);
 				updateThumbFrame(button1, 1);
 				break;
 
 			case "2":
-				highLightButton(button2);
+				control.highLightButton(button2);
 				updateThumbFrame(button2, 2);
 				break;
 			case "3":
-				highLightButton(button3);
+				control.highLightButton(button3);
 				updateThumbFrame(button3, 3);
 				break;
 			case "Back":
-				highLightButton(buttonBack);
+				control.highLightButton(buttonBack);
 				break;
 			}
 		}
@@ -298,16 +260,16 @@ public class StagePanel extends JPanel implements GameConstants {
 
 			switch (this.name) {
 			case "1":
-				resetButton(button1);
+				control.resetButton(button1);
 				break;
 			case "2":
-				resetButton(button2);
+				control.resetButton(button2);
 				break;
 			case "3":
-				resetButton(button3);
+				control.resetButton(button3);
 				break;
 			case "Back":
-				resetButton(buttonBack);
+				control.resetButton(buttonBack);
 				break;
 			}
 		}

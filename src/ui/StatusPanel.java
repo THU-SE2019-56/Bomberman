@@ -47,11 +47,15 @@ public class StatusPanel extends JPanel implements GameConstants {
 	private BufferedImage player2Image[] = new BufferedImage[4];
 	private BufferedImage player3Image[] = new BufferedImage[4];
 	private BufferedImage player4Image[] = new BufferedImage[4];
+	
+	private Controls control;
 
     public StatusPanel(Game game, MainFrame mainFrame) {
 
         this.game = game;
         this.mainFrame = mainFrame;
+        
+        control = new Controls();
 
         try {
             loadImage();
@@ -95,58 +99,25 @@ public class StatusPanel extends JPanel implements GameConstants {
         }
 
         // Pause
-        this.pauseButton.setBounds(CELL_WIDTH, 8 * CELL_HEIGHT, 2 * CELL_WIDTH, CELL_HEIGHT);
-        initializeButton(pauseButton, "pause");
+        control.initializeButton(pauseButton, CELL_WIDTH, 8 * CELL_HEIGHT, 2 * CELL_WIDTH, CELL_HEIGHT);
 
         // Back to main menu
-        this.backButton.setBounds(CELL_WIDTH, 10 * CELL_HEIGHT, 2 * CELL_WIDTH, CELL_HEIGHT);
-        initializeButton(backButton, "back");
+        control.initializeButton(backButton, CELL_WIDTH, 10 * CELL_HEIGHT, 2 * CELL_WIDTH, CELL_HEIGHT);
 
         // Restart game
-        this.restartButton.setBounds(CELL_WIDTH, 12 * CELL_HEIGHT, 2 * CELL_WIDTH, CELL_HEIGHT);
-        initializeButton(restartButton, "restart");
+        control.initializeButton(restartButton,CELL_WIDTH, 12 * CELL_HEIGHT, 2 * CELL_WIDTH, CELL_HEIGHT);
+        
+        pauseButton.addMouseListener(new ButtonListener(this.mainFrame));
+        backButton.addMouseListener(new ButtonListener(this.mainFrame));
+        restartButton.addMouseListener(new ButtonListener(this.mainFrame));
+        
+        this.add(backButton);
+        this.add(pauseButton);
+        this.add(restartButton);
 
     }
 
-    public void initializeButton(JButton button, String name) {
 
-        Border originBorder = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1);
-        // This is the default border of WIN10 system.For macOS, use this border to make
-        // sure the buttons are correctly initialized.
-        Font buttonFont = new Font("Times New Roman Italic", Font.BOLD, 14);
-
-        button.setForeground(Color.BLACK);
-        button.setBorder(originBorder);
-        button.setBackground(Color.WHITE);
-        button.setFont(buttonFont);
-        button.setOpaque(true);
-        button.setVisible(true);
-        button.addMouseListener(new ButtonListener(mainFrame));
-        this.add(button);
-
-    }
-
-    /**
-     * Highlight the buttons when the mouse is on them
-     */
-    public void highlightButton(JButton button) {
-        button.setBackground(Color.CYAN);
-        button.setBounds(button.getX() - CELL_WIDTH / 2, button.getY() - CELL_HEIGHT / 4,
-                button.getWidth() + CELL_WIDTH, button.getHeight() + CELL_HEIGHT / 2);
-        Font buttonFont = new Font("Times New Roman Italic", Font.BOLD, 20);
-        button.setFont(buttonFont);
-    }
-
-    /**
-     * Reset the buttons when the mouse leaves
-     */
-    public void resetButton(JButton button) {
-        button.setBackground(Color.WHITE);
-        button.setBounds(button.getX() + CELL_WIDTH / 2, button.getY() + CELL_WIDTH / 4, button.getWidth() - CELL_WIDTH,
-                button.getHeight() - CELL_HEIGHT / 2);
-        Font buttonFont = new Font("Times New Roman Italic", Font.BOLD, 14);
-        button.setFont(buttonFont);
-    }
 
     public void paintComponent(Graphics g) {
 
@@ -159,9 +130,7 @@ public class StatusPanel extends JPanel implements GameConstants {
             int bombNum = game.getPlayer()[i].getBombMaxNumber() - game.getPlayer()[i].getBombPlantedNumber();
             int bombPow = game.getPlayer()[i].getBombPower();
             int refY = 50 + 150 * i;
-
-
-           
+      
 			//Player	
 				switch (game.getPlayer()[i].getPlayerCharacterID()) {
 				case 0:
@@ -291,11 +260,11 @@ public class StatusPanel extends JPanel implements GameConstants {
 		public void mouseEntered(MouseEvent e) {
 
 			if (e.getSource() == pauseButton)
-				highlightButton(pauseButton);
+				control.highLightButton(pauseButton);
 			else if (e.getSource() == backButton)
-				highlightButton(backButton);
+				control.highLightButton(backButton);
 			else if (e.getSource() == restartButton)
-				highlightButton(restartButton);
+				control.highLightButton(restartButton);
 
 		}
 
@@ -303,11 +272,11 @@ public class StatusPanel extends JPanel implements GameConstants {
 		public void mouseExited(MouseEvent e) {
 
 			if (e.getSource() == pauseButton)
-				resetButton(pauseButton);
+				control.resetButton(pauseButton);
 			else if (e.getSource() == backButton)
-				resetButton(backButton);
+				control.resetButton(backButton);
 			else if (e.getSource() == restartButton)
-				resetButton(restartButton);
+				control.resetButton(restartButton);
 
 		}
 	}

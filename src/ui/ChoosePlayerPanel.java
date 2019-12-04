@@ -73,10 +73,13 @@ public class ChoosePlayerPanel extends JPanel implements GameConstants {
 	private BufferedImage player3Image[] = new BufferedImage[4];
 	private BufferedImage player4Image[] = new BufferedImage[4];
 	
+	private Controls control;
+	
 	public ChoosePlayerPanel (MainFrame mainFrame,int gamemode) {
 		this.mainFrame = mainFrame;
 		this.gameMode = gamemode;
-
+		
+		control = new Controls();
 
 		thumbFrame = new JFrame();
 		thumbFrame.setAlwaysOnTop(true);
@@ -139,70 +142,23 @@ public class ChoosePlayerPanel extends JPanel implements GameConstants {
 	 */
 	public void addButton() {
 
-		
 		/*
-		 * Choose player 1
+		 * Choose player1
 		 */
 		p1Button1 = new JButton("Character 1");
-		p1Button1.setBounds(100, 400, 180, 50);
-		initializeButton(p1Button1);
-
 		p1Button2 = new JButton("Character 2");
-		p1Button2.setBounds(300, 400, 180, 50);
-		initializeButton(p1Button2);
-
 		p1Button3 = new JButton("Character 3");
-		p1Button3.setBounds(500, 400, 180, 50);
-		initializeButton(p1Button3);
-		
 		p1Button4 = new JButton("Character 4");
-		p1Button4.setBounds(700, 400, 180, 50);
-		initializeButton(p1Button4);
-
-		/*
-		 * Choose player2
-		 */
-		if(gameMode == PVP_MODE){ 
-			p2Button1 = new JButton("Character 1");
-			p2Button1.setBounds(100, 500, 180, 50);
-			initializeButton(p2Button1);
-	
-			p2Button2 = new JButton("Character 2");
-			p2Button2.setBounds(300, 500, 180, 50);
-			initializeButton(p2Button2);
-	
-			p2Button3 = new JButton("Character 3");
-			p2Button3.setBounds(500, 500, 180, 50);
-			initializeButton(p2Button3);
-			
-			p2Button4 = new JButton("Character 4");
-			p2Button4.setBounds(700, 500, 180, 50);
-			initializeButton(p2Button4);
-			
-			this.add(p2Button1);
-			this.add(p2Button2);
-			this.add(p2Button3);
-			this.add(p2Button4);
-			
-			p2Button1.addMouseListener(new ButtonListener(mainFrame, "5"));
-			p2Button2.addMouseListener(new ButtonListener(mainFrame, "6"));
-			p2Button3.addMouseListener(new ButtonListener(mainFrame, "7"));
-			p2Button4.addMouseListener(new ButtonListener(mainFrame, "8"));
-		}
 		
-		/*
-		 * Back
-		 */
 		buttonBack = new JButton("Back");
-		buttonBack.setBounds(100, 600, 180, 50);
-		initializeButton(buttonBack);
-		
-		/*
-		 * OK
-		 */
 		buttonOk = new JButton("OK");
-		buttonOk.setBounds(700, 600, 180, 50);
-		initializeButton(buttonOk);
+		
+		control.initializeButton(p1Button1,100, 400, 180, 50);
+		control.initializeButton(p1Button2,300, 400, 180, 50);
+		control.initializeButton(p1Button3,500, 400, 180, 50);
+		control.initializeButton(p1Button4,700, 400, 180, 50);
+		control.initializeButton(buttonBack,100, 600, 180, 50);
+		control.initializeButton(buttonOk,700, 600, 180, 50);
 		
 		this.setLayout(null);
 
@@ -221,6 +177,33 @@ public class ChoosePlayerPanel extends JPanel implements GameConstants {
 		
 		buttonBack.addMouseListener(new ButtonListener(mainFrame, "Back"));
 		buttonOk.addMouseListener(new ButtonListener(mainFrame, "Ok"));
+		
+		
+		/*
+		 * Choose player2
+		 */
+		if(gameMode == PVP_MODE){ 
+			
+			p2Button1 = new JButton("Character 1");
+			p2Button2 = new JButton("Character 2");
+			p2Button3 = new JButton("Character 3");
+			p2Button4 = new JButton("Character 4");
+
+			control.initializeButton(p2Button1,100, 500, 180, 50);
+			control.initializeButton(p2Button2,300, 500, 180, 50);
+			control.initializeButton(p2Button3,500, 500, 180, 50);
+			control.initializeButton(p2Button4,700, 500, 180, 50);
+			
+			this.add(p2Button1);
+			this.add(p2Button2);
+			this.add(p2Button3);
+			this.add(p2Button4);
+			
+			p2Button1.addMouseListener(new ButtonListener(mainFrame, "5"));
+			p2Button2.addMouseListener(new ButtonListener(mainFrame, "6"));
+			p2Button3.addMouseListener(new ButtonListener(mainFrame, "7"));
+			p2Button4.addMouseListener(new ButtonListener(mainFrame, "8"));
+		}
 	}
 	
 	/**
@@ -230,27 +213,26 @@ public class ChoosePlayerPanel extends JPanel implements GameConstants {
 		playerCharacterInfo1 = new JTextArea(" Max HP:"+String.valueOf(PLAYER_CHARACTER1_HP_MAX)+ 
 											  "\r\n\r\n"+" Max Bomb Number:"+String.valueOf(PLAYER_CHARACTER1_BOMB_MAX)+
 											  "\r\n\r\n" +" Max Bomb Power:"+String.valueOf(PLAYER_CHARACTER1_BOMB_POWER));
-		initializeButtonTextArea(playerCharacterInfo1);
-		playerCharacterInfo1.setBounds(100, 250,180, 100);
 		
 		playerCharacterInfo2 = new JTextArea(" Max HP:"+String.valueOf(PLAYER_CHARACTER2_HP_MAX)+ 
 				  "\r\n\r\n"+" Max Bomb Number:"+String.valueOf(PLAYER_CHARACTER2_BOMB_MAX)+
 				  "\r\n\r\n" +" Max Bomb Power:"+String.valueOf(PLAYER_CHARACTER2_BOMB_POWER));
-		initializeButtonTextArea(playerCharacterInfo2);
-		playerCharacterInfo2.setBounds(300, 250,180, 100);	
 		
 		
 		playerCharacterInfo3 = new JTextArea(" Max HP:"+String.valueOf(PLAYER_CHARACTER3_HP_MAX)+ 
 				  "\r\n\r\n"+" Max Bomb Number:"+String.valueOf(PLAYER_CHARACTER3_BOMB_MAX)+
 				  "\r\n\r\n" +" Max Bomb Power:"+String.valueOf(PLAYER_CHARACTER3_BOMB_POWER));
-		initializeButtonTextArea(playerCharacterInfo3);
-		playerCharacterInfo3.setBounds(500, 250,180, 100);		
+	
 
 		playerCharacterInfo4 = new JTextArea(" Max HP:"+String.valueOf(PLAYER_CHARACTER4_HP_MAX)+ 
 				  "\r\n\r\n"+" Max Bomb Number:"+String.valueOf(PLAYER_CHARACTER4_BOMB_MAX)+
 				  "\r\n\r\n" +" Max Bomb Power:"+String.valueOf(PLAYER_CHARACTER4_BOMB_POWER));
-		initializeButtonTextArea(playerCharacterInfo4);
-		playerCharacterInfo4.setBounds(700, 250,180, 100);	
+
+		
+		control.initializeTextArea(playerCharacterInfo1, 100, 250,180, 100);
+		control.initializeTextArea(playerCharacterInfo2, 300, 250,180, 100);
+		control.initializeTextArea(playerCharacterInfo3, 500, 250,180, 100);
+		control.initializeTextArea(playerCharacterInfo4, 700, 250,180, 100);
 
 		this.add(playerCharacterInfo1);
 		this.add(playerCharacterInfo2);
@@ -261,68 +243,17 @@ public class ChoosePlayerPanel extends JPanel implements GameConstants {
 	public void addJTextField() {
 		
 		p1Text = new JTextField("P1");
-		initializeTextField(p1Text);
-		p1Text.setBounds(20,400,50,50);
+		control.initializeTextField(p1Text,20,400,50,50);
 		this.add(p1Text);
 		
 		if (gameMode == PVP_MODE) {
+			
 			p2Text = new JTextField("P2");
-			initializeTextField(p2Text);
-			p2Text.setBounds(20,500,50,50);
+			control.initializeTextField(p2Text,20,500,50,50);
 			this.add(p2Text);
 		}
 	}
-	
-	public void initializeTextField(JTextField jtf) {
-
-		Font textFieldFont = new Font("Times New Roman Italic", Font.BOLD, 20);
-		jtf.setFont(textFieldFont);
-		jtf.setBackground(Color.pink);
-		jtf.setForeground(Color.white);
-		jtf.setEditable(false);
-		jtf.setBorder(null);
-	
-	}
-	
-
-	/**
-	 * Initialize buttons
-	 */
-	public void initializeButton(JButton button) {
-
-		Border originBorder = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1);
-		// This is the default border of WIN10 system.For macOS, use this border to make
-		// sure the buttons are correctly initialized.
-
-		Font buttonFont = new Font("Times New Roman Italic", Font.BOLD, 14);
-
-		button.setForeground(Color.BLACK);
-		button.setBorder(originBorder);
-		button.setBackground(Color.WHITE);
-		button.setFont(buttonFont);
-		button.setOpaque(true);
-
-	}
-
-	/**
-	 * Highlight the buttons when the mouse is on them
-	 */
-	public void highLightButton(JButton button) {
-		button.setBackground(Color.ORANGE);
-		button.setBounds(button.getX() - 20, button.getY() - 10, button.getWidth() + 40, button.getHeight() + 20);
-		Font buttonFont = new Font("Times New Roman Italic", Font.BOLD, 20);
-		button.setFont(buttonFont);
-	}
-
-	/**
-	 * Reset the buttons when the mouse leaves
-	 */
-	public void resetButton(JButton button) {
-		button.setBackground(Color.WHITE);
-		button.setBounds(button.getX() + 20, button.getY() + 10, button.getWidth() - 40, button.getHeight() - 20);
-		Font buttonFont = new Font("Times New Roman Italic", Font.BOLD, 14);
-		button.setFont(buttonFont);
-	}
+		
 	
 	public void highLightChooseButton(JButton button) {
 		button.setBackground(Color.PINK);
@@ -332,16 +263,6 @@ public class ChoosePlayerPanel extends JPanel implements GameConstants {
 
 	}
 	
-	public void initializeButtonTextArea(JTextArea jta) {
-		jta.setLineWrap(true);
-		jta.setVisible(true);
-		
-		Font textAreaFont = new Font("Times New Roman Italic", Font.ITALIC, 14);
-		jta.setFont(textAreaFont);
-		jta.setBackground(Color.pink);
-		jta.setForeground(Color.WHITE);
-		jta.setEditable(false);
-	}
 	
 	public void loadImage() throws IOException {
 		player1Image[DIRECTION_UP] = ImageIO.read(new File("image/player/p1UP.png"));
@@ -409,58 +330,34 @@ public class ChoosePlayerPanel extends JPanel implements GameConstants {
 			switch (this.name) {
 			case "1":
 				player1CID = 0;			
-				highLightChooseButton(p1Button1);
-				resetChooseButton(p1Button2);
-				resetChooseButton(p1Button3);
-				resetChooseButton(p1Button4);
+				control.chooseButtonFrom(p1Button1,p1Button2,p1Button3,p1Button4);
 				break;			
 			case "2":		
-				highLightChooseButton(p1Button2);
-				resetChooseButton(p1Button1);
-				resetChooseButton(p1Button3);
-				resetChooseButton(p1Button4);
+				control.chooseButtonFrom(p1Button2,p1Button1,p1Button3,p1Button4);
 				player1CID = 1;		
 				break;
 			case "3":
-				highLightChooseButton(p1Button3);
-				resetChooseButton(p1Button1);
-				resetChooseButton(p1Button2);
-				resetChooseButton(p1Button4);
+				control.chooseButtonFrom(p1Button3,p1Button1,p1Button2,p1Button4);
 				player1CID = 2;
 				break;
 			case "4":
-				highLightChooseButton(p1Button4);
-				resetChooseButton(p1Button1);
-				resetChooseButton(p1Button2);
-				resetChooseButton(p1Button3);
+				control.chooseButtonFrom(p1Button4,p1Button1,p1Button2,p1Button3);
 				player1CID = 3;		
 				break;				
 			case "5":			
-				highLightChooseButton(p2Button1);
-				resetChooseButton(p2Button2);
-				resetChooseButton(p2Button3);
-				resetChooseButton(p2Button4);
+				control.chooseButtonFrom(p2Button1,p2Button2,p2Button3,p2Button4);
 				player2CID = 0;	
 				break;		
 			case "6":		
-				highLightChooseButton(p2Button2);
-				resetChooseButton(p2Button1);
-				resetChooseButton(p2Button3);
-				resetChooseButton(p2Button4);
+				control.chooseButtonFrom(p2Button2,p2Button1,p2Button3,p2Button4);
 				player2CID = 1;		
 				break;
 			case "7":
-				highLightChooseButton(p2Button3);
-				resetChooseButton(p2Button1);
-				resetChooseButton(p2Button2);
-				resetChooseButton(p2Button4);
+				control.chooseButtonFrom(p2Button3,p2Button1,p2Button2,p2Button4);
 				player2CID = 2;
 				break;
 			case "8":
-				highLightChooseButton(p2Button4);
-				resetChooseButton(p2Button1);
-				resetChooseButton(p2Button2);
-				resetChooseButton(p2Button3);
+				control.chooseButtonFrom(p2Button4,p2Button1,p2Button2,p2Button3);
 				player2CID = 3;
 				break;
 				
@@ -493,10 +390,10 @@ public class ChoosePlayerPanel extends JPanel implements GameConstants {
 		public void mouseEntered(MouseEvent e) {
 			switch (this.name) {
 			case "Back":
-				highLightButton(buttonBack);
+				control.highLightButton(buttonBack);
 				break;
 			case "Ok":
-				highLightButton(buttonOk);
+				control.highLightButton(buttonOk);
 				break;
 			}
 		}
@@ -508,10 +405,10 @@ public class ChoosePlayerPanel extends JPanel implements GameConstants {
 
 			switch (this.name) {
 			case "Back":
-				resetButton(buttonBack);
+				control.resetButton(buttonBack);
 				break;
 			case "Ok":
-				resetButton(buttonOk);
+				control.resetButton(buttonOk);
 				break;
 			}
 		}

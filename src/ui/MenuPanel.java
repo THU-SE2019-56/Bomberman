@@ -1,26 +1,14 @@
 package ui;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
 
-import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.Timer;
-import javax.swing.border.Border;
 
-import game.Game;
 import game.GameConstants;
-import game.TimerListener;
 
 /**
  * Main menu panel. Fill in the MainFrame. Contain buttons to jump to other
@@ -39,12 +27,16 @@ public class MenuPanel extends JPanel implements GameConstants {
 	private JButton buttonAbout;
 	private ImageIcon menuBackgroundIcon;
 	private JLabel menuBackgroundLabel;
+	
+	private Controls control;
 
 	public MenuPanel(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
+		control = new Controls();
 
 		this.addButton();
 		this.addBackground();
+		
 	}
 
 	public void addBackground() {
@@ -56,53 +48,20 @@ public class MenuPanel extends JPanel implements GameConstants {
 	}
 
 	public void addButton() {
-		/*
-		 * PVE mode
-		 */
-
+		
 		buttonPve = new JButton("PVE Mode");
-		buttonPve.setBounds(50, 150, 150, 50);
-		initializeButton(buttonPve);
-
-		/*
-		 * PVP mode
-		 */
-
 		buttonPvp = new JButton("PVP Mode");
-		buttonPvp.setBounds(50, 250, 150, 50);
-		initializeButton(buttonPvp);
-
-		/*
-		 * Help
-		 */
-
 		buttonHelp = new JButton("Help");
-		buttonHelp.setBounds(50, 350, 150, 50);
-		initializeButton(buttonHelp);
-
-		/*
-		 * Stage Editor
-		 */
-
-		buttonStageEditor = new JButton("Stage Editor");
-		buttonStageEditor.setBounds(50, 450, 150, 50);
-		initializeButton(buttonStageEditor);
-
-		/*
-		 * Exit
-		 */
-
+		buttonStageEditor = new JButton("StageEditor");
 		buttonExit = new JButton("Exit");
-		buttonExit.setBounds(700, 200, 150, 50);
-		initializeButton(buttonExit);
-
-		/*
-		 * About us
-		 */
-
 		buttonAbout = new JButton("About us");
-		buttonAbout.setBounds(700, 300, 150, 50);
-		initializeButton(buttonAbout);
+
+		control.initializeButton(buttonPve,50, 150, 150, 50);//PVE Mode
+		control.initializeButton(buttonPvp,50, 250, 150, 50);//PVP mode
+		control.initializeButton(buttonHelp,50, 350, 150, 50);//Help
+		control.initializeButton(buttonStageEditor,50, 450, 150, 50);//Stage Editor
+		control.initializeButton(buttonExit,700, 200, 150, 50);//Exit;
+		control.initializeButton(buttonAbout,700, 300, 150, 50);//About us
 
 		this.setLayout(null);
 
@@ -122,46 +81,7 @@ public class MenuPanel extends JPanel implements GameConstants {
 
 	}
 
-	/**
-	 * Initialize buttons
-	 */
-	public void initializeButton(JButton button) {
 
-		Border originBorder = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1);
-		// This is the default border of WIN10 system.For macOS, use this border to make
-		// sure the buttons are correctly initialized.
-
-		Font buttonFont = new Font("Times New Roman Italic", Font.BOLD, 14);
-
-		button.setForeground(Color.BLACK);
-		button.setBorder(originBorder);
-		button.setBackground(Color.WHITE);
-		button.setFont(buttonFont);
-		button.setOpaque(true);
-
-	}
-
-	/**
-	 * Highlight the buttons when the mouse is on them
-	 */
-	public void highLightButton(JButton button) {
-		button.setBackground(Color.ORANGE);
-		button.setBounds(button.getX() - 20, button.getY() - 10, button.getWidth() + 40, button.getHeight() + 20);
-		Font buttonFont = new Font("Times New Roman Italic", Font.BOLD, 20);
-		button.setFont(buttonFont);
-	}
-
-	/**
-	 * Reset the buttons when the mouse leaves
-	 */
-	public void resetButton(JButton button) {
-
-		button.setBackground(Color.WHITE);
-		button.setBounds(button.getX() + 20, button.getY() + 10, button.getWidth() - 40, button.getHeight() - 20);
-		Font buttonFont = new Font("Times New Roman Italic", Font.BOLD, 14);
-		button.setFont(buttonFont);
-
-	}
 
 	/**
 	 * Respond to button events
@@ -200,17 +120,6 @@ public class MenuPanel extends JPanel implements GameConstants {
 
 				break;
 			case "pvp":
-
-//				StagePanel stagePanelPvp = new StagePanel(mainFrame,PVP_MODE);
-//
-//				mainFrame.remove(MenuPanel.this);
-//				mainFrame.add(stagePanelPvp);
-//				mainFrame.validate();// repaint
-//
-//				mainFrame.setLayout(null);
-//
-//				stagePanelPvp.setLocation(0, 0);
-//				stagePanelPvp.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
 				chooseplayer = new ChoosePlayerPanel(mainFrame, PVP_MODE);
 
@@ -253,22 +162,22 @@ public class MenuPanel extends JPanel implements GameConstants {
 		public void mouseEntered(MouseEvent e) {
 			switch (this.name) {
 			case "pve":
-				highLightButton(buttonPve);
+				control.highLightButton(buttonPve);
 				break;
 			case "pvp":
-				highLightButton(buttonPvp);
+				control.highLightButton(buttonPvp);
 				break;
 			case "help":
-				highLightButton(buttonHelp);
+				control.highLightButton(buttonHelp);
 				break;
 			case "stage editor":
-				highLightButton(buttonStageEditor);
+				control.highLightButton(buttonStageEditor);
 				break;
 			case "exit":
-				highLightButton(buttonExit);
+				control.highLightButton(buttonExit);
 				break;
 			case "about us":
-				highLightButton(buttonAbout);
+				control.highLightButton(buttonAbout);
 				break;
 			}
 		}
@@ -277,22 +186,22 @@ public class MenuPanel extends JPanel implements GameConstants {
 		public void mouseExited(MouseEvent e) {
 			switch (this.name) {
 			case "pve":
-				resetButton(buttonPve);
+				control.resetButton(buttonPve);
 				break;
 			case "pvp":
-				resetButton(buttonPvp);
+				control.resetButton(buttonPvp);
 				break;
 			case "help":
-				resetButton(buttonHelp);
+				control.resetButton(buttonHelp);
 				break;
 			case "stage editor":
-				resetButton(buttonStageEditor);
+				control.resetButton(buttonStageEditor);
 				break;
 			case "exit":
-				resetButton(buttonExit);
+				control.resetButton(buttonExit);
 				break;
 			case "about us":
-				resetButton(buttonAbout);
+				control.resetButton(buttonAbout);
 				break;
 			}
 		}

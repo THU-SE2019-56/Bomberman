@@ -100,6 +100,12 @@ public class MapPanel extends JPanel implements GameConstants {
 	public void paintPlayer(Graphics g) {
 		for (int i = 0; i < game.getPlayerNum(); i++) {
 			
+			 if (game.getPlayer()[i].proectedByItem()) {
+				 g.setColor(Color.yellow);
+				 g.fillOval(game.getPlayer()[i].getX()-CELL_WIDTH/2, game.getPlayer()[i].getY()-CELL_HEIGHT/2,2*CELL_WIDTH,
+						 2*CELL_HEIGHT);
+			 }
+			
 			 switch (game.getPlayer()[i].getPlayerCharacterID()) {			 
 			 case 0:
 				 g.drawImage(player1Image[game.getPlayer()[i].getImageDirection()], game.getPlayer()[i].getX(),
@@ -118,6 +124,8 @@ public class MapPanel extends JPanel implements GameConstants {
 							game.getPlayer()[i].getY()-(PLAYER_HEIGHT-CELL_HEIGHT), PLAYER_WIDTH, PLAYER_HEIGHT, this);
 				 break;
 			 }
+			 
+
 		}
 	}
 

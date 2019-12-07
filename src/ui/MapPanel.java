@@ -203,6 +203,7 @@ public class MapPanel extends JPanel implements GameConstants {
 		itemImage[BOMB_UP] = ImageIO.read(new File("image/item/bomb.png"));
 		itemImage[HP_UP] = ImageIO.read(new File("image/item/HP_UP.png"));
 		itemImage[POWER_UP] = ImageIO.read(new File("image/item/power.jpg"));
+		itemImage[IMMUNE] = ImageIO.read(new File("image/item/immune.png"));
 
 		monsterImage[DIRECTION_UP] = ImageIO.read(new File("image/monster/up.png"));
 		monsterImage[DIRECTION_DOWN] = ImageIO.read(new File("image/monster/down.png"));

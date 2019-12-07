@@ -51,6 +51,8 @@ public class Item implements GameConstants {
 				else if (player.getHP()> player.getMaxHP()-HP_ADDED) {
 					player.setHP(player.getMaxHP());
 				}
+			case IMMUNE:
+				player.setProtectedByItem(true);
 				break;
 			}
 		}

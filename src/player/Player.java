@@ -632,7 +632,7 @@ public class Player implements AWTEventListener, GameConstants {
 			this.protectedByItemCount++;			
 			if (this.protectedByItemCount == 330) {
 				this.protectedByItemCount = 0;
-				this.setIsImmune(false);
+				this.setProtectedByItem(false);
 			}
 		}
 	

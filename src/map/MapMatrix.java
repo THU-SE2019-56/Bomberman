@@ -89,6 +89,8 @@ public class MapMatrix implements GameConstants {
 		xSize=CELL_NUM_X;
 		ySize=CELL_NUM_Y;
 		wall = new int[ySize][xSize];
+		set = new UFSet();
+		visited = new boolean[ySize][xSize];
 	}
 	
 	/**
@@ -107,6 +109,8 @@ public class MapMatrix implements GameConstants {
 				else
 					this.wall[i][j] = NONE;
 			}
+		set = new UFSet();
+		visited = new boolean[ySize][xSize];
 	}
 
 	/**

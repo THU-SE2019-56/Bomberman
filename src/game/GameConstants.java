@@ -42,6 +42,8 @@ public interface GameConstants {
 	int MONSTER_WIDTH = 45;
 	int MONSTER_HEIGHT = 45;
 	int ALERT_DISTANCE = 5;
+	double MONSTER_SPEED_LOW = 1.5;
+	double MONSTER_SPEED_HIGH = 2.5;
 
 	// Item constants
 	int ITEM_NUM = 4;

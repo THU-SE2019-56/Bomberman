@@ -31,6 +31,8 @@ public class Player implements AWTEventListener, GameConstants {
 
 	private int bombPower;
 	private boolean isImmune;
+	private boolean isProtectedByItem;
+		
 	private boolean isAlive;
 	private int direction;
 	private int imageDirection;// This variable is for deciding the image of DIRECTION_STOP
@@ -38,7 +40,7 @@ public class Player implements AWTEventListener, GameConstants {
 	private int y;
 
 	private int playerHurtDelayCount = 0;
-	private int playerCanBeHurt = 1;
+	private int protectedByItemCount = 0;
 
 	private Map playerMap; // Relate the player with the map
 	private int mapX;
@@ -68,8 +70,9 @@ public class Player implements AWTEventListener, GameConstants {
 		this.playerMap = newmap;
 		this.playerID = id;
 		this.playerHurtDelayCount = 0;
-		this.playerCanBeHurt = 1;
+		this.protectedByItemCount = 0;
 		this.isImmune = false;
+		this.isProtectedByItem = false;
 		this.bombPower = 1;
 		this.playerCharacterID = playerCharacterID;
 
@@ -183,7 +186,7 @@ public class Player implements AWTEventListener, GameConstants {
 	}
 	
 	public void getHurt(int hpLoss) {
-		if (!this.isImmune) {
+		if ((!this.isImmune)&&(!this.isProtectedByItem)) {
 			this.setHP(this.getHP()-hpLoss);
 		}
 	}
@@ -194,6 +197,14 @@ public class Player implements AWTEventListener, GameConstants {
 	
 	public void setIsImmune(boolean isImmune) {
 		this.isImmune = isImmune;
+	}
+	
+	public boolean proectedByItem() {
+		return this.isProtectedByItem;
+	}
+	
+	public void setProtectedByItem(boolean protectedByItem) {
+		this.isProtectedByItem = protectedByItem;
 	}
 
 	/*
@@ -605,25 +616,27 @@ public class Player implements AWTEventListener, GameConstants {
 		this.playerMove();// Change the location of the player
 
 		if (mi.isAtExplosion(this.getMapX(), this.getMapY())) {
-
-			if (this.playerCanBeHurt == 1) {
 				this.getHurt(HP_LOSS_BY_BOMB);
-				this.playerCanBeHurt = 0;
-				this.setIsImmune(true);
-				
-				//this.setHP(this.getHP() - HP_LOSS_BY_BOMB);
-			}
+				this.setIsImmune(true);			
 		}
-
-		if (this.playerCanBeHurt == 0) {
-			this.playerHurtDelayCount++;
-	
+		
+		if (this.isImmune) {
+			this.playerHurtDelayCount++;			
 			if (this.playerHurtDelayCount == 30) {
 				this.playerHurtDelayCount = 0;
-				this.playerCanBeHurt = 1;
 				this.setIsImmune(false);
 			}
 		}
+		
+		if (this.isProtectedByItem) {
+			this.protectedByItemCount++;			
+			if (this.protectedByItemCount == 330) {
+				this.protectedByItemCount = 0;
+				this.setIsImmune(false);
+			}
+		}
+	
+
 
 	}
 

@@ -321,4 +321,11 @@ public class Map implements GameConstants {
 		return false;
 	}
 
+	public int getXSize() {
+		return xSize;
+	}
+
+	public int getYSize() {
+		return ySize;
+	}
 }

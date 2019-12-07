@@ -165,7 +165,7 @@ public class Monster implements GameConstants {
 		}
 		if (isCollided(p.getX(), p.getY(), PLAYER_WIDTH, PLAYER_HEIGHT)) { // collide with player
 			eliminate();
-			p.setHP(p.getHP()-HP_LOSS_BY_MONSTER);
+			p.getHurt(HP_LOSS_BY_MONSTER);
 		}
 		else if (isBlownOff(m)) {	// killed by bomb
 			eliminate();

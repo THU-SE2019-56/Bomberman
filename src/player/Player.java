@@ -69,7 +69,7 @@ public class Player implements AWTEventListener, GameConstants {
 		this.playerID = id;
 		this.playerHurtDelayCount = 0;
 		this.playerCanBeHurt = 1;
-
+		this.isImmune = false;
 		this.bombPower = 1;
 		this.playerCharacterID = playerCharacterID;
 
@@ -180,6 +180,20 @@ public class Player implements AWTEventListener, GameConstants {
 
 	public int getMaxHP() {
 		return this.playerMaxHP;
+	}
+	
+	public void getHurt(int hpLoss) {
+		if (!this.isImmune) {
+			this.setHP(this.getHP()-hpLoss);
+		}
+	}
+	
+	public boolean isImmune() {
+		return this.isImmune;
+	}
+	
+	public void setIsImmune(boolean isImmune) {
+		this.isImmune = isImmune;
 	}
 
 	/*
@@ -593,17 +607,21 @@ public class Player implements AWTEventListener, GameConstants {
 		if (mi.isAtExplosion(this.getMapX(), this.getMapY())) {
 
 			if (this.playerCanBeHurt == 1) {
-				this.setHP(this.getHP() - HP_LOSS_BY_BOMB);
+				this.getHurt(HP_LOSS_BY_BOMB);
 				this.playerCanBeHurt = 0;
+				this.setIsImmune(true);
+				
+				//this.setHP(this.getHP() - HP_LOSS_BY_BOMB);
 			}
 		}
 
 		if (this.playerCanBeHurt == 0) {
 			this.playerHurtDelayCount++;
-
+	
 			if (this.playerHurtDelayCount == 30) {
 				this.playerHurtDelayCount = 0;
 				this.playerCanBeHurt = 1;
+				this.setIsImmune(false);
 			}
 		}
 

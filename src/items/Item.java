@@ -20,15 +20,9 @@ public class Item implements GameConstants {
 		x = xPos * 45 ;
 		y = yPos * 45 ;
 	}
-
-	/*public void RandomID() {
-		itemID = (int) (ITEM_NUM * (float)Math.random());
-	}*/
 	
 	/**
 	 * select item to use
-	 * 
-	 * @param player
 	 */
 	public void getItem(Player player) {
 		if (!this.isAcquired) {
@@ -56,10 +50,10 @@ public class Item implements GameConstants {
 				player.setProtectedByItem(true);
 				break;
 			case BULLET:
-				player.ItemID = BULLET;
+				player.setActiveItemID(BULLET);
 				break;
 			case LANDMINE:
-				player.ItemID = LANDMINE;
+				player.setActiveItemID(LANDMINE);
 				break;
 			}
 		}

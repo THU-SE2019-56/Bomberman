@@ -13,12 +13,12 @@ public class ActiveItem implements GameConstants{
 	private boolean alive;
 	private int velocity;
 	private int direction;
+	private Player player;
 	
-	public ActiveItem(int X, int Y, Player player) {
-		this.x = X;
-		this.y = Y;
-		itemID = player.ItemID;
+	public ActiveItem( Player player) {
+		itemID = player.getActiveItemID();
 		init(player);
+		this.player = player;
 	}
 	
 	private void init(Player player) {
@@ -29,8 +29,10 @@ public class ActiveItem implements GameConstants{
 		switch(this.itemID) {
 		case BULLET:
 			this.velocity = 9;
+			break;
 		case LANDMINE:
 			this.velocity = 0;
+			break;
 		}
 		switch(this.direction) {
 		case DIRECTION_UP:
@@ -98,19 +100,28 @@ public class ActiveItem implements GameConstants{
 	}
 	
 	public void move() {
+	
+
+		if(this.x<0||this.y<0||this.x>CELL_WIDTH*CELL_NUM_X||this.y>CELL_HEIGHT*CELL_NUM_Y) {
+			this.player.setIsUsingBulletFlag(0);
+		}
+		else {
+		
 		switch(this.direction) {
 		case DIRECTION_UP:
-			y -= this.velocity;
+			this.setY(this.getY()-this.velocity);
 			break;
 		case DIRECTION_DOWN:
-			y += this.velocity;
+			this.setY(this.getY()+this.velocity);
 			break;
 		case DIRECTION_LEFT:
-			x -= this.velocity;
+			this.setX(this.getX()-this.velocity);
 			break;
-		case DIRECTION_RIGHT:
-			x += this.velocity;
+		case DIRECTION_RIGHT:		
+			this.setX(this.getX()+this.velocity);
 			break;
+		}
+		
 		}
 	}
 	

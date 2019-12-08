@@ -44,8 +44,9 @@ public class EditorPanel extends JPanel implements GameConstants {
 		}
 
 		control = new Controls();
-		
+
 		map = new Map();
+		current_mmat = new MapMatrix(map);
 
 		this.addButton();
 	}
@@ -92,7 +93,7 @@ public class EditorPanel extends JPanel implements GameConstants {
 		control.initializeButton(buttonBack, MAP_WIDTH + 120, MAP_HEIGHT - 65, 90, 50);
 		buttonSave = new JButton("Save");
 		control.initializeButton(buttonSave, MAP_WIDTH + 15, MAP_HEIGHT - 65, 90, 50);
-		
+
 		buttonUndo = new JButton("Undo");
 		control.initializeButton(buttonUndo, MAP_WIDTH + 15, 15, 90, 50);
 		buttonRedo = new JButton("Redo");
@@ -102,22 +103,21 @@ public class EditorPanel extends JPanel implements GameConstants {
 		buttonRandom = new JButton("Random");
 		control.initializeButton(buttonRandom, MAP_WIDTH + 120, 80, 90, 50);
 
-		
 		this.setLayout(null);
-		
+
 		this.add(buttonBack);
 		this.add(buttonSave);
 		this.add(buttonUndo);
 		this.add(buttonRedo);
 		this.add(buttonClear);
 		this.add(buttonRandom);
-				
-		buttonBack.addMouseListener(new ButtonListener(mainFrame,"back"));
-		buttonSave.addMouseListener(new ButtonListener(mainFrame,"save"));
-		buttonUndo.addMouseListener(new ButtonListener(mainFrame,"undo"));
-		buttonRedo.addMouseListener(new ButtonListener(mainFrame,"redo"));
-		buttonClear.addMouseListener(new ButtonListener(mainFrame,"clear"));
-		buttonRandom.addMouseListener(new ButtonListener(mainFrame,"random"));
+
+		buttonBack.addMouseListener(new ButtonListener(mainFrame, "back"));
+		buttonSave.addMouseListener(new ButtonListener(mainFrame, "save"));
+		buttonUndo.addMouseListener(new ButtonListener(mainFrame, "undo"));
+		buttonRedo.addMouseListener(new ButtonListener(mainFrame, "redo"));
+		buttonClear.addMouseListener(new ButtonListener(mainFrame, "clear"));
+		buttonRandom.addMouseListener(new ButtonListener(mainFrame, "random"));
 	}
 
 	class ButtonListener implements MouseListener {
@@ -153,12 +153,15 @@ public class EditorPanel extends JPanel implements GameConstants {
 			case "redo":
 				break;
 			case "clear":
+				current_mmat.clearAll();
+				map = new Map(current_mmat);
 				break;
 			case "random":
+				current_mmat.reFill();
+				map = new Map(current_mmat);				
 				break;
-
 			}
-
+			repaint();
 		}
 
 		@Override

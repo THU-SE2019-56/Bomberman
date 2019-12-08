@@ -10,7 +10,7 @@ public interface GameConstants {
 
 	// Player constants
 	int PLAYER_WIDTH = 45;
-	int PLAYER_HEIGHT = 57;
+	int PLAYER_HEIGHT = 45;
 	int PLAYER_ID_P1 = 0;
 	int PLAYER_ID_P2 = 1;
 	int PLAYER_MAX_BOMB = 4;
@@ -44,12 +44,17 @@ public interface GameConstants {
 	int ALERT_DISTANCE = 5;
 
 	// Item constants
-	int ITEM_NUM = 5;
+	int ITEM_NUM = 7;
 	int BOMB_UP = 0;
 	int VELOCITY_UP = 1;
 	int POWER_UP = 2;
 	int HP_UP = 3;
-	int IMMUNE = 4;
+	int BULLET = 4;
+	int LANDMINE = 5;
+	int IMMUNE = 6;
+	
+	int ACTIVE_ITEM_NUM = 2;
+
 	
 	int ITEM_WIDTH = 45;
 	int ITEM_HEIGHT = 45;

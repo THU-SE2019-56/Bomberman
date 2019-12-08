@@ -83,6 +83,37 @@ public class MapMatrix implements GameConstants {
 	}
 
 	/**
+	 * Construct a empty map matrix for default condition
+	 */
+	public MapMatrix() {
+		xSize=CELL_NUM_X;
+		ySize=CELL_NUM_Y;
+		wall = new int[ySize][xSize];
+		set = new UFSet();
+		visited = new boolean[ySize][xSize];
+	}
+	
+	/**
+	 * Construct a map matrix from a given map
+	 */
+	public MapMatrix(Map m) {
+		this.xSize = m.getXSize();
+		this.ySize = m.getYSize();
+		wall = new int[ySize][xSize];
+		for (int i = 0; i < ySize; i++)
+			for (int j = 0; j < xSize; j++) {
+				if (m.isWithDestructibleWall(j, i))
+					this.wall[i][j] = DESTRUCTIBLE;
+				else if (m.isWithIndestructibleWall(j, i))
+					this.wall[i][j] = INDESTRUCTIBLE;
+				else
+					this.wall[i][j] = NONE;
+			}
+		set = new UFSet();
+		visited = new boolean[ySize][xSize];
+	}
+
+	/**
 	 * Construction method for given size
 	 */
 	public MapMatrix(int xSize, int ySize) {
@@ -93,7 +124,7 @@ public class MapMatrix implements GameConstants {
 		visited = new boolean[ySize][xSize];
 		randomFill();
 		wall[0][0] = wall[0][1] = wall[1][0] = NONE; // clean up born place
-		
+
 //		FileWriter out;
 //		try {
 //			out = new FileWriter(new File("data/stage3.txt"));
@@ -109,7 +140,6 @@ public class MapMatrix implements GameConstants {
 //			e.printStackTrace();
 //		}
 	}
-
 
 	/**
 	 * Clear all walls on the map matrix

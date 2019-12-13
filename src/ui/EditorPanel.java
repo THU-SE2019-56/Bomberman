@@ -5,12 +5,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Stack;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import game.GameConstants;
-import map.Map;
 import map.MapMatrix;
 
 public class EditorPanel extends JPanel implements GameConstants {
@@ -18,8 +18,9 @@ public class EditorPanel extends JPanel implements GameConstants {
 	private static final long serialVersionUID = 1L;
 
 	private MainFrame mainFrame;
-	MapMatrix current_mmat;
-	Map map;
+	MapMatrix mmat;
+	Stack<MapMatrix> undoStack;
+	Stack<MapMatrix> redoStack;
 
 	BufferedImage mapImage[] = new BufferedImage[4];
 	BufferedImage itemImage[] = new BufferedImage[ITEM_NUM];
@@ -45,10 +46,35 @@ public class EditorPanel extends JPanel implements GameConstants {
 
 		control = new Controls();
 
-		map = new Map();
-		current_mmat = new MapMatrix(map);
+		mmat = new MapMatrix();
+		undoStack = new Stack<MapMatrix>();
+		redoStack = new Stack<MapMatrix>();
+		saveStatus();
 
 		this.addButton();
+	}
+
+	public void saveStatus() {
+		undoStack.push(new MapMatrix(mmat));
+		redoStack.clear();
+	}
+
+	public void undo() {
+		if (undoStack.empty()) {
+			System.out.println("undo stack empty");
+			return;
+		}
+		redoStack.push(new MapMatrix(mmat));
+		mmat = undoStack.pop();
+	}
+
+	public void redo() {
+		if (redoStack.empty()) {
+			System.out.println("redo stack empty");
+			return;
+		}
+		undoStack.push(new MapMatrix(mmat));
+		mmat = redoStack.pop();
 	}
 
 	/**
@@ -61,8 +87,8 @@ public class EditorPanel extends JPanel implements GameConstants {
 	}
 
 	public void paintMap(Graphics g) {
-		int xSize = map.getSizeX();
-		int ySize = map.getSizeY();
+		int xSize = mmat.getXSize();
+		int ySize = mmat.getYSize();
 		for (int i = 0; i < xSize; i++)
 			for (int j = 0; j < ySize; j++) {
 				if ((i + j) % 2 == 0)
@@ -71,10 +97,10 @@ public class EditorPanel extends JPanel implements GameConstants {
 				else
 					g.drawImage(mapImage[GROUND_2], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), CELL_WIDTH,
 							CELL_HEIGHT, this);
-				if (map.isWithDestructibleWall(i, j))
+				if (mmat.isWithDestructibleWall(j, i))
 					g.drawImage(mapImage[DESTRUCTIBLE_WALL], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT),
 							CELL_WIDTH, CELL_HEIGHT, this);
-				if (map.isWithIndestructibleWall(i, j))
+				if (mmat.isWithIndestructibleWall(j, i))
 					g.drawImage(mapImage[INDESTRUCTIBLE_WALL], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT),
 							CELL_WIDTH, CELL_HEIGHT, this);
 				// TODO waiting for adding bomb and item
@@ -149,16 +175,18 @@ public class EditorPanel extends JPanel implements GameConstants {
 			case "save":
 				break;
 			case "undo":
+				undo();
 				break;
 			case "redo":
+				redo();
 				break;
 			case "clear":
-				current_mmat.clearAll();
-				map = new Map(current_mmat);
+				mmat.clearAll();
+				saveStatus();
 				break;
 			case "random":
-				current_mmat.reFill();
-				map = new Map(current_mmat);				
+				mmat.reFill();
+				saveStatus();
 				break;
 			}
 			repaint();

@@ -86,13 +86,13 @@ public class MapMatrix implements GameConstants {
 	 * Construct a empty map matrix for default condition
 	 */
 	public MapMatrix() {
-		xSize=CELL_NUM_X;
-		ySize=CELL_NUM_Y;
+		xSize = CELL_NUM_X;
+		ySize = CELL_NUM_Y;
 		wall = new int[ySize][xSize];
 		set = new UFSet();
 		visited = new boolean[ySize][xSize];
 	}
-	
+
 	/**
 	 * Construct a map matrix from a given map
 	 */
@@ -139,6 +139,21 @@ public class MapMatrix implements GameConstants {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
+	}
+
+	/**
+	 * Construction method for cloning a know mapmatrix
+	 * @param mmat
+	 */
+	public MapMatrix(MapMatrix mmat) {
+		this.xSize = mmat.xSize;
+		this.ySize = mmat.ySize;
+		wall = new int[ySize][xSize];
+		set = new UFSet();
+		visited = new boolean[ySize][xSize];
+		for (int i = 0; i < ySize; i++)
+			for (int j = 0; j < xSize; j++)
+				wall[i][j] = mmat.wall[i][j];
 	}
 
 	/**

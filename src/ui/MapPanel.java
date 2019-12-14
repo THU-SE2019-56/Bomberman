@@ -139,28 +139,36 @@ public class MapPanel extends JPanel implements GameConstants {
 			int bullet_height = 0;
 			
 			if (game.getPlayer()[i].getIsUsingBulletFlag()==1) {
-				game.getPlayer()[i].getActiveItem().move();		
-				
-				switch (game.getPlayer()[i].getActiveItem().getDirection()) {				
-				case DIRECTION_UP:
-					bullet_width = 45;
-					bullet_height = 90;
-					break;
-				case DIRECTION_DOWN:
-					bullet_width = 45;
-					bullet_height = 90;
-					break;
-				case DIRECTION_LEFT:
-					bullet_width = 90;
-					bullet_height = 45;
-					break;
-				case DIRECTION_RIGHT:
-					bullet_width = 90;
-					bullet_height = 45;
-					break;				
+				game.getPlayer()[i].getActiveItem().move(game.getMap());		
+				if (game.getPlayer()[i].getActiveItem().IsAlive()) {
+					switch (game.getPlayer()[i].getActiveItem().getDirection()) {				
+					case DIRECTION_UP:
+						bullet_width = BULLET_WIDTH;
+						bullet_height = BULLET_HEIGHT;
+						g.drawImage(bulletImage[game.getPlayer()[i].getActiveItem().getDirection()], game.getPlayer()[i].getActiveItem().getX() + 10, game.getPlayer()[i].getActiveItem().getY(),
+								bullet_width, bullet_height,this);
+						break;
+					case DIRECTION_DOWN:
+						bullet_width = BULLET_WIDTH;
+						bullet_height = BULLET_HEIGHT;
+						g.drawImage(bulletImage[game.getPlayer()[i].getActiveItem().getDirection()], game.getPlayer()[i].getActiveItem().getX() + 10, game.getPlayer()[i].getActiveItem().getY(),
+								bullet_width, bullet_height,this);
+						break;
+					case DIRECTION_LEFT:
+						bullet_width = BULLET_HEIGHT;
+						bullet_height = BULLET_WIDTH;
+						g.drawImage(bulletImage[game.getPlayer()[i].getActiveItem().getDirection()], game.getPlayer()[i].getActiveItem().getX(), game.getPlayer()[i].getActiveItem().getY() + 10,
+								bullet_width, bullet_height,this);
+						break;
+					case DIRECTION_RIGHT:
+						bullet_width = BULLET_HEIGHT;
+						bullet_height = BULLET_WIDTH;
+						g.drawImage(bulletImage[game.getPlayer()[i].getActiveItem().getDirection()], game.getPlayer()[i].getActiveItem().getX(), game.getPlayer()[i].getActiveItem().getY() + 10,
+								bullet_width, bullet_height,this);
+						break;				
+					}
 				}
-				g.drawImage(bulletImage[game.getPlayer()[i].getActiveItem().getDirection()], game.getPlayer()[i].getActiveItem().getX(), game.getPlayer()[i].getActiveItem().getY(),
-						bullet_width, bullet_height,this);
+				
 			}
 			
 		}

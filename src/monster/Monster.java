@@ -166,6 +166,8 @@ public class Monster implements GameConstants {
 			if(isCollided(p.getActiveItem().getX(), p.getActiveItem().getY(), 45, 45)){
 				eliminate();
 				p.getActiveItem().setState(false);
+				p.setIsUsingBulletFlag(0);
+				p.setActiveItem(null);
 			}
 		}// killed by bullet
 		

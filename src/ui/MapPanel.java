@@ -105,7 +105,6 @@ public class MapPanel extends JPanel implements GameConstants {
 						 5*CELL_HEIGHT/3);
 			 }
 			 
-			
 			 switch (game.getPlayer()[i].getPlayerCharacterID()) {			 
 			 case 0:
 				 g.drawImage(player1Image[game.getPlayer()[i].getImageDirection()], game.getPlayer()[i].getX(),

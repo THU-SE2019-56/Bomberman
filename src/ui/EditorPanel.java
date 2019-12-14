@@ -13,6 +13,12 @@ import javax.swing.*;
 import game.GameConstants;
 import map.MapMatrix;
 
+/**
+ * A UI for editing stage, with function of map editing and spawn position set
+ * 
+ * @author Zhuofan Chen
+ * @version 0.1
+ */
 public class EditorPanel extends JPanel implements GameConstants {
 
 	private static final long serialVersionUID = 1L;
@@ -35,6 +41,11 @@ public class EditorPanel extends JPanel implements GameConstants {
 
 	Controls control;
 
+	/**
+	 * Construction method
+	 * 
+	 * @param mainFrame the game mainframe
+	 */
 	public EditorPanel(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
 		try {
@@ -49,28 +60,36 @@ public class EditorPanel extends JPanel implements GameConstants {
 		mmat = new MapMatrix();
 		undoStack = new Stack<MapMatrix>();
 		redoStack = new Stack<MapMatrix>();
-		saveStatus();
 
 		this.addButton();
 	}
 
+	/**
+	 * Save current mapmatrix into undoStack
+	 */
 	public void saveStatus() {
 		undoStack.push(new MapMatrix(mmat));
 		redoStack.clear();
 	}
 
+	/**
+	 * Track back to last mapmatrix in undoStack
+	 */
 	public void undo() {
 		if (undoStack.empty()) {
-			System.out.println("undo stack empty");
+//			System.out.println("undo stack empty");
 			return;
 		}
 		redoStack.push(new MapMatrix(mmat));
 		mmat = undoStack.pop();
 	}
 
+	/**
+	 * 
+	 */
 	public void redo() {
 		if (redoStack.empty()) {
-			System.out.println("redo stack empty");
+//			System.out.println("redo stack empty");
 			return;
 		}
 		undoStack.push(new MapMatrix(mmat));
@@ -86,6 +105,11 @@ public class EditorPanel extends JPanel implements GameConstants {
 		paintMap(g);
 	}
 
+	/**
+	 * paint map from current mapmatrix
+	 * 
+	 * @param g
+	 */
 	public void paintMap(Graphics g) {
 		int xSize = mmat.getXSize();
 		int ySize = mmat.getYSize();
@@ -181,15 +205,22 @@ public class EditorPanel extends JPanel implements GameConstants {
 				redo();
 				break;
 			case "clear":
-				mmat.clearAll();
 				saveStatus();
+				mmat.clearAll();
 				break;
 			case "random":
-				mmat.reFill();
 				saveStatus();
+				mmat.reFill();
 				break;
 			}
 			repaint();
+//			System.out.print("undoStack:");
+//			System.out.print(undoStack.size());
+//			System.out.print("\n");
+//			System.out.print("redoStack:");
+//			System.out.print(redoStack.size());
+//			System.out.print("\n");
+
 		}
 
 		@Override

@@ -121,8 +121,8 @@ public class ActiveItem implements GameConstants{
 		}
 		
 		if (map.isWithWall(this.x/CELL_WIDTH, this.y/CELL_HEIGHT)) {
-			this.alive = false;
 			this.player.setIsUsingBulletFlag(0);
+			this.player.setActiveItem(null);
 		}
 			
 	}

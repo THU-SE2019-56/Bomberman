@@ -139,7 +139,7 @@ public class MapPanel extends JPanel implements GameConstants {
 			
 			if (game.getPlayer()[i].getIsUsingBulletFlag()==1) {
 				game.getPlayer()[i].getActiveItem().move(game.getMap());		
-				if (game.getPlayer()[i].getActiveItem().IsAlive()) {
+				if (game.getPlayer()[i].getActiveItem() != null) {
 					switch (game.getPlayer()[i].getActiveItem().getDirection()) {				
 					case DIRECTION_UP:
 						bullet_width = BULLET_WIDTH;

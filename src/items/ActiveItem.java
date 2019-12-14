@@ -62,6 +62,10 @@ public class ActiveItem implements GameConstants{
 		this.y = Y;
 	}
 	
+	public void setState(boolean flag) {
+		this.alive = flag;
+	}
+	
 	public int getX() {
 		return this.x;
 	}
@@ -82,14 +86,6 @@ public class ActiveItem implements GameConstants{
 		return this.direction;
 	}
 	
-	private boolean isCollided(int x, int y, int w, int h) {
-		int x1 = Math.max(x, this.x);
-		int x2 = Math.min(x + w, this.x + ITEM_WIDTH);
-		int y1 = Math.max(y, this.y);
-		int y2 = Math.min(y + h, this.y + ITEM_HEIGHT);
-		return (x2 > x1) && (y2 > y1);
-	}
-
 	public void getItem(Player player) {
 		switch(itemID) {
 		case BULLET:
@@ -99,7 +95,7 @@ public class ActiveItem implements GameConstants{
 		}
 	}
 	
-	public void move() {
+	public void move(Map map) {
 	
 
 		if(this.x<0||this.y<0||this.x>CELL_WIDTH*CELL_NUM_X||this.y>CELL_HEIGHT*CELL_NUM_Y) {
@@ -123,6 +119,12 @@ public class ActiveItem implements GameConstants{
 		}
 		
 		}
+		
+		if (map.isWithWall(this.x/CELL_WIDTH, this.y/CELL_HEIGHT)) {
+			this.alive = false;
+			this.player.setIsUsingBulletFlag(0);
+		}
+			
 	}
 	
 

@@ -59,6 +59,9 @@ public interface GameConstants {
 	int ITEM_WIDTH = 45;
 	int ITEM_HEIGHT = 45;
 	
+	int BULLET_WIDTH = 25;
+	int BULLET_HEIGHT = 45;
+	
 	int HP_ADDED = 20; 
 
 	// Bomb constants

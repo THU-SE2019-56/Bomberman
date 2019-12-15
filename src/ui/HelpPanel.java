@@ -15,13 +15,13 @@ import game.GameConstants;
  * @author Wang
  * @version 0.9
  */
-public class WelcomePanel extends JPanel implements GameConstants {
+public class HelpPanel extends JPanel implements GameConstants {
 	private ImageIcon backgroundIcon;
 	private JLabel backgroundLabel;
 	private ImageIcon buttonIcon;
 	private JLabel buttonLabel;
 
-	public WelcomePanel(MainFrame mainFrame) {
+	public HelpPanel(MainFrame mainFrame) {
 		this.setLayout(null);
 		this.addButton();
 		this.addBackground();
@@ -30,15 +30,15 @@ public class WelcomePanel extends JPanel implements GameConstants {
 	}
 
 	public void addButton() {
-		buttonIcon = new ImageIcon("image/buttons/startGame.png");// Background image
+		buttonIcon = new ImageIcon("image/buttons/back.png");// Background image
 		buttonIcon.setImage(buttonIcon.getImage().getScaledInstance(280, 113, 1));
 		buttonLabel = new JLabel(buttonIcon);
-		buttonLabel.setBounds(WINDOW_WIDTH/2-140, 510, 280, 113);
+		buttonLabel.setBounds((int) (0.8*WINDOW_WIDTH), (int) (0.9*WINDOW_HEIGHT), 140, 55);
 		this.add(buttonLabel);
 	}
 
 	public void addBackground() {
-		backgroundIcon = new ImageIcon("image/menu/welcomePanel.png");// Background image
+		backgroundIcon = new ImageIcon("image/menu/helpPanel.png");// Background image
 		backgroundIcon.setImage(backgroundIcon.getImage().getScaledInstance(WINDOW_WIDTH, WINDOW_HEIGHT, 1));
 		backgroundLabel = new JLabel(backgroundIcon);
 		backgroundLabel.setBounds(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -63,16 +63,18 @@ public class WelcomePanel extends JPanel implements GameConstants {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			MenuPanel menuPanel = new MenuPanel(mainFrame);
+			MenuPanel newMenuPanel = new MenuPanel(mainFrame);
 
-			mainFrame.remove(WelcomePanel.this);
-			mainFrame.add(menuPanel);
-			mainFrame.validate();// repaint
+			JPanel mainPanel = (JPanel) mainFrame.getContentPane();
+			mainPanel.removeAll();
+
+			mainFrame.add(newMenuPanel);
+			mainFrame.validate();
 
 			mainFrame.setLayout(null);
 
-			menuPanel.setLocation(0, 0);
-			menuPanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+			newMenuPanel.setLocation(0, 0);
+			newMenuPanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		}
 
 		@Override

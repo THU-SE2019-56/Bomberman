@@ -261,7 +261,7 @@ public class MapPanel extends JPanel implements GameConstants {
 		itemImage[VELOCITY_UP] = ImageIO.read(new File("image/item/velocity.png"));
 		itemImage[BOMB_UP] = ImageIO.read(new File("image/item/bomb.png"));
 		itemImage[HP_UP] = ImageIO.read(new File("image/item/HP_UP.png"));
-		itemImage[POWER_UP] = ImageIO.read(new File("image/item/power.jpg"));
+		itemImage[POWER_UP] = ImageIO.read(new File("image/item/power.png"));
 		itemImage[IMMUNE] = ImageIO.read(new File("image/item/immune.png"));
 		itemImage[BULLET] = ImageIO.read(new File("image/item/bullet.png"));
 		
@@ -276,8 +276,8 @@ public class MapPanel extends JPanel implements GameConstants {
 		monsterImage[DIRECTION_RIGHT] = ImageIO.read(new File("image/monster/right.png"));
 		monsterImage[DIRECTION_LEFT] = ImageIO.read(new File("image/monster/left.png"));
 
-		mapImage[GROUND_1] = ImageIO.read(new File("image/maps/ground1.png"));
-		mapImage[GROUND_2] = ImageIO.read(new File("image/maps/ground2.png"));
+		mapImage[GROUND_1] = ImageIO.read(new File("image/maps/grass1.png"));
+		mapImage[GROUND_2] = ImageIO.read(new File("image/maps/grass2.png"));
 		mapImage[DESTRUCTIBLE_WALL] = ImageIO.read(new File("image/maps/wall_destructible.png"));
 		mapImage[INDESTRUCTIBLE_WALL] = ImageIO.read(new File("image/maps/wall_indestructibel.png"));
 

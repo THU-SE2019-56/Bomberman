@@ -10,10 +10,10 @@ import javax.swing.JPanel;
 import game.GameConstants;
 
 /**
- * Welcome Panel.
+ * Help Panel.
  * 
  * @author Wang
- * @version 0.9
+ * @version 1.0
  */
 public class HelpPanel extends JPanel implements GameConstants {
 	private ImageIcon backgroundIcon;
@@ -31,9 +31,9 @@ public class HelpPanel extends JPanel implements GameConstants {
 
 	public void addButton() {
 		buttonIcon = new ImageIcon("image/buttons/back.png");// Background image
-		buttonIcon.setImage(buttonIcon.getImage().getScaledInstance(280, 113, 1));
+		buttonIcon.setImage(buttonIcon.getImage().getScaledInstance(215, 111, 1));
 		buttonLabel = new JLabel(buttonIcon);
-		buttonLabel.setBounds((int) (0.8*WINDOW_WIDTH), (int) (0.9*WINDOW_HEIGHT), 140, 55);
+		buttonLabel.setBounds(WINDOW_WIDTH-195, WINDOW_HEIGHT-91, 215, 111);
 		this.add(buttonLabel);
 	}
 

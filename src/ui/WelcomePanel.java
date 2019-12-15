@@ -13,7 +13,7 @@ import game.GameConstants;
  * Welcome Panel.
  * 
  * @author Wang
- * @version 0.9
+ * @version 1.0
  */
 public class WelcomePanel extends JPanel implements GameConstants {
 	private ImageIcon backgroundIcon;

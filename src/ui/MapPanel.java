@@ -195,14 +195,8 @@ public class MapPanel extends JPanel implements GameConstants {
 					g.drawImage(bombImage[BOMB], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), BOMB_WIDTH,
 							BOMB_HEIGHT, this);
 				if (game.getMap().isWithItem(i, j))
-					if(game.getMap().getItemID(i, j)==BULLET) {
-						g.drawImage(itemImage[game.getMap().getItemID(i, j)], (int) (i * CELL_WIDTH)+10, (int) (j * CELL_HEIGHT), 		
-								BULLET_WIDTH, BULLET_HEIGHT, this);
-					}
-					else{
-						g.drawImage(itemImage[game.getMap().getItemID(i, j)], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), 		
+					g.drawImage(itemImage[game.getMap().getItemID(i, j)], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), 		
 							ITEM_WIDTH, ITEM_HEIGHT, this);
-					}
 				if (game.getMap().isAtExplosion(i, j))
 					g.drawImage(bombImage[EXPLODE], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), BOMB_WIDTH,
 							BOMB_HEIGHT, this);

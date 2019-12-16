@@ -19,6 +19,7 @@ public class Cell {
 	private boolean withItem = false;
 	// If a wall on this cell is destructible, true when no wall is on this cell
 	private boolean wallIsDestructible = true;
+	private int wallID = 7;
 	// Define explosion effects exerted on current this
 	private int explosionEffect = 0;
 	// Item/bomb on current cell
@@ -111,6 +112,8 @@ public class Cell {
 	public void setWall(boolean destructible) {
 		withWall = true;
 		wallIsDestructible = destructible;
+		if (destructible)
+			wallID = (int) (7 * (float)Math.random());
 	}
 
 	/**
@@ -182,5 +185,9 @@ public class Cell {
 	
 	public Item getItem() {
 		return item;
+	}
+	
+	public int getWallID() {
+		return wallID;
 	}
 }

@@ -27,38 +27,6 @@ public class Game implements GameConstants, Serializable {
 	private int stageNumber;
 	private int player1CID;
 	private int player2CID;
-
-	/*
-	public Game(int gameMode,int player1CharacterID,int player2CharacterID) {
-
-		// Initialize map, player, monsters
-		this.map = new Map(new MapMatrix(CELL_NUM_X, CELL_NUM_Y));
-	
-
-		for (int i = 0; i < MAX_MONSTER_NUMBER; i++) {
-			this.monsters[i] = new Monster(map);
-		}
-
-		if (gameMode == PVE_MODE) {
-			this.playerNum = 1;
-		}
-		if (gameMode == PVP_MODE) {
-			this.playerNum = 2;
-			for (Monster m : getMonsters()) {
-				m.eliminate();
-			}
-		}
-
-		for (int i = 0; i < getPlayerNum(); i++) {
-			if(i == PLAYER_ID_P1)  this.player[i] = new Player(getMap(), i,player1CharacterID);
-			else if (i==PLAYER_ID_P2) this.player[i] = new Player(getMap(),i,player2CharacterID);
-		}
-		this.item = new Item(2, 2);
-		this.setGameMode(gameMode);
-		this.pauseFlag = 0;
-
-	}
-	 */
 	
 	/**
 	 * Only for PVE mode, choose stage Different type of monsters, number of

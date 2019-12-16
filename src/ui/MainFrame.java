@@ -18,7 +18,7 @@ public class MainFrame extends JFrame implements GameConstants {
 	 */
 	public MainFrame() {
 		this.setTitle("Bomberman");
-		this.setUndecorated(true);
+		//this.setUndecorated(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.getContentPane().setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
 		this.pack();
@@ -28,8 +28,8 @@ public class MainFrame extends JFrame implements GameConstants {
 		this.setLocation((ge.getMaximumWindowBounds().width - WINDOW_WIDTH) / 2,
 				(ge.getMaximumWindowBounds().height - WINDOW_HEIGHT) / 2);
 
-		MenuPanel menuPanel = new MenuPanel(this);
-		this.add(menuPanel);
+		WelcomePanel welcomePanel = new WelcomePanel(this);
+		this.add(welcomePanel);
 
 		this.setVisible(true);
 	}

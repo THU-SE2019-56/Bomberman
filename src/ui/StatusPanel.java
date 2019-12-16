@@ -285,7 +285,7 @@ public class StatusPanel extends JPanel implements GameConstants {
 		// TODO Load all the images here
 
         bombImage[0] = ImageIO.read(new File("image/bomb/bomb.png"));
-        bombImage[1] = ImageIO.read(new File("image/bomb/explode.png"));
+        bombImage[1] = ImageIO.read(new File("image/bomb/power.png"));
 
     		
     		player1Image[DIRECTION_UP] = ImageIO.read(new File("image/player/p1UP.png"));

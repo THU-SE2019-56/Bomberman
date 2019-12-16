@@ -1,6 +1,9 @@
 package game;
 
 public interface GameConstants {
+	// For All
+	int NONE = 0;
+	
 	// DirectionConstants
 	int DIRECTION_STOP = -1;
 	int DIRECTION_UP = 0;
@@ -10,7 +13,7 @@ public interface GameConstants {
 
 	// Player constants
 	int PLAYER_WIDTH = 45;
-	int PLAYER_HEIGHT = 57;
+	int PLAYER_HEIGHT = 55;
 	int PLAYER_ID_P1 = 0;
 	int PLAYER_ID_P2 = 1;
 	int PLAYER_MAX_BOMB = 4;
@@ -33,7 +36,7 @@ public interface GameConstants {
 	
 	
 	int PLAYER_CHARACTER1_BOMB_POWER = 1;
-	int PLAYER_CHARACTER2_BOMB_POWER = 1;
+	int PLAYER_CHARACTER2_BOMB_POWER = 3;
 	int PLAYER_CHARACTER3_BOMB_POWER = 3;
 	int PLAYER_CHARACTER4_BOMB_POWER = 2;
 
@@ -46,14 +49,23 @@ public interface GameConstants {
 	double MONSTER_SPEED_HIGH = 2.5;
 
 	// Item constants
-	int ITEM_NUM = 4;
+	int ITEM_NUM = 7;
 	int BOMB_UP = 0;
 	int VELOCITY_UP = 1;
 	int POWER_UP = 2;
 	int HP_UP = 3;
+	int BULLET = 4;
+	int LANDMINE = 5;
+	int IMMUNE = 6;
+	
+	int ACTIVE_ITEM_NUM = 2;
+
 	
 	int ITEM_WIDTH = 45;
 	int ITEM_HEIGHT = 45;
+	
+	int BULLET_WIDTH = 25;
+	int BULLET_HEIGHT = 45;
 	
 	int HP_ADDED = 20; 
 
@@ -80,11 +92,20 @@ public interface GameConstants {
 	int WINDOW_WIDTH = CELL_WIDTH*CELL_NUM_X+STATUS_PANEL_WIDTH;
 	int WINDOW_HEIGHT = CELL_HEIGHT*CELL_NUM_Y;
 
+
 	// For thumbnail panel
-	int SCALE_FACTOR = 3;
+	int THUMBNAIL_WIDTH=420;
+	int THUMBNAIL_HEIGHT=420;
+	int SCALED_THUMBNAIL_WIDTH=400;
+	int SCALED_THUMBNAIL_HEIGHT=400;
 
 
 	// For map image
+	int GRASS_1 = 0;
+	int GRASS_2 = 1;
+	int SAND_1 = 2;
+	int SAND_2 = 3;
+	
 	int GROUND_1 = 0;
 	int GROUND_2 = 1;
 	int DESTRUCTIBLE_WALL = 2;
@@ -102,10 +123,29 @@ public interface GameConstants {
 	int PVP_MODE = 1;
 
 	// For MatMatrix
-	int NONE = 0;
 	int DESTRUCTIBLE = -1;
 	int INDESTRUCTIBLE = 1;
 
 	// For Refresh
 	int REFRESH = 30;
+	
+	// For Stage Editor
+	int ERASE_WALL = 1;
+	int SET_DESTRUCTIBLE_WALL = 2;
+	int SET_INDESTRUCTIBLE_WALL = 3;
+	int REMOVE_MOB = 4;
+	int SET_PLAYER_1 = 5;
+	int SET_PLAYER_2 = 6;
+	int SET_MONSTER_1 = 7;
+	int SET_MONSTER_2 = 8;
+	
+	// For Buttons
+	int BUTTON_WIDTH=280;
+	int BUTTON_HEIGHT=113;
+	int SCALED_BUTTON_WIDTH=196;
+	int SCALED_BUTTON_HEIGHT=79;
+	int STORY_WIDTH=520;
+	int STORY_HEIGHT=135;
+	int ARROW_WIDTH=100;
+	int ARROW_HEIGHT=213;
 }

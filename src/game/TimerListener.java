@@ -1,5 +1,6 @@
 package game;
 
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -43,6 +44,44 @@ public class TimerListener implements ActionListener, GameConstants {
 
 			if (game.isGameOver() == false) {
 				mapPanel.repaint();
+			}
+			
+			if (game.getPlayerNum()==2) {
+				int player1X = game.getPlayer()[PLAYER_ID_P1].getX();
+				int player1Y = game.getPlayer()[PLAYER_ID_P1].getY();
+				
+				int player2X = game.getPlayer()[PLAYER_ID_P2].getX();
+				int player2Y = game.getPlayer()[PLAYER_ID_P2].getY();
+				
+				int player1ActiveItemX=-100;
+				int player1ActiveItemY=-100;
+				int player2ActiveItemX=-100;
+				int player2ActiveItemY=-100;
+				if (game.getPlayer()[PLAYER_ID_P1].getActiveItem()!=null) {
+					player1ActiveItemX = game.getPlayer()[PLAYER_ID_P1].getActiveItem().getX();
+					player1ActiveItemY = game.getPlayer()[PLAYER_ID_P1].getActiveItem().getY();
+					Rectangle p1ActiveItemRectangle =  new Rectangle(player1ActiveItemX , player1ActiveItemY ,CELL_WIDTH,CELL_HEIGHT);
+					Rectangle p2Rectangle  = new Rectangle(player2X, player2Y,CELL_WIDTH,CELL_HEIGHT);
+					if (p2Rectangle.intersects(p1ActiveItemRectangle)) {
+						game.getPlayer()[PLAYER_ID_P2].getHurt(20);
+						game.getPlayer()[PLAYER_ID_P1].setIsUsingBulletFlag(0);
+						game.getPlayer()[PLAYER_ID_P1].setActiveItem(null);
+					}
+				}			
+				if (game.getPlayer()[PLAYER_ID_P2].getActiveItem()!=null) {
+					player2ActiveItemX = game.getPlayer()[PLAYER_ID_P2].getActiveItem().getX();
+					player2ActiveItemY = game.getPlayer()[PLAYER_ID_P2].getActiveItem().getY();
+					
+					Rectangle p1Rectangle  = new Rectangle(player1X, player1Y,CELL_WIDTH,CELL_HEIGHT);
+					Rectangle p2ActiveItemRectangle =  new Rectangle(player2ActiveItemX , player2ActiveItemY ,CELL_WIDTH,CELL_HEIGHT);
+					if (p1Rectangle.intersects(p2ActiveItemRectangle)) {
+						game.getPlayer()[PLAYER_ID_P1].getHurt(20);
+						game.getPlayer()[PLAYER_ID_P2].setIsUsingBulletFlag(0);
+						game.getPlayer()[PLAYER_ID_P2].setActiveItem(null);
+					}
+				}			
+				
+				
 			}
 		}
 

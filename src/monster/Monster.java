@@ -163,6 +163,15 @@ public class Monster implements GameConstants {
 				else brain.randomPath(m, path, mi, mj);
 				break;
 		}
+		if (p.getActiveItem() != null) {
+			if(isCollided(p.getActiveItem().getX(), p.getActiveItem().getY(), 45, 45)){
+				eliminate();
+				p.getActiveItem().setState(false);
+				p.setIsUsingBulletFlag(0);
+				p.setActiveItem(null);
+			}
+		}// killed by bullet
+		
 		if (isCollided(p.getX(), p.getY(), PLAYER_WIDTH, PLAYER_HEIGHT)) { // collide with player
 			eliminate();
 			p.getHurt(HP_LOSS_BY_MONSTER);
@@ -170,6 +179,7 @@ public class Monster implements GameConstants {
 		else if (isBlownOff(m)) {	// killed by bomb
 			eliminate();
 		}
+
 		else {	// still alive
 			setDirection(nextDirection(p, m));
 			updateAlert(p);

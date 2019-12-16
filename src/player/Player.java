@@ -1,17 +1,12 @@
 package player;
 
 import java.awt.AWTEvent;
-//import java.awt.Rectangle;
 import java.awt.event.AWTEventListener;
 import java.awt.event.KeyEvent;
 
-import map.Map;
-
 import game.GameConstants;
-import map.Cell;
-import items.Item;
-//import map.Map;
-//import monster.Monster;
+import items.ActiveItem;
+import map.Map;
 
 /**
  * The player can be controlled by the keyboard. Its motion is related to the
@@ -31,6 +26,8 @@ public class Player implements AWTEventListener, GameConstants {
 
 	private int bombPower;
 	private boolean isImmune;
+	private boolean isProtectedByItem;
+		
 	private boolean isAlive;
 	private int direction;
 	private int imageDirection;// This variable is for deciding the image of DIRECTION_STOP
@@ -38,7 +35,8 @@ public class Player implements AWTEventListener, GameConstants {
 	private int y;
 
 	private int playerHurtDelayCount = 0;
-	private int playerCanBeHurt = 1;
+	private int protectedByItemCount = 0;
+	private int bulletNum = 0;
 
 	private Map playerMap; // Relate the player with the map
 	private int mapX;
@@ -46,6 +44,8 @@ public class Player implements AWTEventListener, GameConstants {
 	private int playerHP;
 	private int playerMaxHP;
 	private int playerCharacterID;
+	private int itemID;
+	private ActiveItem playerItem;
 
 	private int stopflag = 0;
 
@@ -58,6 +58,7 @@ public class Player implements AWTEventListener, GameConstants {
 	private int futureDownflag = 0;
 	private int futureLeftflag = 0;
 	private int futureRightflag = 0;
+	private int isUsingBulletFlag = 0;
 
 	public Player(Map newmap, int id, int playerCharacterID) {
 		this.direction = DIRECTION_STOP;
@@ -68,10 +69,14 @@ public class Player implements AWTEventListener, GameConstants {
 		this.playerMap = newmap;
 		this.playerID = id;
 		this.playerHurtDelayCount = 0;
-		this.playerCanBeHurt = 1;
+		this.protectedByItemCount = 0;
 		this.isImmune = false;
+		this.isProtectedByItem = false;
 		this.bombPower = 1;
 		this.playerCharacterID = playerCharacterID;
+		this.itemID = -1;
+		this.bulletNum = 0;
+		this.isUsingBulletFlag = 0;
 
 		this.generateCharacter(playerCharacterID);
 	}
@@ -110,8 +115,50 @@ public class Player implements AWTEventListener, GameConstants {
 	public void SetBombPower(int power) {
 		this.bombPower = power;
 	}
-
 	/*
+	 * For item 
+	 */
+	
+	public void setActiveItemID(int iid) {		
+		this.itemID = iid;
+		
+		switch (iid) {
+		case BULLET:
+			this.bulletNum=1;
+			break;
+		}
+	}
+
+	public int getActiveItemID() {
+		return this.itemID;
+	}
+	
+	public void setActiveItem(ActiveItem item) {		
+		this.playerItem = item;
+	}
+	
+	public ActiveItem getActiveItem() {
+		return this.playerItem;
+	}
+	
+	public void setIsUsingBulletFlag(int flag) {	
+		this.isUsingBulletFlag = flag;
+	}
+	public int getIsUsingBulletFlag() {
+		return this.isUsingBulletFlag;
+	}
+	
+	public int getBulletNum() {
+		return this.bulletNum;
+	}
+	
+	public void setBulletNum(int num) {
+		this.bulletNum = num;
+	}
+	
+	
+	/*
+	 * 
 	 * For ID
 	 */
 	public void setPlayerID(int id) {
@@ -129,6 +176,7 @@ public class Player implements AWTEventListener, GameConstants {
 	public int getPlayerCharacterID() {
 		return this.playerCharacterID;
 	}
+	
 
 	public void generateCharacter(int cid) {
 		switch (cid) {
@@ -156,10 +204,8 @@ public class Player implements AWTEventListener, GameConstants {
 			this.bombMaxNumber = PLAYER_CHARACTER4_BOMB_MAX;
 			this.bombPower = PLAYER_CHARACTER4_BOMB_POWER;
 			break;
-
 		}
 	}
-
 	/*
 	 * For HP
 	 */
@@ -183,7 +229,7 @@ public class Player implements AWTEventListener, GameConstants {
 	}
 	
 	public void getHurt(int hpLoss) {
-		if (!this.isImmune) {
+		if ((!this.isImmune)&&(!this.isProtectedByItem)) {
 			this.setHP(this.getHP()-hpLoss);
 		}
 	}
@@ -194,6 +240,14 @@ public class Player implements AWTEventListener, GameConstants {
 	
 	public void setIsImmune(boolean isImmune) {
 		this.isImmune = isImmune;
+	}
+	
+	public boolean proectedByItem() {
+		return this.isProtectedByItem;
+	}
+	
+	public void setProtectedByItem(boolean protectedByItem) {
+		this.isProtectedByItem = protectedByItem;
 	}
 
 	/*
@@ -208,10 +262,8 @@ public class Player implements AWTEventListener, GameConstants {
 	}
 
 	public void addVelocityByItems() {
-
 		this.setVelocity(9);
 	}
-
 	/*
 	 * For direction
 	 */
@@ -282,7 +334,6 @@ public class Player implements AWTEventListener, GameConstants {
 	public void setLocationOnMap(Player player, Map mi, int mapX, int mapY) {
 
 		if (mi.isAvailable(mapX, mapY)) {
-
 			player.setMapX(mapX);
 			player.setMapY(mapY);
 		}
@@ -393,9 +444,7 @@ public class Player implements AWTEventListener, GameConstants {
 			case DIRECTION_STOP:
 				break;
 			}
-
 		}
-
 	}
 
 	public void clearFlag() {
@@ -472,6 +521,9 @@ public class Player implements AWTEventListener, GameConstants {
 				case KeyEvent.VK_ENTER:
 					this.plantBomb(this.playerMap, this.mapX, this.mapY);
 					break;
+				case KeyEvent.VK_SHIFT:
+					this.useActiveItem();
+					break;
 
 				}
 			}
@@ -541,7 +593,9 @@ public class Player implements AWTEventListener, GameConstants {
 				case KeyEvent.VK_SPACE:
 					this.plantBomb(this.playerMap, this.mapX, this.mapY);
 					break;
-
+				case KeyEvent.VK_CONTROL:
+					this.useActiveItem();
+					break;			
 				}
 			}
 
@@ -582,6 +636,19 @@ public class Player implements AWTEventListener, GameConstants {
 	public void decideState(Player player, Map mi) {
 
 	}
+	
+	/**
+	 * Create an active item and use it
+	 */
+	public void useActiveItem() {
+		if(this.getActiveItemID()==BULLET&&this.isUsingBulletFlag==0&&this.bulletNum>0) {
+			ActiveItem newActiveItem = new ActiveItem(this);
+			this.setActiveItem(newActiveItem);
+			this.isUsingBulletFlag = 1;
+			this.bulletNum--;			
+		}
+		
+	}
 
 	/**
 	 * Refresh the state of player. Player will be hurt when collided with bombs.
@@ -605,25 +672,27 @@ public class Player implements AWTEventListener, GameConstants {
 		this.playerMove();// Change the location of the player
 
 		if (mi.isAtExplosion(this.getMapX(), this.getMapY())) {
-
-			if (this.playerCanBeHurt == 1) {
 				this.getHurt(HP_LOSS_BY_BOMB);
-				this.playerCanBeHurt = 0;
-				this.setIsImmune(true);
-				
-				//this.setHP(this.getHP() - HP_LOSS_BY_BOMB);
-			}
+				this.setIsImmune(true);			
 		}
-
-		if (this.playerCanBeHurt == 0) {
-			this.playerHurtDelayCount++;
-	
+		
+		if (this.isImmune) {
+			this.playerHurtDelayCount++;			
 			if (this.playerHurtDelayCount == 30) {
 				this.playerHurtDelayCount = 0;
-				this.playerCanBeHurt = 1;
 				this.setIsImmune(false);
 			}
 		}
+		
+		if (this.isProtectedByItem) {
+			this.protectedByItemCount++;			
+			if (this.protectedByItemCount == 330) {
+				this.protectedByItemCount = 0;
+				this.setProtectedByItem(false);
+			}
+		}
+	
+
 
 	}
 

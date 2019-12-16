@@ -20,15 +20,9 @@ public class Item implements GameConstants {
 		x = xPos * 45 ;
 		y = yPos * 45 ;
 	}
-
-	/*public void RandomID() {
-		itemID = (int) (ITEM_NUM * (float)Math.random());
-	}*/
 	
 	/**
 	 * select item to use
-	 * 
-	 * @param player
 	 */
 	public void getItem(Player player) {
 		if (!this.isAcquired) {
@@ -51,6 +45,15 @@ public class Item implements GameConstants {
 				else if (player.getHP()> player.getMaxHP()-HP_ADDED) {
 					player.setHP(player.getMaxHP());
 				}
+				break;
+			case IMMUNE:
+				player.setProtectedByItem(true);
+				break;
+			case BULLET:
+				player.setActiveItemID(BULLET);
+				break;
+			case LANDMINE:
+				player.setActiveItemID(LANDMINE);
 				break;
 			}
 		}

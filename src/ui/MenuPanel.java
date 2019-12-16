@@ -4,7 +4,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -18,67 +17,99 @@ import game.GameConstants;
  * @version 0.9
  */
 public class MenuPanel extends JPanel implements GameConstants {
-	private MainFrame mainFrame;
-	private JButton buttonPve;
-	private JButton buttonPvp;
-	private JButton buttonStageEditor;
-	private JButton buttonHelp;
-	private JButton buttonExit;
-	private JButton buttonAbout;
-	private ImageIcon menuBackgroundIcon;
-	private JLabel menuBackgroundLabel;
+	private ImageIcon backgroundIcon;
+	private JLabel backgroundLabel;
 	
-	private Controls control;
+	private ImageIcon buttonPveOffIcon;
+	private ImageIcon buttonPveOnIcon;
+	private JLabel buttonPveLabel;
+	
+	private ImageIcon buttonPvpOffIcon;
+	private ImageIcon buttonPvpOnIcon;
+	private JLabel buttonPvpLabel;
+	
+	private ImageIcon buttonStageEditorOffIcon;
+	private ImageIcon buttonStageEditorOnIcon;
+	private JLabel buttonStageEditorLabel;
+	
+	private ImageIcon buttonHelpOffIcon;
+	private ImageIcon buttonHelpOnIcon;
+	private JLabel buttonHelpLabel;
+	
+	private ImageIcon buttonExitOffIcon;
+	private ImageIcon buttonExitOnIcon;
+	private JLabel buttonExitLabel;
 
-	public MenuPanel(MainFrame mainFrame) {
-		this.mainFrame = mainFrame;
-		control = new Controls();
-
+	public MenuPanel(MainFrame mainFrame) {		
+		this.setLayout(null);
 		this.addButton();
 		this.addBackground();
 		
-	}
-
-	public void addBackground() {
-		menuBackgroundIcon = new ImageIcon("image/menu/menuBackground.png");// Background image
-		menuBackgroundIcon.setImage(menuBackgroundIcon.getImage().getScaledInstance(WINDOW_WIDTH, WINDOW_HEIGHT, 1));
-		menuBackgroundLabel = new JLabel(menuBackgroundIcon);
-		menuBackgroundLabel.setBounds(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-		this.add(menuBackgroundLabel);
+		buttonPveLabel.addMouseListener(new ButtonListener(mainFrame,"pve"));
+		buttonPvpLabel.addMouseListener(new ButtonListener(mainFrame,"pvp"));
+		buttonStageEditorLabel.addMouseListener(new ButtonListener(mainFrame,"stage editor"));
+		buttonHelpLabel.addMouseListener(new ButtonListener(mainFrame,"help"));
+		buttonExitLabel.addMouseListener(new ButtonListener(mainFrame,"exit"));
 	}
 
 	public void addButton() {
+		buttonPveOffIcon = new ImageIcon("image/buttons/pve_off.png");
+		buttonPveOffIcon.setImage(buttonPveOffIcon.getImage().getScaledInstance(BUTTON_WIDTH, BUTTON_HEIGHT, 1));
 		
-		buttonPve = new JButton("PVE Mode");
-		buttonPvp = new JButton("PVP Mode");
-		buttonHelp = new JButton("Help");
-		buttonStageEditor = new JButton("StageEditor");
-		buttonExit = new JButton("Exit");
-		buttonAbout = new JButton("About us");
+		buttonPveOnIcon = new ImageIcon("image/buttons/pve_on.png");
+		buttonPveOnIcon.setImage(buttonPveOnIcon.getImage().getScaledInstance(BUTTON_WIDTH, BUTTON_HEIGHT, 1));
+		
+		buttonPveLabel = new JLabel(buttonPveOffIcon);
+		buttonPveLabel.setBounds(100, 200, BUTTON_WIDTH, BUTTON_HEIGHT);
+		this.add(buttonPveLabel);
+		
+		buttonPvpOffIcon = new ImageIcon("image/buttons/pvp_off.png");
+		buttonPvpOffIcon.setImage(buttonPvpOffIcon.getImage().getScaledInstance(BUTTON_WIDTH, BUTTON_HEIGHT, 1));
+		
+		buttonPvpOnIcon = new ImageIcon("image/buttons/pvp_on.png");
+		buttonPvpOnIcon.setImage(buttonPvpOnIcon.getImage().getScaledInstance(BUTTON_WIDTH, BUTTON_HEIGHT, 1));
+		
+		buttonPvpLabel = new JLabel(buttonPvpOffIcon);
+		buttonPvpLabel.setBounds(100, 400, BUTTON_WIDTH, BUTTON_HEIGHT);
+		this.add(buttonPvpLabel);
+		
+		buttonStageEditorOffIcon = new ImageIcon("image/buttons/stageEditor_off.png");
+		buttonStageEditorOffIcon.setImage(buttonStageEditorOffIcon.getImage().getScaledInstance(BUTTON_WIDTH, BUTTON_HEIGHT, 1));
+		
+		buttonStageEditorOnIcon = new ImageIcon("image/buttons/stageEditor_on.png");
+		buttonStageEditorOnIcon.setImage(buttonStageEditorOnIcon.getImage().getScaledInstance(BUTTON_WIDTH, BUTTON_HEIGHT, 1));
+		
+		buttonStageEditorLabel = new JLabel(buttonStageEditorOffIcon);
+		buttonStageEditorLabel.setBounds(100, 600, BUTTON_WIDTH, BUTTON_HEIGHT);
+		this.add(buttonStageEditorLabel);
+		
+		buttonHelpOffIcon = new ImageIcon("image/buttons/help_off.png");
+		buttonHelpOffIcon.setImage(buttonHelpOffIcon.getImage().getScaledInstance(BUTTON_WIDTH, BUTTON_HEIGHT, 1));
+		
+		buttonHelpOnIcon = new ImageIcon("image/buttons/help_on.png");
+		buttonHelpOnIcon.setImage(buttonHelpOnIcon.getImage().getScaledInstance(BUTTON_WIDTH, BUTTON_HEIGHT, 1));
+		
+		buttonHelpLabel = new JLabel(buttonHelpOffIcon);
+		buttonHelpLabel.setBounds(500, 400, BUTTON_WIDTH, BUTTON_HEIGHT);
+		this.add(buttonHelpLabel);
+		
+		buttonExitOffIcon = new ImageIcon("image/buttons/exit_off.png");
+		buttonExitOffIcon.setImage(buttonExitOffIcon.getImage().getScaledInstance(BUTTON_WIDTH, BUTTON_HEIGHT, 1));
+		
+		buttonExitOnIcon = new ImageIcon("image/buttons/exit_on.png");
+		buttonExitOnIcon.setImage(buttonExitOnIcon.getImage().getScaledInstance(BUTTON_WIDTH, BUTTON_HEIGHT, 1));
+		
+		buttonExitLabel = new JLabel(buttonExitOffIcon);
+		buttonExitLabel.setBounds(500, 600, BUTTON_WIDTH, BUTTON_HEIGHT);
+		this.add(buttonExitLabel);
+	}
 
-		control.initializeButton(buttonPve,50, 150, 150, 50);//PVE Mode
-		control.initializeButton(buttonPvp,50, 250, 150, 50);//PVP mode
-		control.initializeButton(buttonHelp,50, 350, 150, 50);//Help
-		control.initializeButton(buttonStageEditor,50, 450, 150, 50);//Stage Editor
-		control.initializeButton(buttonExit,700, 200, 150, 50);//Exit;
-		control.initializeButton(buttonAbout,700, 300, 150, 50);//About us
-
-		this.setLayout(null);
-
-		this.add(buttonPve);
-		this.add(buttonPvp);
-		this.add(buttonHelp);
-		this.add(buttonStageEditor);
-		this.add(buttonExit);
-		this.add(buttonAbout);
-
-		buttonPve.addMouseListener(new ButtonListener(mainFrame, "pve"));
-		buttonPvp.addMouseListener(new ButtonListener(mainFrame, "pvp"));
-		buttonHelp.addMouseListener(new ButtonListener(mainFrame, "help"));
-		buttonStageEditor.addMouseListener(new ButtonListener(mainFrame, "stage editor"));
-		buttonExit.addMouseListener(new ButtonListener(mainFrame, "exit"));
-		buttonAbout.addMouseListener(new ButtonListener(mainFrame, "about us"));
-
+	public void addBackground() {
+		backgroundIcon = new ImageIcon("image/background/menuPanel.png");
+		backgroundIcon.setImage(backgroundIcon.getImage().getScaledInstance(WINDOW_WIDTH, WINDOW_HEIGHT, 1));
+		backgroundLabel = new JLabel(backgroundIcon);
+		backgroundLabel.setBounds(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+		this.add(backgroundLabel);
 	}
 
 
@@ -146,11 +177,23 @@ public class MenuPanel extends JPanel implements GameConstants {
 				editor.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
 				break;
+			case "help":
+				HelpPanel helpPanel = new HelpPanel(mainFrame);
+
+				mainFrame.remove(MenuPanel.this);
+				mainFrame.add(helpPanel);
+				mainFrame.validate();// repaint
+
+				mainFrame.setLayout(null);
+
+				helpPanel.setLocation(0, 0);
+				helpPanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+				
+				break;
 			case "exit":
 				System.exit(0);// End game
 				break;
 			}
-
 		}
 
 		@Override
@@ -162,22 +205,19 @@ public class MenuPanel extends JPanel implements GameConstants {
 		public void mouseEntered(MouseEvent e) {
 			switch (this.name) {
 			case "pve":
-				control.highLightButton(buttonPve);
+				buttonPveLabel.setIcon(buttonPveOnIcon);
 				break;
 			case "pvp":
-				control.highLightButton(buttonPvp);
-				break;
-			case "help":
-				control.highLightButton(buttonHelp);
+				buttonPvpLabel.setIcon(buttonPvpOnIcon);
 				break;
 			case "stage editor":
-				control.highLightButton(buttonStageEditor);
+				buttonStageEditorLabel.setIcon(buttonStageEditorOnIcon);
+				break;
+			case "help":
+				buttonHelpLabel.setIcon(buttonHelpOnIcon);
 				break;
 			case "exit":
-				control.highLightButton(buttonExit);
-				break;
-			case "about us":
-				control.highLightButton(buttonAbout);
+				buttonExitLabel.setIcon(buttonExitOnIcon);
 				break;
 			}
 		}
@@ -186,22 +226,19 @@ public class MenuPanel extends JPanel implements GameConstants {
 		public void mouseExited(MouseEvent e) {
 			switch (this.name) {
 			case "pve":
-				control.resetButton(buttonPve);
+				buttonPveLabel.setIcon(buttonPveOffIcon);
 				break;
 			case "pvp":
-				control.resetButton(buttonPvp);
-				break;
-			case "help":
-				control.resetButton(buttonHelp);
+				buttonPvpLabel.setIcon(buttonPvpOffIcon);
 				break;
 			case "stage editor":
-				control.resetButton(buttonStageEditor);
+				buttonStageEditorLabel.setIcon(buttonStageEditorOffIcon);
+				break;
+			case "help":
+				buttonHelpLabel.setIcon(buttonHelpOffIcon);
 				break;
 			case "exit":
-				control.resetButton(buttonExit);
-				break;
-			case "about us":
-				control.resetButton(buttonAbout);
+				buttonExitLabel.setIcon(buttonExitOffIcon);
 				break;
 			}
 		}

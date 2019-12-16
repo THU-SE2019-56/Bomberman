@@ -90,8 +90,10 @@ public interface GameConstants {
 	int WINDOW_WIDTH = CELL_WIDTH*CELL_NUM_X+STATUS_PANEL_WIDTH;
 	int WINDOW_HEIGHT = CELL_HEIGHT*CELL_NUM_Y;
 
+
 	// For thumbnail panel
-	int SCALE_FACTOR = 3;
+	int THUMBNAIL_WIDTH=300;
+	int THUMBNAIL_HEIGHT=300;
 
 
 	// For map image
@@ -136,4 +138,6 @@ public interface GameConstants {
 	// For Buttons
 	int BUTTON_WIDTH=280;
 	int BUTTON_HEIGHT=113;
+	int ARROW_WIDTH=100;
+	int ARROW_HEIGHT=213;
 }

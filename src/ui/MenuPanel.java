@@ -105,7 +105,7 @@ public class MenuPanel extends JPanel implements GameConstants {
 	}
 
 	public void addBackground() {
-		backgroundIcon = new ImageIcon("image/menu/menuPanel.png");
+		backgroundIcon = new ImageIcon("image/background/menuPanel.png");
 		backgroundIcon.setImage(backgroundIcon.getImage().getScaledInstance(WINDOW_WIDTH, WINDOW_HEIGHT, 1));
 		backgroundLabel = new JLabel(backgroundIcon);
 		backgroundLabel.setBounds(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);

@@ -48,7 +48,7 @@ public class MapPanel extends JPanel implements GameConstants {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		this.stageNumber = game.getStageNumber() - 1;
+		this.stageNumber = game.getStageNumber();
 		this.setSize(MAP_WIDTH, MAP_HEIGHT);
 		this.setFocusable(true);
 
@@ -271,8 +271,8 @@ public class MapPanel extends JPanel implements GameConstants {
 
 		mapImage[GRASS_1] = ImageIO.read(new File("image/maps/grass1.png"));
 		mapImage[GRASS_2] = ImageIO.read(new File("image/maps/grass2.png"));
-		mapImage[SAND_1] = ImageIO.read(new File("image/maps/wall_destructible.png"));
-		mapImage[SAND_2] = ImageIO.read(new File("image/maps/wall_indestructibel.png"));
+		mapImage[SAND_1] = ImageIO.read(new File("image/maps/sand1.png"));
+		mapImage[SAND_2] = ImageIO.read(new File("image/maps/sand2.png"));
 
 		wallImage[0][0] = ImageIO.read(new File("image/maps/wall1-1.png"));
 		wallImage[0][1] = ImageIO.read(new File("image/maps/wall1-2.png"));

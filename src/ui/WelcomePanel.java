@@ -43,7 +43,7 @@ public class WelcomePanel extends JPanel implements GameConstants {
 	}
 
 	public void addBackground() {
-		backgroundIcon = new ImageIcon("image/menu/welcomePanel.png");// Background image
+		backgroundIcon = new ImageIcon("image/background/welcomePanel.png");// Background image
 		backgroundIcon.setImage(backgroundIcon.getImage().getScaledInstance(WINDOW_WIDTH, WINDOW_HEIGHT, 1));
 		backgroundLabel = new JLabel(backgroundIcon);
 		backgroundLabel.setBounds(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);

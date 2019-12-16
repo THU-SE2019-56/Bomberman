@@ -4,11 +4,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import game.GameConstants;
+import ui.WelcomePanel.ButtonListener;
 
 /**
  * Main menu panel. Fill in the MainFrame. Contain buttons to jump to other
@@ -18,67 +18,69 @@ import game.GameConstants;
  * @version 0.9
  */
 public class MenuPanel extends JPanel implements GameConstants {
-	private MainFrame mainFrame;
-	private JButton buttonPve;
-	private JButton buttonPvp;
-	private JButton buttonStageEditor;
-	private JButton buttonHelp;
-	private JButton buttonExit;
-	private JButton buttonAbout;
-	private ImageIcon menuBackgroundIcon;
-	private JLabel menuBackgroundLabel;
-	
-	private Controls control;
+	private ImageIcon backgroundIcon;
+	private JLabel backgroundLabel;
+	private ImageIcon buttonPveIcon;
+	private JLabel buttonPveLabel;
+	private ImageIcon buttonPvpIcon;
+	private JLabel buttonPvpLabel;
+	private ImageIcon buttonStageEditorIcon;
+	private JLabel buttonStageEditorLabel;
+	private ImageIcon buttonHelpIcon;
+	private JLabel buttonHelpLabel;
+	private ImageIcon buttonExitIcon;
+	private JLabel buttonExitLabel;
 
-	public MenuPanel(MainFrame mainFrame) {
-		this.mainFrame = mainFrame;
-		control = new Controls();
-
+	public MenuPanel(MainFrame mainFrame) {		
+		this.setLayout(null);
 		this.addButton();
 		this.addBackground();
 		
-	}
-
-	public void addBackground() {
-		menuBackgroundIcon = new ImageIcon("image/menu/menuBackground.png");// Background image
-		menuBackgroundIcon.setImage(menuBackgroundIcon.getImage().getScaledInstance(WINDOW_WIDTH, WINDOW_HEIGHT, 1));
-		menuBackgroundLabel = new JLabel(menuBackgroundIcon);
-		menuBackgroundLabel.setBounds(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-		this.add(menuBackgroundLabel);
+		buttonPveLabel.addMouseListener(new ButtonListener(mainFrame,"pve"));
+		buttonPvpLabel.addMouseListener(new ButtonListener(mainFrame,"pvp"));
+		buttonStageEditorLabel.addMouseListener(new ButtonListener(mainFrame,"stage editor"));
+		buttonHelpLabel.addMouseListener(new ButtonListener(mainFrame,"help"));
+		buttonExitLabel.addMouseListener(new ButtonListener(mainFrame,"exit"));
 	}
 
 	public void addButton() {
+		buttonPvpIcon = new ImageIcon("image/buttons/pvp.png");// Background image
+		buttonPvpIcon.setImage(buttonPvpIcon.getImage().getScaledInstance(280, 100, 1));
+		buttonPvpLabel = new JLabel(buttonPvpIcon);
+		buttonPvpLabel.setBounds(100, 200, 280, 100);
+		this.add(buttonPvpLabel);
 		
-		buttonPve = new JButton("PVE Mode");
-		buttonPvp = new JButton("PVP Mode");
-		buttonHelp = new JButton("Help");
-		buttonStageEditor = new JButton("StageEditor");
-		buttonExit = new JButton("Exit");
-		buttonAbout = new JButton("About us");
+		buttonPveIcon = new ImageIcon("image/buttons/pve.png");// Background image
+		buttonPveIcon.setImage(buttonPveIcon.getImage().getScaledInstance(280, 100, 1));
+		buttonPveLabel = new JLabel(buttonPveIcon);
+		buttonPveLabel.setBounds(100, 400, 280, 100);
+		this.add(buttonPveLabel);
+		
+		buttonStageEditorIcon = new ImageIcon("image/buttons/stageEditor.png");// Background image
+		buttonStageEditorIcon.setImage(buttonStageEditorIcon.getImage().getScaledInstance(280, 100, 1));
+		buttonStageEditorLabel = new JLabel(buttonStageEditorIcon);
+		buttonStageEditorLabel.setBounds(100, 600, 280, 100);
+		this.add(buttonStageEditorLabel);
+		
+		buttonHelpIcon = new ImageIcon("image/buttons/help.png");// Background image
+		buttonHelpIcon.setImage(buttonHelpIcon.getImage().getScaledInstance(280, 100, 1));
+		buttonHelpLabel = new JLabel(buttonHelpIcon);
+		buttonHelpLabel.setBounds(500, 400, 280, 100);
+		this.add(buttonHelpLabel);
+		
+		buttonExitIcon = new ImageIcon("image/buttons/exit.png");// Background image
+		buttonExitIcon.setImage(buttonExitIcon.getImage().getScaledInstance(280, 100, 1));
+		buttonExitLabel = new JLabel(buttonExitIcon);
+		buttonExitLabel.setBounds(500, 600, 280, 100);
+		this.add(buttonExitLabel);
+	}
 
-		control.initializeButton(buttonPve,50, 150, 150, 50);//PVE Mode
-		control.initializeButton(buttonPvp,50, 250, 150, 50);//PVP mode
-		control.initializeButton(buttonHelp,50, 350, 150, 50);//Help
-		control.initializeButton(buttonStageEditor,50, 450, 150, 50);//Stage Editor
-		control.initializeButton(buttonExit,700, 200, 150, 50);//Exit;
-		control.initializeButton(buttonAbout,700, 300, 150, 50);//About us
-
-		this.setLayout(null);
-
-		this.add(buttonPve);
-		this.add(buttonPvp);
-		this.add(buttonHelp);
-		this.add(buttonStageEditor);
-		this.add(buttonExit);
-		this.add(buttonAbout);
-
-		buttonPve.addMouseListener(new ButtonListener(mainFrame, "pve"));
-		buttonPvp.addMouseListener(new ButtonListener(mainFrame, "pvp"));
-		buttonHelp.addMouseListener(new ButtonListener(mainFrame, "help"));
-		buttonStageEditor.addMouseListener(new ButtonListener(mainFrame, "stage editor"));
-		buttonExit.addMouseListener(new ButtonListener(mainFrame, "exit"));
-		buttonAbout.addMouseListener(new ButtonListener(mainFrame, "about us"));
-
+	public void addBackground() {
+		backgroundIcon = new ImageIcon("image/menu/menuPanel.png");// Background image
+		backgroundIcon.setImage(backgroundIcon.getImage().getScaledInstance(WINDOW_WIDTH, WINDOW_HEIGHT, 1));
+		backgroundLabel = new JLabel(backgroundIcon);
+		backgroundLabel.setBounds(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+		this.add(backgroundLabel);
 	}
 
 
@@ -146,11 +148,23 @@ public class MenuPanel extends JPanel implements GameConstants {
 				editor.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
 				break;
+			case "help":
+				HelpPanel helpPanel = new HelpPanel(mainFrame);
+
+				mainFrame.remove(MenuPanel.this);
+				mainFrame.add(helpPanel);
+				mainFrame.validate();// repaint
+
+				mainFrame.setLayout(null);
+
+				helpPanel.setLocation(0, 0);
+				helpPanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+				
+				break;
 			case "exit":
 				System.exit(0);// End game
 				break;
 			}
-
 		}
 
 		@Override
@@ -160,50 +174,12 @@ public class MenuPanel extends JPanel implements GameConstants {
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
-			switch (this.name) {
-			case "pve":
-				control.highLightButton(buttonPve);
-				break;
-			case "pvp":
-				control.highLightButton(buttonPvp);
-				break;
-			case "help":
-				control.highLightButton(buttonHelp);
-				break;
-			case "stage editor":
-				control.highLightButton(buttonStageEditor);
-				break;
-			case "exit":
-				control.highLightButton(buttonExit);
-				break;
-			case "about us":
-				control.highLightButton(buttonAbout);
-				break;
-			}
+			
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
-			switch (this.name) {
-			case "pve":
-				control.resetButton(buttonPve);
-				break;
-			case "pvp":
-				control.resetButton(buttonPvp);
-				break;
-			case "help":
-				control.resetButton(buttonHelp);
-				break;
-			case "stage editor":
-				control.resetButton(buttonStageEditor);
-				break;
-			case "exit":
-				control.resetButton(buttonExit);
-				break;
-			case "about us":
-				control.resetButton(buttonAbout);
-				break;
-			}
+			
 		}
 
 	}

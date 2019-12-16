@@ -246,16 +246,16 @@ public class ChoosePlayerPanel extends JPanel implements  AWTEventListener, Game
 						
 					switch (player2CID) {
 					case 0:
-						p2Array.setBounds(130, 130, 50, 100); 
+						p2Array.setBounds(130, 130, 60, 100); 
 						break;
 					case 1:
-						p2Array.setBounds(330, 130, 50, 100);
+						p2Array.setBounds(330, 130, 60, 100);
 						break;
 					case 2:
-						p2Array.setBounds(530, 130, 50, 100);
+						p2Array.setBounds(530, 130, 60, 100);
 						break;
 					case 3:
-						p2Array.setBounds(730, 130, 50, 100);
+						p2Array.setBounds(730, 130, 60, 100);
 						break;
 					}
 				}

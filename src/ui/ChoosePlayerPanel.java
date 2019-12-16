@@ -19,7 +19,7 @@ import javax.swing.border.Border;
 import game.Game;
 import game.GameConstants;
 import game.TimerListener;
-
+import ui.MenuPanel.ButtonListener;
 
 /**
  * Main menu panel. Fill in the MainFrame. Contain buttons to jump to other
@@ -28,12 +28,8 @@ import game.TimerListener;
  * @author Wang
  * @version 0.9
  */
-public class ChoosePlayerPanel extends JPanel implements  AWTEventListener, GameConstants {
+public class ChoosePlayerPanel extends JPanel implements AWTEventListener, GameConstants {
 	private MainFrame mainFrame;
-	
-	private JButton buttonBack;
-	private  JButton buttonOk;
-
 
 	private ImageIcon ChoosePlayerBackgroundIcon;
 	private ImageIcon p1Icon;
@@ -43,98 +39,101 @@ public class ChoosePlayerPanel extends JPanel implements  AWTEventListener, Game
 	private ImageIcon p1ArrayIcon;
 	private ImageIcon p2ArrayIcon;
 
-	
 	private JLabel ChoosePlayerBackgroundLabel;
 	private JLabel p1Label;
 	private JLabel p2Label;
 	private JLabel p3Label;
 	private JLabel p4Label;
-	
+
 	private JLabel p1Array;
 	private JLabel p2Array;
-	
+
 	private int gameMode;
-	
+
 	private int player1CID = 0;
 	private int player2CID = 0;
-	
-	
+
 	private BufferedImage player1Image[] = new BufferedImage[4];
 	private BufferedImage player2Image[] = new BufferedImage[4];
 	private BufferedImage player3Image[] = new BufferedImage[4];
 	private BufferedImage player4Image[] = new BufferedImage[4];
-	
-	private Controls control;
-	
-	public ChoosePlayerPanel (MainFrame mainFrame,int gamemode) {
+
+	private ImageIcon buttonBackOffIcon;
+	private ImageIcon buttonBackOnIcon;
+	private JLabel buttonBackLabel;
+
+	private ImageIcon buttonConfirmOffIcon;
+	private ImageIcon buttonConfirmOnIcon;
+	private JLabel buttonConfirmLabel;
+
+	public ChoosePlayerPanel(MainFrame mainFrame, int gamemode) {
 		this.mainFrame = mainFrame;
 		this.gameMode = gamemode;
-		
-		control = new Controls();
-		
+
+		this.setLayout(null);
+
 		this.addArray();
 		this.addButton();
-	
-		//this.addPlayerInfo();
 		this.addPlayerLabel();
 		this.addBackground();
-		
+
 		try {
 			loadImage();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		this.getToolkit().addAWTEventListener(this, AWTEvent.KEY_EVENT_MASK);
 
+		this.getToolkit().addAWTEventListener(this, AWTEvent.KEY_EVENT_MASK);
+		buttonBackLabel.addMouseListener(new ButtonListener(mainFrame,"back"));
+		buttonConfirmLabel.addMouseListener(new ButtonListener(mainFrame,"confirm"));
 	}
 
 	public void addBackground() {
 		ChoosePlayerBackgroundIcon = new ImageIcon("image/menu/ChoosePlayer.png");// Background image
-		ChoosePlayerBackgroundIcon.setImage(ChoosePlayerBackgroundIcon.getImage().getScaledInstance(WINDOW_WIDTH, WINDOW_HEIGHT, 1));
+		ChoosePlayerBackgroundIcon
+				.setImage(ChoosePlayerBackgroundIcon.getImage().getScaledInstance(WINDOW_WIDTH, WINDOW_HEIGHT, 1));
 		ChoosePlayerBackgroundLabel = new JLabel(ChoosePlayerBackgroundIcon);
 		ChoosePlayerBackgroundLabel.setBounds(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 		this.add(ChoosePlayerBackgroundLabel);
 	}
-	
+
 	public void addArray() {
-		
+
 		p1ArrayIcon = new ImageIcon("image/menu/p1Array.png");
-		p1ArrayIcon.setImage(p1ArrayIcon .getImage().getScaledInstance(50, 100, 1));
+		p1ArrayIcon.setImage(p1ArrayIcon.getImage().getScaledInstance(50, 100, 1));
 		p1Array = new JLabel(p1ArrayIcon);
-		p1Array.setBounds(190,130,60,100);
-		
+		p1Array.setBounds(190, 130, 60, 100);
+
 		this.add(p1Array);
-		
+
 		if (gameMode == PVP_MODE) {
-			
+
 			p2ArrayIcon = new ImageIcon("image/menu/p2Array.png");
-			p2ArrayIcon.setImage(p2ArrayIcon .getImage().getScaledInstance(50, 100, 1));
+			p2ArrayIcon.setImage(p2ArrayIcon.getImage().getScaledInstance(50, 100, 1));
 			p2Array = new JLabel(p2ArrayIcon);
-			p2Array.setBounds(130,130,60, 100);
+			p2Array.setBounds(130, 130, 60, 100);
 			this.add(p2Array);
 		}
 
 	}
-	
+
 	public void addPlayerLabel() {
-		
-		
+
 		p1Icon = new ImageIcon("image/player/p1DOWN.png");// Background image
 		p2Icon = new ImageIcon("image/player/p2DOWN.png");// Background image
 		p3Icon = new ImageIcon("image/player/p3DOWN.png");// Background image
 		p4Icon = new ImageIcon("image/player/p4DOWN.png");// Background image
-		
+
 		p1Icon.setImage(p1Icon.getImage().getScaledInstance(160, 160, 1));
 		p2Icon.setImage(p2Icon.getImage().getScaledInstance(160, 160, 1));
 		p3Icon.setImage(p3Icon.getImage().getScaledInstance(160, 160, 1));
 		p4Icon.setImage(p4Icon.getImage().getScaledInstance(160, 160, 1));
-		
+
 		p1Label = new JLabel(p1Icon);
 		p2Label = new JLabel(p2Icon);
 		p3Label = new JLabel(p3Icon);
 		p4Label = new JLabel(p4Icon);
-		
+
 		p1Label.setBounds(100, 230, 160, 160);
 		p2Label.setBounds(300, 230, 160, 160);
 		p3Label.setBounds(500, 230, 160, 160);
@@ -149,26 +148,29 @@ public class ChoosePlayerPanel extends JPanel implements  AWTEventListener, Game
 	 * Add buttons
 	 */
 	public void addButton() {
+		buttonBackOffIcon = new ImageIcon("image/buttons/back_off.png");
+		buttonBackOffIcon.setImage(buttonBackOffIcon.getImage().getScaledInstance(BUTTON_WIDTH, BUTTON_HEIGHT, 1));
 
-		buttonBack = new JButton("Back");
-		buttonOk = new JButton("OK");
-		
-		control.initializeButton(buttonBack,100, 600, 180, 50);
-		control.initializeButton(buttonOk,700, 600, 180, 50);
-		
-		this.setLayout(null);
-	
-		this.add(buttonBack);
-		this.add(buttonOk);
-	
-		buttonBack.addMouseListener(new ButtonListener(mainFrame, "Back"));
-		buttonOk.addMouseListener(new ButtonListener(mainFrame, "Ok"));
+		buttonBackOnIcon = new ImageIcon("image/buttons/back_on.png");
+		buttonBackOnIcon.setImage(buttonBackOnIcon.getImage().getScaledInstance(BUTTON_WIDTH, BUTTON_HEIGHT, 1));
+
+		buttonBackLabel = new JLabel(buttonBackOffIcon);
+		buttonBackLabel.setBounds(0, 620, BUTTON_WIDTH, BUTTON_HEIGHT);
+		this.add(buttonBackLabel);
+
+		buttonConfirmOffIcon = new ImageIcon("image/buttons/confirm_off.png");
+		buttonConfirmOffIcon
+				.setImage(buttonConfirmOffIcon.getImage().getScaledInstance(BUTTON_WIDTH, BUTTON_HEIGHT, 1));
+
+		buttonConfirmOnIcon = new ImageIcon("image/buttons/confirm_on.png");
+		buttonConfirmOnIcon.setImage(buttonConfirmOnIcon.getImage().getScaledInstance(BUTTON_WIDTH, BUTTON_HEIGHT, 1));
+
+		buttonConfirmLabel = new JLabel(buttonConfirmOffIcon);
+		buttonConfirmLabel.setBounds(670, 620, BUTTON_WIDTH, BUTTON_HEIGHT);
+		this.add(buttonConfirmLabel);
 
 	}
-	
-	
-		
-	
+
 	public void loadImage() throws IOException {
 		player1Image[DIRECTION_UP] = ImageIO.read(new File("image/player/p1UP.png"));
 		player1Image[DIRECTION_RIGHT] = ImageIO.read(new File("image/player/p1RIGHT.png"));
@@ -179,8 +181,7 @@ public class ChoosePlayerPanel extends JPanel implements  AWTEventListener, Game
 		player2Image[DIRECTION_RIGHT] = ImageIO.read(new File("image/player/p2RIGHT.png"));
 		player2Image[DIRECTION_DOWN] = ImageIO.read(new File("image/player/p2DOWN.png"));
 		player2Image[DIRECTION_LEFT] = ImageIO.read(new File("image/player/p2LEFT.png"));
-		
-		
+
 		player3Image[DIRECTION_UP] = ImageIO.read(new File("image/player/p3UP.png"));
 		player3Image[DIRECTION_RIGHT] = ImageIO.read(new File("image/player/p3RIGHT.png"));
 		player3Image[DIRECTION_DOWN] = ImageIO.read(new File("image/player/p3DOWN.png"));
@@ -191,79 +192,74 @@ public class ChoosePlayerPanel extends JPanel implements  AWTEventListener, Game
 		player4Image[DIRECTION_DOWN] = ImageIO.read(new File("image/player/p4DOWN.png"));
 		player4Image[DIRECTION_LEFT] = ImageIO.read(new File("image/player/p4LEFT.png"));
 	}
-	
+
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		
-		
 	}
-	
-	public void eventDispatched(AWTEvent event) {
-			/*
-			 * Enable to set the direction of the player only when the x and y of the player
-			 * are multiples of 60. As a result, the player will keep moving when the x and
-			 * y of the player are not multiples of 60.
-			 */
 
-			if (event.getID() == KeyEvent.KEY_PRESSED) {
-				
-				KeyEvent e = (KeyEvent) event;
-				
-				switch (e.getKeyCode()){
-				case KeyEvent.VK_RIGHT:
-					if(player1CID<3)  player1CID++;
+	public void eventDispatched(AWTEvent event) {
+		if (event.getID() == KeyEvent.KEY_PRESSED) {
+
+			KeyEvent e = (KeyEvent) event;
+
+			switch (e.getKeyCode()) {
+			case KeyEvent.VK_RIGHT:
+				if (player1CID < 3)
+					player1CID++;
+				break;
+			case KeyEvent.VK_LEFT:
+				if (player1CID > 0)
+					player1CID--;
+				break;
+			}
+
+			switch (player1CID) {
+			case 0:
+				p1Array.setBounds(190, 130, 60, 100);
+				break;
+			case 1:
+				p1Array.setBounds(390, 130, 60, 100);
+				break;
+			case 2:
+				p1Array.setBounds(590, 130, 60, 100);
+				break;
+			case 3:
+				p1Array.setBounds(790, 130, 60, 100);
+				break;
+			}
+
+			if (gameMode == PVP_MODE) {
+
+				switch (e.getKeyCode()) {
+				case KeyEvent.VK_D:
+					if (player2CID < 3)
+						player2CID++;
 					break;
-				case KeyEvent.VK_LEFT:
-					if(player1CID>0)  player1CID--;
-					break;	
+				case KeyEvent.VK_A:
+					if (player2CID > 0)
+						player2CID--;
+					break;
 				}
 
-				switch (player1CID) {
+				switch (player2CID) {
 				case 0:
-					p1Array.setBounds(190, 130, 60, 100); 
+					p2Array.setBounds(130, 130, 60, 100);
 					break;
 				case 1:
-					p1Array.setBounds(390, 130, 60, 100);
+					p2Array.setBounds(330, 130, 60, 100);
 					break;
 				case 2:
-					p1Array.setBounds(590, 130, 60, 100);
+					p2Array.setBounds(530, 130, 60, 100);
 					break;
 				case 3:
-					p1Array.setBounds(790, 130, 60, 100);
+					p2Array.setBounds(730, 130, 60, 100);
 					break;
 				}
-				
-				if (gameMode ==PVP_MODE) {
-				
-					switch (e.getKeyCode()) {
-					case KeyEvent.VK_D:
-						if(player2CID<3)  player2CID++;
-						break;
-					case KeyEvent.VK_A:
-						if(player2CID>0)  player2CID--;
-						break;
-					}
-						
-					switch (player2CID) {
-					case 0:
-						p2Array.setBounds(130, 130, 60, 100); 
-						break;
-					case 1:
-						p2Array.setBounds(330, 130, 60, 100);
-						break;
-					case 2:
-						p2Array.setBounds(530, 130, 60, 100);
-						break;
-					case 3:
-						p2Array.setBounds(730, 130, 60, 100);
-						break;
-					}
-				}
-		
 			}
+
+		}
 	}
-	
-	
+
 	/**
 	 * Respond to button events
 	 */
@@ -276,9 +272,9 @@ public class ChoosePlayerPanel extends JPanel implements  AWTEventListener, Game
 			this.mainFrame = mainFrame;
 			this.name = name;
 		}
-		
-		public void generatePlayer(int p1CID,int p2CID) {
-			StagePanel stagePanelPve = new StagePanel(mainFrame,gameMode,p1CID,p2CID);
+
+		public void generatePlayer(int p1CID, int p2CID) {
+			StagePanel stagePanelPve = new StagePanel(mainFrame, gameMode, p1CID, p2CID);
 			mainFrame.remove(ChoosePlayerPanel.this);
 			mainFrame.add(stagePanelPve);
 			mainFrame.validate();// repaint
@@ -286,7 +282,7 @@ public class ChoosePlayerPanel extends JPanel implements  AWTEventListener, Game
 			stagePanelPve.setLocation(0, 0);
 			stagePanelPve.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		}
-		
+
 		@Override
 		public void mouseClicked(MouseEvent e) {
 
@@ -294,10 +290,10 @@ public class ChoosePlayerPanel extends JPanel implements  AWTEventListener, Game
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			
+
 			switch (this.name) {
-				
-			case "Back":
+
+			case "back":
 				MenuPanel newMenuPanel = new MenuPanel(mainFrame);
 
 				JPanel mainPanel = (JPanel) mainFrame.getContentPane();
@@ -311,8 +307,8 @@ public class ChoosePlayerPanel extends JPanel implements  AWTEventListener, Game
 				newMenuPanel.setLocation(0, 0);
 				newMenuPanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 				break;
-			case "Ok":
-				generatePlayer(player1CID,player2CID);
+			case "confirm":
+				generatePlayer(player1CID, player2CID);
 				break;
 			}
 		}
@@ -325,24 +321,23 @@ public class ChoosePlayerPanel extends JPanel implements  AWTEventListener, Game
 		@Override
 		public void mouseEntered(MouseEvent e) {
 			switch (this.name) {
-			case "Back":
-				control.highLightButton(buttonBack);
+			case "back":
+				buttonBackLabel.setIcon(buttonBackOnIcon);
 				break;
-			case "Ok":
-				control.highLightButton(buttonOk);
+			case "confirm":
+				buttonConfirmLabel.setIcon(buttonConfirmOnIcon);
 				break;
 			}
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
-
 			switch (this.name) {
-			case "Back":
-				control.resetButton(buttonBack);
+			case "back":
+				buttonBackLabel.setIcon(buttonBackOffIcon);
 				break;
-			case "Ok":
-				control.resetButton(buttonOk);
+			case "confirm":
+				buttonConfirmLabel.setIcon(buttonConfirmOffIcon);
 				break;
 			}
 		}

@@ -61,7 +61,7 @@ public class StagePanel extends JPanel implements GameConstants {
 	}
 
 	public void addBackground() {
-		stageBackgroundIcon = new ImageIcon("image/menu/ChoosePlayerPanelBackground.png");// Background image
+		stageBackgroundIcon = new ImageIcon("image/menu/ChooseStage.png");// Background image
 		stageBackgroundIcon.setImage(stageBackgroundIcon.getImage().getScaledInstance(WINDOW_WIDTH, WINDOW_HEIGHT, 1));
 		stageBackgroundLabel = new JLabel(stageBackgroundIcon);
 		stageBackgroundLabel.setBounds(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);

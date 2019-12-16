@@ -30,20 +30,12 @@ import game.TimerListener;
  */
 public class ChoosePlayerPanel extends JPanel implements  AWTEventListener, GameConstants {
 	private MainFrame mainFrame;
-	private JFrame thumbFrame;
 	
 	private JButton buttonBack;
 	private  JButton buttonOk;
-	
-	private JTextArea playerCharacterInfo1;
-	private JTextArea playerCharacterInfo2;
-	private JTextArea playerCharacterInfo3;
-	private JTextArea playerCharacterInfo4;
-	
-	private JTextField p1Text;
-	private JTextField p2Text;
-	
-	private ImageIcon stageBackgroundIcon;
+
+
+	private ImageIcon ChoosePlayerBackgroundIcon;
 	private ImageIcon p1Icon;
 	private ImageIcon p2Icon;
 	private ImageIcon p3Icon;
@@ -52,7 +44,7 @@ public class ChoosePlayerPanel extends JPanel implements  AWTEventListener, Game
 	private ImageIcon p2ArrayIcon;
 
 	
-	private JLabel stageBackgroundLabel;
+	private JLabel ChoosePlayerBackgroundLabel;
 	private JLabel p1Label;
 	private JLabel p2Label;
 	private JLabel p3Label;
@@ -66,7 +58,6 @@ public class ChoosePlayerPanel extends JPanel implements  AWTEventListener, Game
 	private int player1CID = 0;
 	private int player2CID = 0;
 	
-	private int chooseCount = 0;
 	
 	private BufferedImage player1Image[] = new BufferedImage[4];
 	private BufferedImage player2Image[] = new BufferedImage[4];
@@ -80,19 +71,11 @@ public class ChoosePlayerPanel extends JPanel implements  AWTEventListener, Game
 		this.gameMode = gamemode;
 		
 		control = new Controls();
-
-		thumbFrame = new JFrame();
-		thumbFrame.setAlwaysOnTop(true);
-		thumbFrame.setUndecorated(true);
-		thumbFrame.setVisible(false);
-		thumbFrame.setSize(CELL_WIDTH/SCALE_FACTOR*CELL_NUM_X,
-				CELL_HEIGHT/SCALE_FACTOR*CELL_NUM_Y);
-
 		
 		this.addArray();
 		this.addButton();
 	
-		this.addPlayerInfo();
+		//this.addPlayerInfo();
 		this.addPlayerLabel();
 		this.addBackground();
 		
@@ -107,11 +90,11 @@ public class ChoosePlayerPanel extends JPanel implements  AWTEventListener, Game
 	}
 
 	public void addBackground() {
-		stageBackgroundIcon = new ImageIcon("image/menu/ChoosePlayerPanelBackground.png");// Background image
-		stageBackgroundIcon.setImage(stageBackgroundIcon.getImage().getScaledInstance(WINDOW_WIDTH, WINDOW_HEIGHT, 1));
-		stageBackgroundLabel = new JLabel(stageBackgroundIcon);
-		stageBackgroundLabel.setBounds(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-		this.add(stageBackgroundLabel);
+		ChoosePlayerBackgroundIcon = new ImageIcon("image/menu/ChoosePlayer.png");// Background image
+		ChoosePlayerBackgroundIcon.setImage(ChoosePlayerBackgroundIcon.getImage().getScaledInstance(WINDOW_WIDTH, WINDOW_HEIGHT, 1));
+		ChoosePlayerBackgroundLabel = new JLabel(ChoosePlayerBackgroundIcon);
+		ChoosePlayerBackgroundLabel.setBounds(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+		this.add(ChoosePlayerBackgroundLabel);
 	}
 	
 	public void addArray() {
@@ -119,7 +102,7 @@ public class ChoosePlayerPanel extends JPanel implements  AWTEventListener, Game
 		p1ArrayIcon = new ImageIcon("image/menu/p1Array.png");
 		p1ArrayIcon.setImage(p1ArrayIcon .getImage().getScaledInstance(50, 100, 1));
 		p1Array = new JLabel(p1ArrayIcon);
-		p1Array.setBounds(190,50,50, 100);
+		p1Array.setBounds(190,130,60,100);
 		
 		this.add(p1Array);
 		
@@ -128,7 +111,7 @@ public class ChoosePlayerPanel extends JPanel implements  AWTEventListener, Game
 			p2ArrayIcon = new ImageIcon("image/menu/p2Array.png");
 			p2ArrayIcon.setImage(p2ArrayIcon .getImage().getScaledInstance(50, 100, 1));
 			p2Array = new JLabel(p2ArrayIcon);
-			p2Array.setBounds(130,50,50, 100);
+			p2Array.setBounds(130,130,60, 100);
 			this.add(p2Array);
 		}
 
@@ -142,20 +125,20 @@ public class ChoosePlayerPanel extends JPanel implements  AWTEventListener, Game
 		p3Icon = new ImageIcon("image/player/p3DOWN.png");// Background image
 		p4Icon = new ImageIcon("image/player/p4DOWN.png");// Background image
 		
-		p1Icon.setImage(p1Icon.getImage().getScaledInstance(180, 180, 1));
-		p2Icon.setImage(p2Icon.getImage().getScaledInstance(180, 180, 1));
-		p3Icon.setImage(p3Icon.getImage().getScaledInstance(180, 180, 1));
-		p4Icon.setImage(p4Icon.getImage().getScaledInstance(180, 180, 1));
+		p1Icon.setImage(p1Icon.getImage().getScaledInstance(160, 160, 1));
+		p2Icon.setImage(p2Icon.getImage().getScaledInstance(160, 160, 1));
+		p3Icon.setImage(p3Icon.getImage().getScaledInstance(160, 160, 1));
+		p4Icon.setImage(p4Icon.getImage().getScaledInstance(160, 160, 1));
 		
 		p1Label = new JLabel(p1Icon);
 		p2Label = new JLabel(p2Icon);
 		p3Label = new JLabel(p3Icon);
 		p4Label = new JLabel(p4Icon);
 		
-		p1Label.setBounds(100, 150, 180, 180);
-		p2Label.setBounds(300, 150, 180, 180);
-		p3Label.setBounds(500, 150, 180, 180);
-		p4Label.setBounds(700, 150, 180, 180);
+		p1Label.setBounds(100, 230, 160, 160);
+		p2Label.setBounds(300, 230, 160, 160);
+		p3Label.setBounds(500, 230, 160, 160);
+		p4Label.setBounds(700, 230, 160, 160);
 		this.add(p1Label);
 		this.add(p2Label);
 		this.add(p3Label);
@@ -183,39 +166,6 @@ public class ChoosePlayerPanel extends JPanel implements  AWTEventListener, Game
 
 	}
 	
-	/**
-	 * Add text areas showing players' info
-	 */
-	public void addPlayerInfo() {
-		playerCharacterInfo1 = new JTextArea(" Max HP:"+String.valueOf(PLAYER_CHARACTER1_HP_MAX)+ 
-											  "\r\n\r\n"+" Max Bomb Number:"+String.valueOf(PLAYER_CHARACTER1_BOMB_MAX)+
-											  "\r\n\r\n" +" Max Bomb Power:"+String.valueOf(PLAYER_CHARACTER1_BOMB_POWER));
-		
-		playerCharacterInfo2 = new JTextArea(" Max HP:"+String.valueOf(PLAYER_CHARACTER2_HP_MAX)+ 
-				  "\r\n\r\n"+" Max Bomb Number:"+String.valueOf(PLAYER_CHARACTER2_BOMB_MAX)+
-				  "\r\n\r\n" +" Max Bomb Power:"+String.valueOf(PLAYER_CHARACTER2_BOMB_POWER));
-		
-		
-		playerCharacterInfo3 = new JTextArea(" Max HP:"+String.valueOf(PLAYER_CHARACTER3_HP_MAX)+ 
-				  "\r\n\r\n"+" Max Bomb Number:"+String.valueOf(PLAYER_CHARACTER3_BOMB_MAX)+
-				  "\r\n\r\n" +" Max Bomb Power:"+String.valueOf(PLAYER_CHARACTER3_BOMB_POWER));
-	
-
-		playerCharacterInfo4 = new JTextArea(" Max HP:"+String.valueOf(PLAYER_CHARACTER4_HP_MAX)+ 
-				  "\r\n\r\n"+" Max Bomb Number:"+String.valueOf(PLAYER_CHARACTER4_BOMB_MAX)+
-				  "\r\n\r\n" +" Max Bomb Power:"+String.valueOf(PLAYER_CHARACTER4_BOMB_POWER));
-
-		
-		control.initializeTextArea(playerCharacterInfo1, 100, 350,180, 100);
-		control.initializeTextArea(playerCharacterInfo2, 300, 350,180, 100);
-		control.initializeTextArea(playerCharacterInfo3, 500, 350,180, 100);
-		control.initializeTextArea(playerCharacterInfo4, 700, 350,180, 100);
-
-		this.add(playerCharacterInfo1);
-		this.add(playerCharacterInfo2);
-		this.add(playerCharacterInfo3);
-		this.add(playerCharacterInfo4);
-	}
 	
 		
 	
@@ -270,16 +220,16 @@ public class ChoosePlayerPanel extends JPanel implements  AWTEventListener, Game
 
 				switch (player1CID) {
 				case 0:
-					p1Array.setBounds(190, 50, 50, 100); 
+					p1Array.setBounds(190, 130, 60, 100); 
 					break;
 				case 1:
-					p1Array.setBounds(390, 50, 50, 100);
+					p1Array.setBounds(390, 130, 60, 100);
 					break;
 				case 2:
-					p1Array.setBounds(590, 50, 50, 100);
+					p1Array.setBounds(590, 130, 60, 100);
 					break;
 				case 3:
-					p1Array.setBounds(790, 50, 50, 100);
+					p1Array.setBounds(790, 130, 60, 100);
 					break;
 				}
 				
@@ -296,16 +246,16 @@ public class ChoosePlayerPanel extends JPanel implements  AWTEventListener, Game
 						
 					switch (player2CID) {
 					case 0:
-						p2Array.setBounds(130, 50, 50, 100); 
+						p2Array.setBounds(130, 130, 50, 100); 
 						break;
 					case 1:
-						p2Array.setBounds(330, 50, 50, 100);
+						p2Array.setBounds(330, 130, 50, 100);
 						break;
 					case 2:
-						p2Array.setBounds(530, 50, 50, 100);
+						p2Array.setBounds(530, 130, 50, 100);
 						break;
 					case 3:
-						p2Array.setBounds(730, 50, 50, 100);
+						p2Array.setBounds(730, 130, 50, 100);
 						break;
 					}
 				}
@@ -344,9 +294,7 @@ public class ChoosePlayerPanel extends JPanel implements  AWTEventListener, Game
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			thumbFrame.setVisible(false);
-			thumbFrame.dispose();
-
+			
 			switch (this.name) {
 				
 			case "Back":
@@ -388,8 +336,6 @@ public class ChoosePlayerPanel extends JPanel implements  AWTEventListener, Game
 
 		@Override
 		public void mouseExited(MouseEvent e) {
-			thumbFrame.setVisible(false);
-			thumbFrame.dispose();	// necessary when mouse move too quickly
 
 			switch (this.name) {
 			case "Back":

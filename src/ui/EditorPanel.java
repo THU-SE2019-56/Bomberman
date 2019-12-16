@@ -132,8 +132,8 @@ public class EditorPanel extends JPanel implements GameConstants {
 	}
 
 	public void loadImage() throws Exception {
-		mapImage[GROUND_1] = ImageIO.read(new File("image/maps/ground1.png"));
-		mapImage[GROUND_2] = ImageIO.read(new File("image/maps/ground2.png"));
+		mapImage[GROUND_1] = ImageIO.read(new File("image/maps/grass1.png"));
+		mapImage[GROUND_2] = ImageIO.read(new File("image/maps/grass2.png"));
 		mapImage[DESTRUCTIBLE_WALL] = ImageIO.read(new File("image/maps/wall_destructible.png"));
 		mapImage[INDESTRUCTIBLE_WALL] = ImageIO.read(new File("image/maps/wall_indestructibel.png"));
 	}

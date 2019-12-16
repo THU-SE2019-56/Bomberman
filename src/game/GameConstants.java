@@ -1,6 +1,9 @@
 package game;
 
 public interface GameConstants {
+	// For All
+	int NONE = 0;
+	
 	// DirectionConstants
 	int DIRECTION_STOP = -1;
 	int DIRECTION_UP = 0;
@@ -109,7 +112,6 @@ public interface GameConstants {
 	int PVP_MODE = 1;
 
 	// For MatMatrix
-	int NONE = 0;
 	int DESTRUCTIBLE = -1;
 	int INDESTRUCTIBLE = 1;
 
@@ -117,12 +119,12 @@ public interface GameConstants {
 	int REFRESH = 30;
 	
 	// For Stage Editor
-	int ERASE_WALL = 0;
-	int SET_DESTRUCTIBLE_WALL = 1;
-	int SET_INDESTRUCTIBLE_WALL = 2;
-	int REMOVE_MOB = 3;
-	int SET_PLAYER_1 = 4;
-	int SET_PLAYER_2 = 5;
-	int SET_MONSTER_1 = 6;
-	int SET_MONSTER_2 = 7;
+	int ERASE_WALL = 1;
+	int SET_DESTRUCTIBLE_WALL = 2;
+	int SET_INDESTRUCTIBLE_WALL = 3;
+	int REMOVE_MOB = 4;
+	int SET_PLAYER_1 = 5;
+	int SET_PLAYER_2 = 6;
+	int SET_MONSTER_1 = 7;
+	int SET_MONSTER_2 = 8;
 }

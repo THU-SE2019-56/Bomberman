@@ -30,11 +30,12 @@ public class MapPanel extends JPanel implements GameConstants {
 	BufferedImage itemImage[] = new BufferedImage[ITEM_NUM];
 	BufferedImage monsterImage[] = new BufferedImage[4];
 	BufferedImage mapImage[] = new BufferedImage[4];
+	BufferedImage wallImage[][] = new BufferedImage[4][8];
 	BufferedImage gameImage[] = new BufferedImage[3];
 	BufferedImage bombImage[] = new BufferedImage[2];
-	
 	BufferedImage bulletImage[] = new BufferedImage[4];
-
+	private int stageNumber;
+	
 	/**
 	 * Initialize the Display class.
 	 * @throws Exception 
@@ -47,6 +48,7 @@ public class MapPanel extends JPanel implements GameConstants {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		this.stageNumber = game.getStageNumber() - 1;
 		this.setSize(MAP_WIDTH, MAP_HEIGHT);
 		this.setFocusable(true);
 
@@ -180,16 +182,13 @@ public class MapPanel extends JPanel implements GameConstants {
 		for (int i = 0; i < xSize; i++)
 			for (int j = 0; j < ySize; j++) {
 				if ((i + j) % 2 == 0)
-					g.drawImage(mapImage[GROUND_1], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), CELL_WIDTH,
+					g.drawImage(mapImage[GRASS_1], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), CELL_WIDTH,
 							CELL_HEIGHT, this);
 				else
-					g.drawImage(mapImage[GROUND_2], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), CELL_WIDTH,
+					g.drawImage(mapImage[GRASS_2], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), CELL_WIDTH,
 							CELL_HEIGHT, this);
-				if (game.getMap().isWithDestructibleWall(i, j))
-					g.drawImage(mapImage[DESTRUCTIBLE_WALL], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT),
-							CELL_WIDTH, CELL_HEIGHT, this);
-				if (game.getMap().isWithIndestructibleWall(i, j))
-					g.drawImage(mapImage[INDESTRUCTIBLE_WALL], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT),
+				if (game.getMap().isWithWall(i, j))
+					g.drawImage(wallImage[stageNumber][game.getMap().getWallID(i, j)], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT),
 							CELL_WIDTH, CELL_HEIGHT, this);
 				if (game.getMap().isWithBomb(i, j))
 					g.drawImage(bombImage[BOMB], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), BOMB_WIDTH,
@@ -270,11 +269,47 @@ public class MapPanel extends JPanel implements GameConstants {
 		monsterImage[DIRECTION_RIGHT] = ImageIO.read(new File("image/monster/right.png"));
 		monsterImage[DIRECTION_LEFT] = ImageIO.read(new File("image/monster/left.png"));
 
-		mapImage[GROUND_1] = ImageIO.read(new File("image/maps/grass1.png"));
-		mapImage[GROUND_2] = ImageIO.read(new File("image/maps/grass2.png"));
-		mapImage[DESTRUCTIBLE_WALL] = ImageIO.read(new File("image/maps/wall_destructible.png"));
-		mapImage[INDESTRUCTIBLE_WALL] = ImageIO.read(new File("image/maps/wall_indestructibel.png"));
+		mapImage[GRASS_1] = ImageIO.read(new File("image/maps/grass1.png"));
+		mapImage[GRASS_2] = ImageIO.read(new File("image/maps/grass2.png"));
+		mapImage[SAND_1] = ImageIO.read(new File("image/maps/wall_destructible.png"));
+		mapImage[SAND_2] = ImageIO.read(new File("image/maps/wall_indestructibel.png"));
 
+		wallImage[0][0] = ImageIO.read(new File("image/maps/wall1-1.png"));
+		wallImage[0][1] = ImageIO.read(new File("image/maps/wall1-2.png"));
+		wallImage[0][2] = ImageIO.read(new File("image/maps/wall1-3.png"));
+		wallImage[0][3] = ImageIO.read(new File("image/maps/wall1-4.png"));
+		wallImage[0][4] = ImageIO.read(new File("image/maps/wall1-5.png"));
+		wallImage[0][5] = ImageIO.read(new File("image/maps/wall1-6.png"));
+		wallImage[0][6] = ImageIO.read(new File("image/maps/wall1-7.png"));
+		wallImage[0][7] = ImageIO.read(new File("image/maps/wall1-8.png"));
+		
+		wallImage[1][0] = ImageIO.read(new File("image/maps/wall2-1.png"));
+		wallImage[1][1] = ImageIO.read(new File("image/maps/wall2-2.png"));
+		wallImage[1][2] = ImageIO.read(new File("image/maps/wall2-3.png"));
+		wallImage[1][3] = ImageIO.read(new File("image/maps/wall2-4.png"));
+		wallImage[1][4] = ImageIO.read(new File("image/maps/wall2-5.png"));
+		wallImage[1][5] = ImageIO.read(new File("image/maps/wall2-6.png"));
+		wallImage[1][6] = ImageIO.read(new File("image/maps/wall2-7.png"));
+		wallImage[1][7] = ImageIO.read(new File("image/maps/wall2-8.png"));
+
+		wallImage[2][0] = ImageIO.read(new File("image/maps/wall3-1.png"));
+		wallImage[2][1] = ImageIO.read(new File("image/maps/wall3-2.png"));
+		wallImage[2][2] = ImageIO.read(new File("image/maps/wall3-3.png"));
+		wallImage[2][3] = ImageIO.read(new File("image/maps/wall3-4.png"));
+		wallImage[2][4] = ImageIO.read(new File("image/maps/wall3-5.png"));
+		wallImage[2][5] = ImageIO.read(new File("image/maps/wall3-6.png"));
+		wallImage[2][6] = ImageIO.read(new File("image/maps/wall3-7.png"));
+		wallImage[2][7] = ImageIO.read(new File("image/maps/wall3-8.png"));
+		
+		wallImage[3][0] = ImageIO.read(new File("image/maps/wall4-1.png"));
+		wallImage[3][1] = ImageIO.read(new File("image/maps/wall4-2.png"));
+		wallImage[3][2] = ImageIO.read(new File("image/maps/wall4-3.png"));
+		wallImage[3][3] = ImageIO.read(new File("image/maps/wall4-4.png"));
+		wallImage[3][4] = ImageIO.read(new File("image/maps/wall4-5.png"));
+		wallImage[3][5] = ImageIO.read(new File("image/maps/wall4-6.png"));
+		wallImage[3][6] = ImageIO.read(new File("image/maps/wall4-7.png"));
+		wallImage[3][7] = ImageIO.read(new File("image/maps/wall4-8.png"));
+		
 		gameImage[GAMEOVER] = ImageIO.read(new File("image/game/gameover.jpg"));
 
 		bombImage[BOMB] = ImageIO.read(new File("image/bomb/bomb.png"));

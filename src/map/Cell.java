@@ -112,7 +112,8 @@ public class Cell {
 	public void setWall(boolean destructible) {
 		withWall = true;
 		wallIsDestructible = destructible;
-		wallID = (int) (7 * (float)Math.random());
+		if (destructible)
+			wallID = (int) (7 * (float)Math.random());
 	}
 
 	/**

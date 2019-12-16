@@ -329,7 +329,7 @@ public class Map implements GameConstants {
 		return ySize;
 	}
 	
-	public int getWallID(int x, int y) {
+	public int getWallID(int y, int x) {
 		return get_map()[x][y].getWallID();
 	}
 }

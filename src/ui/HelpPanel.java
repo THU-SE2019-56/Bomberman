@@ -18,7 +18,8 @@ import game.GameConstants;
 public class HelpPanel extends JPanel implements GameConstants {
 	private ImageIcon backgroundIcon;
 	private JLabel backgroundLabel;
-	private ImageIcon buttonIcon;
+	private ImageIcon buttonOffIcon;
+	private ImageIcon buttonOnIcon;
 	private JLabel buttonLabel;
 
 	public HelpPanel(MainFrame mainFrame) {
@@ -30,10 +31,14 @@ public class HelpPanel extends JPanel implements GameConstants {
 	}
 
 	public void addButton() {
-		buttonIcon = new ImageIcon("image/buttons/back.png");// Background image
-		buttonIcon.setImage(buttonIcon.getImage().getScaledInstance(215, 111, 1));
-		buttonLabel = new JLabel(buttonIcon);
-		buttonLabel.setBounds(WINDOW_WIDTH-195, WINDOW_HEIGHT-91, 215, 111);
+		buttonOffIcon = new ImageIcon("image/buttons/back_off.png");
+		buttonOffIcon.setImage(buttonOffIcon.getImage().getScaledInstance((int) (0.7*BUTTON_WIDTH), (int) (0.7*BUTTON_HEIGHT), 1));
+
+		buttonOnIcon = new ImageIcon("image/buttons/back_on.png");
+		buttonOnIcon.setImage(buttonOnIcon.getImage().getScaledInstance((int) (0.7*BUTTON_WIDTH), (int) (0.7*BUTTON_HEIGHT), 1));
+
+		buttonLabel = new JLabel(buttonOffIcon);
+		buttonLabel.setBounds(WINDOW_WIDTH - 195, WINDOW_HEIGHT-71, (int) (0.7*BUTTON_WIDTH), (int) (0.7*BUTTON_HEIGHT));
 		this.add(buttonLabel);
 	}
 
@@ -84,11 +89,12 @@ public class HelpPanel extends JPanel implements GameConstants {
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
-
+			buttonLabel.setIcon(buttonOnIcon);
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
+			buttonLabel.setIcon(buttonOffIcon);
 		}
 
 	}

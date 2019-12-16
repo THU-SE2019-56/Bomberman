@@ -18,22 +18,27 @@ import game.GameConstants;
 public class WelcomePanel extends JPanel implements GameConstants {
 	private ImageIcon backgroundIcon;
 	private JLabel backgroundLabel;
-	private ImageIcon buttonIcon;
+	private ImageIcon buttonOffIcon;
+	private ImageIcon buttonOnIcon;
 	private JLabel buttonLabel;
 
 	public WelcomePanel(MainFrame mainFrame) {
 		this.setLayout(null);
 		this.addButton();
 		this.addBackground();
-		
+
 		buttonLabel.addMouseListener(new ButtonListener(mainFrame));
 	}
 
 	public void addButton() {
-		buttonIcon = new ImageIcon("image/buttons/startGame.png");// Background image
-		buttonIcon.setImage(buttonIcon.getImage().getScaledInstance(280, 113, 1));
-		buttonLabel = new JLabel(buttonIcon);
-		buttonLabel.setBounds(WINDOW_WIDTH/2-140, 510, 280, 113);
+		buttonOffIcon = new ImageIcon("image/buttons/startGame_off.png");
+		buttonOffIcon.setImage(buttonOffIcon.getImage().getScaledInstance(BUTTON_WIDTH, BUTTON_HEIGHT, 1));
+
+		buttonOnIcon = new ImageIcon("image/buttons/startGame_on.png");
+		buttonOnIcon.setImage(buttonOnIcon.getImage().getScaledInstance(BUTTON_WIDTH, BUTTON_HEIGHT, 1));
+
+		buttonLabel = new JLabel(buttonOffIcon);
+		buttonLabel.setBounds(WINDOW_WIDTH / 2 - BUTTON_WIDTH/2, 510, BUTTON_WIDTH, BUTTON_HEIGHT);
 		this.add(buttonLabel);
 	}
 
@@ -42,6 +47,7 @@ public class WelcomePanel extends JPanel implements GameConstants {
 		backgroundIcon.setImage(backgroundIcon.getImage().getScaledInstance(WINDOW_WIDTH, WINDOW_HEIGHT, 1));
 		backgroundLabel = new JLabel(backgroundIcon);
 		backgroundLabel.setBounds(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+
 		this.add(backgroundLabel);
 	}
 
@@ -58,7 +64,7 @@ public class WelcomePanel extends JPanel implements GameConstants {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-
+			buttonLabel.setIcon(buttonOnIcon);
 		}
 
 		@Override
@@ -82,11 +88,12 @@ public class WelcomePanel extends JPanel implements GameConstants {
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
-
+			buttonLabel.setIcon(buttonOnIcon);
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
+			buttonLabel.setIcon(buttonOffIcon);
 		}
 
 	}

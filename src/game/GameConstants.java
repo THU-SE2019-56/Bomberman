@@ -127,4 +127,8 @@ public interface GameConstants {
 	int SET_PLAYER_2 = 6;
 	int SET_MONSTER_1 = 7;
 	int SET_MONSTER_2 = 8;
+	
+	// For Buttons
+	int BUTTON_WIDTH=280;
+	int BUTTON_HEIGHT=113;
 }

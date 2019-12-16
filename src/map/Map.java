@@ -328,4 +328,8 @@ public class Map implements GameConstants {
 	public int getYSize() {
 		return ySize;
 	}
+	
+	public int getWallID(int x, int y) {
+		return get_map()[x][y].getWallID();
+	}
 }

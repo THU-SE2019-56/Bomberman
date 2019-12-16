@@ -95,6 +95,11 @@ public interface GameConstants {
 
 
 	// For map image
+	int GRASS_1 = 0;
+	int GRASS_2 = 1;
+	int SAND_1 = 2;
+	int SAND_2 = 3;
+	
 	int GROUND_1 = 0;
 	int GROUND_2 = 1;
 	int DESTRUCTIBLE_WALL = 2;

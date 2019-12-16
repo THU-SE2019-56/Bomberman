@@ -32,13 +32,13 @@ public class HelpPanel extends JPanel implements GameConstants {
 
 	public void addButton() {
 		buttonOffIcon = new ImageIcon("image/buttons/back_off.png");
-		buttonOffIcon.setImage(buttonOffIcon.getImage().getScaledInstance((int) (0.7*BUTTON_WIDTH), (int) (0.7*BUTTON_HEIGHT), 1));
+		buttonOffIcon.setImage(buttonOffIcon.getImage().getScaledInstance(SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT, 1));
 
 		buttonOnIcon = new ImageIcon("image/buttons/back_on.png");
-		buttonOnIcon.setImage(buttonOnIcon.getImage().getScaledInstance((int) (0.7*BUTTON_WIDTH), (int) (0.7*BUTTON_HEIGHT), 1));
+		buttonOnIcon.setImage(buttonOnIcon.getImage().getScaledInstance(SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT, 1));
 
 		buttonLabel = new JLabel(buttonOffIcon);
-		buttonLabel.setBounds(WINDOW_WIDTH - 195, WINDOW_HEIGHT-71, (int) (0.7*BUTTON_WIDTH), (int) (0.7*BUTTON_HEIGHT));
+		buttonLabel.setBounds(WINDOW_WIDTH - 195, WINDOW_HEIGHT-71, SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT);
 		this.add(buttonLabel);
 	}
 

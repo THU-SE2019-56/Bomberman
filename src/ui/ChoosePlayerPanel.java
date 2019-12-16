@@ -1,6 +1,8 @@
 package ui;
 
 import java.awt.*;
+import java.awt.event.AWTEventListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.RoundRectangle2D;
@@ -26,18 +28,9 @@ import game.TimerListener;
  * @author Wang
  * @version 0.9
  */
-public class ChoosePlayerPanel extends JPanel implements GameConstants {
+public class ChoosePlayerPanel extends JPanel implements  AWTEventListener, GameConstants {
 	private MainFrame mainFrame;
 	private JFrame thumbFrame;
-	private JButton p1Button1;
-	private JButton p1Button2;
-	private JButton p1Button3;
-	private JButton p1Button4;
-	
-	private JButton p2Button1;
-	private JButton p2Button2;
-	private JButton p2Button3;
-	private JButton p2Button4;
 	
 	private JButton buttonBack;
 	private  JButton buttonOk;
@@ -55,6 +48,8 @@ public class ChoosePlayerPanel extends JPanel implements GameConstants {
 	private ImageIcon p2Icon;
 	private ImageIcon p3Icon;
 	private ImageIcon p4Icon;
+	private ImageIcon p1ArrayIcon;
+	private ImageIcon p2ArrayIcon;
 
 	
 	private JLabel stageBackgroundLabel;
@@ -62,11 +57,16 @@ public class ChoosePlayerPanel extends JPanel implements GameConstants {
 	private JLabel p2Label;
 	private JLabel p3Label;
 	private JLabel p4Label;
-
+	
+	private JLabel p1Array;
+	private JLabel p2Array;
+	
 	private int gameMode;
 	
-	private int player1CID;
-	private int player2CID;
+	private int player1CID = 0;
+	private int player2CID = 0;
+	
+	private int chooseCount = 0;
 	
 	private BufferedImage player1Image[] = new BufferedImage[4];
 	private BufferedImage player2Image[] = new BufferedImage[4];
@@ -88,10 +88,11 @@ public class ChoosePlayerPanel extends JPanel implements GameConstants {
 		thumbFrame.setSize(CELL_WIDTH/SCALE_FACTOR*CELL_NUM_X,
 				CELL_HEIGHT/SCALE_FACTOR*CELL_NUM_Y);
 
-		this.addButton();
 		
+		this.addArray();
+		this.addButton();
+	
 		this.addPlayerInfo();
-		this.addJTextField();
 		this.addPlayerLabel();
 		this.addBackground();
 		
@@ -100,6 +101,8 @@ public class ChoosePlayerPanel extends JPanel implements GameConstants {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		this.getToolkit().addAWTEventListener(this, AWTEvent.KEY_EVENT_MASK);
 
 	}
 
@@ -111,7 +114,29 @@ public class ChoosePlayerPanel extends JPanel implements GameConstants {
 		this.add(stageBackgroundLabel);
 	}
 	
+	public void addArray() {
+		
+		p1ArrayIcon = new ImageIcon("image/menu/p1Array.png");
+		p1ArrayIcon.setImage(p1ArrayIcon .getImage().getScaledInstance(50, 100, 1));
+		p1Array = new JLabel(p1ArrayIcon);
+		p1Array.setBounds(190,50,50, 100);
+		
+		this.add(p1Array);
+		
+		if (gameMode == PVP_MODE) {
+			
+			p2ArrayIcon = new ImageIcon("image/menu/p2Array.png");
+			p2ArrayIcon.setImage(p2ArrayIcon .getImage().getScaledInstance(50, 100, 1));
+			p2Array = new JLabel(p2ArrayIcon);
+			p2Array.setBounds(130,50,50, 100);
+			this.add(p2Array);
+		}
+
+	}
+	
 	public void addPlayerLabel() {
+		
+		
 		p1Icon = new ImageIcon("image/player/p1DOWN.png");// Background image
 		p2Icon = new ImageIcon("image/player/p2DOWN.png");// Background image
 		p3Icon = new ImageIcon("image/player/p3DOWN.png");// Background image
@@ -127,10 +152,10 @@ public class ChoosePlayerPanel extends JPanel implements GameConstants {
 		p3Label = new JLabel(p3Icon);
 		p4Label = new JLabel(p4Icon);
 		
-		p1Label.setBounds(100, 50, 180, 180);
-		p2Label.setBounds(300, 50, 180, 180);
-		p3Label.setBounds(500, 50, 180, 180);
-		p4Label.setBounds(700, 50, 180, 180);
+		p1Label.setBounds(100, 150, 180, 180);
+		p2Label.setBounds(300, 150, 180, 180);
+		p3Label.setBounds(500, 150, 180, 180);
+		p4Label.setBounds(700, 150, 180, 180);
 		this.add(p1Label);
 		this.add(p2Label);
 		this.add(p3Label);
@@ -142,68 +167,20 @@ public class ChoosePlayerPanel extends JPanel implements GameConstants {
 	 */
 	public void addButton() {
 
-		/*
-		 * Choose player1
-		 */
-		p1Button1 = new JButton("Character 1");
-		p1Button2 = new JButton("Character 2");
-		p1Button3 = new JButton("Character 3");
-		p1Button4 = new JButton("Character 4");
-		
 		buttonBack = new JButton("Back");
 		buttonOk = new JButton("OK");
 		
-		control.initializeButton(p1Button1,100, 400, 180, 50);
-		control.initializeButton(p1Button2,300, 400, 180, 50);
-		control.initializeButton(p1Button3,500, 400, 180, 50);
-		control.initializeButton(p1Button4,700, 400, 180, 50);
 		control.initializeButton(buttonBack,100, 600, 180, 50);
 		control.initializeButton(buttonOk,700, 600, 180, 50);
 		
 		this.setLayout(null);
-
-		this.add(p1Button1);
-		this.add(p1Button2);
-		this.add(p1Button3);
-		this.add(p1Button4);
 	
 		this.add(buttonBack);
 		this.add(buttonOk);
-
-		p1Button1.addMouseListener(new ButtonListener(mainFrame, "1"));
-		p1Button2.addMouseListener(new ButtonListener(mainFrame, "2"));
-		p1Button3.addMouseListener(new ButtonListener(mainFrame, "3"));
-		p1Button4.addMouseListener(new ButtonListener(mainFrame, "4"));
-		
+	
 		buttonBack.addMouseListener(new ButtonListener(mainFrame, "Back"));
 		buttonOk.addMouseListener(new ButtonListener(mainFrame, "Ok"));
-		
-		
-		/*
-		 * Choose player2
-		 */
-		if(gameMode == PVP_MODE){ 
-			
-			p2Button1 = new JButton("Character 1");
-			p2Button2 = new JButton("Character 2");
-			p2Button3 = new JButton("Character 3");
-			p2Button4 = new JButton("Character 4");
 
-			control.initializeButton(p2Button1,100, 500, 180, 50);
-			control.initializeButton(p2Button2,300, 500, 180, 50);
-			control.initializeButton(p2Button3,500, 500, 180, 50);
-			control.initializeButton(p2Button4,700, 500, 180, 50);
-			
-			this.add(p2Button1);
-			this.add(p2Button2);
-			this.add(p2Button3);
-			this.add(p2Button4);
-			
-			p2Button1.addMouseListener(new ButtonListener(mainFrame, "5"));
-			p2Button2.addMouseListener(new ButtonListener(mainFrame, "6"));
-			p2Button3.addMouseListener(new ButtonListener(mainFrame, "7"));
-			p2Button4.addMouseListener(new ButtonListener(mainFrame, "8"));
-		}
 	}
 	
 	/**
@@ -229,10 +206,10 @@ public class ChoosePlayerPanel extends JPanel implements GameConstants {
 				  "\r\n\r\n" +" Max Bomb Power:"+String.valueOf(PLAYER_CHARACTER4_BOMB_POWER));
 
 		
-		control.initializeTextArea(playerCharacterInfo1, 100, 250,180, 100);
-		control.initializeTextArea(playerCharacterInfo2, 300, 250,180, 100);
-		control.initializeTextArea(playerCharacterInfo3, 500, 250,180, 100);
-		control.initializeTextArea(playerCharacterInfo4, 700, 250,180, 100);
+		control.initializeTextArea(playerCharacterInfo1, 100, 350,180, 100);
+		control.initializeTextArea(playerCharacterInfo2, 300, 350,180, 100);
+		control.initializeTextArea(playerCharacterInfo3, 500, 350,180, 100);
+		control.initializeTextArea(playerCharacterInfo4, 700, 350,180, 100);
 
 		this.add(playerCharacterInfo1);
 		this.add(playerCharacterInfo2);
@@ -240,29 +217,7 @@ public class ChoosePlayerPanel extends JPanel implements GameConstants {
 		this.add(playerCharacterInfo4);
 	}
 	
-	public void addJTextField() {
 		
-		p1Text = new JTextField("P1");
-		control.initializeTextField(p1Text,20,400,50,50);
-		this.add(p1Text);
-		
-		if (gameMode == PVP_MODE) {
-			
-			p2Text = new JTextField("P2");
-			control.initializeTextField(p2Text,20,500,50,50);
-			this.add(p2Text);
-		}
-	}
-		
-	
-	public void highLightChooseButton(JButton button) {
-		button.setBackground(Color.PINK);
-	}
-	public void resetChooseButton(JButton button) {
-		button.setBackground(Color.WHITE);
-
-	}
-	
 	
 	public void loadImage() throws IOException {
 		player1Image[DIRECTION_UP] = ImageIO.read(new File("image/player/p1UP.png"));
@@ -290,7 +245,72 @@ public class ChoosePlayerPanel extends JPanel implements GameConstants {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
-		g.drawImage(player1Image[DIRECTION_DOWN], 100, 50, 180, 180, this);
+		
+	}
+	
+	public void eventDispatched(AWTEvent event) {
+			/*
+			 * Enable to set the direction of the player only when the x and y of the player
+			 * are multiples of 60. As a result, the player will keep moving when the x and
+			 * y of the player are not multiples of 60.
+			 */
+
+			if (event.getID() == KeyEvent.KEY_PRESSED) {
+				
+				KeyEvent e = (KeyEvent) event;
+				
+				switch (e.getKeyCode()){
+				case KeyEvent.VK_RIGHT:
+					if(player1CID<3)  player1CID++;
+					break;
+				case KeyEvent.VK_LEFT:
+					if(player1CID>0)  player1CID--;
+					break;	
+				}
+
+				switch (player1CID) {
+				case 0:
+					p1Array.setBounds(190, 50, 50, 100); 
+					break;
+				case 1:
+					p1Array.setBounds(390, 50, 50, 100);
+					break;
+				case 2:
+					p1Array.setBounds(590, 50, 50, 100);
+					break;
+				case 3:
+					p1Array.setBounds(790, 50, 50, 100);
+					break;
+				}
+				
+				if (gameMode ==PVP_MODE) {
+				
+					switch (e.getKeyCode()) {
+					case KeyEvent.VK_D:
+						if(player2CID<3)  player2CID++;
+						break;
+					case KeyEvent.VK_A:
+						if(player2CID>0)  player2CID--;
+						break;
+					}
+						
+					switch (player2CID) {
+					case 0:
+						p2Array.setBounds(130, 50, 50, 100); 
+						break;
+					case 1:
+						p2Array.setBounds(330, 50, 50, 100);
+						break;
+					case 2:
+						p2Array.setBounds(530, 50, 50, 100);
+						break;
+					case 3:
+						p2Array.setBounds(730, 50, 50, 100);
+						break;
+					}
+				}
+		
+			}
 	}
 	
 	
@@ -328,38 +348,6 @@ public class ChoosePlayerPanel extends JPanel implements GameConstants {
 			thumbFrame.dispose();
 
 			switch (this.name) {
-			case "1":
-				player1CID = 0;			
-				control.chooseButtonFrom(p1Button1,p1Button2,p1Button3,p1Button4);
-				break;			
-			case "2":		
-				control.chooseButtonFrom(p1Button2,p1Button1,p1Button3,p1Button4);
-				player1CID = 1;		
-				break;
-			case "3":
-				control.chooseButtonFrom(p1Button3,p1Button1,p1Button2,p1Button4);
-				player1CID = 2;
-				break;
-			case "4":
-				control.chooseButtonFrom(p1Button4,p1Button1,p1Button2,p1Button3);
-				player1CID = 3;		
-				break;				
-			case "5":			
-				control.chooseButtonFrom(p2Button1,p2Button2,p2Button3,p2Button4);
-				player2CID = 0;	
-				break;		
-			case "6":		
-				control.chooseButtonFrom(p2Button2,p2Button1,p2Button3,p2Button4);
-				player2CID = 1;		
-				break;
-			case "7":
-				control.chooseButtonFrom(p2Button3,p2Button1,p2Button2,p2Button4);
-				player2CID = 2;
-				break;
-			case "8":
-				control.chooseButtonFrom(p2Button4,p2Button1,p2Button2,p2Button3);
-				player2CID = 3;
-				break;
 				
 			case "Back":
 				MenuPanel newMenuPanel = new MenuPanel(mainFrame);

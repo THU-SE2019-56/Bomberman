@@ -88,7 +88,7 @@ public class ChoosePlayerPanel extends JPanel implements AWTEventListener, GameC
 
 	public void addArray() {
 
-		p1ArrayIcon = new ImageIcon("image/buttons/p1Array.png");
+		p1ArrayIcon = new ImageIcon("image/buttons/p1array.png");
 		p1ArrayIcon.setImage(p1ArrayIcon.getImage().getScaledInstance(50, 100, 1));
 		p1Array = new JLabel(p1ArrayIcon);
 		p1Array.setBounds(190, 130, 60, 100);
@@ -97,7 +97,7 @@ public class ChoosePlayerPanel extends JPanel implements AWTEventListener, GameC
 
 		if (gameMode == PVP_MODE) {
 
-			p2ArrayIcon = new ImageIcon("image/buttons/p2Array.png");
+			p2ArrayIcon = new ImageIcon("image/buttons/p2array.png");
 			p2ArrayIcon.setImage(p2ArrayIcon.getImage().getScaledInstance(50, 100, 1));
 			p2Array = new JLabel(p2ArrayIcon);
 			p2Array.setBounds(130, 130, 60, 100);

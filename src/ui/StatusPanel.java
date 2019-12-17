@@ -303,7 +303,7 @@ public class StatusPanel extends JPanel implements GameConstants {
         bombImage[0] = ImageIO.read(new File("image/bomb/bomb.png"));
         bombImage[1] = ImageIO.read(new File("image/bomb/power.png"));
 
-        itemImage[BULLET]= ImageIO.read(new File("image/Item/bullet.png"));
+        itemImage[BULLET]= ImageIO.read(new File("image/item/bullet.png"));
 
         player1Image[DIRECTION_UP] = ImageIO.read(new File("image/player/p1UP.png"));
         player1Image[DIRECTION_RIGHT] = ImageIO.read(new File("image/player/p1RIGHT.png"));
@@ -325,6 +325,7 @@ public class StatusPanel extends JPanel implements GameConstants {
         player4Image[DIRECTION_RIGHT] = ImageIO.read(new File("image/player/p4RIGHT.png"));
         player4Image[DIRECTION_DOWN] = ImageIO.read(new File("image/player/p4DOWN.png"));
         player4Image[DIRECTION_LEFT] = ImageIO.read(new File("image/player/p4LEFT.png"));
+
 
     }
 

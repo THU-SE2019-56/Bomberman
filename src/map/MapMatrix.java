@@ -143,6 +143,7 @@ public class MapMatrix implements GameConstants {
 
 	/**
 	 * Construction method for cloning a know mapmatrix
+	 * 
 	 * @param mmat
 	 */
 	public MapMatrix(MapMatrix mmat) {
@@ -349,6 +350,10 @@ public class MapMatrix implements GameConstants {
 			wall[yPos][xPos] = DESTRUCTIBLE;
 		else
 			wall[yPos][xPos] = INDESTRUCTIBLE;
+	}
+
+	public void removeWall(int yPos, int xPos) {
+		wall[yPos][xPos] = NONE;
 	}
 
 	public void setDestructibleWallDensity(float density) {

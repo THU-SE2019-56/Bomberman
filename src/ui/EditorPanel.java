@@ -1,5 +1,6 @@
 package ui;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -27,10 +28,9 @@ public class EditorPanel extends JPanel implements GameConstants {
 	MapMatrix mmat;
 	Stack<MapMatrix> undoStack;
 	Stack<MapMatrix> redoStack;
+	int editingMode = NONE;
 
-	BufferedImage mapImage[] = new BufferedImage[4];
-	BufferedImage itemImage[] = new BufferedImage[ITEM_NUM];
-	BufferedImage bombImage[] = new BufferedImage[2];
+	BufferedImage editorImage[] = new BufferedImage[4];
 
 	private JButton buttonBack;
 	private JButton buttonSave;
@@ -38,6 +38,9 @@ public class EditorPanel extends JPanel implements GameConstants {
 	private JButton buttonRedo;
 	private JButton buttonClear;
 	private JButton buttonRandom;
+
+	private IconButton buttonIndestructibleWall;
+	private IconButton buttonDestructibleWall;
 
 	Controls control;
 
@@ -62,6 +65,48 @@ public class EditorPanel extends JPanel implements GameConstants {
 		redoStack = new Stack<MapMatrix>();
 
 		this.addButton();
+	}
+
+	/**
+	 * @return if given position is in current editing mmat
+	 */
+	public boolean isInMap(int yPos, int xPos) {
+		return xPos >= 0 && xPos < mmat.getXSize() && yPos >= 0 && yPos < mmat.getYSize();
+	}
+
+	public void switchMode(int mode) {
+		if (editingMode == mode)
+			editingMode = NONE;
+		else
+			editingMode = mode;
+	}
+
+	/**
+	 * Edit given position according to given mode
+	 * 
+	 * @param mode
+	 * @param yPos
+	 * @param xPos
+	 */
+	public void editCell(int mode, int yPos, int xPos) {
+		if (!isInMap(yPos, xPos))
+			return;
+		switch (mode) {
+		case REMOVE_WALL:
+			mmat.removeWall(yPos, xPos);
+			break;
+		case SET_DESTRUCTIBLE_WALL:
+			mmat.setWall(yPos, xPos, true);
+			break;
+		case SET_INDESTRUCTIBLE_WALL:
+			mmat.setWall(yPos, xPos, false);
+			break;
+		case REMOVE_MOB:
+			break;
+
+		default:
+			break;
+		}
 	}
 
 	/**
@@ -116,26 +161,26 @@ public class EditorPanel extends JPanel implements GameConstants {
 		for (int i = 0; i < xSize; i++)
 			for (int j = 0; j < ySize; j++) {
 				if ((i + j) % 2 == 0)
-					g.drawImage(mapImage[GROUND_1], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), CELL_WIDTH,
+					g.drawImage(editorImage[GROUND_1], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), CELL_WIDTH,
 							CELL_HEIGHT, this);
 				else
-					g.drawImage(mapImage[GROUND_2], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), CELL_WIDTH,
+					g.drawImage(editorImage[GROUND_2], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), CELL_WIDTH,
 							CELL_HEIGHT, this);
 				if (mmat.isWithDestructibleWall(j, i))
-					g.drawImage(mapImage[DESTRUCTIBLE_WALL], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT),
+					g.drawImage(editorImage[DESTRUCTIBLE_WALL], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT),
 							CELL_WIDTH, CELL_HEIGHT, this);
 				if (mmat.isWithIndestructibleWall(j, i))
-					g.drawImage(mapImage[INDESTRUCTIBLE_WALL], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT),
+					g.drawImage(editorImage[INDESTRUCTIBLE_WALL], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT),
 							CELL_WIDTH, CELL_HEIGHT, this);
 				// TODO waiting for adding bomb and item
 			}
 	}
 
 	public void loadImage() throws Exception {
-		mapImage[GROUND_1] = ImageIO.read(new File("image/maps/grass1.png"));
-		mapImage[GROUND_2] = ImageIO.read(new File("image/maps/grass2.png"));
-		mapImage[DESTRUCTIBLE_WALL] = ImageIO.read(new File("image/maps/wall_destructible.png"));
-		mapImage[INDESTRUCTIBLE_WALL] = ImageIO.read(new File("image/maps/wall_indestructibel.png"));
+		editorImage[GROUND_1] = ImageIO.read(new File("image/maps/grass1.png"));
+		editorImage[GROUND_2] = ImageIO.read(new File("image/maps/grass2.png"));
+		editorImage[DESTRUCTIBLE_WALL] = ImageIO.read(new File("image/maps/wall1-8.png"));
+		editorImage[INDESTRUCTIBLE_WALL] = ImageIO.read(new File("image/maps/wall1-1.png"));
 	}
 
 	public void addButton() {
@@ -153,6 +198,11 @@ public class EditorPanel extends JPanel implements GameConstants {
 		buttonRandom = new JButton("Random");
 		control.initializeButton(buttonRandom, MAP_WIDTH + 120, 80, 90, 50);
 
+		buttonIndestructibleWall = new IconButton(editorImage[INDESTRUCTIBLE_WALL], SET_INDESTRUCTIBLE_WALL,
+				MAP_WIDTH + 60, 200, CELL_WIDTH, CELL_HEIGHT);
+		buttonDestructibleWall = new IconButton(editorImage[DESTRUCTIBLE_WALL], SET_DESTRUCTIBLE_WALL,
+				MAP_WIDTH + 105, 200, CELL_WIDTH, CELL_HEIGHT);
+
 		this.setLayout(null);
 
 		this.add(buttonBack);
@@ -162,12 +212,18 @@ public class EditorPanel extends JPanel implements GameConstants {
 		this.add(buttonClear);
 		this.add(buttonRandom);
 
+		this.add(buttonIndestructibleWall);
+		this.add(buttonDestructibleWall);
+
 		buttonBack.addMouseListener(new ButtonListener(mainFrame, "back"));
 		buttonSave.addMouseListener(new ButtonListener(mainFrame, "save"));
 		buttonUndo.addMouseListener(new ButtonListener(mainFrame, "undo"));
 		buttonRedo.addMouseListener(new ButtonListener(mainFrame, "redo"));
 		buttonClear.addMouseListener(new ButtonListener(mainFrame, "clear"));
 		buttonRandom.addMouseListener(new ButtonListener(mainFrame, "random"));
+		
+		buttonIndestructibleWall.addMouseListener(new ButtonListener(mainFrame, "indestructible"));
+		buttonDestructibleWall.addMouseListener(new ButtonListener(mainFrame, "destructible"));
 	}
 
 	class ButtonListener implements MouseListener {
@@ -211,6 +267,12 @@ public class EditorPanel extends JPanel implements GameConstants {
 			case "random":
 				saveStatus();
 				mmat.reFill();
+				break;
+			case "indestructible":
+				switchMode(SET_INDESTRUCTIBLE_WALL);
+				break;
+			case "destructible":
+				switchMode(SET_DESTRUCTIBLE_WALL);
 				break;
 			}
 			repaint();
@@ -279,6 +341,30 @@ public class EditorPanel extends JPanel implements GameConstants {
 				control.resetButton(buttonRandom);
 				break;
 			}
+		}
+
+	}
+
+	class IconButton extends JButton {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		private int mode;
+
+		IconButton(BufferedImage icon, int mode, int xPos, int yPos, int xSize, int ySize) {
+			super(new ImageIcon(icon.getScaledInstance(xSize, ySize, 1)));
+			this.mode = mode;
+			control.initializeButton(this, xPos, yPos, xSize, ySize);
+		}
+
+		@Override
+		public void paintComponent(Graphics g) {
+			if (mode == editingMode)
+				setBackground(Color.GRAY);
+			else
+				setBackground(Color.WHITE);
+			super.paintComponent(g);
 		}
 
 	}

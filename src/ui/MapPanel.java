@@ -3,11 +3,14 @@ package ui;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import game.GameConstants;
 import game.Game;
+import player.PlayerController;
 import monster.Monster;
 
 /**
@@ -28,7 +31,7 @@ public class MapPanel extends JPanel implements GameConstants {
 	BufferedImage player3Image[] = new BufferedImage[4];
 	BufferedImage player4Image[] = new BufferedImage[4];
 	BufferedImage itemImage[] = new BufferedImage[ITEM_NUM];
-	BufferedImage monsterImage[] = new BufferedImage[4];
+	BufferedImage monsterImage[][] = new BufferedImage[5][3];
 	BufferedImage mapImage[] = new BufferedImage[4];
 	BufferedImage wallImage[][] = new BufferedImage[4][8];
 	BufferedImage gameImage[] = new BufferedImage[3];
@@ -53,7 +56,7 @@ public class MapPanel extends JPanel implements GameConstants {
 		this.setFocusable(true);
 
 		for (int i = 0; i < game.getPlayerNum(); i++) {
-			this.getToolkit().addAWTEventListener(game.getPlayer()[i], AWTEvent.KEY_EVENT_MASK);// Initialize the
+			this.getToolkit().addAWTEventListener(new PlayerController(game.getPlayer()[i]), AWTEvent.KEY_EVENT_MASK);// Initialize the
 																								// AWTEventListener.
 		}
 	}
@@ -66,9 +69,9 @@ public class MapPanel extends JPanel implements GameConstants {
 		super.paintComponent(g);
 
 		paintMap(g);
-		paintPlayer(g);
 		paintMonsters(g);
 		paintActiveItem(g);
+		paintPlayer(g);
 		for (int i = 0; i < game.getPlayerNum(); i++) {			
 			game.getPlayer()[i].acquireItemByMap(game.getMap());
 		}
@@ -206,8 +209,8 @@ public class MapPanel extends JPanel implements GameConstants {
 	public void paintMonsters(Graphics g) {
 		for (Monster m : game.getMonsters()) {
 			if (m.isAlive()) {
-				g.drawImage(monsterImage[m.getImageDirection()], m.getX(), m.getY(), MONSTER_WIDTH, MONSTER_HEIGHT,
-						this);
+				g.drawImage(monsterImage[m.id][m.getImageIndex()], m.getX(), m.getY(),
+						MONSTER_WIDTH, MONSTER_HEIGHT, this);
 			}
 		}
 	}
@@ -239,8 +242,8 @@ public class MapPanel extends JPanel implements GameConstants {
 		player2Image[DIRECTION_RIGHT] = ImageIO.read(new File("image/player/p2RIGHT.png"));
 		player2Image[DIRECTION_DOWN] = ImageIO.read(new File("image/player/p2DOWN.png"));
 		player2Image[DIRECTION_LEFT] = ImageIO.read(new File("image/player/p2LEFT.png"));
-		
-		
+
+
 		player3Image[DIRECTION_UP] = ImageIO.read(new File("image/player/p3UP.png"));
 		player3Image[DIRECTION_RIGHT] = ImageIO.read(new File("image/player/p3RIGHT.png"));
 		player3Image[DIRECTION_DOWN] = ImageIO.read(new File("image/player/p3DOWN.png"));
@@ -257,17 +260,27 @@ public class MapPanel extends JPanel implements GameConstants {
 		itemImage[POWER_UP] = ImageIO.read(new File("image/item/power.png"));
 		itemImage[IMMUNE] = ImageIO.read(new File("image/item/immune.png"));
 		itemImage[BULLET] = ImageIO.read(new File("image/item/bullet.png"));
-		
+
 		bulletImage[DIRECTION_UP] = ImageIO.read(new File("image/item/bullet_up.png"));
 		bulletImage[DIRECTION_DOWN] = ImageIO.read(new File("image/item/bullet_down.png"));
 		bulletImage[DIRECTION_RIGHT] = ImageIO.read(new File("image/item/bullet_right.png"));
 		bulletImage[DIRECTION_LEFT] = ImageIO.read(new File("image/item/bullet_left.png"));
-		
 
-		monsterImage[DIRECTION_UP] = ImageIO.read(new File("image/monster/up.png"));
-		monsterImage[DIRECTION_DOWN] = ImageIO.read(new File("image/monster/down.png"));
-		monsterImage[DIRECTION_RIGHT] = ImageIO.read(new File("image/monster/right.png"));
-		monsterImage[DIRECTION_LEFT] = ImageIO.read(new File("image/monster/left.png"));
+		monsterImage[0][0] = ImageIO.read(new File("image/monster/m0LEFT.png"));
+		monsterImage[0][1] = ImageIO.read(new File("image/monster/m0RIGHT.png"));
+		monsterImage[0][2] = ImageIO.read(new File("image/monster/m0RIGHT.png"));
+		monsterImage[1][0] = ImageIO.read(new File("image/monster/m1LEFT.png"));
+		monsterImage[1][1] = ImageIO.read(new File("image/monster/m1RIGHT.png"));
+		monsterImage[1][2] = ImageIO.read(new File("image/monster/m1DIE.png"));
+		monsterImage[2][0] = ImageIO.read(new File("image/monster/m2LEFT.png"));
+		monsterImage[2][1] = ImageIO.read(new File("image/monster/m2RIGHT.png"));
+		monsterImage[2][2] = ImageIO.read(new File("image/monster/m2DIE.png"));
+		monsterImage[3][0] = ImageIO.read(new File("image/monster/m3LEFT.png"));
+		monsterImage[3][1] = ImageIO.read(new File("image/monster/m3RIGHT.png"));
+		monsterImage[3][2] = ImageIO.read(new File("image/monster/m3DIE.png"));
+		monsterImage[4][0] = ImageIO.read(new File("image/monster/m4LEFT.png"));
+		monsterImage[4][1] = ImageIO.read(new File("image/monster/m4RIGHT.png"));
+		monsterImage[4][2] = ImageIO.read(new File("image/monster/m4DIE.png"));
 
 		mapImage[GRASS_1] = ImageIO.read(new File("image/maps/grass1.png"));
 		mapImage[GRASS_2] = ImageIO.read(new File("image/maps/grass2.png"));
@@ -282,7 +295,7 @@ public class MapPanel extends JPanel implements GameConstants {
 		wallImage[0][5] = ImageIO.read(new File("image/maps/wall1-6.png"));
 		wallImage[0][6] = ImageIO.read(new File("image/maps/wall1-7.png"));
 		wallImage[0][7] = ImageIO.read(new File("image/maps/wall1-8.png"));
-		
+
 		wallImage[1][0] = ImageIO.read(new File("image/maps/wall2-1.png"));
 		wallImage[1][1] = ImageIO.read(new File("image/maps/wall2-2.png"));
 		wallImage[1][2] = ImageIO.read(new File("image/maps/wall2-3.png"));
@@ -300,7 +313,7 @@ public class MapPanel extends JPanel implements GameConstants {
 		wallImage[2][5] = ImageIO.read(new File("image/maps/wall3-6.png"));
 		wallImage[2][6] = ImageIO.read(new File("image/maps/wall3-7.png"));
 		wallImage[2][7] = ImageIO.read(new File("image/maps/wall3-8.png"));
-		
+
 		wallImage[3][0] = ImageIO.read(new File("image/maps/wall4-1.png"));
 		wallImage[3][1] = ImageIO.read(new File("image/maps/wall4-2.png"));
 		wallImage[3][2] = ImageIO.read(new File("image/maps/wall4-3.png"));
@@ -309,11 +322,10 @@ public class MapPanel extends JPanel implements GameConstants {
 		wallImage[3][5] = ImageIO.read(new File("image/maps/wall4-6.png"));
 		wallImage[3][6] = ImageIO.read(new File("image/maps/wall4-7.png"));
 		wallImage[3][7] = ImageIO.read(new File("image/maps/wall4-8.png"));
-		
+
 		gameImage[GAMEOVER] = ImageIO.read(new File("image/game/gameover.jpg"));
 
 		bombImage[BOMB] = ImageIO.read(new File("image/bomb/bomb.png"));
 		bombImage[EXPLODE] = ImageIO.read(new File("image/bomb/explode.png"));
-		
 	}
 }

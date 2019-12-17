@@ -16,7 +16,7 @@ import map.Map;
  * @version 0.9
  */
 
-public class Player implements AWTEventListener, GameConstants {
+public class Player implements GameConstants {
 
     private int playerID;// ID of the player
     private int velocity; // The velocity should be divisible by 60
@@ -28,7 +28,6 @@ public class Player implements AWTEventListener, GameConstants {
     private boolean isImmune;
     private boolean isProtectedByItem;
 
-    private boolean isAlive;
     private int direction;
     private int imageDirection;// This variable is for deciding the image of DIRECTION_STOP
     private int x;
@@ -66,7 +65,7 @@ public class Player implements AWTEventListener, GameConstants {
         this.x = 0;
         this.y = 0;
         this.velocity = 5;
-        this.playerMap = newmap;
+        this.setPlayerMap(newmap);
         this.playerID = id;
         this.playerHurtDelayCount = 0;
         this.protectedByItemCount = 0;
@@ -328,7 +327,79 @@ public class Player implements AWTEventListener, GameConstants {
         return this.mapY;
     }
 
-    /**
+    public int getUpflag() {
+		return upflag;
+	}
+
+	public void setUpflag(int upflag) {
+		this.upflag = upflag;
+	}
+
+	public int getFutureUpflag() {
+		return futureUpflag;
+	}
+
+	public void setFutureUpflag(int futureUpflag) {
+		this.futureUpflag = futureUpflag;
+	}
+
+	public int getDownflag() {
+		return downflag;
+	}
+
+	public void setDownflag(int downflag) {
+		this.downflag = downflag;
+	}
+
+	public int getFutureDownflag() {
+		return futureDownflag;
+	}
+
+	public void setFutureDownflag(int futureDownflag) {
+		this.futureDownflag = futureDownflag;
+	}
+
+	public int getLeftflag() {
+		return leftflag;
+	}
+
+	public void setLeftflag(int leftflag) {
+		this.leftflag = leftflag;
+	}
+
+	public int getFutureLeftflag() {
+		return futureLeftflag;
+	}
+
+	public void setFutureLeftflag(int futureLeftflag) {
+		this.futureLeftflag = futureLeftflag;
+	}
+
+	public int getRightflag() {
+		return rightflag;
+	}
+
+	public void setRightflag(int rightflag) {
+		this.rightflag = rightflag;
+	}
+
+	public int getFutureRightflag() {
+		return futureRightflag;
+	}
+
+	public void setFutureRightflag(int futureRightflag) {
+		this.futureRightflag = futureRightflag;
+	}
+
+	public int getStopflag() {
+		return stopflag;
+	}
+
+	public void setStopflag(int stopflag) {
+		this.stopflag = stopflag;
+	}
+
+	/**
      * Use map to decide the player's location after moving. Can not receive any
      * command before it moves completely into a new integral cell.
      *
@@ -342,7 +413,15 @@ public class Player implements AWTEventListener, GameConstants {
         }
     }
 
-    /**
+    public Map getPlayerMap() {
+		return playerMap;
+	}
+
+	public void setPlayerMap(Map playerMap) {
+		this.playerMap = playerMap;
+	}
+
+	/**
      * Use playerInMap() to ensure that the player is in the frame and avoid errors.
      */
     public boolean playerInMap() {
@@ -356,7 +435,7 @@ public class Player implements AWTEventListener, GameConstants {
                     canMove = false;
                 break;
             case DIRECTION_DOWN:
-                if (this.mapY < this.playerMap.getSizeY() - 1)
+                if (this.mapY < this.getPlayerMap().getSizeY() - 1)
                     canMove = true;
                 else
                     canMove = false;
@@ -368,7 +447,7 @@ public class Player implements AWTEventListener, GameConstants {
                     canMove = false;
                 break;
             case DIRECTION_RIGHT:
-                if (this.mapX < this.playerMap.getSizeX() - 1)
+                if (this.mapX < this.getPlayerMap().getSizeX() - 1)
                     canMove = true;
                 else
                     canMove = false;
@@ -383,27 +462,27 @@ public class Player implements AWTEventListener, GameConstants {
     public void playerStop() {
         // Stop only when the x and y of the player are multiples of 45
         if (this.getX() % CELL_WIDTH == 0 && this.getY() % CELL_HEIGHT == 0) {
-            if (this.futureUpflag == 1) {
+            if (this.getFutureUpflag() == 1) {
                 this.setDirection(DIRECTION_UP);
             }
-            if (this.futureDownflag == 1) {
+            if (this.getFutureDownflag() == 1) {
                 this.setDirection(DIRECTION_DOWN);
             }
-            if (this.futureRightflag == 1) {
+            if (this.getFutureRightflag() == 1) {
                 this.setDirection(DIRECTION_RIGHT);
             }
-            if (this.futureLeftflag == 1) {
+            if (this.getFutureLeftflag() == 1) {
                 this.setDirection(DIRECTION_LEFT);
             }
-            if (this.futureDownflag == 0 & this.futureLeftflag == 0 & this.futureRightflag == 0
-                    & this.futureUpflag == 0) {
-                if (this.stopflag == 1) {
+            if (this.getFutureDownflag() == 0 & this.getFutureLeftflag() == 0 & this.getFutureRightflag() == 0
+                    & this.getFutureUpflag() == 0) {
+                if (this.getStopflag() == 1) {
                     this.setDirection(DIRECTION_STOP);
-                    this.stopflag = 0;
+                    this.setStopflag(0);
                 }
             }
             // update mapX and mapY
-            this.setLocationOnMap(this, this.playerMap, this.x / CELL_WIDTH, this.y / CELL_HEIGHT);
+            this.setLocationOnMap(this, this.getPlayerMap(), this.x / CELL_WIDTH, this.y / CELL_HEIGHT);
             clearFutureFlag();
         }
     }
@@ -421,25 +500,25 @@ public class Player implements AWTEventListener, GameConstants {
             switch (this.getDirection()) {
                 case DIRECTION_UP:
                     // If the cell which the player is going to step on is available
-                    if (this.playerMap.isAvailable((int) (Math.ceil(mapx)), (int) (Math.ceil(mapy) - 1))) {
+                    if (this.getPlayerMap().isAvailable((int) (Math.ceil(mapx)), (int) (Math.ceil(mapy) - 1))) {
                         this.setY(this.getY() - this.getVelocity());
                         this.playerStop();
                     }
                     break;
                 case DIRECTION_DOWN:
-                    if (this.playerMap.isAvailable((int) (Math.floor(mapx)), (int) (Math.floor(mapy) + 1))) {
+                    if (this.getPlayerMap().isAvailable((int) (Math.floor(mapx)), (int) (Math.floor(mapy) + 1))) {
                         this.setY(this.getY() + this.getVelocity());
                         this.playerStop();
                     }
                     break;
                 case DIRECTION_LEFT:
-                    if (this.playerMap.isAvailable((int) (Math.ceil(mapx) - 1), (int) (Math.ceil(mapy)))) {
+                    if (this.getPlayerMap().isAvailable((int) (Math.ceil(mapx) - 1), (int) (Math.ceil(mapy)))) {
                         this.setX(this.getX() - this.getVelocity());
                         this.playerStop();
                     }
                     break;
                 case DIRECTION_RIGHT:
-                    if (this.playerMap.isAvailable((int) (Math.floor(mapx) + 1), (int) (Math.floor(mapy)))) {
+                    if (this.getPlayerMap().isAvailable((int) (Math.floor(mapx) + 1), (int) (Math.floor(mapy)))) {
                         this.setX(this.getX() + this.getVelocity());
                         this.playerStop();
                     }
@@ -451,172 +530,20 @@ public class Player implements AWTEventListener, GameConstants {
     }
 
     public void clearFlag() {
-        this.upflag = 0;
-        this.downflag = 0;
-        this.leftflag = 0;
-        this.rightflag = 0;
+        this.setUpflag(0);
+        this.setDownflag(0);
+        this.setLeftflag(0);
+        this.setRightflag(0);
     }
 
     public void clearFutureFlag() {
-        this.futureUpflag = 0;
-        this.futureDownflag = 0;
-        this.futureLeftflag = 0;
-        this.futureRightflag = 0;
+        this.setFutureUpflag(0);
+        this.setFutureDownflag(0);
+        this.setFutureLeftflag(0);
+        this.setFutureRightflag(0);
     }
 
-    /**
-     * Respond to the keyboard events. Use up, down, right, left, enter to control
-     * p1 and A, S, W, D, space to control p2
-     */
-    @Override
-    public void eventDispatched(AWTEvent event) {
-
-        if (this.playerID == PLAYER_ID_P1) {
-            /*
-             * Enable to set the direction of the player only when the x and y of the player
-             * are multiples of 60. As a result, the player will keep moving when the x and
-             * y of the player are not multiples of 60.
-             */
-
-            if (event.getID() == KeyEvent.KEY_PRESSED) {
-                KeyEvent e = (KeyEvent) event;
-                switch (e.getKeyCode()) {
-                    case KeyEvent.VK_UP:
-                        clearFlag();
-                        clearFutureFlag();
-                        if (this.getX() % CELL_WIDTH == 0 && this.getY() % CELL_HEIGHT == 0) {
-                            this.upflag = 1;
-                        }
-                        if (this.upflag == 0) {
-                            this.futureUpflag = 1;
-                        }
-                        break;
-                    case KeyEvent.VK_DOWN:
-                        clearFlag();
-                        clearFutureFlag();
-                        if (this.getX() % CELL_WIDTH == 0 && this.getY() % CELL_HEIGHT == 0) {
-                            this.downflag = 1;
-                        }
-                        if (this.downflag == 0) {
-                            this.futureDownflag = 1;
-                        }
-                        break;
-                    case KeyEvent.VK_LEFT:
-                        clearFlag();
-                        clearFutureFlag();
-                        if (this.getX() % CELL_WIDTH == 0 && this.getY() % CELL_HEIGHT == 0) {
-                            this.leftflag = 1;
-                        }
-                        if (this.leftflag == 0) {
-                            this.futureLeftflag = 1;
-                        }
-                        break;
-                    case KeyEvent.VK_RIGHT:
-                        clearFlag();
-                        clearFutureFlag();
-                        if (this.getX() % CELL_WIDTH == 0 && this.getY() % CELL_HEIGHT == 0) {
-                            this.rightflag = 1;
-                        }
-                        if (this.rightflag == 0) {
-                            this.futureRightflag = 1;
-                        }
-                        break;
-                    case KeyEvent.VK_ENTER:
-                        this.plantBomb(this.playerMap, this.mapX, this.mapY);
-                        break;
-                    case KeyEvent.VK_SHIFT:
-                        this.useActiveItem();
-                        break;
-
-                }
-            }
-            /*
-             * When the keys are released, set the direction of the player to
-             * DIRECTION_STOP.
-             */
-            if (event.getID() == KeyEvent.KEY_RELEASED) {
-                KeyEvent e = (KeyEvent) event;
-                if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_DOWN
-                        || e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                    this.stopflag = 1;
-                    clearFlag();
-                    if (this.getX() % CELL_WIDTH == 0 && this.getY() % CELL_HEIGHT == 0) {
-                        this.setDirection(DIRECTION_STOP);
-                    }
-                }
-            }
-        }
-
-        if (this.playerID == PLAYER_ID_P2) {
-
-            if (event.getID() == KeyEvent.KEY_PRESSED) {
-                KeyEvent e = (KeyEvent) event;
-                switch (e.getKeyCode()) {
-
-                    case KeyEvent.VK_W:
-                        clearFlag();
-                        clearFutureFlag();
-                        if (this.getX() % CELL_WIDTH == 0 && this.getY() % CELL_HEIGHT == 0) {
-                            this.upflag = 1;
-                        }
-                        if (this.upflag == 0) {
-                            this.futureUpflag = 1;
-                        }
-                        break;
-                    case KeyEvent.VK_S:
-                        clearFlag();
-                        clearFutureFlag();
-                        if (this.getX() % CELL_WIDTH == 0 && this.getY() % CELL_HEIGHT == 0) {
-                            this.downflag = 1;
-                        }
-                        if (this.downflag == 0) {
-                            this.futureDownflag = 1;
-                        }
-                        break;
-                    case KeyEvent.VK_A:
-                        clearFlag();
-                        clearFutureFlag();
-                        if (this.getX() % CELL_WIDTH == 0 && this.getY() % CELL_HEIGHT == 0) {
-                            this.leftflag = 1;
-                        }
-                        if (this.leftflag == 0) {
-                            this.futureLeftflag = 1;
-                        }
-                        break;
-                    case KeyEvent.VK_D:
-                        clearFlag();
-                        clearFutureFlag();
-                        if (this.getX() % CELL_WIDTH == 0 && this.getY() % CELL_HEIGHT == 0) {
-                            this.rightflag = 1;
-                        }
-                        if (this.rightflag == 0) {
-                            this.futureRightflag = 1;
-                        }
-                        break;
-                    case KeyEvent.VK_SPACE:
-                        this.plantBomb(this.playerMap, this.mapX, this.mapY);
-                        break;
-                    case KeyEvent.VK_CONTROL:
-                        this.useActiveItem();
-                        break;
-                }
-            }
-
-            if (event.getID() == KeyEvent.KEY_RELEASED) {
-                KeyEvent e = (KeyEvent) event;
-
-                if (e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_S
-                        || e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_D) {
-                    this.stopflag = 1;
-                    clearFlag();
-                    if (this.getX() % CELL_WIDTH == 0 && this.getY() % CELL_HEIGHT == 0) {
-                        this.setDirection(DIRECTION_STOP);
-                    }
-                }
-            }
-        }
-
-    }
+    
 
     /**
      * Update map BOMB_INFO
@@ -662,16 +589,16 @@ public class Player implements AWTEventListener, GameConstants {
      * on player at the same time.
      */
     public void refresh(Map mi) {
-        if (upflag == 1) {
+        if (getUpflag() == 1) {
             this.setDirection(DIRECTION_UP);
         }
-        if (downflag == 1) {
+        if (getDownflag() == 1) {
             this.setDirection(DIRECTION_DOWN);
         }
-        if (leftflag == 1) {
+        if (getLeftflag() == 1) {
             this.setDirection(DIRECTION_LEFT);
         }
-        if (rightflag == 1) {
+        if (getRightflag() == 1) {
             this.setDirection(DIRECTION_RIGHT);
         }
 
@@ -697,8 +624,7 @@ public class Player implements AWTEventListener, GameConstants {
                 this.setProtectedByItem(false);
             }
         }
-
-
     }
-
+    
+    
 }

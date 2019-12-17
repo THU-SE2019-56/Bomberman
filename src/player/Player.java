@@ -41,6 +41,7 @@ public class Player implements GameConstants {
     private int playerCharacterID;
     private int itemID;
     private ActiveItem playerItem;
+    private int velocityLevel;
 
     private int stopflag = 0;
 
@@ -258,8 +259,28 @@ public class Player implements GameConstants {
         return this.velocity;
     }
 
+    public void setVelocityLevel(int vl) {
+        this.velocityLevel = vl;
+    }
+    
+    public int getVelocityLevel() {
+        return this.velocityLevel ;
+    }
+
+
     public void addVelocityByItems() {
-        this.setVelocity(9);
+    	
+        switch(velocityLevel) {
+        case 0:
+        	this.setVelocity(VELOCITY_1);
+        	this.velocityLevel=1;
+        	break;
+        case 1:
+        	this.setVelocity(VELOCITY_2);
+        	this.velocityLevel=2;
+        	break;
+        }
+        
     }
 
     /*

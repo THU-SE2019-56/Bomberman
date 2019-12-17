@@ -39,6 +39,10 @@ public interface GameConstants {
 	int PLAYER_CHARACTER2_BOMB_POWER = 3;
 	int PLAYER_CHARACTER3_BOMB_POWER = 3;
 	int PLAYER_CHARACTER4_BOMB_POWER = 2;
+	
+	int VELOCITY_0 = 5;
+	int VELOCITY_1 = 9;
+	int VELOCITY_2 = 15;
 
 	// Monster constants
 	int MAX_MONSTER_NUMBER = 5;

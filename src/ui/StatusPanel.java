@@ -39,6 +39,7 @@ public class StatusPanel extends JPanel implements GameConstants {
 	private JTextField bombPow[] = new JTextField[2];
 	private JTextField itemName[] = new JTextField[2];
 	private JTextField playerLifeText[] = new JTextField[2];
+    private JTextField velocityNum[] = new JTextField[2];
 
 	private Game game;
 
@@ -74,19 +75,23 @@ public class StatusPanel extends JPanel implements GameConstants {
 			int refY = 50 + 150 * i;
 			this.playerLifeText[i] = new JTextField("");
 
-			this.initializeTextField(this.playerLifeText[i], 160, 95 + refY, 40, 20);
+			this.initializeTextField(this.playerLifeText[i], 160, 105 + refY, 40, 20);
 
 			this.bombNum[i] = new JTextField("");
-			this.initializeTextField(this.bombNum[i], 160, refY, 40, 20);
+			this.initializeTextField(this.bombNum[i], 160, refY, 60, 20);
 			this.bombPow[i] = new JTextField("");
-			this.initializeTextField(this.bombPow[i], 160, 30 + refY, 40, 20);
+			this.initializeTextField(this.bombPow[i], 160, 35 + refY, 60, 20);
 			this.itemName[i] = new JTextField("");
-			this.initializeTextField(this.itemName[i], 160, 60 + refY, 80, 20);
+			this.initializeTextField(this.itemName[i], 60, 73 + refY, 70, 20);
+			
+	        this.velocityNum[i] = new JTextField("");  
+	        this.initializeTextField(this.velocityNum[i], 160, 70+ refY, 60, 20);
 
 			this.add(this.playerLifeText[i]);
 			this.add(this.bombNum[i]);
 			this.add(this.bombPow[i]);
 			this.add(this.itemName[i]);
+			this.add(this.velocityNum[i]);
 		}
 
 		buttonPauseLabel.addMouseListener(new ButtonListener(mainFrame, "pause"));
@@ -181,23 +186,26 @@ public class StatusPanel extends JPanel implements GameConstants {
 			int playerMaxHP = game.getPlayer()[i].getMaxHP();
 			this.playerLifeText[i].setText(String.valueOf(playerHP));
 			g.setColor(Color.BLUE);
-			g.drawRect(refX, 100 + refY, playerMaxHP, 10);
+			g.drawRect(refX, 110 + refY, playerMaxHP, 10);
 			g.setColor(Color.getHSBColor((float) playerHP / 300, 1, 1));
-			g.fillRect(refX, 100 + refY, playerHP, 10);
+			g.fillRect(refX, 110 + refY, playerHP, 10);
 
 			// bomb
 			int bombNum = game.getPlayer()[i].getBombMaxNumber() - game.getPlayer()[i].getBombPlantedNumber();
 			int bombPow = game.getPlayer()[i].getBombPower();
+		    int shoeNum = game.getPlayer()[i].getVelocityLevel();
 			this.bombNum[i].setText(" × " + String.valueOf(bombNum));
 			this.bombPow[i].setText(" × " + String.valueOf(bombPow));
-			g.drawImage(bombImage[0], refX + 80, refY, 40, 40, this);
-			g.drawImage(bombImage[1], refX + 80, 30 + refY, 40, 40, this);
+			this.velocityNum[i].setText(" × " + String.valueOf(shoeNum));
+			g.drawImage(bombImage[0], refX + 80, refY, 30, 30, this);
+			g.drawImage(bombImage[1], refX + 80, 35 + refY, 30, 30, this);
+		     g.drawImage(itemImage[VELOCITY_UP], refX + 80,	70 + refY, 30, 30, this);
 
 			// bullet
 			int itemID = game.getPlayer()[i].getActiveItemID();
 			switch (itemID) {
 			case BULLET:
-				g.drawImage(itemImage[BULLET], refX + 80, 60 + refY, 20, 20, this);
+				g.drawImage(itemImage[BULLET], refX -30, 70 + refY, 30,30, this);
 				this.itemName[i].setText("Bullet");
 				break;
 			case NO_ACTIVE_ITEM:
@@ -220,6 +228,7 @@ public class StatusPanel extends JPanel implements GameConstants {
 		bombImage[1] = ImageIO.read(new File("image/bomb/power.png"));
 
 		itemImage[BULLET] = ImageIO.read(new File("image/item/bullet.png"));
+        itemImage[VELOCITY_UP]=   ImageIO.read(new File("image/item/velocity.png"));
 
 		player1Image[DIRECTION_UP] = ImageIO.read(new File("image/player/p1UP.png"));
 		player1Image[DIRECTION_RIGHT] = ImageIO.read(new File("image/player/p1RIGHT.png"));

@@ -13,7 +13,7 @@ public class Item implements GameConstants {
 
 	private int x;
 	private int y;
-	private int itemID = (int) (ITEM_NUM * (float)Math.random()); // saved in GameConstants to judge which item is created and used
+	private int itemID = BULLET;//(int) (ITEM_NUM * (float)Math.random()); // saved in GameConstants to judge which item is created and used
 	private boolean isAcquired = false;
 
 	public Item(int xPos, int yPos) {

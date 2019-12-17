@@ -54,5 +54,6 @@ public class Frog extends Monster {
         this.alive = false;
         this.numLives--;
         this.resurrectionCounter = 100;     // take 3 seconds to resurrection
+        this.dyingCounter = 30;
     }
 }

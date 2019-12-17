@@ -22,6 +22,7 @@ public class Monster implements GameConstants {
 	int direction;
 	int x;
 	int y;
+	int dyingCounter;	// to implement dying effect
 	Brain brain;
 	Path path;
 	public int id;
@@ -116,13 +117,16 @@ public class Monster implements GameConstants {
      * Get the image's index
      */
 	public int getImageIndex() {
-		int d = this.direction==DIRECTION_LEFT || this.direction==DIRECTION_RIGHT ?
-				this.direction : this.oldDirection;
-		switch (d) {
-			case DIRECTION_LEFT: return 0;
-			case DIRECTION_RIGHT: return 1;
+		if (isDying()) return 2;
+		else {
+			int d = this.direction == DIRECTION_LEFT || this.direction == DIRECTION_RIGHT ?
+					this.direction : this.oldDirection;
+			switch (d) {
+				case DIRECTION_LEFT: return 0;
+				case DIRECTION_RIGHT: return 1;
+			}
+			return 0;
 		}
-		return 0;
 	}
 
 	public void setVelocity(double v) {
@@ -207,6 +211,9 @@ public class Monster implements GameConstants {
 				updateAlert(p);
 			}
 		}
+		else if (isDying()) {
+			this.dyingCounter--;
+		}
 	}
 
 	/**
@@ -239,10 +246,15 @@ public class Monster implements GameConstants {
 		return this.alive;
 	}
 
+	public boolean isDying() {
+		return this.dyingCounter > 0;
+	}
+
 	/**
 	 * Remove itself from the map after killed.
 	 */
 	public void eliminate() {
 		this.alive = false;
+		this.dyingCounter = 30;		// take 0.9 seconds to die thoroughly
 	}
 }

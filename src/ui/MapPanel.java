@@ -3,6 +3,8 @@ package ui;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -239,8 +241,8 @@ public class MapPanel extends JPanel implements GameConstants {
 		player2Image[DIRECTION_RIGHT] = ImageIO.read(new File("image/player/p2RIGHT.png"));
 		player2Image[DIRECTION_DOWN] = ImageIO.read(new File("image/player/p2DOWN.png"));
 		player2Image[DIRECTION_LEFT] = ImageIO.read(new File("image/player/p2LEFT.png"));
-		
-		
+
+
 		player3Image[DIRECTION_UP] = ImageIO.read(new File("image/player/p3UP.png"));
 		player3Image[DIRECTION_RIGHT] = ImageIO.read(new File("image/player/p3RIGHT.png"));
 		player3Image[DIRECTION_DOWN] = ImageIO.read(new File("image/player/p3DOWN.png"));
@@ -257,7 +259,7 @@ public class MapPanel extends JPanel implements GameConstants {
 		itemImage[POWER_UP] = ImageIO.read(new File("image/item/power.png"));
 		itemImage[IMMUNE] = ImageIO.read(new File("image/item/immune.png"));
 		itemImage[BULLET] = ImageIO.read(new File("image/item/bullet.png"));
-		
+
 		bulletImage[DIRECTION_UP] = ImageIO.read(new File("image/item/bullet_up.png"));
 		bulletImage[DIRECTION_DOWN] = ImageIO.read(new File("image/item/bullet_down.png"));
 		bulletImage[DIRECTION_RIGHT] = ImageIO.read(new File("image/item/bullet_right.png"));
@@ -265,6 +267,7 @@ public class MapPanel extends JPanel implements GameConstants {
 
 		monsterImage[0][0] = ImageIO.read(new File("image/monster/m0LEFT.png"));
 		monsterImage[0][1] = ImageIO.read(new File("image/monster/m0RIGHT.png"));
+		monsterImage[0][2] = ImageIO.read(new File("image/monster/m0RIGHT.png"));
 		monsterImage[1][0] = ImageIO.read(new File("image/monster/m1LEFT.png"));
 		monsterImage[1][1] = ImageIO.read(new File("image/monster/m1RIGHT.png"));
 		monsterImage[1][2] = ImageIO.read(new File("image/monster/m1DIE.png"));
@@ -291,7 +294,7 @@ public class MapPanel extends JPanel implements GameConstants {
 		wallImage[0][5] = ImageIO.read(new File("image/maps/wall1-6.png"));
 		wallImage[0][6] = ImageIO.read(new File("image/maps/wall1-7.png"));
 		wallImage[0][7] = ImageIO.read(new File("image/maps/wall1-8.png"));
-		
+
 		wallImage[1][0] = ImageIO.read(new File("image/maps/wall2-1.png"));
 		wallImage[1][1] = ImageIO.read(new File("image/maps/wall2-2.png"));
 		wallImage[1][2] = ImageIO.read(new File("image/maps/wall2-3.png"));
@@ -309,7 +312,7 @@ public class MapPanel extends JPanel implements GameConstants {
 		wallImage[2][5] = ImageIO.read(new File("image/maps/wall3-6.png"));
 		wallImage[2][6] = ImageIO.read(new File("image/maps/wall3-7.png"));
 		wallImage[2][7] = ImageIO.read(new File("image/maps/wall3-8.png"));
-		
+
 		wallImage[3][0] = ImageIO.read(new File("image/maps/wall4-1.png"));
 		wallImage[3][1] = ImageIO.read(new File("image/maps/wall4-2.png"));
 		wallImage[3][2] = ImageIO.read(new File("image/maps/wall4-3.png"));
@@ -318,11 +321,10 @@ public class MapPanel extends JPanel implements GameConstants {
 		wallImage[3][5] = ImageIO.read(new File("image/maps/wall4-6.png"));
 		wallImage[3][6] = ImageIO.read(new File("image/maps/wall4-7.png"));
 		wallImage[3][7] = ImageIO.read(new File("image/maps/wall4-8.png"));
-		
+
 		gameImage[GAMEOVER] = ImageIO.read(new File("image/game/gameover.jpg"));
 
 		bombImage[BOMB] = ImageIO.read(new File("image/bomb/bomb.png"));
 		bombImage[EXPLODE] = ImageIO.read(new File("image/bomb/explode.png"));
-		
 	}
 }

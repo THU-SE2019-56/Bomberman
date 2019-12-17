@@ -10,7 +10,7 @@ import map.Map;
  * @author  Hang Chen
  * @version 0.1
  */
-public class MonsterGenerator {
+public class MonsterFactory {
     public static Monster getMonster(int id, Map m) {
         switch (id) {
             case 0: return new Monster(m);

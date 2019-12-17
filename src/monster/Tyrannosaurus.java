@@ -24,7 +24,7 @@ public class Tyrannosaurus extends Monster {
     void init() {
         this.alive = true;
         this.alert = false;
-        this.velocity = 2*MONSTER_SPEED_HIGH - MONSTER_SPEED_LOW;
+        this.velocity = MONSTER_SPEED_FAST;
         this.direction = -1;
         this.oldDirection = 0;
         brain = new Brain(2);

@@ -37,7 +37,7 @@ public class Triceratops extends Monster {
     void updateAlert(Player p) {
         super.updateAlert(p);
         if (this.alert)
-            this.velocity = 2*MONSTER_SPEED_HIGH - MONSTER_SPEED_LOW;
+            this.velocity = MONSTER_SPEED_FAST;
         else
             this.velocity = MONSTER_SPEED_LOW;
     }

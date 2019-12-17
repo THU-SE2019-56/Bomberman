@@ -236,7 +236,7 @@ public class StatusPanel extends JPanel implements GameConstants {
                 int[][] wallMatrix = StagePanel.loadStage(game.getStageNumber());
                 Game newGame = new Game(wallMatrix, 0, 0, new int[5], new int[5], game.getGameMode(), game.getStageNumber(),
                         game.getPlayer1CID(), game.getPlayer2CID());
-                MapPanel newMapPanel = new MapPanel(newGame);
+                MapPanel newMapPanel = new MapPanel(newGame,mainFrame);
                 StatusPanel newStatusPanel = new StatusPanel(newGame, mainFrame);
 
                 JPanel mainPanel = (JPanel) mainFrame.getContentPane();

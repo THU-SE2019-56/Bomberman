@@ -10,6 +10,7 @@ import javax.swing.*;
 
 import game.GameConstants;
 import game.Game;
+import player.PlayerController;
 import monster.Monster;
 
 /**
@@ -55,7 +56,7 @@ public class MapPanel extends JPanel implements GameConstants {
 		this.setFocusable(true);
 
 		for (int i = 0; i < game.getPlayerNum(); i++) {
-			this.getToolkit().addAWTEventListener(game.getPlayer()[i], AWTEvent.KEY_EVENT_MASK);// Initialize the
+			this.getToolkit().addAWTEventListener(new PlayerController(game.getPlayer()[i]), AWTEvent.KEY_EVENT_MASK);// Initialize the
 																								// AWTEventListener.
 		}
 	}

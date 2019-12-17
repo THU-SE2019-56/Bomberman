@@ -45,6 +45,8 @@ public interface GameConstants {
 	int MONSTER_WIDTH = 45;
 	int MONSTER_HEIGHT = 45;
 	int ALERT_DISTANCE = 5;
+	double MONSTER_SPEED_LOW = 1.5;
+	double MONSTER_SPEED_HIGH = 2.5;
 
 	// Item constants
 	int ITEM_NUM = 7;
@@ -93,8 +95,10 @@ public interface GameConstants {
 
 
 	// For thumbnail panel
-	int THUMBNAIL_WIDTH=300;
-	int THUMBNAIL_HEIGHT=300;
+	int THUMBNAIL_WIDTH=420;
+	int THUMBNAIL_HEIGHT=420;
+	int SCALED_THUMBNAIL_WIDTH=400;
+	int SCALED_THUMBNAIL_HEIGHT=400;
 
 
 	// For map image
@@ -139,6 +143,10 @@ public interface GameConstants {
 	// For Buttons
 	int BUTTON_WIDTH=280;
 	int BUTTON_HEIGHT=113;
+	int SCALED_BUTTON_WIDTH=196;
+	int SCALED_BUTTON_HEIGHT=79;
+	int STORY_WIDTH=520;
+	int STORY_HEIGHT=135;
 	int ARROW_WIDTH=100;
 	int ARROW_HEIGHT=213;
 }

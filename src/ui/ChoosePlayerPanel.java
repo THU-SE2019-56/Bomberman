@@ -5,21 +5,13 @@ import java.awt.event.AWTEventListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
 
-import game.Game;
 import game.GameConstants;
-import game.TimerListener;
-import ui.MenuPanel.ButtonListener;
 
 /**
  * Main menu panel. Fill in the MainFrame. Contain buttons to jump to other
@@ -29,8 +21,6 @@ import ui.MenuPanel.ButtonListener;
  * @version 0.9
  */
 public class ChoosePlayerPanel extends JPanel implements AWTEventListener, GameConstants {
-	private MainFrame mainFrame;
-
 	private ImageIcon ChoosePlayerBackgroundIcon;
 	private ImageIcon p1Icon;
 	private ImageIcon p2Icon;
@@ -67,7 +57,6 @@ public class ChoosePlayerPanel extends JPanel implements AWTEventListener, GameC
 	private JLabel buttonConfirmLabel;
 
 	public ChoosePlayerPanel(MainFrame mainFrame, int gamemode) {
-		this.mainFrame = mainFrame;
 		this.gameMode = gamemode;
 
 		this.setLayout(null);
@@ -84,8 +73,8 @@ public class ChoosePlayerPanel extends JPanel implements AWTEventListener, GameC
 		}
 
 		this.getToolkit().addAWTEventListener(this, AWTEvent.KEY_EVENT_MASK);
-		buttonBackLabel.addMouseListener(new ButtonListener(mainFrame,"back"));
-		buttonConfirmLabel.addMouseListener(new ButtonListener(mainFrame,"confirm"));
+		buttonBackLabel.addMouseListener(new ButtonListener(mainFrame, "back"));
+		buttonConfirmLabel.addMouseListener(new ButtonListener(mainFrame, "confirm"));
 	}
 
 	public void addBackground() {
@@ -149,24 +138,27 @@ public class ChoosePlayerPanel extends JPanel implements AWTEventListener, GameC
 	 */
 	public void addButton() {
 		buttonBackOffIcon = new ImageIcon("image/buttons/back_off.png");
-		buttonBackOffIcon.setImage(buttonBackOffIcon.getImage().getScaledInstance(BUTTON_WIDTH, BUTTON_HEIGHT, 1));
+		buttonBackOffIcon
+				.setImage(buttonBackOffIcon.getImage().getScaledInstance(SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT, 1));
 
 		buttonBackOnIcon = new ImageIcon("image/buttons/back_on.png");
-		buttonBackOnIcon.setImage(buttonBackOnIcon.getImage().getScaledInstance(BUTTON_WIDTH, BUTTON_HEIGHT, 1));
+		buttonBackOnIcon
+				.setImage(buttonBackOnIcon.getImage().getScaledInstance(SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT, 1));
 
 		buttonBackLabel = new JLabel(buttonBackOffIcon);
-		buttonBackLabel.setBounds(0, 620, BUTTON_WIDTH, BUTTON_HEIGHT);
+		buttonBackLabel.setBounds(0, 650, SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT);
 		this.add(buttonBackLabel);
 
 		buttonConfirmOffIcon = new ImageIcon("image/buttons/confirm_off.png");
-		buttonConfirmOffIcon
-				.setImage(buttonConfirmOffIcon.getImage().getScaledInstance(BUTTON_WIDTH, BUTTON_HEIGHT, 1));
+		buttonConfirmOffIcon.setImage(
+				buttonConfirmOffIcon.getImage().getScaledInstance(SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT, 1));
 
 		buttonConfirmOnIcon = new ImageIcon("image/buttons/confirm_on.png");
-		buttonConfirmOnIcon.setImage(buttonConfirmOnIcon.getImage().getScaledInstance(BUTTON_WIDTH, BUTTON_HEIGHT, 1));
+		buttonConfirmOnIcon.setImage(
+				buttonConfirmOnIcon.getImage().getScaledInstance(SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT, 1));
 
 		buttonConfirmLabel = new JLabel(buttonConfirmOffIcon);
-		buttonConfirmLabel.setBounds(670, 620, BUTTON_WIDTH, BUTTON_HEIGHT);
+		buttonConfirmLabel.setBounds(760, 650, SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT);
 		this.add(buttonConfirmLabel);
 
 	}

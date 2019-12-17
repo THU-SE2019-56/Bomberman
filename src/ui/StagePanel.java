@@ -29,6 +29,12 @@ public class StagePanel extends JPanel implements GameConstants {
 
 	private ImageIcon stageBackgroundIcon;
 	private JLabel stageBackgroundLabel;
+	
+	private ImageIcon thumbnailBackgroundIcon;
+	private JLabel thumbnailBackgroundLabel;
+	
+	private ImageIcon storyIcon;
+	private JLabel storyLabel;
 
 	private int[][] wallMatrix = new int[CELL_NUM_X][CELL_NUM_Y];
 	private int gameMode;
@@ -52,8 +58,8 @@ public class StagePanel extends JPanel implements GameConstants {
 	private ImageIcon buttonBackwardOnIcon;
 	private JLabel buttonBackwardLabel;
 	
-	private final static int tinyCellWidth = THUMBNAIL_WIDTH / CELL_NUM_X;
-	private final static int tinyCellHeight = THUMBNAIL_HEIGHT / CELL_NUM_Y;
+	private final static int tinyCellWidth =SCALED_THUMBNAIL_WIDTH/ CELL_NUM_X;
+	private final static int tinyCellHeight =SCALED_THUMBNAIL_HEIGHT/ CELL_NUM_Y;
 	private Map map;
 	private BufferedImage mapImage[] = new BufferedImage[4];
 	private BufferedImage wallImage[][] = new BufferedImage[4][8];
@@ -68,11 +74,18 @@ public class StagePanel extends JPanel implements GameConstants {
 
 		this.addThumbnail(stageNumber);
 		this.addButton();
+		this.addStory(stageNumber);
 		this.addBackground();
 	}
 
 	public void addBackground() {
-		stageBackgroundIcon = new ImageIcon("image/background/chooseStagePanel.png");// Background image
+		thumbnailBackgroundIcon = new ImageIcon("image/background/thumbnailBackground.png");
+		thumbnailBackgroundIcon.setImage(thumbnailBackgroundIcon.getImage().getScaledInstance(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT, 1));
+		thumbnailBackgroundLabel = new JLabel(thumbnailBackgroundIcon);
+		thumbnailBackgroundLabel.setBounds(WINDOW_WIDTH/2-THUMBNAIL_WIDTH/2, 130, THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT);
+		this.add(thumbnailBackgroundLabel);
+		
+		stageBackgroundIcon = new ImageIcon("image/background/chooseStagePanel.png");
 		stageBackgroundIcon.setImage(stageBackgroundIcon.getImage().getScaledInstance(WINDOW_WIDTH, WINDOW_HEIGHT, 1));
 		stageBackgroundLabel = new JLabel(stageBackgroundIcon);
 		stageBackgroundLabel.setBounds(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -82,25 +95,25 @@ public class StagePanel extends JPanel implements GameConstants {
 	public void addButton() {
 		// back
 		buttonBackOffIcon = new ImageIcon("image/buttons/back_off.png");
-		buttonBackOffIcon.setImage(buttonBackOffIcon.getImage().getScaledInstance(BUTTON_WIDTH, BUTTON_HEIGHT, 1));
+		buttonBackOffIcon.setImage(buttonBackOffIcon.getImage().getScaledInstance(SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT, 1));
 
 		buttonBackOnIcon = new ImageIcon("image/buttons/back_on.png");
-		buttonBackOnIcon.setImage(buttonBackOnIcon.getImage().getScaledInstance(BUTTON_WIDTH, BUTTON_HEIGHT, 1));
+		buttonBackOnIcon.setImage(buttonBackOnIcon.getImage().getScaledInstance(SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT, 1));
 
 		buttonBackLabel = new JLabel(buttonBackOffIcon);
-		buttonBackLabel.setBounds(0, 620, BUTTON_WIDTH, BUTTON_HEIGHT);
+		buttonBackLabel.setBounds(0, 650, SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT);
 		this.add(buttonBackLabel);
 
 		// confirm
 		buttonConfirmOffIcon = new ImageIcon("image/buttons/confirm_off.png");
 		buttonConfirmOffIcon
-				.setImage(buttonConfirmOffIcon.getImage().getScaledInstance(BUTTON_WIDTH, BUTTON_HEIGHT, 1));
+				.setImage(buttonConfirmOffIcon.getImage().getScaledInstance(SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT, 1));
 
 		buttonConfirmOnIcon = new ImageIcon("image/buttons/confirm_on.png");
-		buttonConfirmOnIcon.setImage(buttonConfirmOnIcon.getImage().getScaledInstance(BUTTON_WIDTH, BUTTON_HEIGHT, 1));
+		buttonConfirmOnIcon.setImage(buttonConfirmOnIcon.getImage().getScaledInstance(SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT, 1));
 
 		buttonConfirmLabel = new JLabel(buttonConfirmOffIcon);
-		buttonConfirmLabel.setBounds(670, 620, BUTTON_WIDTH, BUTTON_HEIGHT);
+		buttonConfirmLabel.setBounds(760, 650,SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT);
 		this.add(buttonConfirmLabel);
 
 		// forward
@@ -131,10 +144,18 @@ public class StagePanel extends JPanel implements GameConstants {
 		buttonForwardLabel.addMouseListener(new ButtonListener(mainFrame, "forward"));
 		buttonBackwardLabel.addMouseListener(new ButtonListener(mainFrame, "backward"));
 	}
-
+	
+	public void addStory(int stageNumber) {
+		storyIcon = new ImageIcon("image/background/story"+stageNumber+".png");
+		storyIcon.setImage(storyIcon.getImage().getScaledInstance(STORY_WIDTH, STORY_HEIGHT, 1));
+		storyLabel = new JLabel(storyIcon);
+		storyLabel.setBounds(WINDOW_WIDTH/2-STORY_WIDTH/2, 560, STORY_WIDTH, STORY_HEIGHT);
+		this.add(storyLabel);
+	}
+	
 	public void addThumbnail(int stageNumber) {
 		thumbnailLabel = new ThumbnailLabel(stageNumber);
-		thumbnailLabel.setBounds(200, 200, THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT);
+		thumbnailLabel.setBounds(WINDOW_WIDTH/2-SCALED_THUMBNAIL_WIDTH/2, 130+10, SCALED_THUMBNAIL_WIDTH,SCALED_THUMBNAIL_HEIGHT);
 		this.add(thumbnailLabel);
 	}
 
@@ -212,10 +233,11 @@ public class StagePanel extends JPanel implements GameConstants {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
+			
+			
 			switch (this.name) {
 			case "back":
 				ChoosePlayerPanel choosePlayerPanel = new ChoosePlayerPanel(mainFrame, gameMode);
-
 				JPanel mainPanel = (JPanel) mainFrame.getContentPane();
 				mainPanel.removeAll();
 
@@ -231,10 +253,40 @@ public class StagePanel extends JPanel implements GameConstants {
 				generateStage(stageNumber);
 				break;
 			case "forward":
-				// TODO
+				stageNumber=stageNumber+1;
+				if (stageNumber>3){
+					stageNumber=stageNumber-4;
+				}
+				
+				StagePanel.this.removeAll();
+							
+				thumbnailLabel = new ThumbnailLabel(stageNumber);
+				thumbnailLabel.setBounds(WINDOW_WIDTH/2-SCALED_THUMBNAIL_WIDTH/2, 130+10, SCALED_THUMBNAIL_WIDTH,SCALED_THUMBNAIL_HEIGHT);
+				StagePanel.this.add(thumbnailLabel);
+				thumbnailLabel.setVisible(true);
+				StagePanel.this.addButton();
+				StagePanel.this.addStory(stageNumber);
+				StagePanel.this.addBackground();
+				StagePanel.this.revalidate();
+				StagePanel.this.repaint();
 				break;
 			case "backward":
+				stageNumber=stageNumber-1;
+				if (stageNumber<0){
+					stageNumber=stageNumber+4;
+				}
+				
+				StagePanel.this.removeAll();
 
+				thumbnailLabel = new ThumbnailLabel(stageNumber);
+				thumbnailLabel.setBounds(WINDOW_WIDTH/2-SCALED_THUMBNAIL_WIDTH/2, 130+10, SCALED_THUMBNAIL_WIDTH,SCALED_THUMBNAIL_HEIGHT);
+				StagePanel.this.add(thumbnailLabel);
+				thumbnailLabel.setVisible(true);
+				StagePanel.this.addButton();
+				StagePanel.this.addStory(stageNumber);
+				StagePanel.this.addBackground();
+				StagePanel.this.revalidate();
+				StagePanel.this.repaint();
 				break;
 
 			}

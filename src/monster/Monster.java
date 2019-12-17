@@ -19,7 +19,7 @@ import game.GameConstants;
 public class Monster implements GameConstants {
 	private boolean alive;
 	private boolean alert;		// whether the monster is in alert state
-	private int velocity;
+	private double velocity;
 	private int oldDirection;
 	private int direction;
 	private int x;
@@ -55,7 +55,8 @@ public class Monster implements GameConstants {
 	private void init() {
 		this.alive = true;
 		this.alert = false;
-		this.velocity = 3 + (int)(3*Math.random());
+		this.velocity = MONSTER_SPEED_LOW +
+			(MONSTER_SPEED_HIGH - MONSTER_SPEED_LOW) * Math.random();
 		this.direction = -1;
 		this.oldDirection = 0;
 		brain = new Brain();
@@ -107,11 +108,11 @@ public class Monster implements GameConstants {
 		return this.direction;
 	}
 
-	public void setVelocity(int v) {
+	public void setVelocity(double v) {
 		this.velocity = v;
 	}
 
-	public int getVelocity() {
+	public double getVelocity() {
 		return this.velocity;
 	}
 

@@ -34,7 +34,6 @@ public class MapPanel extends JPanel implements GameConstants {
 	BufferedImage monsterImage[][] = new BufferedImage[5][3];
 	BufferedImage mapImage[] = new BufferedImage[4];
 	BufferedImage wallImage[][] = new BufferedImage[4][8];
-	BufferedImage gameImage[] = new BufferedImage[3];
 	BufferedImage bombImage[] = new BufferedImage[2];
 	BufferedImage bulletImage[] = new BufferedImage[4];
 	private int stageNumber;
@@ -307,8 +306,6 @@ public class MapPanel extends JPanel implements GameConstants {
 		wallImage[3][5] = ImageIO.read(new File("image/maps/wall4-6.png"));
 		wallImage[3][6] = ImageIO.read(new File("image/maps/wall4-7.png"));
 		wallImage[3][7] = ImageIO.read(new File("image/maps/wall4-8.png"));
-
-		gameImage[GAMEOVER] = ImageIO.read(new File("image/game/gameover.jpg"));
 
 		bombImage[BOMB] = ImageIO.read(new File("image/bomb/bomb.png"));
 		bombImage[EXPLODE] = ImageIO.read(new File("image/bomb/explode.png"));

@@ -66,9 +66,9 @@ public class MapPanel extends JPanel implements GameConstants {
 		super.paintComponent(g);
 
 		paintMap(g);
-		paintPlayer(g);
 		paintMonsters(g);
 		paintActiveItem(g);
+		paintPlayer(g);
 		for (int i = 0; i < game.getPlayerNum(); i++) {			
 			game.getPlayer()[i].acquireItemByMap(game.getMap());
 		}

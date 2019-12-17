@@ -145,4 +145,36 @@ public class Game implements GameConstants, Serializable {
 	public void setStageNumber(int stageNumber) {
 		this.stageNumber = stageNumber;
 	}
+	
+	public String refresh() {
+		if (this.getGameMode() == PVE_MODE) {
+			if (this.getPlayer()[PLAYER_ID_P1].getHP() <= 0) {
+				this.setGameOver(true);
+				return "monsterWin";
+			} else {
+				boolean monstersAlive = false;
+				for (Monster m : this.getMonsters()) {
+					monstersAlive |= m.isAlive();
+				}
+				if (monstersAlive == false && this.getPlayer()[PLAYER_ID_P1].getHP() > 0) {
+					this.setGameOver(true);
+					return "playerWin";
+				}
+			}
+		} else if (this.getGameMode() == PVP_MODE) {
+			if (this.getPlayer()[PLAYER_ID_P1].getHP() <= 0 && this.getPlayer()[PLAYER_ID_P2].getHP() > 0) {
+				this.setGameOver(true);
+				return "player1Win";
+			}
+			else if (this.getPlayer()[PLAYER_ID_P2].getHP() <= 0 && this.getPlayer()[PLAYER_ID_P1].getHP() > 0) {
+				this.setGameOver(true);
+				return "player2Win";
+			}
+			else if (this.getPlayer()[PLAYER_ID_P1].getHP() <= 0 && this.getPlayer()[PLAYER_ID_P2].getHP() <= 0) {
+				this.setGameOver(true);
+				return "tie";
+			}		
+		}
+		return "";
+	}
 }

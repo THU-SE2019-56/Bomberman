@@ -129,7 +129,7 @@ public interface GameConstants {
 	int REFRESH = 30;
 	
 	// For Stage Editor
-	int ERASE_WALL = 1;
+	int REMOVE_WALL = 1;
 	int SET_DESTRUCTIBLE_WALL = 2;
 	int SET_INDESTRUCTIBLE_WALL = 3;
 	int REMOVE_MOB = 4;

@@ -28,7 +28,7 @@ public class MapPanel extends JPanel implements GameConstants {
 	BufferedImage player3Image[] = new BufferedImage[4];
 	BufferedImage player4Image[] = new BufferedImage[4];
 	BufferedImage itemImage[] = new BufferedImage[ITEM_NUM];
-	BufferedImage monsterImage[] = new BufferedImage[4];
+	BufferedImage monsterImage[][] = new BufferedImage[5][3];
 	BufferedImage mapImage[] = new BufferedImage[4];
 	BufferedImage wallImage[][] = new BufferedImage[4][8];
 	BufferedImage gameImage[] = new BufferedImage[3];
@@ -206,8 +206,8 @@ public class MapPanel extends JPanel implements GameConstants {
 	public void paintMonsters(Graphics g) {
 		for (Monster m : game.getMonsters()) {
 			if (m.isAlive()) {
-				g.drawImage(monsterImage[m.getImageDirection()], m.getX(), m.getY(), MONSTER_WIDTH, MONSTER_HEIGHT,
-						this);
+				g.drawImage(monsterImage[m.id][m.getImageIndex()], m.getX(), m.getY(),
+						MONSTER_WIDTH, MONSTER_HEIGHT, this);
 			}
 		}
 	}
@@ -262,12 +262,21 @@ public class MapPanel extends JPanel implements GameConstants {
 		bulletImage[DIRECTION_DOWN] = ImageIO.read(new File("image/item/bullet_down.png"));
 		bulletImage[DIRECTION_RIGHT] = ImageIO.read(new File("image/item/bullet_right.png"));
 		bulletImage[DIRECTION_LEFT] = ImageIO.read(new File("image/item/bullet_left.png"));
-		
 
-		monsterImage[DIRECTION_UP] = ImageIO.read(new File("image/monster/up.png"));
-		monsterImage[DIRECTION_DOWN] = ImageIO.read(new File("image/monster/down.png"));
-		monsterImage[DIRECTION_RIGHT] = ImageIO.read(new File("image/monster/right.png"));
-		monsterImage[DIRECTION_LEFT] = ImageIO.read(new File("image/monster/left.png"));
+		monsterImage[0][0] = ImageIO.read(new File("image/monster/m0LEFT.png"));
+		monsterImage[0][1] = ImageIO.read(new File("image/monster/m0RIGHT.png"));
+		monsterImage[1][0] = ImageIO.read(new File("image/monster/m1LEFT.png"));
+		monsterImage[1][1] = ImageIO.read(new File("image/monster/m1RIGHT.png"));
+		monsterImage[1][2] = ImageIO.read(new File("image/monster/m1DIE.png"));
+		monsterImage[2][0] = ImageIO.read(new File("image/monster/m2LEFT.png"));
+		monsterImage[2][1] = ImageIO.read(new File("image/monster/m2RIGHT.png"));
+		monsterImage[2][2] = ImageIO.read(new File("image/monster/m2DIE.png"));
+		monsterImage[3][0] = ImageIO.read(new File("image/monster/m3LEFT.png"));
+		monsterImage[3][1] = ImageIO.read(new File("image/monster/m3RIGHT.png"));
+		monsterImage[3][2] = ImageIO.read(new File("image/monster/m3DIE.png"));
+		monsterImage[4][0] = ImageIO.read(new File("image/monster/m4LEFT.png"));
+		monsterImage[4][1] = ImageIO.read(new File("image/monster/m4RIGHT.png"));
+		monsterImage[4][2] = ImageIO.read(new File("image/monster/m4DIE.png"));
 
 		mapImage[GRASS_1] = ImageIO.read(new File("image/maps/grass1.png"));
 		mapImage[GRASS_2] = ImageIO.read(new File("image/maps/grass2.png"));

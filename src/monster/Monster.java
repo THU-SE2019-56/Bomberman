@@ -1,7 +1,5 @@
 package monster;
 
-import java.util.*;
-
 import map.Map;
 import player.Player;
 import game.GameConstants;
@@ -17,15 +15,16 @@ import game.GameConstants;
  * @version 1.0
  */
 public class Monster implements GameConstants {
-	private boolean alive;
-	private boolean alert;		// whether the monster is in alert state
-	private double velocity;
-	private int oldDirection;
-	private int direction;
-	private int x;
-	private int y;
-	private Brain brain;
-	private Path path;
+    boolean alive;
+	boolean alert;		// whether the monster is in alert state
+	double velocity;
+	int oldDirection;
+	int direction;
+	int x;
+	int y;
+	Brain brain;
+	Path path;
+	public int id;
 
 	/**
 	 * Create the monster at random position
@@ -55,7 +54,7 @@ public class Monster implements GameConstants {
     /**
      * Set monster's properties
      */
-	private void init() {
+    void init() {
 		this.alive = true;
 		this.alert = false;
 		this.velocity = MONSTER_SPEED_LOW +
@@ -64,12 +63,13 @@ public class Monster implements GameConstants {
 		this.oldDirection = 0;
 		brain = new Brain(1);
 		path = new Path();
+		id = 0;
 	}
 
     /**
      * Generate the next direction
      */
-	private int nextDirection(Player p, Map m) {
+	int nextDirection(Player p, Map m) {
 		if (path.size() > 0) {
 			// compute direction
 			int dx = path.getNextX() - this.x;
@@ -107,17 +107,22 @@ public class Monster implements GameConstants {
 	}
 
 	void setDirection(int d) {
-    	this.oldDirection = this.direction;
+		if (this.direction==DIRECTION_LEFT || this.direction==DIRECTION_RIGHT)
+    		this.oldDirection = this.direction;
     	this.direction = d;
 	}
 
     /**
-     * Get the image's direction
+     * Get the image's index
      */
-	public int getImageDirection() {
-    	if (this.direction < 0)
-    		return Math.max(this.oldDirection, 0);
-		return this.direction;
+	public int getImageIndex() {
+		int d = this.direction==DIRECTION_LEFT || this.direction==DIRECTION_RIGHT ?
+				this.direction : this.oldDirection;
+		switch (d) {
+			case DIRECTION_LEFT: return 0;
+			case DIRECTION_RIGHT: return 1;
+		}
+		return 0;
 	}
 
 	public void setVelocity(double v) {
@@ -208,7 +213,7 @@ public class Monster implements GameConstants {
 	/**
 	 * Check whether the monster is collided with a blown region
 	 */
-	private boolean isBlownOff(Map m) {
+	boolean isBlownOff(Map m) {
 	    int mi = Math.floorDiv(x, CELL_WIDTH);
 	    int mj = Math.floorDiv(y, CELL_HEIGHT);
 		for (int i=mi; i<Math.min(mi+2, CELL_NUM_X); ++i)
@@ -222,7 +227,7 @@ public class Monster implements GameConstants {
 	/**
 	 * Check whether the monster is collided with a rectangle [x,y,w,h]
 	 */
-	private boolean isCollided(int x, int y, int w, int h) {
+	boolean isCollided(int x, int y, int w, int h) {
 		int x1 = Math.max(x, this.x);
 		int x2 = Math.min(x + w, this.x + MONSTER_WIDTH);
 		int y1 = Math.max(y, this.y);

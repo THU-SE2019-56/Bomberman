@@ -92,10 +92,10 @@ public class Controls {
 		
 		jtf.setBounds(x, y, width, height);
 		
-		Font textFieldFont = new Font("Times New Roman Italic", Font.BOLD, 20);
+		Font textFieldFont = new Font("Times New Roman Italic", Font.BOLD, 14);
 		jtf.setFont(textFieldFont);
-		jtf.setBackground(Color.pink);
-		jtf.setForeground(Color.white);
+		jtf.setBackground(null);
+		//jtf.setForeground(Color.white);
 		jtf.setEditable(false);
 		jtf.setBorder(null);
 	

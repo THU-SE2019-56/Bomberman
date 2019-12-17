@@ -55,6 +55,7 @@ public interface GameConstants {
 	int BULLET = 4;
 	int LANDMINE = 5;
 	int IMMUNE = 6;
+	int NO_ACTIVE_ITEM = -1;
 	
 	int ACTIVE_ITEM_NUM = 2;
 

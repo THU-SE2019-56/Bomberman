@@ -5,7 +5,7 @@ import java.io.Serializable;
 import items.Item;
 import map.Map;
 import monster.Monster;
-import monster.MonsterGenerator;
+import monster.MonsterFactory;
 import player.Player;
 
 /**
@@ -38,7 +38,7 @@ public class Game implements GameConstants, Serializable {
 
 		// TODO Generate player and monsters according to X and Y
 		for (int i = 0; i < MAX_MONSTER_NUMBER; i++) {
-			this.monsters[i] = MonsterGenerator.getRandomMonster(map);
+			this.monsters[i] = MonsterFactory.getRandomMonster(map);
 		}
 
 		if (gameMode == PVE_MODE) {

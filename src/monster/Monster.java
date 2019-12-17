@@ -188,25 +188,24 @@ public class Monster implements GameConstants {
      * Take some actions in a game loop
      */
 	public void monsterMove(Player p, Map m) {
-		moveStep(p, m);		// move a step
-		if (p.getActiveItem() != null) {	// killed by bullet
-			if(isCollided(p.getActiveItem().getX(), p.getActiveItem().getY(), CELL_WIDTH, CELL_HEIGHT)) {
+		if (isAlive()) {
+			moveStep(p, m);        // move a step
+			if (p.getActiveItem() != null) {    // killed by bullet
+				if (isCollided(p.getActiveItem().getX(), p.getActiveItem().getY(), CELL_WIDTH, CELL_HEIGHT)) {
+					eliminate();
+					p.getActiveItem().setState(false);
+					p.setIsUsingBulletFlag(0);
+					p.setActiveItem(null);
+				}
+			} else if (isCollided(p.getX(), p.getY(), CELL_WIDTH, CELL_HEIGHT)) { // collide with player
 				eliminate();
-				p.getActiveItem().setState(false);
-				p.setIsUsingBulletFlag(0);
-				p.setActiveItem(null);
+				p.getHurt(HP_LOSS_BY_MONSTER);
+			} else if (isBlownOff(m)) {    // killed by bomb
+				eliminate();
+			} else {    // still alive
+				setDirection(nextDirection(p, m));
+				updateAlert(p);
 			}
-		}
-		else if (isCollided(p.getX(), p.getY(), CELL_WIDTH, CELL_HEIGHT)) { // collide with player
-			eliminate();
-			p.getHurt(HP_LOSS_BY_MONSTER);
-		}
-		else if (isBlownOff(m)) {	// killed by bomb
-			eliminate();
-		}
-		else {	// still alive
-			setDirection(nextDirection(p, m));
-			updateAlert(p);
 		}
 	}
 

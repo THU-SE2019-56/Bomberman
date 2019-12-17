@@ -16,7 +16,7 @@ import javax.swing.Timer;
 import javax.swing.border.Border;
 import javax.swing.BorderFactory;
 
-import com.sun.org.apache.bcel.internal.generic.LAND;
+//import com.sun.org.apache.bcel.internal.generic.LAND;
 import game.Game;
 import game.GameConstants;
 import game.TimerListener;
@@ -80,7 +80,7 @@ public class StatusPanel extends JPanel implements GameConstants {
             this.bombPow[i] = new JTextField("");
             control.initializeTextField(this.bombPow[i], 160, 30 + refY, 40, 20);
             this.itemName[i] = new JTextField("");
-            control.initializeTextField(this.itemName[i], 160, 60 + refY, 40, 20);
+            control.initializeTextField(this.itemName[i], 160, 60 + refY, 80, 20);
 
             this.add(this.playerLifeText[i]);
             this.add(this.bombNum[i]);
@@ -156,13 +156,13 @@ public class StatusPanel extends JPanel implements GameConstants {
             int itemID = game.getPlayer()[i].getActiveItemID();
             switch (itemID) {
                 case BULLET:
-                    g.drawImage(itemImage[BULLET],refX + 80, 60 + refY, 40, 20, this);
+                    g.drawImage(itemImage[BULLET],refX + 80, 60 + refY, 20, 20, this);
                     this.itemName[i].setText("Bullet");
                     break;
-                case LANDMINE:
-                    g.drawImage(itemImage[LANDMINE],refX + 80, 60 + refY, 40, 20, this);
-                    this.itemName[i].setText("Line-mine");
-                    break;
+//                case LANDMINE:
+//                    g.drawImage(itemImage[LANDMINE],refX + 80, 60 + refY, 20, 20, this);
+//                    this.itemName[i].setText("Landmine");
+//                    break;
                 case NO_ACTIVE_ITEM:
                     this.itemName[i].setText("");
                     break;
@@ -171,12 +171,8 @@ public class StatusPanel extends JPanel implements GameConstants {
             // Protected
             if (game.getPlayer()[i].proectedByItem()) {
                 g.setColor(Color.black);
-                g.drawOval(refX - 10, refY - 15, 75, 75);
+                g.drawOval(refX - 10, refY - 20, 75, 75);
             }
-
-
-
-
 
         }
 
@@ -303,7 +299,7 @@ public class StatusPanel extends JPanel implements GameConstants {
         bombImage[0] = ImageIO.read(new File("image/bomb/bomb.png"));
         bombImage[1] = ImageIO.read(new File("image/bomb/power.png"));
 
-        itemImage[BULLET]= ImageIO.read(new File("image/Item/bullet.png"));
+        itemImage[BULLET]= ImageIO.read(new File("image/item/bullet.png"));
 
         player1Image[DIRECTION_UP] = ImageIO.read(new File("image/player/p1UP.png"));
         player1Image[DIRECTION_RIGHT] = ImageIO.read(new File("image/player/p1RIGHT.png"));
@@ -325,6 +321,7 @@ public class StatusPanel extends JPanel implements GameConstants {
         player4Image[DIRECTION_RIGHT] = ImageIO.read(new File("image/player/p4RIGHT.png"));
         player4Image[DIRECTION_DOWN] = ImageIO.read(new File("image/player/p4DOWN.png"));
         player4Image[DIRECTION_LEFT] = ImageIO.read(new File("image/player/p4LEFT.png"));
+
 
     }
 

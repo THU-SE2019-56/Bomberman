@@ -25,7 +25,13 @@
 - [player](#player)
 	- [Player](#Player-1)
 - [monster](#monster)
-	- [Monster](#Monster-1)
+	- [Monster](#Monster)
+	- [Brain](#Brain)
+	- [Tyrannosaurus](#Tyrannosaurus)
+	- [Triceratops](#Triceratops)
+	- [Frog](#Frog)
+	- [Parrot](#Parrot)
+	- [MonsterFactory](#MonsterFactory)
 - [bomb](#bomb)
 	- [Bomb](#Bomb-1)
 - [items](#items)
@@ -113,11 +119,49 @@ MapMatrix中包含可以随机生成含障碍物的地图或载入已有矩阵�
 负责怪物的[包](src/monster)。  
 暂时只包含一个类，之后可以拓展为不同的怪物类型。
 
+12.17更新-将怪物拓展为多种类型（霸王龙，三角龙，青蛙，鹦鹉），不同类型的怪物有不同的特性．增加了怪物工厂类，用于生成给定类型或随机类型的怪物．
+
+#### MonsterFactory
+
+[怪物工厂](src/monster/MonsterFactory.java)类，用于生成给定类型或随机类型的怪物，可以指定怪物的出生点，或将地图作为参数，随机选定出生点
+
+#### Brain
+
+[怪物大脑](src/monster/Brain.java)类，集成了与路径规划相关的算法，如：BFS，路径随机生成，供Monster类调用
+
 #### Monster
-负责怪物的[类](src/monster/Monster.java)。  
+
+所有怪物的[基类](src/monster/Monster.java)。  
 随机移动（与玩家的移动方法基本相似，互相沟通），警戒范围，脱离警戒范围，被炸弹消灭。
 
 11.12更新-全地图随机游走。玩家进入警戒范围（`ALERT_DISTANCE`）后，开始跟随玩家，直到被消灭或脱离警戒范围。与玩家碰撞后扣除玩家一定血量（`HP_LOSS_BY_MONSTER`）
+
+#### Tyrannosaurus
+
+[霸王龙](src/monster/Tyrannosaurus.java)类，怪物类的子类，有如下特性：
+
+* 敏捷：霸王龙有较高的移动速度
+* 谨慎：霸王龙在躲避炸弹方面更加谨慎
+
+#### Triceratops
+
+[三角龙](src/monster/Triceratops.java)类，怪物类的子类，有如下特性：
+
+* 迟缓：非警戒状态下，三角龙的移动速度较低
+* 冲撞：当玩家进入警戒范围时，三角龙的移动速度将大大增加
+
+#### Frog
+
+[青蛙](src/monster/Frog.java)类，怪物类的子类，有如下特性：
+
+* 笨拙：青蛙不具备躲避炸弹的能力
+* 复活：在被玩家消灭后一段时间后，可以原地复活（有复活次数的限制）
+
+#### Parrot
+
+[鹦鹉](src/monster/Frog.java)类，怪物类的子类，有如下特性：
+
+* 全局视野：作为飞行类怪物，鹦鹉具有全局视野，可以在地图中的任意位置发现玩家，因此鹦鹉将始终处于警戒状态
 
 ---
 ### bomb

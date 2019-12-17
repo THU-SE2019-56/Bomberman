@@ -3,6 +3,8 @@ package ui;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -117,49 +119,45 @@ public class MapPanel extends JPanel implements GameConstants {
 	 */
 	public void paintActiveItem(Graphics g) {
 		for (int i = 0; i < game.getPlayerNum(); i++) {
-
+			
 			int bullet_width = 0;
 			int bullet_height = 0;
-
-			if (game.getPlayer()[i].getIsUsingBulletFlag() == 1) {
-				game.getPlayer()[i].getActiveItem().move(game.getMap());
+			
+			if (game.getPlayer()[i].getIsUsingBulletFlag()==1) {
+				game.getPlayer()[i].getActiveItem().move(game.getMap());		
 				if (game.getPlayer()[i].getActiveItem() != null) {
-					switch (game.getPlayer()[i].getActiveItem().getDirection()) {
+					switch (game.getPlayer()[i].getActiveItem().getDirection()) {				
 					case DIRECTION_UP:
 						bullet_width = BULLET_WIDTH;
 						bullet_height = BULLET_HEIGHT;
-						g.drawImage(bulletImage[game.getPlayer()[i].getActiveItem().getDirection()],
-								game.getPlayer()[i].getActiveItem().getX() + 10,
-								game.getPlayer()[i].getActiveItem().getY(), bullet_width, bullet_height, this);
+						g.drawImage(bulletImage[game.getPlayer()[i].getActiveItem().getDirection()], game.getPlayer()[i].getActiveItem().getX() + 10, game.getPlayer()[i].getActiveItem().getY(),
+								bullet_width, bullet_height,this);
 						break;
 					case DIRECTION_DOWN:
 						bullet_width = BULLET_WIDTH;
 						bullet_height = BULLET_HEIGHT;
-						g.drawImage(bulletImage[game.getPlayer()[i].getActiveItem().getDirection()],
-								game.getPlayer()[i].getActiveItem().getX() + 10,
-								game.getPlayer()[i].getActiveItem().getY(), bullet_width, bullet_height, this);
+						g.drawImage(bulletImage[game.getPlayer()[i].getActiveItem().getDirection()], game.getPlayer()[i].getActiveItem().getX() + 10, game.getPlayer()[i].getActiveItem().getY(),
+								bullet_width, bullet_height,this);
 						break;
 					case DIRECTION_LEFT:
 						bullet_width = BULLET_HEIGHT;
 						bullet_height = BULLET_WIDTH;
-						g.drawImage(bulletImage[game.getPlayer()[i].getActiveItem().getDirection()],
-								game.getPlayer()[i].getActiveItem().getX(),
-								game.getPlayer()[i].getActiveItem().getY() + 10, bullet_width, bullet_height, this);
+						g.drawImage(bulletImage[game.getPlayer()[i].getActiveItem().getDirection()], game.getPlayer()[i].getActiveItem().getX(), game.getPlayer()[i].getActiveItem().getY() + 10,
+								bullet_width, bullet_height,this);
 						break;
 					case DIRECTION_RIGHT:
 						bullet_width = BULLET_HEIGHT;
 						bullet_height = BULLET_WIDTH;
-						g.drawImage(bulletImage[game.getPlayer()[i].getActiveItem().getDirection()],
-								game.getPlayer()[i].getActiveItem().getX(),
-								game.getPlayer()[i].getActiveItem().getY() + 10, bullet_width, bullet_height, this);
-						break;
+						g.drawImage(bulletImage[game.getPlayer()[i].getActiveItem().getDirection()], game.getPlayer()[i].getActiveItem().getX(), game.getPlayer()[i].getActiveItem().getY() + 10,
+								bullet_width, bullet_height,this);
+						break;				
 					}
 				}
-
+				
 			}
-
+			
 		}
-
+		
 	}
 
 	public void paintMap(Graphics g) {
@@ -255,6 +253,7 @@ public class MapPanel extends JPanel implements GameConstants {
 
 		monsterImage[0][0] = ImageIO.read(new File("image/monster/m0LEFT.png"));
 		monsterImage[0][1] = ImageIO.read(new File("image/monster/m0RIGHT.png"));
+		monsterImage[0][2] = ImageIO.read(new File("image/monster/m0RIGHT.png"));
 		monsterImage[1][0] = ImageIO.read(new File("image/monster/m1LEFT.png"));
 		monsterImage[1][1] = ImageIO.read(new File("image/monster/m1RIGHT.png"));
 		monsterImage[1][2] = ImageIO.read(new File("image/monster/m1DIE.png"));

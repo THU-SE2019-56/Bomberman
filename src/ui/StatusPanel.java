@@ -9,14 +9,12 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 import javax.imageio.ImageIO;
-import javax.swing.JButton;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.Timer;
-import javax.swing.border.Border;
-import javax.swing.BorderFactory;
 
-//import com.sun.org.apache.bcel.internal.generic.LAND;
 import game.Game;
 import game.GameConstants;
 import game.TimerListener;
@@ -30,300 +28,349 @@ import game.TimerListener;
  * @version 0.9
  */
 public class StatusPanel extends JPanel implements GameConstants {
-    private BufferedImage playerImage[] = new BufferedImage[2];
-
-    private BufferedImage bombImage[] = new BufferedImage[2];
-    private JTextField bombNum[] = new JTextField[2];
-    private JTextField bombPow[] = new JTextField[2];
-
-    private BufferedImage itemImage[] = new BufferedImage[ITEM_NUM];
-    private JTextField itemName[] = new JTextField[2];
-
-
-    private JTextField playerLifeText[] = new JTextField[2];
-    private JButton pauseButton = new JButton("Pause");
-    private JButton backButton = new JButton("Back");
-    private JButton restartButton = new JButton("Restart");
-    private Game game;
-    private MainFrame mainFrame;
-
-    private BufferedImage player1Image[] = new BufferedImage[4];
-    private BufferedImage player2Image[] = new BufferedImage[4];
-    private BufferedImage player3Image[] = new BufferedImage[4];
-    private BufferedImage player4Image[] = new BufferedImage[4];
-
-    private Controls control;
-
-    public StatusPanel(Game game, MainFrame mainFrame) {
-
-        this.game = game;
-        this.mainFrame = mainFrame;
-
-        control = new Controls();
-
-        try {
-            loadImage();
-        } catch (Exception e) {
-            System.out.println(e.toString());
-        }
-
-        this.setLayout(null);
-
-        for (int i = 0; i < game.getPlayerNum(); i++) {
-            int refY = 50 + 150 * i;
-            this.playerLifeText[i] = new JTextField("");
-
-            control.initializeTextField(this.playerLifeText[i], 160, 95 + refY, 40, 20);
-
-            this.bombNum[i] = new JTextField("");
-            control.initializeTextField(this.bombNum[i], 160, refY, 40, 20);
-            this.bombPow[i] = new JTextField("");
-            control.initializeTextField(this.bombPow[i], 160, 30 + refY, 40, 20);
-            this.itemName[i] = new JTextField("");
-            control.initializeTextField(this.itemName[i], 160, 60 + refY, 80, 20);
-
-            this.add(this.playerLifeText[i]);
-            this.add(this.bombNum[i]);
-            this.add(this.bombPow[i]);
-            this.add(this.itemName[i]);
-        }
-
-        // Pause
-        control.initializeButton(pauseButton, CELL_WIDTH, 8 * CELL_HEIGHT, 2 * CELL_WIDTH, CELL_HEIGHT);
-
-        // Back to main menu
-        control.initializeButton(backButton, CELL_WIDTH, 10 * CELL_HEIGHT, 2 * CELL_WIDTH, CELL_HEIGHT);
-
-        // Restart game
-        control.initializeButton(restartButton, CELL_WIDTH, 12 * CELL_HEIGHT, 2 * CELL_WIDTH, CELL_HEIGHT);
-
-        pauseButton.addMouseListener(new ButtonListener(this.mainFrame));
-        backButton.addMouseListener(new ButtonListener(this.mainFrame));
-        restartButton.addMouseListener(new ButtonListener(this.mainFrame));
-
-        this.add(backButton);
-        this.add(pauseButton);
-        this.add(restartButton);
-
-    }
-
-
-    public void paintComponent(Graphics g) {
-
-        super.paintComponent(g);
-
-        for (int i = 0; i < game.getPlayerNum(); i++) {
-            int refX = 50;
-            int refY = 50 + 150 * i;
-
-            //Player
-            switch (game.getPlayer()[i].getPlayerCharacterID()) {
-                case 0:
-                    g.drawImage(player1Image[DIRECTION_DOWN], refX, refY, 60, 60, this);
-                    break;
-                case 1:
-                    g.drawImage(player2Image[DIRECTION_DOWN], refX, refY, 60, 60, this);
-                    break;
-                case 2:
-                    g.drawImage(player3Image[DIRECTION_DOWN], refX, refY, 60, 60, this);
-                    break;
-                case 3:
-                    g.drawImage(player4Image[DIRECTION_DOWN], refX, refY, 60, 60, this);
-                    break;
-            }
-
-
-            //HP bar
-            int playerHP = game.getPlayer()[i].getHP();
-            int playerMaxHP = game.getPlayer()[i].getMaxHP();
-            // int playerNormHP = playerHP / playerMaxHP * 100;
-
-            this.playerLifeText[i].setText(String.valueOf(playerHP));
-            g.setColor(Color.BLUE);
-            g.drawRect(refX, 100 + refY, playerMaxHP, 10);
-            g.setColor(Color.getHSBColor((float) playerHP / 300, 1, 1));
-            g.fillRect(refX, 100 + refY, playerHP, 10);
-
-            // bomb
-            int bombNum = game.getPlayer()[i].getBombMaxNumber() - game.getPlayer()[i].getBombPlantedNumber();
-            int bombPow = game.getPlayer()[i].getBombPower();
-            this.bombNum[i].setText(" × " + String.valueOf(bombNum));
-            this.bombPow[i].setText(" × " + String.valueOf(bombPow));
-            g.drawImage(bombImage[0], refX + 80, refY, 20, 20, this);
-            g.drawImage(bombImage[1], refX + 80, 30 + refY, 20, 20, this);
-
-            // bullet
-            int itemID = game.getPlayer()[i].getActiveItemID();
-            switch (itemID) {
-                case BULLET:
-                    g.drawImage(itemImage[BULLET],refX + 80, 60 + refY, 20, 20, this);
-                    this.itemName[i].setText("Bullet");
-                    break;
-//                case LANDMINE:
-//                    g.drawImage(itemImage[LANDMINE],refX + 80, 60 + refY, 20, 20, this);
-//                    this.itemName[i].setText("Landmine");
-//                    break;
-                case NO_ACTIVE_ITEM:
-                    this.itemName[i].setText("");
-                    break;
-            }
-
-            // Protected
-            if (game.getPlayer()[i].proectedByItem()) {
-                g.setColor(Color.black);
-                g.drawOval(refX - 10, refY - 20, 75, 75);
-            }
-
-        }
-
-    }
-
-    /**
-     * Respond to button events
-     */
-    class ButtonListener implements MouseListener {
-
-        MainFrame mainFrame;
-
-        public ButtonListener(MainFrame mainFrame) {
-            this.mainFrame = mainFrame;
-        }
-
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            // TODO Auto-generated method stub
-
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-            /*
-             * Pause
-             */
-            if (e.getSource() == pauseButton) {
-                if (game.getPauseFlag() == 0) {
-                    game.setPauseFlag(1);
-                    pauseButton.setText("Start");
-                } else {
-                    game.setPauseFlag(0);
-                    pauseButton.setText("Pause");
-                }
-            }
-
-            /*
-             * Back
-             */
-            if (e.getSource() == backButton) {
-                int gameMode = game.getGameMode();
-                StagePanel newStagePanel = new StagePanel(mainFrame, gameMode, game.getPlayer1CID(), game.getPlayer2CID());
-
-                JPanel mainPanel = (JPanel) mainFrame.getContentPane();
-                mainPanel.removeAll();
-
-                mainFrame.add(newStagePanel);
-                mainFrame.validate();
-
-                mainFrame.setLayout(null);
-
-                newStagePanel.setLocation(0, 0);
-                newStagePanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-            }
-
-            /*
-             * Restart
-             */
-            if (e.getSource() == restartButton) {
-                int[][] wallMatrix = StagePanel.loadStage(game.getStageNumber());
-                Game newGame = new Game(wallMatrix, 0, 0, new int[5], new int[5], game.getGameMode(), game.getStageNumber(),
-                        game.getPlayer1CID(), game.getPlayer2CID());
-                MapPanel newMapPanel = new MapPanel(newGame,mainFrame);
-                StatusPanel newStatusPanel = new StatusPanel(newGame, mainFrame);
-
-                JPanel mainPanel = (JPanel) mainFrame.getContentPane();
-                mainPanel.removeAll();
-
-                mainFrame.add(newMapPanel);
-                mainFrame.validate();// repaint
-
-                mainFrame.add(newStatusPanel);
-                mainFrame.validate();// repaint
-
-                mainFrame.setLayout(null);
-
-                newMapPanel.setLocation(0, 0);
-                newMapPanel.setSize(MAP_WIDTH, MAP_HEIGHT);
-
-                newStatusPanel.setLocation(MAP_WIDTH, 0);
-                newStatusPanel.setSize(STATUS_PANEL_WIDTH, STATUS_PANEL_HEIGHT);
-
-                TimerListener newTimerListener = new TimerListener(newGame, newMapPanel, newStatusPanel);
-                Timer newTimer = new Timer(REFRESH, newTimerListener);
-                newTimer.start();
-            }
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            // TODO Auto-generated method stub
-
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-
-            if (e.getSource() == pauseButton)
-                control.highLightButton(pauseButton);
-            else if (e.getSource() == backButton)
-                control.highLightButton(backButton);
-            else if (e.getSource() == restartButton)
-                control.highLightButton(restartButton);
-
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-
-            if (e.getSource() == pauseButton)
-                control.resetButton(pauseButton);
-            else if (e.getSource() == backButton)
-                control.resetButton(backButton);
-            else if (e.getSource() == restartButton)
-                control.resetButton(restartButton);
-
-        }
-    }
-
-    public void loadImage() throws Exception {
-        // TODO Load all the images here
-
-        bombImage[0] = ImageIO.read(new File("image/bomb/bomb.png"));
-        bombImage[1] = ImageIO.read(new File("image/bomb/power.png"));
-
-        itemImage[BULLET]= ImageIO.read(new File("image/item/bullet.png"));
-
-        player1Image[DIRECTION_UP] = ImageIO.read(new File("image/player/p1UP.png"));
-        player1Image[DIRECTION_RIGHT] = ImageIO.read(new File("image/player/p1RIGHT.png"));
-        player1Image[DIRECTION_DOWN] = ImageIO.read(new File("image/player/p1DOWN.png"));
-        player1Image[DIRECTION_LEFT] = ImageIO.read(new File("image/player/p1LEFT.png"));
-
-        player2Image[DIRECTION_UP] = ImageIO.read(new File("image/player/p2UP.png"));
-        player2Image[DIRECTION_RIGHT] = ImageIO.read(new File("image/player/p2RIGHT.png"));
-        player2Image[DIRECTION_DOWN] = ImageIO.read(new File("image/player/p2DOWN.png"));
-        player2Image[DIRECTION_LEFT] = ImageIO.read(new File("image/player/p2LEFT.png"));
-
-
-        player3Image[DIRECTION_UP] = ImageIO.read(new File("image/player/p3UP.png"));
-        player3Image[DIRECTION_RIGHT] = ImageIO.read(new File("image/player/p3RIGHT.png"));
-        player3Image[DIRECTION_DOWN] = ImageIO.read(new File("image/player/p3DOWN.png"));
-        player3Image[DIRECTION_LEFT] = ImageIO.read(new File("image/player/p3LEFT.png"));
-
-        player4Image[DIRECTION_UP] = ImageIO.read(new File("image/player/p4UP.png"));
-        player4Image[DIRECTION_RIGHT] = ImageIO.read(new File("image/player/p4RIGHT.png"));
-        player4Image[DIRECTION_DOWN] = ImageIO.read(new File("image/player/p4DOWN.png"));
-        player4Image[DIRECTION_LEFT] = ImageIO.read(new File("image/player/p4LEFT.png"));
-
-
-    }
-
+	private BufferedImage bombImage[] = new BufferedImage[2];
+	private BufferedImage itemImage[] = new BufferedImage[ITEM_NUM];
+	private BufferedImage player1Image[] = new BufferedImage[4];
+	private BufferedImage player2Image[] = new BufferedImage[4];
+	private BufferedImage player3Image[] = new BufferedImage[4];
+	private BufferedImage player4Image[] = new BufferedImage[4];
+
+	private JTextField bombNum[] = new JTextField[2];
+	private JTextField bombPow[] = new JTextField[2];
+	private JTextField itemName[] = new JTextField[2];
+	private JTextField playerLifeText[] = new JTextField[2];
+
+	private Game game;
+
+	private ImageIcon buttonPauseOffIcon;
+	private ImageIcon buttonPauseOnIcon;
+	private ImageIcon buttonStartOffIcon;
+	private ImageIcon buttonStartOnIcon;
+	private JLabel buttonPauseLabel;
+
+	private ImageIcon buttonRestartOffIcon;
+	private ImageIcon buttonRestartOnIcon;
+	private JLabel buttonRestartLabel;
+
+	private ImageIcon buttonBackOffIcon;
+	private ImageIcon buttonBackOnIcon;
+	private JLabel buttonBackLabel;
+
+	public StatusPanel(Game game, MainFrame mainFrame) {
+		this.game = game;
+		this.setBackground(new Color(153, 191, 68));
+
+		try {
+			loadImage();
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+
+		this.setLayout(null);
+
+		this.addButton();
+
+		for (int i = 0; i < game.getPlayerNum(); i++) {
+			int refY = 50 + 150 * i;
+			this.playerLifeText[i] = new JTextField("");
+
+			this.initializeTextField(this.playerLifeText[i], 160, 95 + refY, 40, 20);
+
+			this.bombNum[i] = new JTextField("");
+			this.initializeTextField(this.bombNum[i], 160, refY, 40, 20);
+			this.bombPow[i] = new JTextField("");
+			this.initializeTextField(this.bombPow[i], 160, 30 + refY, 40, 20);
+			this.itemName[i] = new JTextField("");
+			this.initializeTextField(this.itemName[i], 160, 60 + refY, 80, 20);
+
+			this.add(this.playerLifeText[i]);
+			this.add(this.bombNum[i]);
+			this.add(this.bombPow[i]);
+			this.add(this.itemName[i]);
+		}
+
+		buttonPauseLabel.addMouseListener(new ButtonListener(mainFrame, "pause"));
+		buttonRestartLabel.addMouseListener(new ButtonListener(mainFrame, "restart"));
+		buttonBackLabel.addMouseListener(new ButtonListener(mainFrame, "back"));
+	}
+
+	/**
+	 * 
+	 * Initialize text field
+	 */
+	public void initializeTextField(JTextField jtf, int x, int y, int width, int height) {
+		jtf.setBounds(x, y, width, height);
+		jtf.setFont(new Font("YouYuan", Font.BOLD, 20));
+		jtf.setBackground(null);
+		jtf.setEditable(false);
+		jtf.setBorder(null);
+	}
+
+	public void addButton() {
+		buttonPauseOffIcon = new ImageIcon("image/buttons/pause_off.png");
+		buttonPauseOffIcon.setImage(
+				buttonPauseOffIcon.getImage().getScaledInstance(SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT, 1));
+
+		buttonPauseOnIcon = new ImageIcon("image/buttons/pause_on.png");
+		buttonPauseOnIcon
+				.setImage(buttonPauseOnIcon.getImage().getScaledInstance(SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT, 1));
+
+		buttonStartOffIcon = new ImageIcon("image/buttons/start_off.png");
+		buttonStartOffIcon.setImage(
+				buttonStartOffIcon.getImage().getScaledInstance(SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT, 1));
+
+		buttonStartOnIcon = new ImageIcon("image/buttons/start_on.png");
+		buttonStartOnIcon
+				.setImage(buttonStartOnIcon.getImage().getScaledInstance(SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT, 1));
+
+		buttonPauseLabel = new JLabel(buttonPauseOffIcon);
+		buttonPauseLabel.setBounds(40, 400, SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT);
+		this.add(buttonPauseLabel);
+
+		buttonRestartOffIcon = new ImageIcon("image/buttons/restart_off.png");
+		buttonRestartOffIcon.setImage(
+				buttonRestartOffIcon.getImage().getScaledInstance(SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT, 1));
+
+		buttonRestartOnIcon = new ImageIcon("image/buttons/restart_on.png");
+		buttonRestartOnIcon.setImage(
+				buttonRestartOnIcon.getImage().getScaledInstance(SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT, 1));
+
+		buttonRestartLabel = new JLabel(buttonRestartOffIcon);
+		buttonRestartLabel.setBounds(40, 500, SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT);
+		this.add(buttonRestartLabel);
+
+		buttonBackOffIcon = new ImageIcon("image/buttons/back_off.png");
+		buttonBackOffIcon
+				.setImage(buttonBackOffIcon.getImage().getScaledInstance(SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT, 1));
+
+		buttonBackOnIcon = new ImageIcon("image/buttons/back_on.png");
+		buttonBackOnIcon
+				.setImage(buttonBackOnIcon.getImage().getScaledInstance(SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT, 1));
+
+		buttonBackLabel = new JLabel(buttonBackOffIcon);
+		buttonBackLabel.setBounds(40, 600, SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT);
+		this.add(buttonBackLabel);
+	}
+
+	public void paintComponent(Graphics g) {
+
+		super.paintComponent(g);
+
+		for (int i = 0; i < game.getPlayerNum(); i++) {
+			int refX = 50;
+			int refY = 50 + 150 * i;
+
+			// Player
+			switch (game.getPlayer()[i].getPlayerCharacterID()) {
+			case 0:
+				g.drawImage(player1Image[DIRECTION_DOWN], refX, refY, 70, 70, this);
+				break;
+			case 1:
+				g.drawImage(player2Image[DIRECTION_DOWN], refX, refY, 70, 70, this);
+				break;
+			case 2:
+				g.drawImage(player3Image[DIRECTION_DOWN], refX, refY, 70, 70, this);
+				break;
+			case 3:
+				g.drawImage(player4Image[DIRECTION_DOWN], refX, refY, 70, 70, this);
+				break;
+			}
+
+			// HP bar
+			int playerHP = game.getPlayer()[i].getHP();
+			int playerMaxHP = game.getPlayer()[i].getMaxHP();
+			this.playerLifeText[i].setText(String.valueOf(playerHP));
+			g.setColor(Color.BLUE);
+			g.drawRect(refX, 100 + refY, playerMaxHP, 10);
+			g.setColor(Color.getHSBColor((float) playerHP / 300, 1, 1));
+			g.fillRect(refX, 100 + refY, playerHP, 10);
+
+			// bomb
+			int bombNum = game.getPlayer()[i].getBombMaxNumber() - game.getPlayer()[i].getBombPlantedNumber();
+			int bombPow = game.getPlayer()[i].getBombPower();
+			this.bombNum[i].setText(" × " + String.valueOf(bombNum));
+			this.bombPow[i].setText(" × " + String.valueOf(bombPow));
+			g.drawImage(bombImage[0], refX + 80, refY, 40, 40, this);
+			g.drawImage(bombImage[1], refX + 80, 30 + refY, 40, 40, this);
+
+			// bullet
+			int itemID = game.getPlayer()[i].getActiveItemID();
+			switch (itemID) {
+			case BULLET:
+				g.drawImage(itemImage[BULLET], refX + 80, 60 + refY, 20, 20, this);
+				this.itemName[i].setText("Bullet");
+				break;
+			case NO_ACTIVE_ITEM:
+				this.itemName[i].setText("");
+				break;
+			}
+
+			// Protected
+			if (game.getPlayer()[i].proectedByItem()) {
+				g.setColor(Color.black);
+				g.drawOval(refX - 10, refY - 20, 75, 75);
+			}
+		}
+	}
+
+	public void loadImage() throws Exception {
+		// TODO Load all the images here
+
+		bombImage[0] = ImageIO.read(new File("image/bomb/bomb.png"));
+		bombImage[1] = ImageIO.read(new File("image/bomb/power.png"));
+
+		itemImage[BULLET] = ImageIO.read(new File("image/item/bullet.png"));
+
+		player1Image[DIRECTION_UP] = ImageIO.read(new File("image/player/p1UP.png"));
+		player1Image[DIRECTION_RIGHT] = ImageIO.read(new File("image/player/p1RIGHT.png"));
+		player1Image[DIRECTION_DOWN] = ImageIO.read(new File("image/player/p1DOWN.png"));
+		player1Image[DIRECTION_LEFT] = ImageIO.read(new File("image/player/p1LEFT.png"));
+
+		player2Image[DIRECTION_UP] = ImageIO.read(new File("image/player/p2UP.png"));
+		player2Image[DIRECTION_RIGHT] = ImageIO.read(new File("image/player/p2RIGHT.png"));
+		player2Image[DIRECTION_DOWN] = ImageIO.read(new File("image/player/p2DOWN.png"));
+		player2Image[DIRECTION_LEFT] = ImageIO.read(new File("image/player/p2LEFT.png"));
+
+		player3Image[DIRECTION_UP] = ImageIO.read(new File("image/player/p3UP.png"));
+		player3Image[DIRECTION_RIGHT] = ImageIO.read(new File("image/player/p3RIGHT.png"));
+		player3Image[DIRECTION_DOWN] = ImageIO.read(new File("image/player/p3DOWN.png"));
+		player3Image[DIRECTION_LEFT] = ImageIO.read(new File("image/player/p3LEFT.png"));
+
+		player4Image[DIRECTION_UP] = ImageIO.read(new File("image/player/p4UP.png"));
+		player4Image[DIRECTION_RIGHT] = ImageIO.read(new File("image/player/p4RIGHT.png"));
+		player4Image[DIRECTION_DOWN] = ImageIO.read(new File("image/player/p4DOWN.png"));
+		player4Image[DIRECTION_LEFT] = ImageIO.read(new File("image/player/p4LEFT.png"));
+
+	}
+
+	/**
+	 * Respond to button events
+	 */
+	class ButtonListener implements MouseListener {
+
+		MainFrame mainFrame;
+		String name;
+
+		public ButtonListener(MainFrame mainFrame, String name) {
+			this.mainFrame = mainFrame;
+			this.name = name;
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			JPanel mainPanel = (JPanel) mainFrame.getContentPane();
+
+			switch (this.name) {
+			case "pause":
+				if (game.getPauseFlag() == 0) {
+					game.setPauseFlag(1);
+					buttonPauseLabel.setIcon(buttonStartOffIcon);
+				} else {
+					game.setPauseFlag(0);
+					buttonPauseLabel.setIcon(buttonPauseOffIcon);
+				}
+				break;
+			case "restart":
+				int[][] wallMatrix = StagePanel.loadStage(game.getStageNumber());
+				Game newGame = new Game(wallMatrix, 0, 0, new int[5], new int[5], game.getGameMode(),
+						game.getStageNumber(), game.getPlayer1CID(), game.getPlayer2CID());
+				MapPanel newMapPanel = new MapPanel(newGame, mainFrame);
+				StatusPanel newStatusPanel = new StatusPanel(newGame, mainFrame);
+
+				mainPanel.removeAll();
+
+				MapBackgroundPanel mapBackgroundPanel = new MapBackgroundPanel(mainFrame);
+				mainFrame.add(mapBackgroundPanel);
+				mainFrame.validate();// repaint
+
+				mainFrame.add(newMapPanel);
+				mainFrame.validate();// repaint
+
+				mainFrame.add(newStatusPanel);
+				mainFrame.validate();// repaint
+
+				mainFrame.setLayout(null);
+
+				newMapPanel.setLocation(325, 33);
+				newMapPanel.setSize(MAP_WIDTH, MAP_HEIGHT);
+
+				newStatusPanel.setLocation(38, 38);
+				newStatusPanel.setSize(STATUS_PANEL_WIDTH, STATUS_PANEL_HEIGHT);
+
+				mapBackgroundPanel.setLocation(0, 0);
+				mapBackgroundPanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+
+				TimerListener newTimerListener = new TimerListener(newGame, newMapPanel, newStatusPanel);
+				Timer newTimer = new Timer(REFRESH, newTimerListener);
+				newTimer.start();
+				break;
+			case "back":
+				int gameMode = game.getGameMode();
+				StagePanel newStagePanel = new StagePanel(mainFrame, gameMode, game.getPlayer1CID(),
+						game.getPlayer2CID());
+
+				mainPanel.removeAll();
+
+				mainFrame.add(newStagePanel);
+				mainFrame.validate();
+
+				mainFrame.setLayout(null);
+
+				newStagePanel.setLocation(0, 0);
+				newStagePanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+
+				break;
+			}
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			switch (this.name) {
+			case "pause":
+				if (game.getPauseFlag() == 0) {
+					buttonPauseLabel.setIcon(buttonPauseOnIcon);
+				} else {
+					buttonPauseLabel.setIcon(buttonStartOnIcon);
+				}
+				break;
+			case "restart":
+				buttonRestartLabel.setIcon(buttonRestartOnIcon);
+				break;
+			case "back":
+				buttonBackLabel.setIcon(buttonBackOnIcon);
+				break;
+			}
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			switch (this.name) {
+			case "pause":
+				if (game.getPauseFlag() == 0) {
+					buttonPauseLabel.setIcon(buttonPauseOffIcon);
+				} else {
+					buttonPauseLabel.setIcon(buttonStartOffIcon);
+				}
+				break;
+			case "restart":
+				buttonRestartLabel.setIcon(buttonRestartOffIcon);
+				break;
+			case "back":
+				buttonBackLabel.setIcon(buttonBackOffIcon);
+				break;
+			}
+		}
+
+	}
 
 }

@@ -18,10 +18,10 @@ import game.TimerListener;
 import map.Map;
 
 /**
- * Choose stage.
+ * Choose stage. Include thumbnails, arrows, stories.
  * 
  * @author Wang
- * @version 0.9
+ * @version 1.0
  */
 public class StagePanel extends JPanel implements GameConstants {
 	private MainFrame mainFrame;
@@ -195,36 +195,6 @@ public class StagePanel extends JPanel implements GameConstants {
 			this.name = name;
 		}
 
-		public void generateStage(int stageNumber) {
-			wallMatrix = loadStage(stageNumber);
-			Game game = new Game(wallMatrix, 0, 0, new int[5], new int[5], gameMode, stageNumber, player1CharacterID,
-					player2CharacterID);
-
-			MapPanel mapPanel = new MapPanel(game,mainFrame);
-			StatusPanel statusPanel = new StatusPanel(game, mainFrame);
-
-			JPanel mainPanel = (JPanel) mainFrame.getContentPane();
-			mainPanel.removeAll();
-
-			mainFrame.add(mapPanel);
-			mainFrame.validate();// repaint
-
-			mainFrame.add(statusPanel);
-			mainFrame.validate();// repaint
-
-			mainFrame.setLayout(null);
-
-			mapPanel.setLocation(0, 0);
-			mapPanel.setSize(MAP_WIDTH, MAP_HEIGHT);
-
-			statusPanel.setLocation(MAP_WIDTH, 0);
-			statusPanel.setSize(STATUS_PANEL_WIDTH, STATUS_PANEL_HEIGHT);
-
-			TimerListener timerListenerPve = new TimerListener(game, mapPanel, statusPanel);
-			Timer timerPve = new Timer(REFRESH, timerListenerPve);
-			timerPve.start();
-
-		}
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
@@ -233,12 +203,11 @@ public class StagePanel extends JPanel implements GameConstants {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			
+			JPanel mainPanel = (JPanel) mainFrame.getContentPane();
 			
 			switch (this.name) {
 			case "back":
 				ChoosePlayerPanel choosePlayerPanel = new ChoosePlayerPanel(mainFrame, gameMode);
-				JPanel mainPanel = (JPanel) mainFrame.getContentPane();
 				mainPanel.removeAll();
 
 				mainFrame.add(choosePlayerPanel);
@@ -250,7 +219,40 @@ public class StagePanel extends JPanel implements GameConstants {
 				choosePlayerPanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 				break;
 			case "confirm":
-				generateStage(stageNumber);
+				wallMatrix = loadStage(stageNumber);
+				Game game = new Game(wallMatrix, 0, 0, new int[5], new int[5], gameMode, stageNumber, player1CharacterID,
+						player2CharacterID);
+				
+				MapBackgroundPanel mapBackgroundPanel=new MapBackgroundPanel(mainFrame);
+				MapPanel mapPanel = new MapPanel(game,mainFrame);
+				StatusPanel statusPanel = new StatusPanel(game, mainFrame);
+				
+				mainPanel.removeAll();
+				
+				mainFrame.add(mapBackgroundPanel);
+				mainFrame.validate();// repaint
+				
+				mainFrame.add(mapPanel);
+				mainFrame.validate();// repaint
+
+				mainFrame.add(statusPanel);
+				mainFrame.validate();// repaint
+				
+				mainFrame.setLayout(null);
+
+				mapPanel.setLocation(325, 33);
+				mapPanel.setSize(MAP_WIDTH, MAP_HEIGHT);
+
+				statusPanel.setLocation(38, 38);
+				statusPanel.setSize(STATUS_PANEL_WIDTH, STATUS_PANEL_HEIGHT);
+				
+				
+				mapBackgroundPanel.setLocation(0, 0);
+				mapBackgroundPanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+
+				TimerListener timerListenerPve = new TimerListener(game, mapPanel, statusPanel);
+				Timer timerPve = new Timer(REFRESH, timerListenerPve);
+				timerPve.start();
 				break;
 			case "forward":
 				stageNumber=stageNumber+1;
@@ -358,10 +360,6 @@ public class StagePanel extends JPanel implements GameConstants {
 		@Override
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
-			paintMap(g);
-		}
-		
-		private void paintMap(Graphics g) {
 			int xSize = map.getSizeX();
 			int ySize = map.getSizeY();
 			for (int i = 0; i < xSize; i++)
@@ -377,7 +375,7 @@ public class StagePanel extends JPanel implements GameConstants {
 								(int) (j * tinyCellHeight), tinyCellWidth, tinyCellHeight, this);
 				}
 		}
-
+		
 		private void loadMapImage() throws Exception {
 			mapImage[GRASS_1] = ImageIO.read(new File("image/maps/grass1.png"));
 			mapImage[GRASS_2] = ImageIO.read(new File("image/maps/grass2.png"));

@@ -1,9 +1,5 @@
 package player;
 
-import java.awt.AWTEvent;
-import java.awt.event.AWTEventListener;
-import java.awt.event.KeyEvent;
-
 import game.GameConstants;
 import items.ActiveItem;
 import map.Map;

@@ -64,41 +64,4 @@ public class Controls {
 		 b2.setBackground(Color.white);
 		 b3.setBackground(Color.white);
 	}
-	
-	/**
-	 * Initialize text area
-	 */
-	public void initializeTextArea(JTextArea jta,int x, int y, int width, int height) {
-		
-		
-		jta.setLineWrap(true);
-		jta.setVisible(true);
-		
-		jta.setBounds(x, y, width, height);
-		
-		Font textAreaFont = new Font("Times New Roman Italic", Font.ITALIC, 14);
-		jta.setFont(textAreaFont);
-		jta.setBackground(Color.pink);
-		jta.setForeground(Color.WHITE);
-		jta.setEditable(false);
-	}
-	
-	/**
-	 * 
-	 *Initialize text field
-	 */
-	public void initializeTextField(JTextField jtf,int x,int y,int width,int height) {
-
-		
-		jtf.setBounds(x, y, width, height);
-		
-		Font textFieldFont = new Font("Times New Roman Italic", Font.BOLD, 14);
-		jtf.setFont(textFieldFont);
-		jtf.setBackground(null);
-		//jtf.setForeground(Color.white);
-		jtf.setEditable(false);
-		jtf.setBorder(null);
-	
-	}
-
 }

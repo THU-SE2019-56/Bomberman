@@ -62,7 +62,6 @@ public interface GameConstants {
 	
 	int ACTIVE_ITEM_NUM = 2;
 
-	
 	int ITEM_WIDTH = 45;
 	int ITEM_HEIGHT = 45;
 	
@@ -79,28 +78,26 @@ public interface GameConstants {
 	float ITEM_CHANCE = 0.4f;
 
 	// For display
-	int CELL_WIDTH = 45;
-	int CELL_HEIGHT = 45;
-
 	int CELL_NUM_X = 16;
 	int CELL_NUM_Y = 16;
 
+	int CELL_WIDTH =45;
+	int CELL_HEIGHT = 45;
+	
 	int MAP_WIDTH = CELL_WIDTH*CELL_NUM_X;
 	int MAP_HEIGHT = CELL_HEIGHT*CELL_NUM_Y;
-	
-	int STATUS_PANEL_WIDTH = CELL_WIDTH * 5;
-	int STATUS_PANEL_HEIGHT = CELL_HEIGHT * 16;
-	
-	int WINDOW_WIDTH = CELL_WIDTH*CELL_NUM_X+STATUS_PANEL_WIDTH;
-	int WINDOW_HEIGHT = CELL_HEIGHT*CELL_NUM_Y;
 
+	int STATUS_PANEL_WIDTH = 253;
+	int STATUS_PANEL_HEIGHT = 712;
+	
+	int WINDOW_WIDTH = 1080;
+	int WINDOW_HEIGHT = 785;
 
 	// For thumbnail panel
 	int THUMBNAIL_WIDTH=420;
 	int THUMBNAIL_HEIGHT=420;
 	int SCALED_THUMBNAIL_WIDTH=400;
 	int SCALED_THUMBNAIL_HEIGHT=400;
-
 
 	// For map image
 	int GRASS_1 = 0;

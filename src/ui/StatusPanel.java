@@ -159,10 +159,10 @@ public class StatusPanel extends JPanel implements GameConstants {
                     g.drawImage(itemImage[BULLET],refX + 80, 60 + refY, 20, 20, this);
                     this.itemName[i].setText("Bullet");
                     break;
-                case LANDMINE:
-                    g.drawImage(itemImage[LANDMINE],refX + 80, 60 + refY, 20, 20, this);
-                    this.itemName[i].setText("Landmine");
-                    break;
+//                case LANDMINE:
+//                    g.drawImage(itemImage[LANDMINE],refX + 80, 60 + refY, 20, 20, this);
+//                    this.itemName[i].setText("Landmine");
+//                    break;
                 case NO_ACTIVE_ITEM:
                     this.itemName[i].setText("");
                     break;
@@ -171,7 +171,7 @@ public class StatusPanel extends JPanel implements GameConstants {
             // Protected
             if (game.getPlayer()[i].proectedByItem()) {
                 g.setColor(Color.black);
-                g.drawOval(refX - 10, refY - 15, 75, 75);
+                g.drawOval(refX - 10, refY - 20, 75, 75);
             }
 
         }

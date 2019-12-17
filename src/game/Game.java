@@ -37,8 +37,9 @@ public class Game implements GameConstants, Serializable {
 		this.map = new Map(wallMatrix);
 
 		// TODO Generate player and monsters according to X and Y
-		for (int i = 0; i < MAX_MONSTER_NUMBER; i++) {
-			this.monsters[i] = MonsterFactory.getRandomMonster(map);
+		if (gameMode==PVE_MODE) {	// only create monsters for PVE mode
+			for (int i = 0; i < MAX_MONSTER_NUMBER; i++)
+				this.monsters[i] = MonsterFactory.getRandomMonster(map);
 		}
 
 		if (gameMode == PVE_MODE) {
@@ -46,9 +47,6 @@ public class Game implements GameConstants, Serializable {
 		}
 		if (gameMode == PVP_MODE) {
 			this.playerNum = 2;
-			for (Monster m : getMonsters()) {
-				m.eliminate();
-			}
 		}
 		for (int i = 0; i < getPlayerNum(); i++) {
 			if(i == PLAYER_ID_P1)  this.player[i] = new Player(getMap(), i,player1CharacterID);

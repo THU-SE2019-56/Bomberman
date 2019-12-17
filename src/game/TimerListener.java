@@ -34,8 +34,10 @@ public class TimerListener implements ActionListener, GameConstants {
 			}
 
 			for (Monster m : game.getMonsters()) { // Change the location of monsters
-				int p = (int) (game.getPlayerNum() * Math.random()); // select a bad luck player randomly
-				m.monsterMove(game.getPlayer()[p], game.getMap());
+				if (m != null) {
+					int p = (int) (game.getPlayerNum() * Math.random()); // select a bad luck player randomly
+					m.monsterMove(game.getPlayer()[p], game.getMap());
+				}
 			}
 
 			game.getMap().refresh(); // Refresh the map, for bomb

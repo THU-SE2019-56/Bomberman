@@ -208,9 +208,11 @@ public class MapPanel extends JPanel implements GameConstants {
 
 	public void paintMonsters(Graphics g) {
 		for (Monster m : game.getMonsters()) {
-			if (m.isAlive() || m.isDying()) {
-				g.drawImage(monsterImage[m.id][m.getImageIndex()], m.getX(), m.getY(),
-						MONSTER_WIDTH, MONSTER_HEIGHT, this);
+			if (m != null) {
+				if (m.isAlive() || m.isDying()) {
+					g.drawImage(monsterImage[m.id][m.getImageIndex()], m.getX(), m.getY(),
+							MONSTER_WIDTH, MONSTER_HEIGHT, this);
+				}
 			}
 		}
 	}

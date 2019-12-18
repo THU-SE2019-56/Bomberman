@@ -2,6 +2,7 @@ package ui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -70,6 +71,7 @@ public class EditorPanel extends JPanel implements GameConstants {
 		redoStack = new Stack<MapMatrix>();
 
 		this.addButton();
+		this.addMouseListener(new MapListener());
 	}
 
 	/**
@@ -89,14 +91,13 @@ public class EditorPanel extends JPanel implements GameConstants {
 	/**
 	 * Edit given position according to given mode
 	 * 
-	 * @param mode
 	 * @param yPos
 	 * @param xPos
 	 */
-	public void editCell(int mode, int yPos, int xPos) {
+	public void editCell(int yPos, int xPos) {
 		if (!isInMap(yPos, xPos))
 			return;
-		switch (mode) {
+		switch (editingMode) {
 		case REMOVE_WALL:
 			mmat.removeWall(yPos, xPos);
 			break;
@@ -195,7 +196,6 @@ public class EditorPanel extends JPanel implements GameConstants {
 				fileName += '-';
 				fileName += (1 + j);
 				fileName += (".png");
-				System.out.println(fileName);
 				wallImage[i][j] = ImageIO.read(new File(fileName));
 			}
 	}
@@ -388,6 +388,56 @@ public class EditorPanel extends JPanel implements GameConstants {
 			else
 				setBackground(Color.WHITE);
 			super.paintComponent(g);
+		}
+
+	}
+
+	class MapListener implements MouseListener {
+
+		public int getXPos() {
+			Point p = getMousePosition();
+			if (p == null)
+				return -1;
+			return (p.x / CELL_WIDTH);
+		}
+		
+		public int getYPos() {
+			Point p = getMousePosition();
+			if (p == null)
+				return -1;
+			return (p.y / CELL_HEIGHT);
+		}
+
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			int xPos = getXPos();
+			int yPos = getYPos();
+			if(!isInMap(yPos, xPos))
+				return;
+			editCell(yPos, xPos);
+			System.out.println(editingMode + " " + yPos + " " + xPos);
+			repaint();
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+
 		}
 
 	}

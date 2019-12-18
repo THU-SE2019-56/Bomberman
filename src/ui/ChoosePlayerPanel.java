@@ -91,7 +91,7 @@ public class ChoosePlayerPanel extends JPanel implements AWTEventListener, GameC
 		p1ArrayIcon = new ImageIcon("image/buttons/p1array.png");
 		p1ArrayIcon.setImage(p1ArrayIcon.getImage().getScaledInstance(50, 100, 1));
 		p1Array = new JLabel(p1ArrayIcon);
-		p1Array.setBounds(190, 130, 60, 100);
+		p1Array.setBounds(230, 160, 60, 100);
 
 		this.add(p1Array);
 
@@ -100,7 +100,7 @@ public class ChoosePlayerPanel extends JPanel implements AWTEventListener, GameC
 			p2ArrayIcon = new ImageIcon("image/buttons/p2array.png");
 			p2ArrayIcon.setImage(p2ArrayIcon.getImage().getScaledInstance(50, 100, 1));
 			p2Array = new JLabel(p2ArrayIcon);
-			p2Array.setBounds(130, 130, 60, 100);
+			p2Array.setBounds(170, 160, 60, 100);
 			this.add(p2Array);
 		}
 
@@ -123,10 +123,10 @@ public class ChoosePlayerPanel extends JPanel implements AWTEventListener, GameC
 		p3Label = new JLabel(p3Icon);
 		p4Label = new JLabel(p4Icon);
 
-		p1Label.setBounds(100, 230, 160, 160);
-		p2Label.setBounds(300, 230, 160, 160);
-		p3Label.setBounds(500, 230, 160, 160);
-		p4Label.setBounds(700, 230, 160, 160);
+		p1Label.setBounds(150, 280, 160, 160);
+		p2Label.setBounds(350, 280, 160, 160);
+		p3Label.setBounds(550, 280, 160, 160);
+		p4Label.setBounds(750, 280, 160, 160);
 		this.add(p1Label);
 		this.add(p2Label);
 		this.add(p3Label);
@@ -207,16 +207,16 @@ public class ChoosePlayerPanel extends JPanel implements AWTEventListener, GameC
 
 			switch (player1CID) {
 			case 0:
-				p1Array.setBounds(190, 130, 60, 100);
+				p1Array.setBounds(230, 160, 60, 100);
 				break;
 			case 1:
-				p1Array.setBounds(390, 130, 60, 100);
+				p1Array.setBounds(430, 160, 60, 100);
 				break;
 			case 2:
-				p1Array.setBounds(590, 130, 60, 100);
+				p1Array.setBounds(630, 160, 60, 100);
 				break;
 			case 3:
-				p1Array.setBounds(790, 130, 60, 100);
+				p1Array.setBounds(830, 160, 60, 100);
 				break;
 			}
 
@@ -235,16 +235,16 @@ public class ChoosePlayerPanel extends JPanel implements AWTEventListener, GameC
 
 				switch (player2CID) {
 				case 0:
-					p2Array.setBounds(130, 130, 60, 100);
+					p2Array.setBounds(170, 160, 60, 100);
 					break;
 				case 1:
-					p2Array.setBounds(330, 130, 60, 100);
+					p2Array.setBounds(370, 160, 60, 100);
 					break;
 				case 2:
-					p2Array.setBounds(530, 130, 60, 100);
+					p2Array.setBounds(570, 160, 60, 100);
 					break;
 				case 3:
-					p2Array.setBounds(730, 130, 60, 100);
+					p2Array.setBounds(770, 160, 60, 100);
 					break;
 				}
 			}

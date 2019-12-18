@@ -48,7 +48,7 @@ public class GameOverPanel extends JPanel implements GameConstants {
 		buttonRestartOnIcon.setImage(buttonRestartOnIcon.getImage().getScaledInstance(BUTTON_WIDTH, BUTTON_HEIGHT, 1));
 
 		buttonRestartLabel = new JLabel(buttonRestartOffIcon);
-		buttonRestartLabel.setBounds(WINDOW_WIDTH / 2 - BUTTON_WIDTH / 2, 310, BUTTON_WIDTH, BUTTON_HEIGHT);
+		buttonRestartLabel.setBounds(WINDOW_WIDTH / 2 - BUTTON_WIDTH / 2, 410, BUTTON_WIDTH, BUTTON_HEIGHT);
 		this.add(buttonRestartLabel);
 
 		buttonExitOffIcon = new ImageIcon("image/buttons/exit_off.png");
@@ -58,7 +58,7 @@ public class GameOverPanel extends JPanel implements GameConstants {
 		buttonExitOnIcon.setImage(buttonExitOnIcon.getImage().getScaledInstance(BUTTON_WIDTH, BUTTON_HEIGHT, 1));
 
 		buttonExitLabel = new JLabel(buttonExitOffIcon);
-		buttonExitLabel.setBounds(WINDOW_WIDTH / 2 - BUTTON_WIDTH / 2, 410, BUTTON_WIDTH, BUTTON_HEIGHT);
+		buttonExitLabel.setBounds(WINDOW_WIDTH / 2 - BUTTON_WIDTH / 2, 610, BUTTON_WIDTH, BUTTON_HEIGHT);
 		this.add(buttonExitLabel);
 	}
 

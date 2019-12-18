@@ -19,8 +19,8 @@ public interface GameConstants {
 	int PLAYER_MAX_BOMB = 4;
 	int MAX_PLAYER_NUMBER = 2;
 	
-	int HP_LOSS_BY_MONSTER = 5;
-	int HP_LOSS_BY_BOMB = 50;
+	int HP_LOSS_BY_MONSTER = 20;
+	int HP_LOSS_BY_BOMB = 20;
 	int HP_MAX = 100;
 	
 	

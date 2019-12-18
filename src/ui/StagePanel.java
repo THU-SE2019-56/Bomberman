@@ -101,7 +101,7 @@ public class StagePanel extends JPanel implements GameConstants {
 		buttonBackOnIcon.setImage(buttonBackOnIcon.getImage().getScaledInstance(SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT, 1));
 
 		buttonBackLabel = new JLabel(buttonBackOffIcon);
-		buttonBackLabel.setBounds(0, 650, SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT);
+		buttonBackLabel.setBounds(100, 680, SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT);
 		this.add(buttonBackLabel);
 
 		// confirm
@@ -113,7 +113,7 @@ public class StagePanel extends JPanel implements GameConstants {
 		buttonConfirmOnIcon.setImage(buttonConfirmOnIcon.getImage().getScaledInstance(SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT, 1));
 
 		buttonConfirmLabel = new JLabel(buttonConfirmOffIcon);
-		buttonConfirmLabel.setBounds(760, 650,SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT);
+		buttonConfirmLabel.setBounds(800, 680,SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT);
 		this.add(buttonConfirmLabel);
 
 		// forward
@@ -124,7 +124,7 @@ public class StagePanel extends JPanel implements GameConstants {
 		buttonForwardOnIcon.setImage(buttonForwardOnIcon.getImage().getScaledInstance(ARROW_WIDTH, ARROW_HEIGHT, 1));
 
 		buttonForwardLabel = new JLabel(buttonForwardOffIcon);
-		buttonForwardLabel.setBounds(780, 230, ARROW_WIDTH, ARROW_HEIGHT);
+		buttonForwardLabel.setBounds(800, 230, ARROW_WIDTH, ARROW_HEIGHT);
 		this.add(buttonForwardLabel);
 
 		// backward
@@ -136,7 +136,7 @@ public class StagePanel extends JPanel implements GameConstants {
 		buttonBackwardOnIcon.setImage(buttonBackwardOnIcon.getImage().getScaledInstance(ARROW_WIDTH, ARROW_HEIGHT, 1));
 
 		buttonBackwardLabel = new JLabel(buttonBackwardOffIcon);
-		buttonBackwardLabel.setBounds(60, 230, ARROW_WIDTH, ARROW_HEIGHT);
+		buttonBackwardLabel.setBounds(160, 230, ARROW_WIDTH, ARROW_HEIGHT);
 		this.add(buttonBackwardLabel);
 
 		buttonBackLabel.addMouseListener(new ButtonListener(mainFrame, "back"));

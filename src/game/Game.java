@@ -49,8 +49,12 @@ public class Game implements GameConstants, Serializable {
 			this.playerNum = 2;
 		}
 		for (int i = 0; i < getPlayerNum(); i++) {
-			if(i == PLAYER_ID_P1)  this.player[i] = new Player(getMap(), i,player1CharacterID);
-			else if (i==PLAYER_ID_P2) this.player[i] = new Player(getMap(),i,player2CharacterID);
+			if(i == PLAYER_ID_P1)  {
+				this.player[i] = new Player(getMap(), i,player1CharacterID);
+			}
+			else if (i==PLAYER_ID_P2) {
+				this.player[i] = new Player(getMap(),i,player2CharacterID);
+			}
 		}
 
 		this.item = new Item(2, 2);

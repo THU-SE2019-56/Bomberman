@@ -59,8 +59,22 @@ public class Player implements GameConstants {
     public Player(Map newmap, int id, int playerCharacterID) {
         this.direction = DIRECTION_STOP;
         this.imageDirection = DIRECTION_DOWN;
-        this.x = 0;
-        this.y = 0;
+        
+        switch(id) {
+        case PLAYER_ID_P1:
+            this.x = 0;
+            this.y = 0;
+            this.mapX = 0;
+            this.mapY = 0;
+            break;
+        case PLAYER_ID_P2:
+            this.x = 15*CELL_WIDTH;
+            this.y = 15*CELL_HEIGHT;
+            this.mapX = 15;
+            this.mapY = 15;
+            break;      	
+        }
+  
         this.velocity = 5;
         this.setPlayerMap(newmap);
         this.playerID = id;

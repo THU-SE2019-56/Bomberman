@@ -202,8 +202,13 @@ public class MapPanel extends JPanel implements GameConstants {
 
 		GameOverPanel gameOverPanel = new GameOverPanel(mainFrame, endMessage);
 
-		JPanel mainPanel = (JPanel) mainFrame.getContentPane();
-		mainPanel.removeAll();
+		if (mainFrame.getContentPane() instanceof JPanel) {
+			JPanel mainPanel = (JPanel) mainFrame.getContentPane();
+			mainPanel.removeAll();
+		} else {
+			JLabel mainPanel = (JLabel) mainFrame.getContentPane();
+			mainPanel.removeAll();
+		}
 
 		mainFrame.add(gameOverPanel);
 		mainFrame.validate();// repaint

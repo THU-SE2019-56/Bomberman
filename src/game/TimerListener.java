@@ -43,14 +43,14 @@ public class TimerListener implements ActionListener, GameConstants {
 			game.getMap().refresh(); // Refresh the map, for bomb
 			
 			
-			if (game.isGameOver() == false) {
+			if (!game.isGameOver()) {
 				mapPanel.repaint();
 				String endMessage=game.refresh();
-				if (endMessage!="") {
+				if (!endMessage.equals("")) {
 					mapPanel.generateGameover(endMessage);
 				}
 			}
-			
+
 			if (game.getPlayerNum()==2) {
 				int player1X = game.getPlayer()[PLAYER_ID_P1].getX();
 				int player1Y = game.getPlayer()[PLAYER_ID_P1].getY();

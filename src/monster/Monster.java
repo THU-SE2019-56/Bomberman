@@ -192,7 +192,7 @@ public class Monster implements GameConstants {
      * Take some actions in a game loop
      */
 	public void monsterMove(Player p, Map m) {
-		if (isAlive()) {
+		if (this.alive) {
 			moveStep(p, m);        // move a step
 			if (p.getActiveItem() != null) {    // killed by bullet
 				if (isCollided(p.getActiveItem().getX(), p.getActiveItem().getY(), CELL_WIDTH, CELL_HEIGHT)) {
@@ -244,6 +244,13 @@ public class Monster implements GameConstants {
 
 	public boolean isAlive() {
 		return this.alive;
+	}
+
+	/**
+	 * If this function return false, then the monster will not be painted
+	 */
+	public boolean isVisible() {
+		return this.alive || isDying();
 	}
 
 	public boolean isDying() {

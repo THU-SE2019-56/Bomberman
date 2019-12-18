@@ -149,12 +149,12 @@ public class Game implements GameConstants, Serializable {
 			if (this.getPlayer()[PLAYER_ID_P1].getHP() <= 0) {
 				this.setGameOver(true);
 				return "monsterWin";
-			} else {
+			} else {				// TODO:
 				boolean monstersAlive = false;
 				for (Monster m : this.getMonsters()) {
 					monstersAlive |= m.isAlive();
 				}
-				if (monstersAlive == false && this.getPlayer()[PLAYER_ID_P1].getHP() > 0) {
+				if (!monstersAlive) {
 					this.setGameOver(true);
 					return "playerWin";
 				}

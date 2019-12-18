@@ -5,11 +5,18 @@ import java.util.Stack;
 import game.GameConstants;
 
 public class MapEditor implements GameConstants{
+	
+	// Editing MapMatrix
 	private MapMatrix mapMatrix;
+	// For undo and redo
 	Stack<MapMatrix> undoStack;
 	Stack<MapMatrix> redoStack;
+	
 	private int editingMode = NONE;
 	private int theme = 0;
+	
+	MobSpawner players[] = new MobSpawner[2];
+	MobSpawner monsters[] = new MobSpawner[10];
 	
 	public MapEditor(){
 		this.mapMatrix=new MapMatrix();
@@ -111,5 +118,37 @@ public class MapEditor implements GameConstants{
 
 	public void setEditingMode(int editingMode) {
 		this.editingMode = editingMode;
+	}
+	
+	
+	
+	class MobSpawner {
+		private int spawnX;
+		private int spawnY;
+		private int type;
+		private int ID;
+
+		public MobSpawner(int type, int ID, int x, int y) {
+			this.type = type;
+			this.ID = ID;
+			spawnX = x;
+			spawnY = y;
+		}
+
+		public int getX() {
+			return spawnX;
+		}
+
+		public int getY() {
+			return spawnY;
+		}
+
+		public int getType() {
+			return type;
+		}
+
+		public int getID() {
+			return ID;
+		}
 	}
 }

@@ -20,7 +20,13 @@ import javax.swing.border.Border;
 import game.GameConstants;
 import map.MapEditor;
 
+
 public class EditorButtonsPanel extends JPanel implements GameConstants {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private MapEditor mapEditor;
 	
 	BufferedImage wallImage[][] = new BufferedImage[4][8];

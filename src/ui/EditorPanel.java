@@ -75,14 +75,13 @@ public class EditorPanel extends JPanel implements GameConstants {
 				if (mapEditor.getMapMatrix().isWithIndestructibleWall(j, i))
 					g.drawImage(wallImage[mapEditor.getTheme()][7], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT),
 							CELL_WIDTH, CELL_HEIGHT, this);
-				// TODO waiting for adding bomb and item
 			}
 	}
 
 	public void loadImage() throws Exception {
 		groundImage[GROUND_1] = ImageIO.read(new File("image/maps/grass1.png"));
 		groundImage[GROUND_2] = ImageIO.read(new File("image/maps/grass2.png"));
-		
+
 		for (int i = 0; i < 4; i++)
 			for (int j = 0; j < 8; j++) {
 				wallImage[i][j] = ImageIO.read(new File("image/maps/wall" + (1 + i) + "-" + (1 + j) + ".png"));
@@ -108,10 +107,10 @@ public class EditorPanel extends JPanel implements GameConstants {
 		}
 
 		@Override
-		public void mouseClicked(MouseEvent e) {	
+		public void mouseClicked(MouseEvent e) {
 			int xPos = getXPos();
 			int yPos = getYPos();
-			
+
 			if (!mapEditor.isInMap(yPos, xPos))
 				return;
 			mapEditor.saveStatus();
@@ -142,33 +141,4 @@ public class EditorPanel extends JPanel implements GameConstants {
 
 	}
 
-	class Mob {
-		private int spawnX;
-		private int spawnY;
-		private int type;
-		private int ID;
-
-		public Mob(int type, int ID, int x, int y) {
-			this.type = type;
-			this.ID = ID;
-			spawnX = x;
-			spawnY = y;
-		}
-
-		public int getX() {
-			return spawnX;
-		}
-
-		public int getY() {
-			return spawnY;
-		}
-
-		public int getType() {
-			return type;
-		}
-
-		public int getID() {
-			return ID;
-		}
-	}
 }

@@ -111,8 +111,8 @@ public interface GameConstants {
 	
 	int GROUND_1 = 0;
 	int GROUND_2 = 1;
-	int DESTRUCTIBLE_WALL = 2;
-	int INDESTRUCTIBLE_WALL = 3;
+	int INDESTRUCTIBLE_WALL = 2;
+	int DESTRUCTIBLE_WALL = 3;
 
 	// For bomb image
 	int EXPLODE = 0;

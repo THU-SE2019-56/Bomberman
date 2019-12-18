@@ -288,8 +288,13 @@ public class ChoosePlayerPanel extends JPanel implements AWTEventListener, GameC
 			case "back":
 				MenuPanel newMenuPanel = new MenuPanel(mainFrame);
 
-				JPanel mainPanel = (JPanel) mainFrame.getContentPane();
-				mainPanel.removeAll();
+				if (mainFrame.getContentPane() instanceof JPanel) {
+					JPanel mainPanel = (JPanel) mainFrame.getContentPane();
+					mainPanel.removeAll();
+				} else {
+					JLabel mainPanel = (JLabel) mainFrame.getContentPane();
+					mainPanel.removeAll();
+				}
 
 				mainFrame.add(newMenuPanel);
 				mainFrame.validate();

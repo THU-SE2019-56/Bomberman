@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import game.GameConstants;
+import map.MapEditor;
 
 /**
  * Main menu panel. Fill in the MainFrame. Contain buttons to jump to other
@@ -165,16 +166,29 @@ public class MenuPanel extends JPanel implements GameConstants {
 
 				break;
 			case "stage editor":
-				EditorPanel editor = new EditorPanel(mainFrame);
-
+				MapEditor mapEditor=new MapEditor();
+				
+				EditorPanel editorPanel = new EditorPanel(mainFrame,mapEditor);
+				EditorButtonsPanel editorButtonsPanel = new EditorButtonsPanel(mainFrame,mapEditor,editorPanel);
+				
 				mainFrame.remove(MenuPanel.this);
-				mainFrame.add(editor);
+				
+				mainFrame.setContentPane(new JLabel(new ImageIcon("image/background/mapBackground.png")));
+				mainFrame.validate();
+				
+				mainFrame.add(editorPanel);
 				mainFrame.validate();// repaint
 
+				mainFrame.add(editorButtonsPanel);
+				mainFrame.validate();// repaint
+				
 				mainFrame.setLayout(null);
 
-				editor.setLocation(0, 0);
-				editor.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+				editorPanel.setLocation(325, 33);
+				editorPanel.setSize(MAP_WIDTH, MAP_HEIGHT);
+
+				editorButtonsPanel.setLocation(38, 38);
+				editorButtonsPanel.setSize(STATUS_PANEL_WIDTH, STATUS_PANEL_HEIGHT);
 
 				break;
 			case "help":

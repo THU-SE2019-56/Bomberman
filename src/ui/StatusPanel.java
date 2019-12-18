@@ -272,7 +272,7 @@ public class StatusPanel extends JPanel implements GameConstants {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			JPanel mainPanel = (JPanel) mainFrame.getContentPane();
+			JLabel mainPanel = (JLabel) mainFrame.getContentPane();
 
 			switch (this.name) {
 			case "pause":
@@ -296,9 +296,8 @@ public class StatusPanel extends JPanel implements GameConstants {
 
 				mainPanel.removeAll();
 
-				MapBackgroundPanel mapBackgroundPanel = new MapBackgroundPanel(mainFrame);
-				mainFrame.add(mapBackgroundPanel);
-				mainFrame.validate();// repaint
+				mainFrame.setContentPane(new JLabel(new ImageIcon("image/background/mapBackground.png")));
+				mainFrame.validate();
 
 				mainFrame.add(newMapPanel);
 				mainFrame.validate();// repaint
@@ -313,9 +312,6 @@ public class StatusPanel extends JPanel implements GameConstants {
 
 				newStatusPanel.setLocation(38, 38);
 				newStatusPanel.setSize(STATUS_PANEL_WIDTH, STATUS_PANEL_HEIGHT);
-
-				mapBackgroundPanel.setLocation(0, 0);
-				mapBackgroundPanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
 				TimerListener newTimerListener = new TimerListener(newGame, newMapPanel, newStatusPanel);
 				Timer newTimer = new Timer(REFRESH, newTimerListener);

@@ -29,10 +29,10 @@ public class StagePanel extends JPanel implements GameConstants {
 
 	private ImageIcon stageBackgroundIcon;
 	private JLabel stageBackgroundLabel;
-	
+
 	private ImageIcon thumbnailBackgroundIcon;
 	private JLabel thumbnailBackgroundLabel;
-	
+
 	private ImageIcon storyIcon;
 	private JLabel storyLabel;
 
@@ -57,9 +57,9 @@ public class StagePanel extends JPanel implements GameConstants {
 	private ImageIcon buttonBackwardOffIcon;
 	private ImageIcon buttonBackwardOnIcon;
 	private JLabel buttonBackwardLabel;
-	
-	private final static int tinyCellWidth =SCALED_THUMBNAIL_WIDTH/ CELL_NUM_X;
-	private final static int tinyCellHeight =SCALED_THUMBNAIL_HEIGHT/ CELL_NUM_Y;
+
+	private final static int tinyCellWidth = SCALED_THUMBNAIL_WIDTH / CELL_NUM_X;
+	private final static int tinyCellHeight = SCALED_THUMBNAIL_HEIGHT / CELL_NUM_Y;
 	private Map map;
 	private BufferedImage mapImage[] = new BufferedImage[4];
 	private BufferedImage wallImage[][] = new BufferedImage[4][8];
@@ -80,11 +80,13 @@ public class StagePanel extends JPanel implements GameConstants {
 
 	public void addBackground() {
 		thumbnailBackgroundIcon = new ImageIcon("image/background/thumbnailBackground.png");
-		thumbnailBackgroundIcon.setImage(thumbnailBackgroundIcon.getImage().getScaledInstance(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT, 1));
+		thumbnailBackgroundIcon
+				.setImage(thumbnailBackgroundIcon.getImage().getScaledInstance(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT, 1));
 		thumbnailBackgroundLabel = new JLabel(thumbnailBackgroundIcon);
-		thumbnailBackgroundLabel.setBounds(WINDOW_WIDTH/2-THUMBNAIL_WIDTH/2, 130, THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT);
+		thumbnailBackgroundLabel.setBounds(WINDOW_WIDTH / 2 - THUMBNAIL_WIDTH / 2, 130, THUMBNAIL_WIDTH,
+				THUMBNAIL_HEIGHT);
 		this.add(thumbnailBackgroundLabel);
-		
+
 		stageBackgroundIcon = new ImageIcon("image/background/chooseStagePanel.png");
 		stageBackgroundIcon.setImage(stageBackgroundIcon.getImage().getScaledInstance(WINDOW_WIDTH, WINDOW_HEIGHT, 1));
 		stageBackgroundLabel = new JLabel(stageBackgroundIcon);
@@ -95,10 +97,12 @@ public class StagePanel extends JPanel implements GameConstants {
 	public void addButton() {
 		// back
 		buttonBackOffIcon = new ImageIcon("image/buttons/back_off.png");
-		buttonBackOffIcon.setImage(buttonBackOffIcon.getImage().getScaledInstance(SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT, 1));
+		buttonBackOffIcon
+				.setImage(buttonBackOffIcon.getImage().getScaledInstance(SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT, 1));
 
 		buttonBackOnIcon = new ImageIcon("image/buttons/back_on.png");
-		buttonBackOnIcon.setImage(buttonBackOnIcon.getImage().getScaledInstance(SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT, 1));
+		buttonBackOnIcon
+				.setImage(buttonBackOnIcon.getImage().getScaledInstance(SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT, 1));
 
 		buttonBackLabel = new JLabel(buttonBackOffIcon);
 		buttonBackLabel.setBounds(100, 680, SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT);
@@ -106,14 +110,15 @@ public class StagePanel extends JPanel implements GameConstants {
 
 		// confirm
 		buttonConfirmOffIcon = new ImageIcon("image/buttons/confirm_off.png");
-		buttonConfirmOffIcon
-				.setImage(buttonConfirmOffIcon.getImage().getScaledInstance(SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT, 1));
+		buttonConfirmOffIcon.setImage(
+				buttonConfirmOffIcon.getImage().getScaledInstance(SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT, 1));
 
 		buttonConfirmOnIcon = new ImageIcon("image/buttons/confirm_on.png");
-		buttonConfirmOnIcon.setImage(buttonConfirmOnIcon.getImage().getScaledInstance(SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT, 1));
+		buttonConfirmOnIcon.setImage(
+				buttonConfirmOnIcon.getImage().getScaledInstance(SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT, 1));
 
 		buttonConfirmLabel = new JLabel(buttonConfirmOffIcon);
-		buttonConfirmLabel.setBounds(800, 680,SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT);
+		buttonConfirmLabel.setBounds(800, 680, SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT);
 		this.add(buttonConfirmLabel);
 
 		// forward
@@ -144,18 +149,19 @@ public class StagePanel extends JPanel implements GameConstants {
 		buttonForwardLabel.addMouseListener(new ButtonListener(mainFrame, "forward"));
 		buttonBackwardLabel.addMouseListener(new ButtonListener(mainFrame, "backward"));
 	}
-	
+
 	public void addStory(int stageNumber) {
-		storyIcon = new ImageIcon("image/background/story"+stageNumber+".png");
+		storyIcon = new ImageIcon("image/background/story" + stageNumber + ".png");
 		storyIcon.setImage(storyIcon.getImage().getScaledInstance(STORY_WIDTH, STORY_HEIGHT, 1));
 		storyLabel = new JLabel(storyIcon);
-		storyLabel.setBounds(WINDOW_WIDTH/2-STORY_WIDTH/2, 560, STORY_WIDTH, STORY_HEIGHT);
+		storyLabel.setBounds(WINDOW_WIDTH / 2 - STORY_WIDTH / 2, 560, STORY_WIDTH, STORY_HEIGHT);
 		this.add(storyLabel);
 	}
-	
+
 	public void addThumbnail(int stageNumber) {
 		thumbnailLabel = new ThumbnailLabel(stageNumber);
-		thumbnailLabel.setBounds(WINDOW_WIDTH/2-SCALED_THUMBNAIL_WIDTH/2, 130+10, SCALED_THUMBNAIL_WIDTH,SCALED_THUMBNAIL_HEIGHT);
+		thumbnailLabel.setBounds(WINDOW_WIDTH / 2 - SCALED_THUMBNAIL_WIDTH / 2, 130 + 10, SCALED_THUMBNAIL_WIDTH,
+				SCALED_THUMBNAIL_HEIGHT);
 		this.add(thumbnailLabel);
 	}
 
@@ -195,7 +201,6 @@ public class StagePanel extends JPanel implements GameConstants {
 			this.name = name;
 		}
 
-
 		@Override
 		public void mouseClicked(MouseEvent e) {
 
@@ -203,12 +208,17 @@ public class StagePanel extends JPanel implements GameConstants {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			JPanel mainPanel = (JPanel) mainFrame.getContentPane();
-			
+
 			switch (this.name) {
 			case "back":
 				ChoosePlayerPanel choosePlayerPanel = new ChoosePlayerPanel(mainFrame, gameMode);
-				mainPanel.removeAll();
+				if (mainFrame.getContentPane() instanceof JPanel) {
+					JPanel mainPanel = (JPanel) mainFrame.getContentPane();
+					mainPanel.removeAll();
+				} else {
+					JLabel mainPanel = (JLabel) mainFrame.getContentPane();
+					mainPanel.removeAll();
+				}
 
 				mainFrame.add(choosePlayerPanel);
 				mainFrame.validate();
@@ -220,24 +230,29 @@ public class StagePanel extends JPanel implements GameConstants {
 				break;
 			case "confirm":
 				wallMatrix = loadStage(stageNumber);
-				Game game = new Game(wallMatrix, 0, 0, new int[5], new int[5], gameMode, stageNumber, player1CharacterID,
-						player2CharacterID);
-				
-				MapBackgroundPanel mapBackgroundPanel=new MapBackgroundPanel(mainFrame);
-				MapPanel mapPanel = new MapPanel(game,mainFrame);
+				Game game = new Game(wallMatrix, 0, 0, new int[5], new int[5], gameMode, stageNumber,
+						player1CharacterID, player2CharacterID);
+
+				MapPanel mapPanel = new MapPanel(game, mainFrame);
 				StatusPanel statusPanel = new StatusPanel(game, mainFrame);
-				
-				mainPanel.removeAll();
-				
-				mainFrame.add(mapBackgroundPanel);
-				mainFrame.validate();// repaint
-				
+
+				if (mainFrame.getContentPane() instanceof JPanel) {
+					JPanel mainPanel = (JPanel) mainFrame.getContentPane();
+					mainPanel.removeAll();
+				} else {
+					JLabel mainPanel = (JLabel) mainFrame.getContentPane();
+					mainPanel.removeAll();
+				}
+
+				mainFrame.setContentPane(new JLabel(new ImageIcon("image/background/mapBackground.png")));
+				mainFrame.validate();
+
 				mainFrame.add(mapPanel);
 				mainFrame.validate();// repaint
 
 				mainFrame.add(statusPanel);
 				mainFrame.validate();// repaint
-				
+
 				mainFrame.setLayout(null);
 
 				mapPanel.setLocation(325, 33);
@@ -245,25 +260,22 @@ public class StagePanel extends JPanel implements GameConstants {
 
 				statusPanel.setLocation(38, 38);
 				statusPanel.setSize(STATUS_PANEL_WIDTH, STATUS_PANEL_HEIGHT);
-				
-				
-				mapBackgroundPanel.setLocation(0, 0);
-				mapBackgroundPanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
 				TimerListener timerListenerPve = new TimerListener(game, mapPanel, statusPanel);
 				Timer timerPve = new Timer(REFRESH, timerListenerPve);
 				timerPve.start();
 				break;
 			case "forward":
-				stageNumber=stageNumber+1;
-				if (stageNumber>3){
-					stageNumber=stageNumber-4;
+				stageNumber = stageNumber + 1;
+				if (stageNumber > 3) {
+					stageNumber = stageNumber - 4;
 				}
-				
+
 				StagePanel.this.removeAll();
-							
+
 				thumbnailLabel = new ThumbnailLabel(stageNumber);
-				thumbnailLabel.setBounds(WINDOW_WIDTH/2-SCALED_THUMBNAIL_WIDTH/2, 130+10, SCALED_THUMBNAIL_WIDTH,SCALED_THUMBNAIL_HEIGHT);
+				thumbnailLabel.setBounds(WINDOW_WIDTH / 2 - SCALED_THUMBNAIL_WIDTH / 2, 130 + 10,
+						SCALED_THUMBNAIL_WIDTH, SCALED_THUMBNAIL_HEIGHT);
 				StagePanel.this.add(thumbnailLabel);
 				thumbnailLabel.setVisible(true);
 				StagePanel.this.addButton();
@@ -273,15 +285,16 @@ public class StagePanel extends JPanel implements GameConstants {
 				StagePanel.this.repaint();
 				break;
 			case "backward":
-				stageNumber=stageNumber-1;
-				if (stageNumber<0){
-					stageNumber=stageNumber+4;
+				stageNumber = stageNumber - 1;
+				if (stageNumber < 0) {
+					stageNumber = stageNumber + 4;
 				}
-				
+
 				StagePanel.this.removeAll();
 
 				thumbnailLabel = new ThumbnailLabel(stageNumber);
-				thumbnailLabel.setBounds(WINDOW_WIDTH/2-SCALED_THUMBNAIL_WIDTH/2, 130+10, SCALED_THUMBNAIL_WIDTH,SCALED_THUMBNAIL_HEIGHT);
+				thumbnailLabel.setBounds(WINDOW_WIDTH / 2 - SCALED_THUMBNAIL_WIDTH / 2, 130 + 10,
+						SCALED_THUMBNAIL_WIDTH, SCALED_THUMBNAIL_HEIGHT);
 				StagePanel.this.add(thumbnailLabel);
 				thumbnailLabel.setVisible(true);
 				StagePanel.this.addButton();
@@ -345,14 +358,14 @@ public class StagePanel extends JPanel implements GameConstants {
 	 */
 
 	class ThumbnailLabel extends JLabel implements GameConstants {
-		
+
 		public ThumbnailLabel(int stageNumber) {
 			try {
 				loadMapImage();
 			} catch (Exception e) {
 				System.out.println(e.toString());
 			}
-			
+
 			wallMatrix = loadStage(stageNumber);
 			map = new Map(wallMatrix);
 		}
@@ -375,48 +388,18 @@ public class StagePanel extends JPanel implements GameConstants {
 								(int) (j * tinyCellHeight), tinyCellWidth, tinyCellHeight, this);
 				}
 		}
-		
+
 		private void loadMapImage() throws Exception {
 			mapImage[GRASS_1] = ImageIO.read(new File("image/maps/grass1.png"));
 			mapImage[GRASS_2] = ImageIO.read(new File("image/maps/grass2.png"));
 			mapImage[SAND_1] = ImageIO.read(new File("image/maps/sand1.png"));
 			mapImage[SAND_2] = ImageIO.read(new File("image/maps/sand2.png"));
 
-			wallImage[0][0] = ImageIO.read(new File("image/maps/wall1-1.png"));
-			wallImage[0][1] = ImageIO.read(new File("image/maps/wall1-2.png"));
-			wallImage[0][2] = ImageIO.read(new File("image/maps/wall1-3.png"));
-			wallImage[0][3] = ImageIO.read(new File("image/maps/wall1-4.png"));
-			wallImage[0][4] = ImageIO.read(new File("image/maps/wall1-5.png"));
-			wallImage[0][5] = ImageIO.read(new File("image/maps/wall1-6.png"));
-			wallImage[0][6] = ImageIO.read(new File("image/maps/wall1-7.png"));
-			wallImage[0][7] = ImageIO.read(new File("image/maps/wall1-8.png"));
-
-			wallImage[1][0] = ImageIO.read(new File("image/maps/wall2-1.png"));
-			wallImage[1][1] = ImageIO.read(new File("image/maps/wall2-2.png"));
-			wallImage[1][2] = ImageIO.read(new File("image/maps/wall2-3.png"));
-			wallImage[1][3] = ImageIO.read(new File("image/maps/wall2-4.png"));
-			wallImage[1][4] = ImageIO.read(new File("image/maps/wall2-5.png"));
-			wallImage[1][5] = ImageIO.read(new File("image/maps/wall2-6.png"));
-			wallImage[1][6] = ImageIO.read(new File("image/maps/wall2-7.png"));
-			wallImage[1][7] = ImageIO.read(new File("image/maps/wall2-8.png"));
-
-			wallImage[2][0] = ImageIO.read(new File("image/maps/wall3-1.png"));
-			wallImage[2][1] = ImageIO.read(new File("image/maps/wall3-2.png"));
-			wallImage[2][2] = ImageIO.read(new File("image/maps/wall3-3.png"));
-			wallImage[2][3] = ImageIO.read(new File("image/maps/wall3-4.png"));
-			wallImage[2][4] = ImageIO.read(new File("image/maps/wall3-5.png"));
-			wallImage[2][5] = ImageIO.read(new File("image/maps/wall3-6.png"));
-			wallImage[2][6] = ImageIO.read(new File("image/maps/wall3-7.png"));
-			wallImage[2][7] = ImageIO.read(new File("image/maps/wall3-8.png"));
-
-			wallImage[3][0] = ImageIO.read(new File("image/maps/wall4-1.png"));
-			wallImage[3][1] = ImageIO.read(new File("image/maps/wall4-2.png"));
-			wallImage[3][2] = ImageIO.read(new File("image/maps/wall4-3.png"));
-			wallImage[3][3] = ImageIO.read(new File("image/maps/wall4-4.png"));
-			wallImage[3][4] = ImageIO.read(new File("image/maps/wall4-5.png"));
-			wallImage[3][5] = ImageIO.read(new File("image/maps/wall4-6.png"));
-			wallImage[3][6] = ImageIO.read(new File("image/maps/wall4-7.png"));
-			wallImage[3][7] = ImageIO.read(new File("image/maps/wall4-8.png"));
+			for (int i = 0; i < 4; i++) {
+				for (int j = 0; j < 8; j++) {
+					wallImage[i][j] = ImageIO.read(new File("image/maps/wall" + (1 + i) + "-" + (1 + j) + ".png"));
+				}
+			}
 
 		}
 	}

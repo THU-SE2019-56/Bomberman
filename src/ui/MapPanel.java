@@ -202,6 +202,12 @@ public class MapPanel extends JPanel implements GameConstants {
 
 		GameOverPanel gameOverPanel = new GameOverPanel(mainFrame, endMessage);
 
+		try {
+			Thread.sleep(1500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if (mainFrame.getContentPane() instanceof JPanel) {
 			JPanel mainPanel = (JPanel) mainFrame.getContentPane();
 			mainPanel.removeAll();
@@ -217,7 +223,6 @@ public class MapPanel extends JPanel implements GameConstants {
 
 		gameOverPanel.setLocation(0, 0);
 		gameOverPanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-
 	}
 
 	public void loadImage() throws Exception {

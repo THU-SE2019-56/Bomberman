@@ -145,11 +145,13 @@ public class Game implements GameConstants, Serializable {
 	}
 	
 	public String refresh() {
+		System.out.println(this.toString() + " refresh");
+
 		if (this.getGameMode() == PVE_MODE) {
 			if (this.getPlayer()[PLAYER_ID_P1].getHP() <= 0) {
 				this.setGameOver(true);
 				return "monsterWin";
-			} else {				// TODO:
+			} else {
 				boolean monstersAlive = false;
 				for (Monster m : this.getMonsters()) {
 					monstersAlive |= m.isAlive();

@@ -285,7 +285,7 @@ public class StatusPanel extends JPanel implements GameConstants {
 				}
 				break;
 			case "restart":
-				// TODO: Close the previous game
+				// Close the previous game
 				game.setPauseFlag(1);
 
 				int[][] wallMatrix = StagePanel.loadStage(game.getStageNumber());

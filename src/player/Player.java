@@ -212,10 +212,6 @@ public class Player implements GameConstants {
             this.playerHP = 0;
         else
             this.playerHP = hp;
-
-        if (this.playerHP<=0) {
-            System.out.println("player die");
-        }
     }
 
     public int getHP() {

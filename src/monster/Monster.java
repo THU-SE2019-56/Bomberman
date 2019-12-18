@@ -193,11 +193,6 @@ public class Monster implements GameConstants {
 		}
 	}
 
-
-	/**
-	 * To make sure the monster not co
-	 */
-
 	/**
      * Take some actions in a game loop
      */

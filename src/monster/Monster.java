@@ -34,7 +34,8 @@ public class Monster implements GameConstants {
 		while (true) {
 			int i = (int)(CELL_NUM_X*Math.random());
 			int j = (int)(CELL_NUM_Y*Math.random());
-			if (m.isAvailable(i, j)) {
+			// monster will not born on walls or the top-left 1/16 area
+			if (m.isAvailable(i, j) && i>CELL_NUM_X/4 && j>CELL_NUM_Y/4) {
 				this.x = i * CELL_WIDTH;
 				this.y = j * CELL_HEIGHT;
 				init();
@@ -75,12 +76,16 @@ public class Monster implements GameConstants {
 			// compute direction
 			int dx = path.getNextX() - this.x;
 			int dy = path.getNextY() - this.y;
-			if (Math.abs(dx) < this.velocity) dx = 0;
-			if (Math.abs(dy) < this.velocity) dy = 0;
+			if (Math.abs(dx) < 2*this.velocity) {
+				this.x = path.getNextX();
+				dx = 0;
+			}
+			if (Math.abs(dy) < 2*this.velocity) {
+				this.y = path.getNextY();
+				dy = 0;
+			}
 
 			if (dx == 0 && dy == 0) {
-				this.x = path.getNextX();
-				this.y = path.getNextY();
 				path.removeFirst();
 				// replanning if the next position in the path is invalid or in explosion
 				if (path.size()>0 && !brain.isMovable(m, path.getNextI(), path.getNextJ()))
@@ -188,7 +193,12 @@ public class Monster implements GameConstants {
 		}
 	}
 
-    /**
+
+	/**
+	 * To make sure the monster not co
+	 */
+
+	/**
      * Take some actions in a game loop
      */
 	public void monsterMove(Player p, Map m) {

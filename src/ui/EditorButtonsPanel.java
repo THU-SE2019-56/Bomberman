@@ -22,7 +22,6 @@ import map.MapEditor;
 
 public class EditorButtonsPanel extends JPanel implements GameConstants {
 	private MapEditor mapEditor;
-	private EditorPanel editorPanel;
 	
 	BufferedImage wallImage[][] = new BufferedImage[4][8];
 	BufferedImage editorImage[] = new BufferedImage[2];
@@ -56,7 +55,7 @@ public class EditorButtonsPanel extends JPanel implements GameConstants {
 	private ImageIcon buttonBackOnIcon;
 	private JLabel buttonBackLabel;
 
-	public EditorButtonsPanel(MainFrame mainFrame, MapEditor mapEditor,EditorPanel editorPanel) {
+	public EditorButtonsPanel(MainFrame mainFrame, MapEditor mapEditor) {
 		try {
 			loadImage();
 		} catch (Exception e) {
@@ -64,7 +63,6 @@ public class EditorButtonsPanel extends JPanel implements GameConstants {
 		}
 		
 		this.mapEditor=mapEditor;
-		this.editorPanel=editorPanel;
 		this.setBackground(new Color(153, 191, 68));
 
 		this.setLayout(null);

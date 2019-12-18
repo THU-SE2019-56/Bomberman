@@ -169,7 +169,7 @@ public class MenuPanel extends JPanel implements GameConstants {
 				MapEditor mapEditor=new MapEditor();
 				
 				EditorPanel editorPanel = new EditorPanel(mainFrame,mapEditor);
-				EditorButtonsPanel editorButtonsPanel = new EditorButtonsPanel(mainFrame,mapEditor,editorPanel);
+				EditorButtonsPanel editorButtonsPanel = new EditorButtonsPanel(mainFrame,mapEditor);
 				
 				mainFrame.remove(MenuPanel.this);
 				

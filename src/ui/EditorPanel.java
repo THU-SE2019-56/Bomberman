@@ -400,7 +400,7 @@ public class EditorPanel extends JPanel implements GameConstants {
 				return -1;
 			return (p.x / CELL_WIDTH);
 		}
-		
+
 		public int getYPos() {
 			Point p = getMousePosition();
 			if (p == null)
@@ -408,13 +408,13 @@ public class EditorPanel extends JPanel implements GameConstants {
 			return (p.y / CELL_HEIGHT);
 		}
 
-
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			int xPos = getXPos();
 			int yPos = getYPos();
-			if(!isInMap(yPos, xPos))
+			if (!isInMap(yPos, xPos))
 				return;
+			saveStatus();
 			editCell(yPos, xPos);
 			System.out.println(editingMode + " " + yPos + " " + xPos);
 			repaint();

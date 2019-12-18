@@ -1,29 +1,32 @@
 package map;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Stack;
 
 import game.GameConstants;
 
-public class MapEditor implements GameConstants{
-	
+public class MapEditor implements GameConstants {
+
 	// Editing MapMatrix
 	private MapMatrix mapMatrix;
 	// For undo and redo
 	Stack<MapMatrix> undoStack;
 	Stack<MapMatrix> redoStack;
-	
+
 	private int editingMode = NONE;
 	private int theme = 0;
-	
-	MobSpawner players[] = new MobSpawner[2];
+
 	MobSpawner monsters[] = new MobSpawner[10];
-	
-	public MapEditor(){
-		this.mapMatrix=new MapMatrix();
+	int monsterNum;//TODO to be defined, should use this instead of 10
+
+	public MapEditor() {
+		this.mapMatrix = new MapMatrix();
 		undoStack = new Stack<MapMatrix>();
 		redoStack = new Stack<MapMatrix>();
 	}
-	
+
 	/**
 	 * @return if given position is in current editing mmat
 	 */
@@ -119,20 +122,61 @@ public class MapEditor implements GameConstants{
 	public void setEditingMode(int editingMode) {
 		this.editingMode = editingMode;
 	}
-	
-	
-	
+
+	public void saveToTxt() {
+		File savePath = new File("data");
+		File fileList[] = savePath.listFiles();
+		int totalStageNum = fileList.length;
+
+		FileWriter out;
+		try {
+			out = new FileWriter(new File("data/stage"+totalStageNum+".txt"));
+			
+			//save mapMatrix
+			for (int i = 0; i < CELL_NUM_X; i++) {
+				for (int j = 0; j < CELL_NUM_Y; j++) {
+					out.write(mapMatrix.getWall()[i][j] + "\t");
+				}
+				out.write("\r\n");
+			}
+			
+			
+			//save monsterX
+			for (int i = 0; i < monsterNum; i++) {
+				out.write(monsters[i].getX() + "\t");
+			}
+			out.write("\r\n");
+			
+			//save monsterY
+			for (int i = 0; i < monsterNum; i++) {
+				out.write(monsters[i].getY() + "\t");
+			}
+			out.write("\r\n");
+			
+			//save monsterID
+			for (int i = 0; i < monsterNum; i++) {
+				out.write(monsters[i].getMonsterID() + "\t");
+			}
+			out.write("\r\n");
+			
+			//save theme
+			out.write(theme);			
+			out.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	class MobSpawner {
 		private int spawnX;
 		private int spawnY;
-		private int type;
-		private int ID;
+		private int monsterID;
 
-		public MobSpawner(int type, int ID, int x, int y) {
-			this.type = type;
-			this.ID = ID;
-			spawnX = x;
-			spawnY = y;
+		public MobSpawner(int monsterID, int x, int y) {
+			this.monsterID = monsterID;
+			this.spawnX = x;
+			this.spawnY = y;
 		}
 
 		public int getX() {
@@ -143,12 +187,8 @@ public class MapEditor implements GameConstants{
 			return spawnY;
 		}
 
-		public int getType() {
-			return type;
-		}
-
-		public int getID() {
-			return ID;
+		public int getMonsterID() {
+			return monsterID;
 		}
 	}
 }

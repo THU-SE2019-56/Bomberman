@@ -24,6 +24,8 @@ public class MapPanel extends JPanel implements GameConstants {
 
 	private Game game;
 	private MainFrame mainFrame;
+	private int theme;
+	
 	BufferedImage player1Image[] = new BufferedImage[4];
 	BufferedImage player2Image[] = new BufferedImage[4];
 	BufferedImage player3Image[] = new BufferedImage[4];
@@ -34,7 +36,6 @@ public class MapPanel extends JPanel implements GameConstants {
 	BufferedImage wallImage[][] = new BufferedImage[4][8];
 	BufferedImage bombImage[] = new BufferedImage[2];
 	BufferedImage bulletImage[] = new BufferedImage[4];
-	private int stageNumber;
 
 	/**
 	 * Initialize the Display class.
@@ -50,7 +51,7 @@ public class MapPanel extends JPanel implements GameConstants {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		this.stageNumber = game.getStageNumber();
+		this.theme = game.getTheme();
 		this.setSize(MAP_WIDTH, MAP_HEIGHT);
 		this.setFocusable(true);
 
@@ -169,7 +170,7 @@ public class MapPanel extends JPanel implements GameConstants {
 					g.drawImage(mapImage[GRASS_2], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), CELL_WIDTH,
 							CELL_HEIGHT, this);
 				if (game.getMap().isWithWall(i, j))
-					g.drawImage(wallImage[stageNumber][game.getMap().getWallID(i, j)], (int) (i * CELL_WIDTH),
+					g.drawImage(wallImage[theme][game.getMap().getWallID(i, j)], (int) (i * CELL_WIDTH),
 							(int) (j * CELL_HEIGHT), CELL_WIDTH, CELL_HEIGHT, this);
 				if (game.getMap().isWithBomb(i, j))
 					g.drawImage(bombImage[BOMB], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), BOMB_WIDTH,

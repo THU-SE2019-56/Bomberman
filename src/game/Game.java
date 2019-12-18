@@ -17,29 +17,41 @@ import player.Player;
  */
 public class Game implements GameConstants, Serializable {
 	private Map map;
-	private Monster[] monsters = new Monster[MAX_MONSTER_NUMBER];
+	private Monster[] monsters;
 	private Player[] player = new Player[MAX_PLAYER_NUMBER];
 	private Item item;
 	private boolean gameOver = false;
 	private int playerNum = 0;// Number of the players
 	private int pauseFlag;
 	private int gameMode;
-	private int stageNumber;
 	private int player1CID;
 	private int player2CID;
+	private int theme;// 0,1,2,3
+	private int stageNumber;
 	
+	private int[][] wallMatrix;
+	private int[] monsterX;
+	private int[] monsterY;
+	private int[] monsterID;
+	
+
 	/**
 	 * Only for PVE mode, choose stage Different type of monsters, number of
 	 * monsters...
 	 */
-	public Game(int[][] wallMatrix, int playerX, int playerY, int[] monsterX, int[] monsterY, int gameMode,
-			int stageNumber,int player1CharacterID,int player2CharacterID) {
+	public Game(int[][] wallMatrix, int[] monsterX, int[] monsterY, int[] monsterID, int gameMode, int theme, int stageNumber, int player1CharacterID,
+			int player2CharacterID) {
 		this.map = new Map(wallMatrix);
-
-		// TODO Generate player and monsters according to X and Y
-		if (gameMode==PVE_MODE) {	// only create monsters for PVE mode
-			for (int i = 0; i < MAX_MONSTER_NUMBER; i++)
-				this.monsters[i] = MonsterFactory.getRandomMonster(map);
+		this.setWallMatrix(wallMatrix);
+		this.setMonsterX(monsterX);
+		this.setMonsterY(monsterY);
+		this.setMonsterID(monsterID);
+		
+		monsters=new Monster[monsterX.length];
+		if (gameMode == PVE_MODE) {
+			for (int i = 0; i < monsters.length; i++) {
+				this.monsters[i] = MonsterFactory.getMonster(monsterID[i],monsterX[i]*CELL_WIDTH,monsterY[i]*CELL_HEIGHT);
+			}
 		}
 
 		if (gameMode == PVE_MODE) {
@@ -49,11 +61,10 @@ public class Game implements GameConstants, Serializable {
 			this.playerNum = 2;
 		}
 		for (int i = 0; i < getPlayerNum(); i++) {
-			if(i == PLAYER_ID_P1)  {
-				this.player[i] = new Player(getMap(), i,player1CharacterID);
-			}
-			else if (i==PLAYER_ID_P2) {
-				this.player[i] = new Player(getMap(),i,player2CharacterID);
+			if (i == PLAYER_ID_P1) {
+				this.player[i] = new Player(getMap(), i, player1CharacterID);
+			} else if (i == PLAYER_ID_P2) {
+				this.player[i] = new Player(getMap(), i, player2CharacterID);
 			}
 		}
 
@@ -61,7 +72,8 @@ public class Game implements GameConstants, Serializable {
 		// Items should be generated when wall explodes, not when game starts.
 
 		this.gameMode = gameMode;
-		this.stageNumber = stageNumber;
+		this.theme = theme;
+		this.stageNumber=stageNumber;
 		this.pauseFlag = 0;
 		this.player1CID = player1CharacterID;
 		this.player2CID = player2CharacterID;
@@ -72,6 +84,7 @@ public class Game implements GameConstants, Serializable {
 	public int getPlayer1CID() {
 		return player1CID;
 	}
+
 	public int getPlayer2CID() {
 		return player2CID;
 	}
@@ -140,14 +153,28 @@ public class Game implements GameConstants, Serializable {
 		this.gameMode = gameMode;
 	}
 
+	public int getTheme() {
+		return theme;
+	}
+
+	public void setTheme(int theme) {
+		this.theme = theme;
+	}
+
+	/**
+	 * @return the stageNumber
+	 */
 	public int getStageNumber() {
 		return stageNumber;
 	}
 
+	/**
+	 * @param stageNumber the stageNumber to set
+	 */
 	public void setStageNumber(int stageNumber) {
 		this.stageNumber = stageNumber;
 	}
-	
+
 	public String refresh() {
 		if (this.getGameMode() == PVE_MODE) {
 			if (this.getPlayer()[PLAYER_ID_P1].getHP() <= 0) {
@@ -167,16 +194,70 @@ public class Game implements GameConstants, Serializable {
 			if (this.getPlayer()[PLAYER_ID_P1].getHP() <= 0 && this.getPlayer()[PLAYER_ID_P2].getHP() > 0) {
 				this.setGameOver(true);
 				return "player1Win";
-			}
-			else if (this.getPlayer()[PLAYER_ID_P2].getHP() <= 0 && this.getPlayer()[PLAYER_ID_P1].getHP() > 0) {
+			} else if (this.getPlayer()[PLAYER_ID_P2].getHP() <= 0 && this.getPlayer()[PLAYER_ID_P1].getHP() > 0) {
 				this.setGameOver(true);
 				return "player2Win";
-			}
-			else if (this.getPlayer()[PLAYER_ID_P1].getHP() <= 0 && this.getPlayer()[PLAYER_ID_P2].getHP() <= 0) {
+			} else if (this.getPlayer()[PLAYER_ID_P1].getHP() <= 0 && this.getPlayer()[PLAYER_ID_P2].getHP() <= 0) {
 				this.setGameOver(true);
 				return "tie";
-			}		
+			}
 		}
 		return "";
+	}
+
+	/**
+	 * @return the wallMatrix
+	 */
+	public int[][] getWallMatrix() {
+		return wallMatrix;
+	}
+
+	/**
+	 * @param wallMatrix the wallMatrix to set
+	 */
+	public void setWallMatrix(int[][] wallMatrix) {
+		this.wallMatrix = wallMatrix;
+	}
+
+	/**
+	 * @return the monsterX
+	 */
+	public int[] getMonsterX() {
+		return monsterX;
+	}
+
+	/**
+	 * @param monsterX the monsterX to set
+	 */
+	public void setMonsterX(int[] monsterX) {
+		this.monsterX = monsterX;
+	}
+
+	/**
+	 * @return the monsterY
+	 */
+	public int[] getMonsterY() {
+		return monsterY;
+	}
+
+	/**
+	 * @param monsterY the monsterY to set
+	 */
+	public void setMonsterY(int[] monsterY) {
+		this.monsterY = monsterY;
+	}
+
+	/**
+	 * @return the monsterID
+	 */
+	public int[] getMonsterID() {
+		return monsterID;
+	}
+
+	/**
+	 * @param monsterID the monsterID to set
+	 */
+	public void setMonsterID(int[] monsterID) {
+		this.monsterID = monsterID;
 	}
 }

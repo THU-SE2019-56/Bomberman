@@ -1,8 +1,5 @@
 package map;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.lang.Math;
 
 import game.GameConstants;
@@ -124,21 +121,6 @@ public class MapMatrix implements GameConstants {
 		visited = new boolean[ySize][xSize];
 		randomFill();
 		wall[0][0] = wall[0][1] = wall[1][0] = NONE; // clean up born place
-
-//		FileWriter out;
-//		try {
-//			out = new FileWriter(new File("data/stage3.txt"));
-//			for (int i = 0; i < xSize; i++) {
-//				for (int j = 0; j < ySize; j++) {
-//					out.write(wall[i][j] + "\t");
-//				}
-//				out.write("\r\n");
-//			}
-//			out.close();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 	}
 
 	/**
@@ -292,38 +274,6 @@ public class MapMatrix implements GameConstants {
 		}
 	}
 
-//	/**
-//	 * test out for connectivity check
-//	 */
-//	public void testOut() {
-//		for (int i = 0; i < ySize; i++) {
-//			for (int j = 0; j < xSize; j++) {
-//				System.out.print(set.findRoot(i, j));
-//				System.out.print("\t");
-//			}
-//			System.out.print("\n");
-//		}
-//		System.out.println(set.setCount);
-//	}
-//
-//	/**
-//	 * test out to show the walls during clearBlock
-//	 */
-//	public void testOutWall() {
-//		for (int i = 0; i < ySize; i++) {
-//			for (int j = 0; j < xSize; j++) {
-//				if (isBlockConnectivity(i, j))
-//					System.out.print("{}");
-//				else if (wall[i][j] == NONE)
-//					System.out.print("  ");
-//				else
-//					System.out.print("[]");
-//			}
-//			System.out.print("\n");
-//		}
-//		System.out.println(set.setCount);
-//	}
-
 	public int getXSize() {
 		return xSize;
 	}
@@ -339,7 +289,12 @@ public class MapMatrix implements GameConstants {
 	public boolean isWithIndestructibleWall(int yPos, int xPos) {
 		return wall[yPos][xPos] == INDESTRUCTIBLE;
 	}
-
+	
+	
+	public int[][] getWall() {
+		return wall;
+	}
+	
 	/**
 	 * set a wall at given position
 	 * 

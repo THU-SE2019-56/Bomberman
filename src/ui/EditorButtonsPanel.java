@@ -234,6 +234,7 @@ public class EditorButtonsPanel extends JPanel implements GameConstants {
 				mapEditor.getMapMatrix().reFill();
 				break;
 			case "save":
+				mapEditor.saveToTxt();
 				break;
 			case "back":
 				MenuPanel newMenuPanel = new MenuPanel(mainFrame);

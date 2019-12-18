@@ -37,6 +37,11 @@ public class StagePanel extends JPanel implements GameConstants {
 	private JLabel storyLabel;
 
 	private int[][] wallMatrix = new int[CELL_NUM_X][CELL_NUM_Y];
+	private int[] monsterX;
+	private int[] monsterY;
+	private int[] monsterID;
+	private int theme;
+
 	private int gameMode;
 	private int stageNumber = 0;
 	private int player1CharacterID;
@@ -60,18 +65,22 @@ public class StagePanel extends JPanel implements GameConstants {
 
 	private final static int tinyCellWidth = SCALED_THUMBNAIL_WIDTH / CELL_NUM_X;
 	private final static int tinyCellHeight = SCALED_THUMBNAIL_HEIGHT / CELL_NUM_Y;
-	private Map map;
 	private BufferedImage mapImage[] = new BufferedImage[4];
 	private BufferedImage wallImage[][] = new BufferedImage[4][8];
+	private int totalStageNum;
 
 	public StagePanel(MainFrame mainFrame, int gameMode, int p1cID, int p2cID) {
 		this.mainFrame = mainFrame;
 		this.gameMode = gameMode;
 		this.player1CharacterID = p1cID;
 		this.player2CharacterID = p2cID;
-
+		File savePath = new File("data");
+		File fileList[] = savePath.listFiles();
+		totalStageNum = fileList.length;
+		
+		
 		this.setLayout(null);
-
+		loadStage(stageNumber);
 		this.addThumbnail(stageNumber);
 		this.addButton();
 		this.addStory(stageNumber);
@@ -159,25 +168,55 @@ public class StagePanel extends JPanel implements GameConstants {
 	}
 
 	public void addThumbnail(int stageNumber) {
-		thumbnailLabel = new ThumbnailLabel(stageNumber);
+		thumbnailLabel = new ThumbnailLabel();
 		thumbnailLabel.setBounds(WINDOW_WIDTH / 2 - SCALED_THUMBNAIL_WIDTH / 2, 130 + 10, SCALED_THUMBNAIL_WIDTH,
 				SCALED_THUMBNAIL_HEIGHT);
 		this.add(thumbnailLabel);
 	}
 
-	public static int[][] loadStage(int stageNumber) {
+	public void loadStage(int stageNumber) {
 		BufferedReader in;
-		int[][] wallMatrix = new int[CELL_NUM_X][CELL_NUM_Y];
 		try {
 			in = new BufferedReader(new FileReader(new File("data/stage" + stageNumber + ".txt")));
 			String line;
 			int row = 0;
 			while ((line = in.readLine()) != null) {
-				String[] temp = line.split("\t");
-				for (int j = 0; j < temp.length; j++) {
-					wallMatrix[row][j] = Integer.parseInt(temp[j]);
+				if (row < CELL_NUM_X) {
+					// read wallMatrix
+					String[] temp = line.split("\t");
+					for (int j = 0; j < temp.length; j++) {
+						wallMatrix[row][j] = Integer.parseInt(temp[j]);
+					}
+					row++;
+				} else if (row == CELL_NUM_X) {
+					// read monsterX
+					String[] temp = line.split("\t");
+					monsterX=new int[temp.length];
+					for (int j = 0; j < temp.length; j++) {
+						monsterX[j] = Integer.parseInt(temp[j]);
+					}
+					row++;
+				} else if (row == CELL_NUM_X + 1) {
+					// read monsterY
+					String[] temp = line.split("\t");
+					monsterY=new int[temp.length];
+					for (int j = 0; j < temp.length; j++) {
+						monsterY[j] = Integer.parseInt(temp[j]);
+					}
+					row++;
+				} else if (row == CELL_NUM_X + 2) {
+					// read monsterID
+					String[] temp = line.split("\t");
+					monsterID=new int[temp.length];
+					for (int j = 0; j < temp.length; j++) {
+						monsterID[j] = Integer.parseInt(temp[j]);
+					}
+					row++;
+				} else{
+					// read theme
+					theme = Integer.parseInt(line);
+					row++;
 				}
-				row++;
 			}
 			in.close();
 		} catch (IOException e) {
@@ -185,7 +224,6 @@ public class StagePanel extends JPanel implements GameConstants {
 			e.printStackTrace();
 		}
 
-		return wallMatrix;
 	}
 
 	/**
@@ -229,8 +267,8 @@ public class StagePanel extends JPanel implements GameConstants {
 				choosePlayerPanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 				break;
 			case "confirm":
-				wallMatrix = loadStage(stageNumber);
-				Game game = new Game(wallMatrix, 0, 0, new int[5], new int[5], gameMode, stageNumber,
+				loadStage(stageNumber);
+				Game game = new Game(wallMatrix, monsterX,monsterY,monsterID, gameMode, theme, stageNumber,
 						player1CharacterID, player2CharacterID);
 
 				MapPanel mapPanel = new MapPanel(game, mainFrame);
@@ -267,13 +305,13 @@ public class StagePanel extends JPanel implements GameConstants {
 				break;
 			case "forward":
 				stageNumber = stageNumber + 1;
-				if (stageNumber > 3) {
-					stageNumber = stageNumber - 4;
+				if (stageNumber >= totalStageNum) {
+					stageNumber = stageNumber - totalStageNum;
 				}
 
 				StagePanel.this.removeAll();
 
-				thumbnailLabel = new ThumbnailLabel(stageNumber);
+				thumbnailLabel = new ThumbnailLabel();
 				thumbnailLabel.setBounds(WINDOW_WIDTH / 2 - SCALED_THUMBNAIL_WIDTH / 2, 130 + 10,
 						SCALED_THUMBNAIL_WIDTH, SCALED_THUMBNAIL_HEIGHT);
 				StagePanel.this.add(thumbnailLabel);
@@ -287,12 +325,12 @@ public class StagePanel extends JPanel implements GameConstants {
 			case "backward":
 				stageNumber = stageNumber - 1;
 				if (stageNumber < 0) {
-					stageNumber = stageNumber + 4;
+					stageNumber = stageNumber + totalStageNum;
 				}
 
 				StagePanel.this.removeAll();
 
-				thumbnailLabel = new ThumbnailLabel(stageNumber);
+				thumbnailLabel = new ThumbnailLabel();
 				thumbnailLabel.setBounds(WINDOW_WIDTH / 2 - SCALED_THUMBNAIL_WIDTH / 2, 130 + 10,
 						SCALED_THUMBNAIL_WIDTH, SCALED_THUMBNAIL_HEIGHT);
 				StagePanel.this.add(thumbnailLabel);
@@ -358,15 +396,15 @@ public class StagePanel extends JPanel implements GameConstants {
 	 */
 
 	class ThumbnailLabel extends JLabel implements GameConstants {
+		private Map map;
 
-		public ThumbnailLabel(int stageNumber) {
+		public ThumbnailLabel() {
 			try {
 				loadMapImage();
 			} catch (Exception e) {
 				System.out.println(e.toString());
 			}
 
-			wallMatrix = loadStage(stageNumber);
 			map = new Map(wallMatrix);
 		}
 
@@ -384,7 +422,7 @@ public class StagePanel extends JPanel implements GameConstants {
 						g.drawImage(mapImage[GRASS_2], (int) (i * tinyCellWidth), (int) (j * tinyCellHeight),
 								tinyCellWidth, tinyCellHeight, this);
 					if (map.isWithWall(i, j))
-						g.drawImage(wallImage[stageNumber][map.getWallID(i, j)], (int) (i * tinyCellWidth),
+						g.drawImage(wallImage[theme][map.getWallID(i, j)], (int) (i * tinyCellWidth),
 								(int) (j * tinyCellHeight), tinyCellWidth, tinyCellHeight, this);
 				}
 		}

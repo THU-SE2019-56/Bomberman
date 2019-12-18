@@ -29,8 +29,11 @@ public class EditorPanel extends JPanel implements GameConstants {
 	Stack<MapMatrix> undoStack;
 	Stack<MapMatrix> redoStack;
 	int editingMode = NONE;
+	int theme = 0;
 
-	BufferedImage editorImage[] = new BufferedImage[4];
+	BufferedImage groundImage[] = new BufferedImage[2];
+	BufferedImage wallImage[][] = new BufferedImage[4][8];
+	BufferedImage editorImage[] = new BufferedImage[2];
 
 	private JButton buttonBack;
 	private JButton buttonSave;
@@ -41,6 +44,8 @@ public class EditorPanel extends JPanel implements GameConstants {
 
 	private IconButton buttonIndestructibleWall;
 	private IconButton buttonDestructibleWall;
+	private IconButton buttonRemoveWall;
+	private IconButton buttonRemoveMob;
 
 	Controls control;
 
@@ -161,26 +166,38 @@ public class EditorPanel extends JPanel implements GameConstants {
 		for (int i = 0; i < xSize; i++)
 			for (int j = 0; j < ySize; j++) {
 				if ((i + j) % 2 == 0)
-					g.drawImage(editorImage[GROUND_1], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), CELL_WIDTH,
+					g.drawImage(groundImage[GROUND_1], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), CELL_WIDTH,
 							CELL_HEIGHT, this);
 				else
-					g.drawImage(editorImage[GROUND_2], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), CELL_WIDTH,
+					g.drawImage(groundImage[GROUND_2], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), CELL_WIDTH,
 							CELL_HEIGHT, this);
 				if (mmat.isWithDestructibleWall(j, i))
-					g.drawImage(editorImage[DESTRUCTIBLE_WALL], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT),
+					g.drawImage(wallImage[theme][(i + j) % 7], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT),
 							CELL_WIDTH, CELL_HEIGHT, this);
 				if (mmat.isWithIndestructibleWall(j, i))
-					g.drawImage(editorImage[INDESTRUCTIBLE_WALL], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT),
-							CELL_WIDTH, CELL_HEIGHT, this);
+					g.drawImage(wallImage[theme][7], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), CELL_WIDTH,
+							CELL_HEIGHT, this);
 				// TODO waiting for adding bomb and item
 			}
 	}
 
 	public void loadImage() throws Exception {
-		editorImage[GROUND_1] = ImageIO.read(new File("image/maps/grass1.png"));
-		editorImage[GROUND_2] = ImageIO.read(new File("image/maps/grass2.png"));
-		editorImage[DESTRUCTIBLE_WALL] = ImageIO.read(new File("image/maps/wall1-8.png"));
-		editorImage[INDESTRUCTIBLE_WALL] = ImageIO.read(new File("image/maps/wall1-1.png"));
+		groundImage[GROUND_1] = ImageIO.read(new File("image/maps/grass1.png"));
+		groundImage[GROUND_2] = ImageIO.read(new File("image/maps/grass2.png"));
+
+		editorImage[0] = ImageIO.read(new File("image/editor/remove_wall.png"));
+		editorImage[1] = ImageIO.read(new File("image/editor/remove_mob.png"));
+
+		for (int i = 0; i < 4; i++)
+			for (int j = 0; j < 8; j++) {
+				String fileName = new String("image/maps/wall");
+				fileName += (1 + i);
+				fileName += '-';
+				fileName += (1 + j);
+				fileName += (".png");
+				System.out.println(fileName);
+				wallImage[i][j] = ImageIO.read(new File(fileName));
+			}
 	}
 
 	public void addButton() {
@@ -198,10 +215,11 @@ public class EditorPanel extends JPanel implements GameConstants {
 		buttonRandom = new JButton("Random");
 		control.initializeButton(buttonRandom, MAP_WIDTH + 120, 80, 90, 50);
 
-		buttonIndestructibleWall = new IconButton(editorImage[INDESTRUCTIBLE_WALL], SET_INDESTRUCTIBLE_WALL,
-				MAP_WIDTH + 60, 200, CELL_WIDTH, CELL_HEIGHT);
-		buttonDestructibleWall = new IconButton(editorImage[DESTRUCTIBLE_WALL], SET_DESTRUCTIBLE_WALL,
-				MAP_WIDTH + 105, 200, CELL_WIDTH, CELL_HEIGHT);
+		buttonIndestructibleWall = new IconButton(wallImage[0][7], SET_INDESTRUCTIBLE_WALL, MAP_WIDTH + 60, 200,
+				CELL_WIDTH, CELL_HEIGHT);
+		buttonDestructibleWall = new IconButton(wallImage[0][0], SET_DESTRUCTIBLE_WALL, MAP_WIDTH + 105, 200,
+				CELL_WIDTH, CELL_HEIGHT);
+		buttonRemoveWall = new IconButton(editorImage[0], REMOVE_WALL, MAP_WIDTH + 15, 200, CELL_WIDTH, CELL_HEIGHT);
 
 		this.setLayout(null);
 
@@ -214,6 +232,7 @@ public class EditorPanel extends JPanel implements GameConstants {
 
 		this.add(buttonIndestructibleWall);
 		this.add(buttonDestructibleWall);
+		this.add(buttonRemoveWall);
 
 		buttonBack.addMouseListener(new ButtonListener(mainFrame, "back"));
 		buttonSave.addMouseListener(new ButtonListener(mainFrame, "save"));
@@ -221,9 +240,10 @@ public class EditorPanel extends JPanel implements GameConstants {
 		buttonRedo.addMouseListener(new ButtonListener(mainFrame, "redo"));
 		buttonClear.addMouseListener(new ButtonListener(mainFrame, "clear"));
 		buttonRandom.addMouseListener(new ButtonListener(mainFrame, "random"));
-		
+
 		buttonIndestructibleWall.addMouseListener(new ButtonListener(mainFrame, "indestructible"));
 		buttonDestructibleWall.addMouseListener(new ButtonListener(mainFrame, "destructible"));
+		buttonRemoveWall.addMouseListener(new ButtonListener(mainFrame, "removewall"));
 	}
 
 	class ButtonListener implements MouseListener {
@@ -273,6 +293,9 @@ public class EditorPanel extends JPanel implements GameConstants {
 				break;
 			case "destructible":
 				switchMode(SET_DESTRUCTIBLE_WALL);
+				break;
+			case "removewall":
+				switchMode(REMOVE_WALL);
 				break;
 			}
 			repaint();

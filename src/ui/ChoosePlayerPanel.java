@@ -146,7 +146,7 @@ public class ChoosePlayerPanel extends JPanel implements AWTEventListener, GameC
 				.setImage(buttonBackOnIcon.getImage().getScaledInstance(SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT, 1));
 
 		buttonBackLabel = new JLabel(buttonBackOffIcon);
-		buttonBackLabel.setBounds(100, 680, SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT);
+		buttonBackLabel.setBounds(-10, 700, SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT);
 		this.add(buttonBackLabel);
 
 		buttonConfirmOffIcon = new ImageIcon("image/buttons/confirm_off.png");
@@ -158,7 +158,7 @@ public class ChoosePlayerPanel extends JPanel implements AWTEventListener, GameC
 				buttonConfirmOnIcon.getImage().getScaledInstance(SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT, 1));
 
 		buttonConfirmLabel = new JLabel(buttonConfirmOffIcon);
-		buttonConfirmLabel.setBounds(800, 680, SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT);
+		buttonConfirmLabel.setBounds(900, 700, SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT);
 		this.add(buttonConfirmLabel);
 
 	}

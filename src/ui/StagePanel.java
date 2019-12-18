@@ -105,7 +105,7 @@ public class StagePanel extends JPanel implements GameConstants {
 				.setImage(buttonBackOnIcon.getImage().getScaledInstance(SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT, 1));
 
 		buttonBackLabel = new JLabel(buttonBackOffIcon);
-		buttonBackLabel.setBounds(100, 680, SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT);
+		buttonBackLabel.setBounds(-10, 700, SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT);
 		this.add(buttonBackLabel);
 
 		// confirm
@@ -118,7 +118,7 @@ public class StagePanel extends JPanel implements GameConstants {
 				buttonConfirmOnIcon.getImage().getScaledInstance(SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT, 1));
 
 		buttonConfirmLabel = new JLabel(buttonConfirmOffIcon);
-		buttonConfirmLabel.setBounds(800, 680, SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT);
+		buttonConfirmLabel.setBounds(900, 700, SCALED_BUTTON_WIDTH, SCALED_BUTTON_HEIGHT);
 		this.add(buttonConfirmLabel);
 
 		// forward
@@ -151,7 +151,7 @@ public class StagePanel extends JPanel implements GameConstants {
 	}
 
 	public void addStory(int stageNumber) {
-		storyIcon = new ImageIcon("image/background/story" + stageNumber + ".png");
+		storyIcon = new ImageIcon("image/story/story" + stageNumber + ".png");
 		storyIcon.setImage(storyIcon.getImage().getScaledInstance(STORY_WIDTH, STORY_HEIGHT, 1));
 		storyLabel = new JLabel(storyIcon);
 		storyLabel.setBounds(WINDOW_WIDTH / 2 - STORY_WIDTH / 2, 560, STORY_WIDTH, STORY_HEIGHT);

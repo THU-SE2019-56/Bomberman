@@ -142,6 +142,9 @@ public interface GameConstants {
 	int SET_MONSTER_1 = 7;
 	int SET_MONSTER_2 = 8;
 	
+	int PLAYER_SPAWNER = 1;
+	int MONSTER_SPAWNER = 2;
+	
 	// For Buttons
 	int BUTTON_WIDTH=280;
 	int BUTTON_HEIGHT=113;

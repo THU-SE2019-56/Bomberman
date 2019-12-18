@@ -441,4 +441,34 @@ public class EditorPanel extends JPanel implements GameConstants {
 		}
 
 	}
+
+	class Mob {
+		private int spawnX;
+		private int spawnY;
+		private int type;
+		private int ID;
+
+		public Mob(int type, int ID, int x, int y) {
+			this.type = type;
+			this.ID = ID;
+			spawnX = x;
+			spawnY = y;
+		}
+		
+		public int getX() {
+			return spawnX;
+		}
+		
+		public int getY() {
+			return spawnY;
+		}
+
+		public int getType() {
+			return type;
+		}
+		
+		public int getID() {
+			return ID;
+		}
+	}
 }

@@ -41,7 +41,7 @@ public class Frog extends Monster {
     @Override
     public void monsterMove(Player p, Map m) {
         super.monsterMove(p, m);
-        if (this.numLives>=0) {
+        if (!this.alive && this.numLives>0) {
             this.resurrectionCounter--;
             if (this.resurrectionCounter <=0 ) {
                 this.alive = true;
@@ -51,10 +51,16 @@ public class Frog extends Monster {
 
     @Override
     public void eliminate() {
+        this.path.clear();
         this.alive = false;
         this.numLives--;
         this.resurrectionCounter = 100;     // take 3 seconds to resurrection
-        if (this.numLives < 0)
+        if (this.numLives <= 0)
             this.dyingCounter = 30;
+    }
+
+    @Override
+    public boolean isAlive() {
+        return this.alive || this.numLives > 0;
     }
 }

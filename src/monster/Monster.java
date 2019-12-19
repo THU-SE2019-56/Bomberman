@@ -1,31 +1,31 @@
 package monster;
 
-import java.util.*;
-
 import map.Map;
 import player.Player;
 import game.GameConstants;
 
 
 /**
- * The Monster class.
+ * The Monster Base class.
  * Monster will random walk on the whole map, until distance between the player smaller than ALERT_DISTANCE.
  * Then the monster will follow the player, until get killed or be rid of, or collide with the player (
  * in this case the player's HP will reduce by HP_LOSS_BY_MONSTER).
  *
  * @author  Hang Chen
- * @version 0.9
+ * @version 1.0
  */
 public class Monster implements GameConstants {
-	public boolean alive;
-	public boolean alert;		// whether the monster is in alert state
-	public int velocity;
-	public int oldDirection;
-	public int direction;
-	public int x;
-	public int y;
-	public Brain brain;
-	public Path path;
+    boolean alive;
+	boolean alert;		// whether the monster is in alert state
+	double velocity;
+	int oldDirection;
+	int direction;
+	int x;
+	int y;
+	int dyingCounter;	// to implement dying effect
+	Brain brain;
+	Path path;
+	public int id;
 
 	/**
 	 * Create the monster at random position
@@ -34,7 +34,8 @@ public class Monster implements GameConstants {
 		while (true) {
 			int i = (int)(CELL_NUM_X*Math.random());
 			int j = (int)(CELL_NUM_Y*Math.random());
-			if (m.isAvailable(i, j)) {
+			// monster will not born on walls or the top-left 1/16 area
+			if (m.isAvailable(i, j) && i>CELL_NUM_X/4 && j>CELL_NUM_Y/4) {
 				this.x = i * CELL_WIDTH;
 				this.y = j * CELL_HEIGHT;
 				init();
@@ -52,27 +53,39 @@ public class Monster implements GameConstants {
 		init();
 	}
 
-	public void init() {
+    /**
+     * Set monster's properties
+     */
+    void init() {
 		this.alive = true;
 		this.alert = false;
-		this.velocity = 3 + (int)(3*Math.random());
+		this.velocity = MONSTER_SPEED_LOW +
+			(MONSTER_SPEED_HIGH - MONSTER_SPEED_LOW) * Math.random();
 		this.direction = -1;
 		this.oldDirection = 0;
-		brain = new Brain();
+		brain = new Brain(1);
 		path = new Path();
+		id = 0;
 	}
 
-	public int nextDirection(Player p, Map m) {
+    /**
+     * Generate the next direction
+     */
+	int nextDirection(Player p, Map m) {
 		if (path.size() > 0) {
 			// compute direction
 			int dx = path.getNextX() - this.x;
 			int dy = path.getNextY() - this.y;
-			if (Math.abs(dx) < this.velocity) dx = 0;
-			if (Math.abs(dy) < this.velocity) dy = 0;
+			if (Math.abs(dx) < 2*this.velocity) {
+				this.x = path.getNextX();
+				dx = 0;
+			}
+			if (Math.abs(dy) < 2*this.velocity) {
+				this.y = path.getNextY();
+				dy = 0;
+			}
 
 			if (dx == 0 && dy == 0) {
-				this.x = path.getNextX();
-				this.y = path.getNextY();
 				path.removeFirst();
 				// replanning if the next position in the path is invalid or in explosion
 				if (path.size()>0 && !brain.isMovable(m, path.getNextI(), path.getNextJ()))
@@ -87,7 +100,10 @@ public class Monster implements GameConstants {
 		return DIRECTION_STOP;
 	}
 
-	public void updateAlert(Player p) {
+    /**
+     * Update monster's alert state
+     */
+	void updateAlert(Player p) {
 		int mi = Math.round((float) x/CELL_WIDTH);
 		int mj = Math.round((float) y/CELL_HEIGHT);
 		int pi = Math.round((float) p.getX()/CELL_WIDTH);
@@ -96,22 +112,33 @@ public class Monster implements GameConstants {
 		this.alert = (dis <= ALERT_DISTANCE);
 	}
 
-	public void setDirection(int d) {
-    	this.oldDirection = this.direction;
+	void setDirection(int d) {
+		if (this.direction==DIRECTION_LEFT || this.direction==DIRECTION_RIGHT)
+    		this.oldDirection = this.direction;
     	this.direction = d;
 	}
 
-	public int getImageDirection() {
-    	if (this.direction < 0)
-    		return Math.max(this.oldDirection, 0);
-		return this.direction;
+    /**
+     * Get the image's index
+     */
+	public int getImageIndex() {
+		if (isDying()) return 2;
+		else {
+			int d = this.direction == DIRECTION_LEFT || this.direction == DIRECTION_RIGHT ?
+					this.direction : this.oldDirection;
+			switch (d) {
+				case DIRECTION_LEFT: return 0;
+				case DIRECTION_RIGHT: return 1;
+			}
+			return 0;
+		}
 	}
 
-	public void setVelocity(int v) {
+	public void setVelocity(double v) {
 		this.velocity = v;
 	}
 
-	public int getVelocity() {
+	public double getVelocity() {
 		return this.velocity;
 	}
 
@@ -136,8 +163,10 @@ public class Monster implements GameConstants {
 		this.y = Y;
 	}
 
-	public void monsterMove(Player p, Map m) {
-		// move a step
+    /**
+     * Move a step and update path
+     */
+	void moveStep(Player p, Map m) {
 		switch (this.direction) {
 			case DIRECTION_UP:
 				this.y -= this.velocity;
@@ -162,25 +191,42 @@ public class Monster implements GameConstants {
 				else brain.randomPath(m, path, mi, mj);
 				break;
 		}
-		if (isCollided(p.getX(), p.getY(), PLAYER_WIDTH, PLAYER_HEIGHT)) { // collide with player
-			eliminate();
-			p.setHP(p.getHP()-HP_LOSS_BY_MONSTER);
+	}
+
+	/**
+     * Take some actions in a game loop
+     */
+	public void monsterMove(Player p, Map m) {
+		if (this.alive) {
+			moveStep(p, m);        // move a step
+			if (p.getActiveItem() != null) {    // killed by bullet
+				if (isCollided(p.getActiveItem().getX(), p.getActiveItem().getY(), CELL_WIDTH, CELL_HEIGHT)) {
+					eliminate();
+					p.getActiveItem().setState(false);
+					p.setIsUsingBulletFlag(0);
+					p.setActiveItem(null);
+				}
+			} else if (isCollided(p.getX(), p.getY(), CELL_WIDTH, CELL_HEIGHT)) { // collide with player
+				eliminate();
+				p.getHurt(HP_LOSS_BY_MONSTER);
+			} else if (isBlownOff(m)) {    // killed by bomb
+				eliminate();
+			} else {    // still alive
+				setDirection(nextDirection(p, m));
+				updateAlert(p);
+			}
 		}
-		else if (isBlownOff(m)) {	// killed by bomb
-			eliminate();
-		}
-		else {	// still alive
-			setDirection(nextDirection(p, m));
-			updateAlert(p);
+		else if (isDying()) {
+			this.dyingCounter--;
 		}
 	}
 
 	/**
 	 * Check whether the monster is collided with a blown region
 	 */
-	public boolean isBlownOff(Map m) {
-		int mi = Math.round((float) x/CELL_WIDTH);
-		int mj = Math.round((float) y/CELL_HEIGHT);
+	boolean isBlownOff(Map m) {
+	    int mi = Math.floorDiv(x, CELL_WIDTH);
+	    int mj = Math.floorDiv(y, CELL_HEIGHT);
 		for (int i=mi; i<Math.min(mi+2, CELL_NUM_X); ++i)
 			for (int j=mj; j<Math.min(mj+2, CELL_NUM_Y); ++j)
 				if (m.isAtExplosion(i, j) &&
@@ -192,7 +238,7 @@ public class Monster implements GameConstants {
 	/**
 	 * Check whether the monster is collided with a rectangle [x,y,w,h]
 	 */
-	public boolean isCollided(int x, int y, int w, int h) {
+	boolean isCollided(int x, int y, int w, int h) {
 		int x1 = Math.max(x, this.x);
 		int x2 = Math.min(x + w, this.x + MONSTER_WIDTH);
 		int y1 = Math.max(y, this.y);
@@ -206,9 +252,21 @@ public class Monster implements GameConstants {
 	}
 
 	/**
+	 * If this function return false, then the monster will not be painted
+	 */
+	public boolean isVisible() {
+		return this.alive || isDying();
+	}
+
+	public boolean isDying() {
+		return this.dyingCounter > 0;
+	}
+
+	/**
 	 * Remove itself from the map after killed.
 	 */
 	public void eliminate() {
 		this.alive = false;
+		this.dyingCounter = 30;		// take 0.9 seconds to die thoroughly
 	}
 }

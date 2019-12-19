@@ -3,6 +3,7 @@
 .project
 .classpath
 */.DS_Store
+.DS_Store
 
 # for vscode
 .vscode/
@@ -11,6 +12,7 @@
 /out
 /.idea
 /*.iml
+/src/resources
 
 # Compiled class file
 *.class

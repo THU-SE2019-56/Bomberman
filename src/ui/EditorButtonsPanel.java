@@ -33,7 +33,7 @@ public class EditorButtonsPanel extends JPanel implements GameConstants {
 	private IconButton buttonIndestructibleWall;
 	private IconButton buttonDestructibleWall;
 	private IconButton buttonRemoveWall;
-	
+
 	private IconButton buttonAddTyrannosaurus;
 	private IconButton buttonAddTriceratops;
 	private IconButton buttonAddFrog;
@@ -103,11 +103,12 @@ public class EditorButtonsPanel extends JPanel implements GameConstants {
 	}
 
 	public void addButton() {
-		buttonIndestructibleWall = new IconButton(editorImage[SET_INDESTRUCTIBLE_WALL], SET_INDESTRUCTIBLE_WALL, 0, 50, CELL_WIDTH,
-				CELL_HEIGHT);
-		buttonDestructibleWall = new IconButton(editorImage[SET_DESTRUCTIBLE_WALL], SET_DESTRUCTIBLE_WALL, 50, 50, CELL_WIDTH,
-				CELL_HEIGHT);
-		buttonRemoveWall = new IconButton(editorImage[REMOVE_WALL], REMOVE_WALL, 100, 50, CELL_WIDTH, CELL_HEIGHT);
+		buttonIndestructibleWall = new IconButton(editorImage[SET_INDESTRUCTIBLE_WALL], SET_INDESTRUCTIBLE_WALL, 0,
+				ICON_BUTTON_HEIGHT, ICON_BUTTON_WIDTH, ICON_BUTTON_HEIGHT);
+		buttonDestructibleWall = new IconButton(editorImage[SET_DESTRUCTIBLE_WALL], SET_DESTRUCTIBLE_WALL,
+				ICON_BUTTON_WIDTH, ICON_BUTTON_HEIGHT, ICON_BUTTON_WIDTH, ICON_BUTTON_HEIGHT);
+		buttonRemoveWall = new IconButton(editorImage[REMOVE_WALL], REMOVE_WALL, 2 * ICON_BUTTON_WIDTH,
+				ICON_BUTTON_HEIGHT, ICON_BUTTON_WIDTH, ICON_BUTTON_HEIGHT);
 		this.add(buttonIndestructibleWall);
 		this.add(buttonDestructibleWall);
 		this.add(buttonRemoveWall);
@@ -121,7 +122,7 @@ public class EditorButtonsPanel extends JPanel implements GameConstants {
 				.setImage(buttonUndoOnIcon.getImage().getScaledInstance(SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT, 1));
 
 		buttonUndoLabel = new JLabel(buttonUndoOffIcon);
-		buttonUndoLabel.setBounds(40, 400, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
+		buttonUndoLabel.setBounds(10, 400, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
 		this.add(buttonUndoLabel);
 
 		buttonRedoOffIcon = new ImageIcon("image/buttons/redo_off.png");
@@ -133,7 +134,7 @@ public class EditorButtonsPanel extends JPanel implements GameConstants {
 				.setImage(buttonRedoOnIcon.getImage().getScaledInstance(SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT, 1));
 
 		buttonRedoLabel = new JLabel(buttonRedoOffIcon);
-		buttonRedoLabel.setBounds(140, 400, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
+		buttonRedoLabel.setBounds(130, 400, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
 		this.add(buttonRedoLabel);
 
 		buttonClearOffIcon = new ImageIcon("image/buttons/clear_off.png");
@@ -145,7 +146,7 @@ public class EditorButtonsPanel extends JPanel implements GameConstants {
 				.setImage(buttonClearOnIcon.getImage().getScaledInstance(SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT, 1));
 
 		buttonClearLabel = new JLabel(buttonClearOffIcon);
-		buttonClearLabel.setBounds(40, 500, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
+		buttonClearLabel.setBounds(10, 500, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
 		this.add(buttonClearLabel);
 
 		buttonRandomOffIcon = new ImageIcon("image/buttons/random_off.png");
@@ -157,7 +158,7 @@ public class EditorButtonsPanel extends JPanel implements GameConstants {
 				.setImage(buttonRandomOnIcon.getImage().getScaledInstance(SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT, 1));
 
 		buttonRandomLabel = new JLabel(buttonRandomOffIcon);
-		buttonRandomLabel.setBounds(140, 500, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
+		buttonRandomLabel.setBounds(130, 500, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
 		this.add(buttonRandomLabel);
 
 		buttonSaveOffIcon = new ImageIcon("image/buttons/save_off.png");
@@ -169,7 +170,7 @@ public class EditorButtonsPanel extends JPanel implements GameConstants {
 				.setImage(buttonSaveOnIcon.getImage().getScaledInstance(SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT, 1));
 
 		buttonSaveLabel = new JLabel(buttonSaveOffIcon);
-		buttonSaveLabel.setBounds(40, 600, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
+		buttonSaveLabel.setBounds(10, 600, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
 		this.add(buttonSaveLabel);
 
 		buttonBackOffIcon = new ImageIcon("image/buttons/back_off.png");
@@ -181,7 +182,7 @@ public class EditorButtonsPanel extends JPanel implements GameConstants {
 				.setImage(buttonBackOnIcon.getImage().getScaledInstance(SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT, 1));
 
 		buttonBackLabel = new JLabel(buttonBackOffIcon);
-		buttonBackLabel.setBounds(140, 600, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
+		buttonBackLabel.setBounds(130, 600, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
 		this.add(buttonBackLabel);
 	}
 
@@ -190,7 +191,10 @@ public class EditorButtonsPanel extends JPanel implements GameConstants {
 		editorImage[SET_DESTRUCTIBLE_WALL] = ImageIO.read(new File("image/editor/destructible_wall.png"));
 		editorImage[SET_INDESTRUCTIBLE_WALL] = ImageIO.read(new File("image/editor/indestructible_wall.png"));
 		editorImage[REMOVE_MONSTER] = ImageIO.read(new File("image/editor/remove_monster.png"));
-		
+		editorImage[ADD_TYRANNOSAURUS] = ImageIO.read(new File("image/monster/m1LEFT.png"));
+		editorImage[ADD_TRICERATOPS] = ImageIO.read(new File("image/monster/m2LEFT.png"));
+		editorImage[ADD_FROG] = ImageIO.read(new File("image/monster/m3LEFT.png"));
+		editorImage[ADD_PARROT] = ImageIO.read(new File("image/monster/m4LEFT.png"));
 	}
 
 	/**

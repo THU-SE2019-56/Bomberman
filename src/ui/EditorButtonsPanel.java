@@ -109,9 +109,24 @@ public class EditorButtonsPanel extends JPanel implements GameConstants {
 				ICON_BUTTON_WIDTH, ICON_BUTTON_HEIGHT, ICON_BUTTON_WIDTH, ICON_BUTTON_HEIGHT);
 		buttonRemoveWall = new IconButton(editorImage[REMOVE_WALL], REMOVE_WALL, 2 * ICON_BUTTON_WIDTH,
 				ICON_BUTTON_HEIGHT, ICON_BUTTON_WIDTH, ICON_BUTTON_HEIGHT);
+		buttonAddTyrannosaurus = new IconButton(editorImage[ADD_TYRANNOSAURUS], ADD_TYRANNOSAURUS, 0,
+				3 * ICON_BUTTON_HEIGHT, ICON_BUTTON_WIDTH, ICON_BUTTON_HEIGHT);
+		buttonAddTriceratops = new IconButton(editorImage[ADD_TRICERATOPS], ADD_TRICERATOPS, ICON_BUTTON_WIDTH,
+				3 * ICON_BUTTON_HEIGHT, ICON_BUTTON_WIDTH, ICON_BUTTON_HEIGHT);
+		buttonAddFrog = new IconButton(editorImage[ADD_FROG], ADD_FROG, 2 * ICON_BUTTON_WIDTH, 3 * ICON_BUTTON_HEIGHT,
+				ICON_BUTTON_WIDTH, ICON_BUTTON_HEIGHT);
+		buttonAddParrot = new IconButton(editorImage[ADD_PARROT], ADD_PARROT, 3 * ICON_BUTTON_WIDTH,
+				3 * ICON_BUTTON_HEIGHT, ICON_BUTTON_WIDTH, ICON_BUTTON_HEIGHT);
+		buttonRemoveMonster = new IconButton(editorImage[REMOVE_MONSTER], REMOVE_MONSTER, 0,
+				4 * ICON_BUTTON_HEIGHT, ICON_BUTTON_WIDTH, ICON_BUTTON_HEIGHT);
 		this.add(buttonIndestructibleWall);
 		this.add(buttonDestructibleWall);
 		this.add(buttonRemoveWall);
+		this.add(buttonAddTyrannosaurus);
+		this.add(buttonAddTriceratops);
+		this.add(buttonAddFrog);
+		this.add(buttonAddParrot);
+		this.add(buttonRemoveMonster);
 
 		buttonUndoOffIcon = new ImageIcon("image/buttons/undo_off.png");
 		buttonUndoOffIcon

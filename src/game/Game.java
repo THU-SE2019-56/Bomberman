@@ -49,8 +49,17 @@ public class Game implements GameConstants, Serializable {
 		
 		monsters=new Monster[monsterX.length];
 		if (gameMode == PVE_MODE) {
-			for (int i = 0; i < monsters.length; i++) {
-				this.monsters[i] = MonsterFactory.getMonster(monsterID[i],monsterX[i]*CELL_WIDTH,monsterY[i]*CELL_HEIGHT);
+			for (int i = 0; i < monsters.length; i++) {		// if monster's position is -1, monster will random generate
+				if (monsterID[i]==-1 && (monsterX[i]==-1 || monsterY[i]==-1))
+					this.monsters[i] = MonsterFactory.getRandomMonster(this.map);
+				else if (monsterID[i]==-1)
+					this.monsters[i] = MonsterFactory.getRandomMonster(monsterX[i]*CELL_WIDTH,
+							monsterY[i]*CELL_HEIGHT);
+				else if (monsterX[i]==-1 || monsterY[i]==-1)
+					this.monsters[i] = MonsterFactory.getMonster(monsterID[i], this.map);
+				else
+					this.monsters[i] = MonsterFactory.getMonster(monsterID[i],
+							monsterX[i]*CELL_WIDTH,monsterY[i]*CELL_HEIGHT);
 			}
 		}
 

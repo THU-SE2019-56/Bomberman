@@ -196,7 +196,11 @@ public class StagePanel extends JPanel implements GameConstants {
 					String[] temp = line.split("\t");
 					monsterX = new int[temp.length];
 					for (int j = 0; j < temp.length; j++) {
-						monsterX[j] = Integer.parseInt(temp[j]);
+						try {
+							monsterX[j] = Integer.parseInt(temp[j]);
+						} catch (NumberFormatException e) {				// -1 means random position
+							monsterX[j] = -1;
+						}
 					}
 					row++;
 				} else if (row == CELL_NUM_X + 1) {
@@ -204,7 +208,11 @@ public class StagePanel extends JPanel implements GameConstants {
 					String[] temp = line.split("\t");
 					monsterY = new int[temp.length];
 					for (int j = 0; j < temp.length; j++) {
-						monsterY[j] = Integer.parseInt(temp[j]);
+						try {
+							monsterY[j] = Integer.parseInt(temp[j]);
+						} catch (NumberFormatException e) {
+							monsterY[j] = -1;
+						}
 					}
 					row++;
 				} else if (row == CELL_NUM_X + 2) {
@@ -212,12 +220,20 @@ public class StagePanel extends JPanel implements GameConstants {
 					String[] temp = line.split("\t");
 					monsterID = new int[temp.length];
 					for (int j = 0; j < temp.length; j++) {
-						monsterID[j] = Integer.parseInt(temp[j]);
+						try {
+							monsterID[j] = Integer.parseInt(temp[j]);
+						} catch (NumberFormatException e) {
+							monsterID[j] = -1;
+						}
 					}
 					row++;
 				} else {
 					// read theme
-					theme = Integer.parseInt(line);
+					try {
+						theme = Integer.parseInt(line);
+					} catch (NumberFormatException e) {
+						theme = 0;					// default theme is 0
+					}
 					row++;
 				}
 			}

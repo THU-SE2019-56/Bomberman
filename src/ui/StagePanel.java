@@ -267,7 +267,7 @@ public class StagePanel extends JPanel implements GameConstants {
 				choosePlayerPanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 				break;
 			case "confirm":
-				loadStage(stageNumber);
+				//loadStage(stageNumber);
 				Game game = new Game(wallMatrix, monsterX,monsterY,monsterID, gameMode, theme, stageNumber,
 						player1CharacterID, player2CharacterID);
 
@@ -310,7 +310,8 @@ public class StagePanel extends JPanel implements GameConstants {
 				}
 
 				StagePanel.this.removeAll();
-
+				loadStage(stageNumber);
+				
 				thumbnailLabel = new ThumbnailLabel();
 				thumbnailLabel.setBounds(WINDOW_WIDTH / 2 - SCALED_THUMBNAIL_WIDTH / 2, 130 + 10,
 						SCALED_THUMBNAIL_WIDTH, SCALED_THUMBNAIL_HEIGHT);
@@ -329,7 +330,8 @@ public class StagePanel extends JPanel implements GameConstants {
 				}
 
 				StagePanel.this.removeAll();
-
+				loadStage(stageNumber);
+				
 				thumbnailLabel = new ThumbnailLabel();
 				thumbnailLabel.setBounds(WINDOW_WIDTH / 2 - SCALED_THUMBNAIL_WIDTH / 2, 130 + 10,
 						SCALED_THUMBNAIL_WIDTH, SCALED_THUMBNAIL_HEIGHT);
@@ -415,12 +417,22 @@ public class StagePanel extends JPanel implements GameConstants {
 			int ySize = map.getSizeY();
 			for (int i = 0; i < xSize; i++)
 				for (int j = 0; j < ySize; j++) {
-					if ((i + j) % 2 == 0)
-						g.drawImage(mapImage[GRASS_1], (int) (i * tinyCellWidth), (int) (j * tinyCellHeight),
-								tinyCellWidth, tinyCellHeight, this);
-					else
-						g.drawImage(mapImage[GRASS_2], (int) (i * tinyCellWidth), (int) (j * tinyCellHeight),
-								tinyCellWidth, tinyCellHeight, this);
+					if (theme == 0 || theme == 3) {
+						if ((i + j) % 2 == 0)
+							g.drawImage(mapImage[GRASS_1], (int) (i * tinyCellWidth), (int) (j * tinyCellHeight), tinyCellWidth,
+									tinyCellHeight, this);
+						else
+							g.drawImage(mapImage[GRASS_2], (int) (i * tinyCellWidth), (int) (j * tinyCellHeight), tinyCellWidth,
+									tinyCellHeight, this);
+						}
+					else {
+						if ((i + j) % 2 == 0)
+							g.drawImage(mapImage[SAND_1], (int) (i * tinyCellWidth), (int) (j * tinyCellHeight), tinyCellWidth,
+									tinyCellHeight, this);
+						else
+							g.drawImage(mapImage[SAND_2], (int) (i * tinyCellWidth), (int) (j * tinyCellHeight), tinyCellWidth,
+									tinyCellHeight, this);
+					}
 					if (map.isWithWall(i, j))
 						g.drawImage(wallImage[theme][map.getWallID(i, j)], (int) (i * tinyCellWidth),
 								(int) (j * tinyCellHeight), tinyCellWidth, tinyCellHeight, this);

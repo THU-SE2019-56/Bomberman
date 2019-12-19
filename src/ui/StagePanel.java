@@ -77,8 +77,7 @@ public class StagePanel extends JPanel implements GameConstants {
 		File savePath = new File("data");
 		File fileList[] = savePath.listFiles();
 		totalStageNum = fileList.length;
-		
-		
+
 		this.setLayout(null);
 		loadStage(stageNumber);
 		this.addThumbnail(stageNumber);
@@ -160,7 +159,11 @@ public class StagePanel extends JPanel implements GameConstants {
 	}
 
 	public void addStory(int stageNumber) {
-		storyIcon = new ImageIcon("image/story/story" + stageNumber + ".png");
+		if (stageNumber <= 3) {
+			storyIcon = new ImageIcon("image/story/story" + stageNumber + ".png");
+		} else {
+			storyIcon = new ImageIcon("image/story/story-1.png");
+		}
 		storyIcon.setImage(storyIcon.getImage().getScaledInstance(STORY_WIDTH, STORY_HEIGHT, 1));
 		storyLabel = new JLabel(storyIcon);
 		storyLabel.setBounds(WINDOW_WIDTH / 2 - STORY_WIDTH / 2, 560, STORY_WIDTH, STORY_HEIGHT);
@@ -191,7 +194,7 @@ public class StagePanel extends JPanel implements GameConstants {
 				} else if (row == CELL_NUM_X) {
 					// read monsterX
 					String[] temp = line.split("\t");
-					monsterX=new int[temp.length];
+					monsterX = new int[temp.length];
 					for (int j = 0; j < temp.length; j++) {
 						try {
 							monsterX[j] = Integer.parseInt(temp[j]);
@@ -203,7 +206,7 @@ public class StagePanel extends JPanel implements GameConstants {
 				} else if (row == CELL_NUM_X + 1) {
 					// read monsterY
 					String[] temp = line.split("\t");
-					monsterY=new int[temp.length];
+					monsterY = new int[temp.length];
 					for (int j = 0; j < temp.length; j++) {
 						try {
 							monsterY[j] = Integer.parseInt(temp[j]);
@@ -215,7 +218,7 @@ public class StagePanel extends JPanel implements GameConstants {
 				} else if (row == CELL_NUM_X + 2) {
 					// read monsterID
 					String[] temp = line.split("\t");
-					monsterID=new int[temp.length];
+					monsterID = new int[temp.length];
 					for (int j = 0; j < temp.length; j++) {
 						try {
 							monsterID[j] = Integer.parseInt(temp[j]);
@@ -224,7 +227,7 @@ public class StagePanel extends JPanel implements GameConstants {
 						}
 					}
 					row++;
-				} else{
+				} else {
 					// read theme
 					try {
 						theme = Integer.parseInt(line);
@@ -283,8 +286,8 @@ public class StagePanel extends JPanel implements GameConstants {
 				choosePlayerPanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 				break;
 			case "confirm":
-				//loadStage(stageNumber);
-				Game game = new Game(wallMatrix, monsterX,monsterY,monsterID, gameMode, theme, stageNumber,
+				// loadStage(stageNumber);
+				Game game = new Game(wallMatrix, monsterX, monsterY, monsterID, gameMode, theme, stageNumber,
 						player1CharacterID, player2CharacterID);
 
 				MapPanel mapPanel = new MapPanel(game, mainFrame);
@@ -327,7 +330,7 @@ public class StagePanel extends JPanel implements GameConstants {
 
 				StagePanel.this.removeAll();
 				loadStage(stageNumber);
-				
+
 				thumbnailLabel = new ThumbnailLabel();
 				thumbnailLabel.setBounds(WINDOW_WIDTH / 2 - SCALED_THUMBNAIL_WIDTH / 2, 130 + 10,
 						SCALED_THUMBNAIL_WIDTH, SCALED_THUMBNAIL_HEIGHT);
@@ -347,7 +350,7 @@ public class StagePanel extends JPanel implements GameConstants {
 
 				StagePanel.this.removeAll();
 				loadStage(stageNumber);
-				
+
 				thumbnailLabel = new ThumbnailLabel();
 				thumbnailLabel.setBounds(WINDOW_WIDTH / 2 - SCALED_THUMBNAIL_WIDTH / 2, 130 + 10,
 						SCALED_THUMBNAIL_WIDTH, SCALED_THUMBNAIL_HEIGHT);
@@ -435,19 +438,18 @@ public class StagePanel extends JPanel implements GameConstants {
 				for (int j = 0; j < ySize; j++) {
 					if (theme == 0 || theme == 3) {
 						if ((i + j) % 2 == 0)
-							g.drawImage(mapImage[GRASS_1], (int) (i * tinyCellWidth), (int) (j * tinyCellHeight), tinyCellWidth,
-									tinyCellHeight, this);
+							g.drawImage(mapImage[GRASS_1], (int) (i * tinyCellWidth), (int) (j * tinyCellHeight),
+									tinyCellWidth, tinyCellHeight, this);
 						else
-							g.drawImage(mapImage[GRASS_2], (int) (i * tinyCellWidth), (int) (j * tinyCellHeight), tinyCellWidth,
-									tinyCellHeight, this);
-						}
-					else {
+							g.drawImage(mapImage[GRASS_2], (int) (i * tinyCellWidth), (int) (j * tinyCellHeight),
+									tinyCellWidth, tinyCellHeight, this);
+					} else {
 						if ((i + j) % 2 == 0)
-							g.drawImage(mapImage[SAND_1], (int) (i * tinyCellWidth), (int) (j * tinyCellHeight), tinyCellWidth,
-									tinyCellHeight, this);
+							g.drawImage(mapImage[SAND_1], (int) (i * tinyCellWidth), (int) (j * tinyCellHeight),
+									tinyCellWidth, tinyCellHeight, this);
 						else
-							g.drawImage(mapImage[SAND_2], (int) (i * tinyCellWidth), (int) (j * tinyCellHeight), tinyCellWidth,
-									tinyCellHeight, this);
+							g.drawImage(mapImage[SAND_2], (int) (i * tinyCellWidth), (int) (j * tinyCellHeight),
+									tinyCellWidth, tinyCellHeight, this);
 					}
 					if (map.isWithWall(i, j))
 						g.drawImage(wallImage[theme][map.getWallID(i, j)], (int) (i * tinyCellWidth),

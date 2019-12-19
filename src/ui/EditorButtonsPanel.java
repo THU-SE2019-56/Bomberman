@@ -20,7 +20,6 @@ import javax.swing.border.Border;
 import game.GameConstants;
 import map.MapEditor;
 
-
 public class EditorButtonsPanel extends JPanel implements GameConstants {
 	/**
 	 * 
@@ -28,15 +27,20 @@ public class EditorButtonsPanel extends JPanel implements GameConstants {
 	private static final long serialVersionUID = 1L;
 
 	private MapEditor mapEditor;
-	
+
 	BufferedImage wallImage[][] = new BufferedImage[4][8];
 	BufferedImage editorImage[] = new BufferedImage[2];
-	
+
 	private IconButton buttonIndestructibleWall;
 	private IconButton buttonDestructibleWall;
 	private IconButton buttonRemoveWall;
-	private IconButton buttonRemoveMob;
 	
+	private IconButton buttonAddTyrannosaurus;
+	private IconButton buttonAddTriceratops;
+	private IconButton buttonAddFrog;
+	private IconButton buttonAddParrot;
+	private IconButton buttonRemoveMonster;
+
 	private ImageIcon buttonUndoOffIcon;
 	private ImageIcon buttonUndoOnIcon;
 	private JLabel buttonUndoLabel;
@@ -44,7 +48,7 @@ public class EditorButtonsPanel extends JPanel implements GameConstants {
 	private ImageIcon buttonRedoOffIcon;
 	private ImageIcon buttonRedoOnIcon;
 	private JLabel buttonRedoLabel;
-	
+
 	private ImageIcon buttonClearOffIcon;
 	private ImageIcon buttonClearOnIcon;
 	private JLabel buttonClearLabel;
@@ -56,7 +60,7 @@ public class EditorButtonsPanel extends JPanel implements GameConstants {
 	private ImageIcon buttonSaveOffIcon;
 	private ImageIcon buttonSaveOnIcon;
 	private JLabel buttonSaveLabel;
-	
+
 	private ImageIcon buttonBackOffIcon;
 	private ImageIcon buttonBackOnIcon;
 	private JLabel buttonBackLabel;
@@ -67,8 +71,8 @@ public class EditorButtonsPanel extends JPanel implements GameConstants {
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
-		
-		this.mapEditor=mapEditor;
+
+		this.mapEditor = mapEditor;
 		this.setBackground(new Color(153, 191, 68));
 
 		this.setLayout(null);
@@ -100,19 +104,18 @@ public class EditorButtonsPanel extends JPanel implements GameConstants {
 	}
 
 	public void addButton() {
-		buttonIndestructibleWall = new IconButton(wallImage[0][7], SET_INDESTRUCTIBLE_WALL, 0, 50,
-				CELL_WIDTH, CELL_HEIGHT);
-		buttonDestructibleWall = new IconButton(wallImage[0][0], SET_DESTRUCTIBLE_WALL,50, 50,
-				CELL_WIDTH, CELL_HEIGHT);
+		buttonIndestructibleWall = new IconButton(wallImage[0][7], SET_INDESTRUCTIBLE_WALL, 0, 50, CELL_WIDTH,
+				CELL_HEIGHT);
+		buttonDestructibleWall = new IconButton(wallImage[0][0], SET_DESTRUCTIBLE_WALL, 50, 50, CELL_WIDTH,
+				CELL_HEIGHT);
 		buttonRemoveWall = new IconButton(editorImage[0], REMOVE_WALL, 100, 50, CELL_WIDTH, CELL_HEIGHT);
 		this.add(buttonIndestructibleWall);
 		this.add(buttonDestructibleWall);
 		this.add(buttonRemoveWall);
-		
-		
+
 		buttonUndoOffIcon = new ImageIcon("image/buttons/undo_off.png");
-		buttonUndoOffIcon.setImage(
-				buttonUndoOffIcon.getImage().getScaledInstance(SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT, 1));
+		buttonUndoOffIcon
+				.setImage(buttonUndoOffIcon.getImage().getScaledInstance(SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT, 1));
 
 		buttonUndoOnIcon = new ImageIcon("image/buttons/undo_on.png");
 		buttonUndoOnIcon
@@ -123,21 +126,20 @@ public class EditorButtonsPanel extends JPanel implements GameConstants {
 		this.add(buttonUndoLabel);
 
 		buttonRedoOffIcon = new ImageIcon("image/buttons/redo_off.png");
-		buttonRedoOffIcon.setImage(
-				buttonRedoOffIcon.getImage().getScaledInstance(SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT, 1));
+		buttonRedoOffIcon
+				.setImage(buttonRedoOffIcon.getImage().getScaledInstance(SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT, 1));
 
 		buttonRedoOnIcon = new ImageIcon("image/buttons/redo_on.png");
-		buttonRedoOnIcon.setImage(
-				buttonRedoOnIcon.getImage().getScaledInstance(SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT, 1));
+		buttonRedoOnIcon
+				.setImage(buttonRedoOnIcon.getImage().getScaledInstance(SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT, 1));
 
 		buttonRedoLabel = new JLabel(buttonRedoOffIcon);
 		buttonRedoLabel.setBounds(140, 400, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
 		this.add(buttonRedoLabel);
-		
-		
+
 		buttonClearOffIcon = new ImageIcon("image/buttons/clear_off.png");
-		buttonClearOffIcon.setImage(
-				buttonClearOffIcon.getImage().getScaledInstance(SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT, 1));
+		buttonClearOffIcon
+				.setImage(buttonClearOffIcon.getImage().getScaledInstance(SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT, 1));
 
 		buttonClearOnIcon = new ImageIcon("image/buttons/clear_on.png");
 		buttonClearOnIcon
@@ -148,12 +150,12 @@ public class EditorButtonsPanel extends JPanel implements GameConstants {
 		this.add(buttonClearLabel);
 
 		buttonRandomOffIcon = new ImageIcon("image/buttons/random_off.png");
-		buttonRandomOffIcon.setImage(
-				buttonRandomOffIcon.getImage().getScaledInstance(SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT, 1));
+		buttonRandomOffIcon
+				.setImage(buttonRandomOffIcon.getImage().getScaledInstance(SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT, 1));
 
 		buttonRandomOnIcon = new ImageIcon("image/buttons/random_on.png");
-		buttonRandomOnIcon.setImage(
-				buttonRandomOnIcon.getImage().getScaledInstance(SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT, 1));
+		buttonRandomOnIcon
+				.setImage(buttonRandomOnIcon.getImage().getScaledInstance(SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT, 1));
 
 		buttonRandomLabel = new JLabel(buttonRandomOffIcon);
 		buttonRandomLabel.setBounds(140, 500, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
@@ -170,8 +172,7 @@ public class EditorButtonsPanel extends JPanel implements GameConstants {
 		buttonSaveLabel = new JLabel(buttonSaveOffIcon);
 		buttonSaveLabel.setBounds(40, 600, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
 		this.add(buttonSaveLabel);
-		
-		
+
 		buttonBackOffIcon = new ImageIcon("image/buttons/back_off.png");
 		buttonBackOffIcon
 				.setImage(buttonBackOffIcon.getImage().getScaledInstance(SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT, 1));
@@ -184,8 +185,6 @@ public class EditorButtonsPanel extends JPanel implements GameConstants {
 		buttonBackLabel.setBounds(140, 600, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
 		this.add(buttonBackLabel);
 	}
-	
-	
 
 	public void loadImage() throws Exception {
 		editorImage[0] = ImageIO.read(new File("image/editor/remove_wall.png"));
@@ -322,7 +321,7 @@ public class EditorButtonsPanel extends JPanel implements GameConstants {
 		}
 
 	}
-	
+
 	class IconButton extends JButton {
 		/**
 		 * 
@@ -335,11 +334,11 @@ public class EditorButtonsPanel extends JPanel implements GameConstants {
 			this.mode = mode;
 			this.initializeButton(this, xPos, yPos, xSize, ySize);
 		}
-		
-		public void initializeButton(JButton button,int x,int y,int width,int height) {
-			
+
+		public void initializeButton(JButton button, int x, int y, int width, int height) {
+
 			button.setBounds(x, y, width, height);
-			
+
 			Border originBorder = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1);
 			// This is the default border of WIN10 system.For macOS, use this border to make
 			// sure the buttons are correctly initialized.

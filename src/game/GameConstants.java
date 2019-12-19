@@ -137,10 +137,10 @@ public interface GameConstants {
 	int SET_DESTRUCTIBLE_WALL = 2;
 	int SET_INDESTRUCTIBLE_WALL = 3;
 	int REMOVE_MOB = 4;
-	int SET_PLAYER_1 = 5;
-	int SET_PLAYER_2 = 6;
-	int SET_MONSTER_1 = 7;
-	int SET_MONSTER_2 = 8;
+	int ADD_TYARNNOSAURUS = 5;
+	int ADD_TRICERATOPS = 6;
+	int ADD_FROG = 7;
+	int ADD_PARROT = 8;
 	
 	int PLAYER_SPAWNER = 1;
 	int MONSTER_SPAWNER = 2;

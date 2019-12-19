@@ -87,7 +87,11 @@ public class EditorButtonsPanel extends JPanel implements GameConstants {
 		buttonIndestructibleWall.addMouseListener(new ButtonListener(mainFrame, "indestructible"));
 		buttonDestructibleWall.addMouseListener(new ButtonListener(mainFrame, "destructible"));
 		buttonRemoveWall.addMouseListener(new ButtonListener(mainFrame, "removewall"));
-
+		buttonAddTyrannosaurus.addMouseListener(new ButtonListener(mainFrame, "tyrannosaurus"));
+		buttonAddTriceratops.addMouseListener(new ButtonListener(mainFrame, "triceratops"));
+		buttonAddFrog.addMouseListener(new ButtonListener(mainFrame, "frog"));
+		buttonAddParrot.addMouseListener(new ButtonListener(mainFrame, "parrot"));
+		buttonRemoveMonster.addMouseListener(new ButtonListener(mainFrame, "removemonster"));
 	}
 
 	/**
@@ -256,7 +260,8 @@ public class EditorButtonsPanel extends JPanel implements GameConstants {
 				if (mainFrame.getContentPane() instanceof JPanel) {
 					JPanel mainPanel = (JPanel) mainFrame.getContentPane();
 					mainPanel.removeAll();
-				} else {
+				} 
+				else {
 					JLabel mainPanel = (JLabel) mainFrame.getContentPane();
 					mainPanel.removeAll();
 				}
@@ -277,6 +282,21 @@ public class EditorButtonsPanel extends JPanel implements GameConstants {
 				break;
 			case "removewall":
 				mapEditor.switchMode(REMOVE_WALL);
+				break;
+			case "tyrannosaurus":
+				mapEditor.switchMode(ADD_TYRANNOSAURUS);
+				break;
+			case "triceratops":
+				mapEditor.switchMode(ADD_TRICERATOPS);
+				break;
+			case "frog":
+				mapEditor.switchMode(ADD_FROG);
+				break;
+			case "parrot":
+				mapEditor.switchMode(ADD_PARROT);
+				break;
+			case "removemonster":
+				mapEditor.switchMode(REMOVE_MONSTER);
 				break;
 			}
 			mainFrame.repaint();

@@ -18,8 +18,9 @@ public class MapEditor implements GameConstants {
 	private int editingMode = NONE;
 	private int theme = 0;
 
-	MobSpawner monsters[] = new MobSpawner[10];
-	int monsterNum;//TODO to be defined, should use this instead of 10
+	MonsterSpawner monsters[] = new MonsterSpawner[MAX_MONSTER_NUMBER];
+	boolean withMonster[] = new boolean[MAX_MONSTER_NUMBER];
+	int monsterNum;// TODO to be defined, should use this instead of 10
 
 	public MapEditor() {
 		this.mapMatrix = new MapMatrix();
@@ -130,37 +131,36 @@ public class MapEditor implements GameConstants {
 
 		FileWriter out;
 		try {
-			out = new FileWriter(new File("data/stage"+totalStageNum+".txt"));
-			
-			//save mapMatrix
+			out = new FileWriter(new File("data/stage" + totalStageNum + ".txt"));
+
+			// save mapMatrix
 			for (int i = 0; i < CELL_NUM_X; i++) {
 				for (int j = 0; j < CELL_NUM_Y; j++) {
 					out.write(mapMatrix.getWall()[i][j] + "\t");
 				}
 				out.write("\r\n");
 			}
-			
-			
-			//save monsterX
+
+			// save monsterX
 			for (int i = 0; i < monsterNum; i++) {
 				out.write(monsters[i].getX() + "\t");
 			}
 			out.write("\r\n");
-			
-			//save monsterY
+
+			// save monsterY
 			for (int i = 0; i < monsterNum; i++) {
 				out.write(monsters[i].getY() + "\t");
 			}
 			out.write("\r\n");
-			
-			//save monsterID
+
+			// save monsterID
 			for (int i = 0; i < monsterNum; i++) {
 				out.write(monsters[i].getMonsterID() + "\t");
 			}
 			out.write("\r\n");
-			
-			//save theme
-			out.write(theme);			
+
+			// save theme
+			out.write(theme);
 			out.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -168,12 +168,37 @@ public class MapEditor implements GameConstants {
 		}
 	}
 
-	class MobSpawner {
+	public boolean addMonster(MonsterSpawner ms) {
+		int i = 0;
+		for (; i < MAX_MONSTER_NUMBER; i++) {
+			if (monsters[i].getX() == ms.getX() && monsters[i].getY() == ms.getY())
+				return false;
+			if (!withMonster[i]) {
+				monsters[i] = ms;
+				withMonster[i] = true;
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean removeMonster(int yPos, int xPos) {
+		for (int i = 0; i < MAX_MONSTER_NUMBER; i++) {
+			if (monsters[i].getX() == xPos && monsters[i].getY() == yPos) {
+				monsters[i] = null;
+				withMonster[i] = false;
+				return true;
+			}
+		}
+		return false;
+	}
+
+	class MonsterSpawner {
 		private int spawnX;
 		private int spawnY;
 		private int monsterID;
 
-		public MobSpawner(int monsterID, int x, int y) {
+		public MonsterSpawner(int monsterID, int x, int y) {
 			this.monsterID = monsterID;
 			this.spawnX = x;
 			this.spawnY = y;

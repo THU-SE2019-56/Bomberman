@@ -12,6 +12,7 @@
 /out
 /.idea
 /*.iml
+/src/resources
 
 # Compiled class file
 *.class

@@ -317,6 +317,9 @@ public class StatusPanel extends JPanel implements GameConstants {
 				newTimer.start();
 				break;
 			case "back":
+				// Close the previous game
+				game.setPauseFlag(1);
+				
 				int gameMode = game.getGameMode();
 				StagePanel newStagePanel = new StagePanel(mainFrame, gameMode, game.getPlayer1CID(),
 						game.getPlayer2CID());

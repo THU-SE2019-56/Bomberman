@@ -51,15 +51,15 @@ public class MapEditor implements GameConstants {
 	public void editCell(int yPos, int xPos) {
 		if (!isInMap(yPos, xPos))
 			return;
-		switch (getEditingMode()) {
+		switch (editingMode) {
 		case REMOVE_WALL:
-			getMapMatrix().removeWall(yPos, xPos);
+			mapMatrix.removeWall(yPos, xPos);
 			break;
 		case SET_DESTRUCTIBLE_WALL:
-			getMapMatrix().setWall(yPos, xPos, true);
+			mapMatrix.setWall(yPos, xPos, true);
 			break;
 		case SET_INDESTRUCTIBLE_WALL:
-			getMapMatrix().setWall(yPos, xPos, false);
+			mapMatrix.setWall(yPos, xPos, false);
 			break;
 		case REMOVE_MONSTER:
 			break;

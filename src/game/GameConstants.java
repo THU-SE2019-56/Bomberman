@@ -142,8 +142,12 @@ public interface GameConstants {
 	int ADD_FROG = 7;
 	int ADD_PARROT = 8;
 	
-	int PLAYER_SPAWNER = 1;
-	int MONSTER_SPAWNER = 2;
+	int PLAYER1_SPAWNER = 2;
+	int PLAYER2_SPAWNER = 3;
+	int TYRANNOSAURUS_SPAWNER = 5;
+	int TRICERATOPS_SPAWNER = 6;
+	int FROG_SPAWNER = 7;
+	int PARROT_SPAWNER = 8;
 	
 	int ICON_BUTTON_WIDTH = 60;
 	int ICON_BUTTON_HEIGHT = 60;	

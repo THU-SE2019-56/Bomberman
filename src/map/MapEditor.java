@@ -61,7 +61,7 @@ public class MapEditor implements GameConstants {
 		case SET_INDESTRUCTIBLE_WALL:
 			getMapMatrix().setWall(yPos, xPos, false);
 			break;
-		case REMOVE_MOB:
+		case REMOVE_MONSTER:
 			break;
 		default:
 			break;

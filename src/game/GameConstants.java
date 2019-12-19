@@ -136,7 +136,7 @@ public interface GameConstants {
 	int REMOVE_WALL = 1;
 	int SET_DESTRUCTIBLE_WALL = 2;
 	int SET_INDESTRUCTIBLE_WALL = 3;
-	int REMOVE_MOB = 4;
+	int REMOVE_MONSTER = 4;
 	int ADD_TYRANNOSAURUS = 5;
 	int ADD_TRICERATOPS = 6;
 	int ADD_FROG = 7;

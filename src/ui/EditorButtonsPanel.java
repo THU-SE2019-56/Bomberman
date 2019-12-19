@@ -28,8 +28,7 @@ public class EditorButtonsPanel extends JPanel implements GameConstants {
 
 	private MapEditor mapEditor;
 
-	BufferedImage wallImage[][] = new BufferedImage[4][8];
-	BufferedImage editorImage[] = new BufferedImage[2];
+	BufferedImage editorImage[] = new BufferedImage[9];
 
 	private IconButton buttonIndestructibleWall;
 	private IconButton buttonDestructibleWall;
@@ -104,11 +103,11 @@ public class EditorButtonsPanel extends JPanel implements GameConstants {
 	}
 
 	public void addButton() {
-		buttonIndestructibleWall = new IconButton(wallImage[0][7], SET_INDESTRUCTIBLE_WALL, 0, 50, CELL_WIDTH,
+		buttonIndestructibleWall = new IconButton(editorImage[SET_INDESTRUCTIBLE_WALL], SET_INDESTRUCTIBLE_WALL, 0, 50, CELL_WIDTH,
 				CELL_HEIGHT);
-		buttonDestructibleWall = new IconButton(wallImage[0][0], SET_DESTRUCTIBLE_WALL, 50, 50, CELL_WIDTH,
+		buttonDestructibleWall = new IconButton(editorImage[SET_DESTRUCTIBLE_WALL], SET_DESTRUCTIBLE_WALL, 50, 50, CELL_WIDTH,
 				CELL_HEIGHT);
-		buttonRemoveWall = new IconButton(editorImage[0], REMOVE_WALL, 100, 50, CELL_WIDTH, CELL_HEIGHT);
+		buttonRemoveWall = new IconButton(editorImage[REMOVE_WALL], REMOVE_WALL, 100, 50, CELL_WIDTH, CELL_HEIGHT);
 		this.add(buttonIndestructibleWall);
 		this.add(buttonDestructibleWall);
 		this.add(buttonRemoveWall);
@@ -187,14 +186,11 @@ public class EditorButtonsPanel extends JPanel implements GameConstants {
 	}
 
 	public void loadImage() throws Exception {
-		editorImage[0] = ImageIO.read(new File("image/editor/remove_wall.png"));
-		editorImage[1] = ImageIO.read(new File("image/editor/remove_mob.png"));
-
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 8; j++) {
-				wallImage[i][j] = ImageIO.read(new File("image/maps/wall" + (1 + i) + "-" + (1 + j) + ".png"));
-			}
-		}
+		editorImage[REMOVE_WALL] = ImageIO.read(new File("image/editor/remove_wall.png"));
+		editorImage[SET_DESTRUCTIBLE_WALL] = ImageIO.read(new File("image/editor/destructible_wall.png"));
+		editorImage[SET_INDESTRUCTIBLE_WALL] = ImageIO.read(new File("image/editor/indestructible_wall.png"));
+		editorImage[REMOVE_MONSTER] = ImageIO.read(new File("image/editor/remove_monster.png"));
+		
 	}
 
 	/**

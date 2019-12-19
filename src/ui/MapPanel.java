@@ -163,12 +163,22 @@ public class MapPanel extends JPanel implements GameConstants {
 		int ySize = game.getMap().getSizeY();
 		for (int i = 0; i < xSize; i++)
 			for (int j = 0; j < ySize; j++) {
-				if ((i + j) % 2 == 0)
-					g.drawImage(mapImage[GRASS_1], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), CELL_WIDTH,
-							CELL_HEIGHT, this);
-				else
-					g.drawImage(mapImage[GRASS_2], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), CELL_WIDTH,
-							CELL_HEIGHT, this);
+				if (theme == 0 || theme == 3) {
+					if ((i + j) % 2 == 0)
+						g.drawImage(mapImage[GRASS_1], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), CELL_WIDTH,
+								CELL_HEIGHT, this);
+					else
+						g.drawImage(mapImage[GRASS_2], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), CELL_WIDTH,
+								CELL_HEIGHT, this);
+					}
+				else {
+					if ((i + j) % 2 == 0)
+						g.drawImage(mapImage[SAND_1], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), CELL_WIDTH,
+								CELL_HEIGHT, this);
+					else
+						g.drawImage(mapImage[SAND_2], (int) (i * CELL_WIDTH), (int) (j * CELL_HEIGHT), CELL_WIDTH,
+								CELL_HEIGHT, this);
+				}
 				if (game.getMap().isWithWall(i, j))
 					g.drawImage(wallImage[theme][game.getMap().getWallID(i, j)], (int) (i * CELL_WIDTH),
 							(int) (j * CELL_HEIGHT), CELL_WIDTH, CELL_HEIGHT, this);

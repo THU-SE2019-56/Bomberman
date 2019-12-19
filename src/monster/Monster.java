@@ -15,16 +15,16 @@ import game.GameConstants;
  * @version 1.0
  */
 public class Monster implements GameConstants {
-    boolean alive;
-	boolean alert;		// whether the monster is in alert state
-	double velocity;
-	int oldDirection;
-	int direction;
-	int x;
-	int y;
-	int dyingCounter;	// to implement dying effect
-	Brain brain;
-	Path path;
+	public boolean alive;
+	public boolean alert;		// whether the monster is in alert state
+	public double velocity;
+	public int oldDirection;
+	public int direction;
+	public int x;
+	public int y;
+	public int dyingCounter;	// to implement dying effect
+	public Brain brain;
+	public Path path;
 	public int id;
 
 	/**
@@ -56,7 +56,7 @@ public class Monster implements GameConstants {
     /**
      * Set monster's properties
      */
-    void init() {
+	public void init() {
 		this.alive = true;
 		this.alert = false;
 		this.velocity = MONSTER_SPEED_LOW +
@@ -71,7 +71,7 @@ public class Monster implements GameConstants {
     /**
      * Generate the next direction
      */
-	int nextDirection(Player p, Map m) {
+	public int nextDirection(Player p, Map m) {
 		if (path.size() > 0) {
 			// compute direction
 			int dx = path.getNextX() - this.x;
@@ -103,7 +103,7 @@ public class Monster implements GameConstants {
     /**
      * Update monster's alert state
      */
-	void updateAlert(Player p) {
+	public void updateAlert(Player p) {
 		int mi = Math.round((float) x/CELL_WIDTH);
 		int mj = Math.round((float) y/CELL_HEIGHT);
 		int pi = Math.round((float) p.getX()/CELL_WIDTH);
@@ -112,7 +112,7 @@ public class Monster implements GameConstants {
 		this.alert = (dis <= ALERT_DISTANCE);
 	}
 
-	void setDirection(int d) {
+	public void setDirection(int d) {
 		if (this.direction==DIRECTION_LEFT || this.direction==DIRECTION_RIGHT)
     		this.oldDirection = this.direction;
     	this.direction = d;
@@ -166,7 +166,7 @@ public class Monster implements GameConstants {
     /**
      * Move a step and update path
      */
-	void moveStep(Player p, Map m) {
+	public void moveStep(Player p, Map m) {
 		switch (this.direction) {
 			case DIRECTION_UP:
 				this.y -= this.velocity;
@@ -224,7 +224,7 @@ public class Monster implements GameConstants {
 	/**
 	 * Check whether the monster is collided with a blown region
 	 */
-	boolean isBlownOff(Map m) {
+	public boolean isBlownOff(Map m) {
 	    int mi = Math.floorDiv(x, CELL_WIDTH);
 	    int mj = Math.floorDiv(y, CELL_HEIGHT);
 		for (int i=mi; i<Math.min(mi+2, CELL_NUM_X); ++i)
@@ -238,7 +238,7 @@ public class Monster implements GameConstants {
 	/**
 	 * Check whether the monster is collided with a rectangle [x,y,w,h]
 	 */
-	boolean isCollided(int x, int y, int w, int h) {
+	public boolean isCollided(int x, int y, int w, int h) {
 		int x1 = Math.max(x, this.x);
 		int x2 = Math.min(x + w, this.x + MONSTER_WIDTH);
 		int y1 = Math.max(y, this.y);

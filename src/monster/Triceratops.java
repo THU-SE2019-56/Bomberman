@@ -22,7 +22,7 @@ public class Triceratops extends Monster {
     }
 
     @Override
-    void init() {
+    public void init() {
         this.alive = true;
         this.alert = false;
         this.velocity = MONSTER_SPEED_LOW;
@@ -34,7 +34,7 @@ public class Triceratops extends Monster {
     }
 
     @Override
-    void updateAlert(Player p) {
+    public void updateAlert(Player p) {
         super.updateAlert(p);
         if (this.alert)
             this.velocity = MONSTER_SPEED_FAST;

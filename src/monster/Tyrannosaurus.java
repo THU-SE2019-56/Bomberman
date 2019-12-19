@@ -21,7 +21,7 @@ public class Tyrannosaurus extends Monster {
     }
 
     @Override
-    void init() {
+    public void init() {
         this.alive = true;
         this.alert = false;
         this.velocity = MONSTER_SPEED_FAST;

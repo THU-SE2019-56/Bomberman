@@ -13,8 +13,8 @@ import player.Player;
  * @version 0.1
  */
 public class Frog extends Monster {
-    int numLives;      // number of lives
-    int resurrectionCounter;    // resurrection time
+    public int numLives;      // number of lives
+    public int resurrectionCounter;    // resurrection time
 
     public Frog(Map m) {
         super(m);
@@ -25,7 +25,7 @@ public class Frog extends Monster {
     }
 
     @Override
-    void init() {
+    public void init() {
         this.alive = true;
         this.numLives = 2 + (int)(2*Math.random());
         this.alert = false;

@@ -1,4 +1,4 @@
-package test.monster; 
+package test.monster;
 
 import game.GameConstants;
 import monster.Path;

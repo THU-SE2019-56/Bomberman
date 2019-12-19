@@ -1,4 +1,4 @@
-package test.monster; 
+package test.monster;
 
 import monster.Point;
 import org.junit.Assert;

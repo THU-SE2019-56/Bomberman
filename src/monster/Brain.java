@@ -29,7 +29,7 @@ public class Brain implements GameConstants {
         reset();
     }
 
-    boolean isMovable(Map m, int i, int j) {	// filter out explosion or near bomb area
+    public boolean isMovable(Map m, int i, int j) {	// filter out explosion or near bomb area
         if (!m.isInMap(i, j)) return false;
         if (m.isAtExplosion(i, j)) return false;
         if (m.isInExplosionRange(i, j, eer)) return false;

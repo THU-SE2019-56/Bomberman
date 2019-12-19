@@ -51,10 +51,10 @@ public class Path implements GameConstants {
     }
 
     public String toString() {		// for debug
-        String s = "";
+        StringBuilder s = new StringBuilder();
         for (int k=0; k<size()-1; ++k)
-            s += data.get(k) + " -> ";
-        s += data.get(size()-1);
-        return s;
+            s.append(data.get(k)).append(" -> ");
+        s.append(data.get(size() - 1));
+        return s.toString();
     }
 }

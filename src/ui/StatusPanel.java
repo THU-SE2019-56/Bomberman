@@ -1,8 +1,6 @@
 package ui;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -215,8 +213,10 @@ public class StatusPanel extends JPanel implements GameConstants {
 
 			// Protected
 			if (game.getPlayer()[i].proectedByItem()) {
-				g.setColor(Color.black);
-				g.drawOval(refX - 10, refY - 20, 75, 75);
+				Graphics2D g2d = (Graphics2D) g;
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				g2d.setColor(Color.cyan);
+				g2d.drawOval(refX-2, refY-2, 74, 74);
 			}
 		}
 	}

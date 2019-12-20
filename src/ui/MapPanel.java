@@ -85,9 +85,11 @@ public class MapPanel extends JPanel implements GameConstants {
 		for (int i = 0; i < game.getPlayerNum(); i++) {
 
 			if (game.getPlayer()[i].proectedByItem()) {
-				g.setColor(Color.yellow);
-				g.drawOval(game.getPlayer()[i].getX() - CELL_WIDTH / 3, game.getPlayer()[i].getY() - CELL_HEIGHT / 3,
-						5 * CELL_WIDTH / 3, 5 * CELL_HEIGHT / 3);
+				Graphics2D g2d = (Graphics2D) g;
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				g2d.setColor(Color.yellow);
+				g2d.drawOval(game.getPlayer()[i].getX() - CELL_WIDTH / 4, game.getPlayer()[i].getY() - CELL_HEIGHT / 4,
+						6 * CELL_WIDTH / 4, 6 * CELL_HEIGHT / 4);
 			}
 
 			switch (game.getPlayer()[i].getPlayerCharacterID()) {

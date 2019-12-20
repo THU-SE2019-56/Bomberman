@@ -214,7 +214,7 @@ public class StatusPanel extends JPanel implements GameConstants {
 
 			// Protected
 			if (game.getPlayer()[i].proectedByItem()) {
-				g.drawImage(bubbleImage[0], refX-15, refY-15, 100, 100, this);
+				g.drawImage(bubbleImage[0], refX-25, refY-25, 120, 120, this);
 			}
 		}
 	}

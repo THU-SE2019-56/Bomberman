@@ -2,7 +2,6 @@ package game;
 
 import java.io.Serializable;
 
-import items.Item;
 import map.Map;
 import monster.Monster;
 import monster.MonsterFactory;
@@ -19,7 +18,6 @@ public class Game implements GameConstants, Serializable {
 	private Map map;
 	private Monster[] monsters;
 	private Player[] player = new Player[MAX_PLAYER_NUMBER];
-	private Item item;
 	private boolean gameOver = false;
 	private int playerNum = 0;// Number of the players
 	private int pauseFlag;
@@ -77,17 +75,12 @@ public class Game implements GameConstants, Serializable {
 			}
 		}
 
-		this.item = new Item(2, 2);
-		// Items should be generated when wall explodes, not when game starts.
-
 		this.gameMode = gameMode;
 		this.theme = theme;
 		this.stageNumber=stageNumber;
 		this.pauseFlag = 0;
 		this.player1CID = player1CharacterID;
 		this.player2CID = player2CharacterID;
-		this.pauseFlag = 0;
-
 	}
 
 	public int getPlayer1CID() {
@@ -144,14 +137,6 @@ public class Game implements GameConstants, Serializable {
 
 	public void setGameOver(boolean gameOver) {
 		this.gameOver = gameOver;
-	}
-
-	public Item getItem() {
-		return item;
-	}
-
-	public void setItem(Item item) {
-		this.item = item;
 	}
 
 	public int getGameMode() {

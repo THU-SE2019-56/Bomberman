@@ -17,6 +17,7 @@ public class MapEditor implements GameConstants {
 
 	private int editingMode = NONE;
 	private int theme = 0;
+	private int stageNum;
 
 	MonsterSpawner monsters[] = new MonsterSpawner[MAX_MONSTER_NUMBER];
 	int monsterNum;// TODO to be defined, should use this instead of 10
@@ -25,6 +26,11 @@ public class MapEditor implements GameConstants {
 		this.mapMatrix = new MapMatrix();
 		undoStack = new Stack<MapMatrix>();
 		redoStack = new Stack<MapMatrix>();
+
+		// get stage number
+		File savePath = new File("data");
+		File fileList[] = savePath.listFiles();
+		stageNum = fileList.length;
 	}
 
 	/**
@@ -176,13 +182,9 @@ public class MapEditor implements GameConstants {
 	}
 
 	public void saveToTxt() {
-		File savePath = new File("data");
-		File fileList[] = savePath.listFiles();
-		int totalStageNum = fileList.length;
-
 		FileWriter out;
 		try {
-			out = new FileWriter(new File("data/stage" + totalStageNum + ".txt"));
+			out = new FileWriter(new File("data/stage" + stageNum + ".txt"));
 
 			// save mapMatrix
 			for (int i = 0; i < CELL_NUM_X; i++) {

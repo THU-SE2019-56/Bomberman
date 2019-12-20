@@ -107,22 +107,41 @@ public class EditorButtonsPanel extends JPanel implements GameConstants {
 	}
 
 	public void addButton() {
-		buttonIndestructibleWall = new IconButton(editorImage[SET_INDESTRUCTIBLE_WALL], SET_INDESTRUCTIBLE_WALL, 0,
-				ICON_BUTTON_HEIGHT, ICON_BUTTON_WIDTH, ICON_BUTTON_HEIGHT);
-		buttonDestructibleWall = new IconButton(editorImage[SET_DESTRUCTIBLE_WALL], SET_DESTRUCTIBLE_WALL,
-				ICON_BUTTON_WIDTH, ICON_BUTTON_HEIGHT, ICON_BUTTON_WIDTH, ICON_BUTTON_HEIGHT);
-		buttonRemoveWall = new IconButton(editorImage[REMOVE_WALL], REMOVE_WALL, 2 * ICON_BUTTON_WIDTH,
-				ICON_BUTTON_HEIGHT, ICON_BUTTON_WIDTH, ICON_BUTTON_HEIGHT);
-		buttonAddTyrannosaurus = new IconButton(editorImage[ADD_TYRANNOSAURUS], ADD_TYRANNOSAURUS, 0,
-				3 * ICON_BUTTON_HEIGHT, ICON_BUTTON_WIDTH, ICON_BUTTON_HEIGHT);
-		buttonAddTriceratops = new IconButton(editorImage[ADD_TRICERATOPS], ADD_TRICERATOPS, ICON_BUTTON_WIDTH,
-				3 * ICON_BUTTON_HEIGHT, ICON_BUTTON_WIDTH, ICON_BUTTON_HEIGHT);
-		buttonAddFrog = new IconButton(editorImage[ADD_FROG], ADD_FROG, 2 * ICON_BUTTON_WIDTH, 3 * ICON_BUTTON_HEIGHT,
+		// first row
+		int x0 = ICON_BUTTON_WIDTH / 2;			// x0, y0 is the top-left position of the buttons
+		int y0 = ICON_BUTTON_HEIGHT;
+		int yPos = y0;							// first row's y position
+		buttonIndestructibleWall = new IconButton(editorImage[SET_INDESTRUCTIBLE_WALL], SET_INDESTRUCTIBLE_WALL,
+				x0, yPos,
 				ICON_BUTTON_WIDTH, ICON_BUTTON_HEIGHT);
-		buttonAddParrot = new IconButton(editorImage[ADD_PARROT], ADD_PARROT, 3 * ICON_BUTTON_WIDTH,
-				3 * ICON_BUTTON_HEIGHT, ICON_BUTTON_WIDTH, ICON_BUTTON_HEIGHT);
-		buttonRemoveMonster = new IconButton(editorImage[REMOVE_MONSTER], REMOVE_MONSTER, 0,
-				4 * ICON_BUTTON_HEIGHT, ICON_BUTTON_WIDTH, ICON_BUTTON_HEIGHT);
+		buttonDestructibleWall = new IconButton(editorImage[SET_DESTRUCTIBLE_WALL], SET_DESTRUCTIBLE_WALL,
+				x0 + ICON_BUTTON_WIDTH + 5, yPos,
+				ICON_BUTTON_WIDTH, ICON_BUTTON_HEIGHT);
+		buttonRemoveWall = new IconButton(editorImage[REMOVE_WALL], REMOVE_WALL,
+				x0 + 2 * ICON_BUTTON_WIDTH + 10, yPos,
+				ICON_BUTTON_WIDTH, ICON_BUTTON_HEIGHT);
+
+		// second row
+		yPos = y0 + ICON_BUTTON_HEIGHT + 5;		// second row's y position
+		buttonAddTyrannosaurus = new IconButton(editorImage[ADD_TYRANNOSAURUS], ADD_TYRANNOSAURUS,
+				x0, yPos,
+				ICON_BUTTON_WIDTH, ICON_BUTTON_HEIGHT);
+		buttonAddTriceratops = new IconButton(editorImage[ADD_TRICERATOPS], ADD_TRICERATOPS,
+				x0 + ICON_BUTTON_WIDTH + 5, yPos,
+				ICON_BUTTON_WIDTH, ICON_BUTTON_HEIGHT);
+		buttonAddFrog = new IconButton(editorImage[ADD_FROG], ADD_FROG,
+				x0 + 2 * ICON_BUTTON_WIDTH + 10, yPos,
+				ICON_BUTTON_WIDTH, ICON_BUTTON_HEIGHT);
+
+		// third row
+		yPos = y0 + 2 * ICON_BUTTON_HEIGHT + 10; // third row's y position
+		buttonAddParrot = new IconButton(editorImage[ADD_PARROT], ADD_PARROT,
+				x0, yPos,
+				ICON_BUTTON_WIDTH, ICON_BUTTON_HEIGHT);
+		buttonRemoveMonster = new IconButton(editorImage[REMOVE_MONSTER], REMOVE_MONSTER,
+				x0 + 2 * ICON_BUTTON_WIDTH + 10, yPos,
+				ICON_BUTTON_WIDTH, ICON_BUTTON_HEIGHT);
+		
 		this.add(buttonIndestructibleWall);
 		this.add(buttonDestructibleWall);
 		this.add(buttonRemoveWall);

@@ -9,12 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.border.Border;
 
 import game.GameConstants;
@@ -272,6 +267,7 @@ public class EditorButtonsPanel extends JPanel implements GameConstants {
 				break;
 			case "save":
 				mapEditor.saveToTxt();
+				JOptionPane.showMessageDialog(this.mainFrame,"保存成功");
 				break;
 			case "back":
 				MenuPanel newMenuPanel = new MenuPanel(mainFrame);

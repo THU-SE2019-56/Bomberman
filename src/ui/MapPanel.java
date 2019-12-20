@@ -31,6 +31,7 @@ public class MapPanel extends JPanel implements GameConstants {
 	BufferedImage player3Image[] = new BufferedImage[4];
 	BufferedImage player4Image[] = new BufferedImage[4];
 	BufferedImage itemImage[] = new BufferedImage[ITEM_NUM];
+	BufferedImage bubbleImage[] = new BufferedImage[1];
 	BufferedImage monsterImage[][] = new BufferedImage[5][3];
 	BufferedImage mapImage[] = new BufferedImage[4];
 	BufferedImage wallImage[][] = new BufferedImage[4][8];
@@ -85,11 +86,8 @@ public class MapPanel extends JPanel implements GameConstants {
 		for (int i = 0; i < game.getPlayerNum(); i++) {
 
 			if (game.getPlayer()[i].proectedByItem()) {
-				Graphics2D g2d = (Graphics2D) g;
-				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-				g2d.setColor(Color.yellow);
-				g2d.drawOval(game.getPlayer()[i].getX() - CELL_WIDTH / 4, game.getPlayer()[i].getY() - CELL_HEIGHT / 4,
-						6 * CELL_WIDTH / 4, 6 * CELL_HEIGHT / 4);
+				g.drawImage(bubbleImage[0], game.getPlayer()[i].getX()-CELL_WIDTH/2, game.getPlayer()[i].getY()-CELL_HEIGHT/2,
+						4 * CELL_WIDTH / 2, 4 * CELL_HEIGHT / 2, this);
 			}
 
 			switch (game.getPlayer()[i].getPlayerCharacterID()) {
@@ -267,6 +265,8 @@ public class MapPanel extends JPanel implements GameConstants {
 		itemImage[POWER_UP] = ImageIO.read(new File("image/item/power.png"));
 		itemImage[IMMUNE] = ImageIO.read(new File("image/item/immune.png"));
 		itemImage[BULLET] = ImageIO.read(new File("image/item/bullet.png"));
+
+		bubbleImage[0] = ImageIO.read(new File("image/item/bubble.png"));
 
 		bulletImage[DIRECTION_UP] = ImageIO.read(new File("image/item/bullet_up.png"));
 		bulletImage[DIRECTION_DOWN] = ImageIO.read(new File("image/item/bullet_down.png"));

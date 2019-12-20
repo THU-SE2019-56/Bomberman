@@ -28,6 +28,7 @@ import game.TimerListener;
 public class StatusPanel extends JPanel implements GameConstants {
 	private BufferedImage bombImage[] = new BufferedImage[2];
 	private BufferedImage itemImage[] = new BufferedImage[ITEM_NUM];
+	private BufferedImage bubbleImage[] = new BufferedImage[1];
 	private BufferedImage player1Image[] = new BufferedImage[4];
 	private BufferedImage player2Image[] = new BufferedImage[4];
 	private BufferedImage player3Image[] = new BufferedImage[4];
@@ -213,10 +214,7 @@ public class StatusPanel extends JPanel implements GameConstants {
 
 			// Protected
 			if (game.getPlayer()[i].proectedByItem()) {
-				Graphics2D g2d = (Graphics2D) g;
-				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-				g2d.setColor(Color.yellow);
-				g2d.drawOval(refX-2, refY-2, 74, 74);
+				g.drawImage(bubbleImage[0], refX-15, refY-15, 100, 100, this);
 			}
 		}
 	}
@@ -229,6 +227,8 @@ public class StatusPanel extends JPanel implements GameConstants {
 
 		itemImage[BULLET] = ImageIO.read(new File("image/item/bullet.png"));
         itemImage[VELOCITY_UP]=   ImageIO.read(new File("image/item/velocity.png"));
+
+		bubbleImage[0] = ImageIO.read(new File("image/item/bubble.png"));
 
 		player1Image[DIRECTION_UP] = ImageIO.read(new File("image/player/p1UP.png"));
 		player1Image[DIRECTION_RIGHT] = ImageIO.read(new File("image/player/p1RIGHT.png"));

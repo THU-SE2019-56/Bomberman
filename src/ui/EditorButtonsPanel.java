@@ -141,7 +141,7 @@ public class EditorButtonsPanel extends JPanel implements GameConstants {
 		buttonRemoveMonster = new IconButton(editorImage[REMOVE_MONSTER], REMOVE_MONSTER,
 				x0 + 2 * ICON_BUTTON_WIDTH + 10, yPos,
 				ICON_BUTTON_WIDTH, ICON_BUTTON_HEIGHT);
-		
+
 		this.add(buttonIndestructibleWall);
 		this.add(buttonDestructibleWall);
 		this.add(buttonRemoveWall);

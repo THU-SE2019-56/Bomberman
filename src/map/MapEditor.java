@@ -193,25 +193,28 @@ public class MapEditor implements GameConstants {
 			}
 
 			// save monsterX
-			for (int i = 0; i < monsterNum; i++) {
-				out.write(monsters[i].getX() + "\t");
+			for (int i = 0; i < MAX_MONSTER_NUMBER; i++) {
+				if (monsters[i]!=null)
+					out.write(monsters[i].getX() + "\t");
 			}
 			out.write("\r\n");
 
 			// save monsterY
-			for (int i = 0; i < monsterNum; i++) {
-				out.write(monsters[i].getY() + "\t");
+			for (int i = 0; i < MAX_MONSTER_NUMBER; i++) {
+				if (monsters[i]!=null)
+					out.write(monsters[i].getY() + "\t");
 			}
 			out.write("\r\n");
 
 			// save monsterID
-			for (int i = 0; i < monsterNum; i++) {
-				out.write(monsters[i].getMonsterID() + "\t");
+			for (int i = 0; i < MAX_MONSTER_NUMBER; i++) {
+				if (monsters[i]!=null)
+					out.write(monsters[i].getMonsterID() + "\t");
 			}
 			out.write("\r\n");
 
 			// save theme
-			out.write(theme);
+			out.write(""+theme);
 			out.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

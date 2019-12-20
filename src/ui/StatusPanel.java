@@ -288,8 +288,11 @@ public class StatusPanel extends JPanel implements GameConstants {
 				// Close the previous game
 				game.setPauseFlag(1);
 				
-				Game newGame = new Game(game.getWallMatrix(),game.getMonsterX(), game.getMonsterY(), game.getMonsterID(),game.getGameMode(),
-						game.getStageNumber(), game.getTheme(),game.getPlayer1CID(), game.getPlayer2CID());
+				Game newGame = new Game(game.getWallMatrix(),game.getMonsterX(), game.getMonsterY(), game.getMonsterID(),
+						game.getGameMode(),
+						game.getTheme(),
+						game.getStageNumber(),
+						game.getPlayer1CID(), game.getPlayer2CID());
 				MapPanel newMapPanel = new MapPanel(newGame, mainFrame);
 				StatusPanel newStatusPanel = new StatusPanel(newGame, mainFrame);
 

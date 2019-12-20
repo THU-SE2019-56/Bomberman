@@ -53,6 +53,11 @@ public interface GameConstants {
 	double MONSTER_SPEED_HIGH = 2.5;
 	double MONSTER_SPEED_FAST = 4.0;
 
+	int TYRANNOSAURUS_ID = 1;
+	int TRICERATOPS_ID = 2;
+	int FROG_ID = 3;
+	int PARROT_ID = 4;
+	
 	// Item constants
 	int ITEM_NUM = 7;
 	int BOMB_UP = 0;

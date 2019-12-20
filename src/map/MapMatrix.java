@@ -289,12 +289,15 @@ public class MapMatrix implements GameConstants {
 	public boolean isWithIndestructibleWall(int yPos, int xPos) {
 		return wall[yPos][xPos] == INDESTRUCTIBLE;
 	}
-	
-	
+
+	public boolean isWithWall(int yPos, int xPos) {
+		return wall[yPos][xPos] != NONE;
+	}
+
 	public int[][] getWall() {
 		return wall;
 	}
-	
+
 	/**
 	 * set a wall at given position
 	 * 

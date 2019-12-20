@@ -19,7 +19,6 @@ public class MapEditor implements GameConstants {
 	private int theme = 0;
 
 	MonsterSpawner monsters[] = new MonsterSpawner[MAX_MONSTER_NUMBER];
-	boolean withMonster[] = new boolean[MAX_MONSTER_NUMBER];
 	int monsterNum;// TODO to be defined, should use this instead of 10
 
 	public MapEditor() {
@@ -42,6 +41,24 @@ public class MapEditor implements GameConstants {
 			setEditingMode(mode);
 	}
 
+	public boolean isWithPlayer(int yPos, int xPos) {
+		return (yPos == 0 && xPos == 0) || (yPos == 15 && xPos == 15);
+	}
+
+	public boolean isWithMonster(int yPos, int xPos) {
+		for (int i = 0; i < MAX_MONSTER_NUMBER; i++) {
+			if (monsters[i] == null)
+				continue;
+			if (monsters[i].getX() == xPos && monsters[i].getY() == yPos)
+				return true;
+		}
+		return false;
+	}
+
+	public boolean isAvailable(int yPos, int xPos) {
+		return !isWithPlayer(yPos, xPos) && !isWithMonster(yPos, xPos) && !mapMatrix.isWithWall(yPos, xPos);
+	}
+
 	/**
 	 * Edit given position according to given mode
 	 * 
@@ -56,12 +73,46 @@ public class MapEditor implements GameConstants {
 			mapMatrix.removeWall(yPos, xPos);
 			break;
 		case SET_DESTRUCTIBLE_WALL:
-			mapMatrix.setWall(yPos, xPos, true);
+			if (isAvailable(yPos, xPos)) {
+				saveStatus();
+				mapMatrix.setWall(yPos, xPos, true);
+			}
 			break;
 		case SET_INDESTRUCTIBLE_WALL:
-			mapMatrix.setWall(yPos, xPos, false);
+			if (isAvailable(yPos, xPos)) {
+				saveStatus();
+				mapMatrix.setWall(yPos, xPos, false);
+			}
 			break;
 		case REMOVE_MONSTER:
+			if (isWithMonster(yPos, xPos)) {
+				saveStatus();
+				removeMonster(yPos, xPos);
+			}
+			break;
+		case ADD_TYRANNOSAURUS:
+			if (isAvailable(yPos, xPos)) {
+				saveStatus();
+				addMonster(new MonsterSpawner(TYRANNOSAURUS_ID, yPos, xPos));
+			}
+			break;
+		case ADD_TRICERATOPS:
+			if (isAvailable(yPos, xPos)) {
+				saveStatus();
+				addMonster(new MonsterSpawner(TRICERATOPS_ID, yPos, xPos));
+			}
+			break;
+		case ADD_FROG:
+			if (isAvailable(yPos, xPos)) {
+				saveStatus();
+				addMonster(new MonsterSpawner(FROG_ID, yPos, xPos));
+			}
+			break;
+		case ADD_PARROT:
+			if (isAvailable(yPos, xPos)) {
+				saveStatus();
+				addMonster(new MonsterSpawner(PARROT_ID, yPos, xPos));
+			}
 			break;
 		default:
 			break;
@@ -169,28 +220,52 @@ public class MapEditor implements GameConstants {
 	}
 
 	public boolean addMonster(MonsterSpawner ms) {
+		if (!isInMap(ms.getY(), ms.getX()))
+			return false;
 		int i = 0;
 		for (; i < MAX_MONSTER_NUMBER; i++) {
-			if (monsters[i].getX() == ms.getX() && monsters[i].getY() == ms.getY())
-				return false;
-			if (!withMonster[i]) {
+			if (monsters[i] == null) {
 				monsters[i] = ms;
-				withMonster[i] = true;
 				return true;
 			}
+			if (monsters[i].getX() == ms.getX() && monsters[i].getY() == ms.getY())
+				return false;
 		}
 		return false;
 	}
 
 	public boolean removeMonster(int yPos, int xPos) {
 		for (int i = 0; i < MAX_MONSTER_NUMBER; i++) {
+			if (monsters[i] == null)
+				continue;
 			if (monsters[i].getX() == xPos && monsters[i].getY() == yPos) {
 				monsters[i] = null;
-				withMonster[i] = false;
 				return true;
 			}
 		}
 		return false;
+	}
+
+	public MonsterSpawner getMonster(int i) {
+		return monsters[i];
+	}
+
+	public int getMonsterID(int i) {
+		if (monsters[i] == null)
+			return -1;
+		return monsters[i].getMonsterID();
+	}
+
+	public int getMonsterX(int i) {
+		if (monsters[i] == null)
+			return -1;
+		return monsters[i].getX();
+	}
+
+	public int getMonsterY(int i) {
+		if (monsters[i] == null)
+			return -1;
+		return monsters[i].getY();
 	}
 
 	class MonsterSpawner {
@@ -198,7 +273,7 @@ public class MapEditor implements GameConstants {
 		private int spawnY;
 		private int monsterID;
 
-		public MonsterSpawner(int monsterID, int x, int y) {
+		public MonsterSpawner(int monsterID, int y, int x) {
 			this.monsterID = monsterID;
 			this.spawnX = x;
 			this.spawnY = y;

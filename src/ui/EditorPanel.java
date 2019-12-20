@@ -25,6 +25,7 @@ public class EditorPanel extends JPanel implements GameConstants {
 
 	BufferedImage groundImage[] = new BufferedImage[2];
 	BufferedImage wallImage[][] = new BufferedImage[4][8];
+	BufferedImage monsterImage[] = new BufferedImage[5];
 
 	/**
 	 * Construction method
@@ -51,6 +52,7 @@ public class EditorPanel extends JPanel implements GameConstants {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		paintMap(g);
+		paintMonsters(g);
 	}
 
 	/**
@@ -78,6 +80,14 @@ public class EditorPanel extends JPanel implements GameConstants {
 			}
 	}
 
+	public void paintMonsters(Graphics g) {
+		for (int i = 0; i < MAX_MONSTER_NUMBER; i++)
+			if (mapEditor.getMonster(i) != null) {
+				g.drawImage(monsterImage[mapEditor.getMonsterID(i)], (int) (mapEditor.getMonsterX(i) * CELL_WIDTH),
+						(int) (mapEditor.getMonsterY(i) * CELL_HEIGHT), CELL_WIDTH, CELL_HEIGHT, this);
+			}
+	}
+
 	public void loadImage() throws Exception {
 		groundImage[GROUND_1] = ImageIO.read(new File("image/maps/grass1.png"));
 		groundImage[GROUND_2] = ImageIO.read(new File("image/maps/grass2.png"));
@@ -87,6 +97,9 @@ public class EditorPanel extends JPanel implements GameConstants {
 				wallImage[i][j] = ImageIO.read(new File("image/maps/wall" + (1 + i) + "-" + (1 + j) + ".png"));
 			}
 
+		for (int i = 0; i < 5; i++) {
+			monsterImage[i] = ImageIO.read(new File("image/monster/m" + i + "LEFT.png"));
+		}
 	}
 
 	class MapListener implements MouseListener {
@@ -113,9 +126,8 @@ public class EditorPanel extends JPanel implements GameConstants {
 
 			if (!mapEditor.isInMap(yPos, xPos))
 				return;
-			mapEditor.saveStatus();
 			mapEditor.editCell(yPos, xPos);
-			System.out.println(mapEditor.getEditingMode() + " " + yPos + " " + xPos);
+			// System.out.println(mapEditor.getEditingMode() + " " + yPos + " " + xPos);
 			repaint();
 		}
 

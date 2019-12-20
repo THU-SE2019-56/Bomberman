@@ -32,5 +32,6 @@ public class MainFrame extends JFrame implements GameConstants {
 		this.add(welcomePanel);
 
 		this.setVisible(true);
+		this.setResizable(false);
 	}
 }
